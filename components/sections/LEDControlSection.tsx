@@ -10,38 +10,13 @@ const PALETTES: Record<Palette, string> = {
   mint: 'linear-gradient(90deg, #9fffd7, #76e7ff, #caa6ff, #d9fff7, #9fffd7)'
 };
 
-const API_ENDPOINTS = `GET /api/status      Returns node info, health, and state
-POST /api/config      Merge or overwrite configuration JSON
-GET/POST /api/presets Manage stored presets (scenes)
-POST /api/trigger     Execute actions: play_preset, blackout
-GET /events           Server-Sent Events stream for live feedback`;
-
 const LEDControlSection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement | null, amt: number) => void }> = ({ id, addParallaxRef }) => {
   const [effect, setEffect] = useState<Effect>('breathe');
   const [speed, setSpeed] = useState(1);
   const [intensity, setIntensity] = useState(1);
   const [isNight, setIsNight] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [scrubValue, setScrubValue] = useState(0);
   const [palette, setPalette] = useState<Palette>('rf');
-
-  useEffect(() => {
-    const v = Number(scrubValue);
-    let newEffect: Effect;
-    if (v < 25) newEffect = 'breathe';
-    else if (v < 50) newEffect = 'chase';
-    else if (v < 75) newEffect = 'rainbow';
-    else newEffect = 'sparkle';
-    setEffect(newEffect);
-  }, [scrubValue]);
-
-  const timelineNote = useMemo(() => {
-    const v = Number(scrubValue);
-    if (v < 25) return 'Scene: Morning Calm';
-    if (v < 50) return 'Scene: Midday Clean';
-    if (v < 75) return 'Scene: Evening Flow';
-    return 'Scene: Promo Sparkle';
-  }, [scrubValue]);
 
   const stripWrapperStyles = useMemo(() => ({
     filter: `brightness(${intensity}) saturate(${0.8 + intensity * 0.5})`,
@@ -84,8 +59,8 @@ const LEDControlSection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement
         <div className="absolute -z-10 pointer-events-none right-[-15%] bottom-[-30%] w-[70%] h-[70%] bg-[radial-gradient(closest-side_at_70%_60%,var(--c),transparent_70%)] opacity-20 blur-2xl"></div>
       <div className="w-[min(1200px,92vw)] mx-auto">
         <div className="text-center">
-            <h2 ref={el => addParallaxRef(el, 0.12)} className="m-0 mb-2 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">Part II – The LumiGrid LED Node</h2>
-            <p className="lead reveal text-[--muted] max-w-2xl mx-auto">The LED Node is the reference member of the LumiGrid family—the one that paints light.</p>
+            <h2 ref={el => addParallaxRef(el, 0.12)} className="m-0 mb-2 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">The LED Node</h2>
+            <p className="lead reveal text-[--muted] max-w-2xl mx-auto">Paint with light—precise control meets creative effects.</p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(1rem,2.5vw,2rem)] mt-8">
           <div>
@@ -121,28 +96,10 @@ const LEDControlSection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement
             </div>
           </div>
           <div className="prose reveal">
-            <h3 className="sub-heading !mt-0">Purpose</h3>
-            <p>The LED Node bridges two worlds: precise PWM control for high-power “dumb” LED channels, and smooth addressable LED animation for pixel-based fixtures. Each node can perform solo, join an ensemble, or lead as a sync master.</p>
-            <h3 className="sub-heading">Hardware at a glance</h3>
-            <ul>
-                <li><strong>Controller:</strong> <code>ESP32-WROOM-32U</code></li>
-                <li><strong>PWM driver:</strong> <code>PCA9685</code> (12-bit, 1 kHz) → 8 MOSFET channels</li>
-                <li><strong>Addressable outputs:</strong> 8 × level-shifted 5 V via <code>SN74HCT245</code></li>
-                <li><strong>Power:</strong> 5 V bus with fuse and thermal feedback</li>
-            </ul>
+            <h3 className="sub-heading !mt-0">What it does</h3>
+            <p>The LED Node bridges precise PWM control for high-power channels and smooth addressable LED animation. Each node can perform solo, join an ensemble, or lead as the sync master.</p>
+            <p>Built-in effects include gradients, chases, waves, and fire—all power-budget aware and REST API controlled.</p>
           </div>
-        </div>
-        <div className="prose max-w-none mt-12 reveal">
-            <h3 className="sub-heading">Visual Intelligence & APIs</h3>
-            <p>The onboard Effect Engine hosts a library of real-time shaders written in C, from foundational effects like gradients and chases to procedural animations like fire and waves. A power-budget module estimates current draw and automatically scales brightness to stay within hardware limits. The node exposes its full state through human-friendly REST APIs.</p>
-            <pre><code>{API_ENDPOINTS}</code></pre>
-            <h3 className="sub-heading">Developer & Maker Friendliness</h3>
-            <ul>
-                <li>Firmware upgrades over USB or OTA.</li>
-                <li>All endpoints documented; simulator for effect testing on desktop.</li>
-                <li>Unit tests for every effect (CRC-checked frame outputs).</li>
-                <li>Web UI open-source and editable in any HTML editor.</li>
-            </ul>
         </div>
       </div>
     </section>
