@@ -40,6 +40,12 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
     resize();
     window.addEventListener('resize', resize);
 
+    // Get background color from CSS variable
+    const getBgColor = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      return isDark ? 'rgba(7, 8, 14, 0.03)' : 'rgba(247, 248, 252, 0.03)';
+    };
+
     // Create LED-like halo spheres
     const createSphere = (index: number, total: number): Sphere => {
       const hues = {
@@ -73,8 +79,8 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
     const draw = () => {
       time++;
       
-      // Fade out instead of clearing
-      ctx.fillStyle = 'rgba(7, 8, 14, 0.03)';
+      // Fade out instead of clearing - use dynamic bg color
+      ctx.fillStyle = getBgColor();
       ctx.fillRect(0, 0, vw, vh);
 
       ctx.globalCompositeOperation = 'lighter';
