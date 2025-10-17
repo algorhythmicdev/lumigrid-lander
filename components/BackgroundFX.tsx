@@ -5,17 +5,16 @@ interface BackgroundFXProps {
   brandTheme: BrandTheme;
 }
 
-interface Particle {
+interface Sphere {
   x: number;
   y: number;
-  vx: number;
-  vy: number;
-  life: number;
-  maxLife: number;
-  hue: number;
-  lightness: number;
+  baseX: number;
+  baseY: number;
   size: number;
-  angle: number;
+  hue: number;
+  phase: number;
+  speed: number;
+  pulseSpeed: number;
 }
 
 const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
@@ -29,153 +28,117 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
     if (!ctx) return;
 
     let vw: number, vh: number;
-    let targetX = 0.5, targetY = 0.35, hx = 0.5, hy = 0.35;
-    let lastPointerX = window.innerWidth / 2;
-    let lastPointerY = window.innerHeight / 2;
-    let pointerSpeed = 0;
-    let smoothSpeed = 0;
+    let time = 0;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let animationFrameId: number;
-    let particles: Particle[] = [];
+    const spheres: Sphere[] = [];
+    let bgColor = 'rgba(7, 8, 14, 0.03)'; // Cache bg color
 
     const resize = () => {
       vw = canvas.width = window.innerWidth;
       vh = canvas.height = window.innerHeight;
-      lastPointerX = vw / 2;
-      lastPointerY = vh / 2;
     };
     resize();
     window.addEventListener('resize', resize);
 
-    const updatePointer = (clientX: number, clientY: number) => {
-        const rect = canvas.getBoundingClientRect();
-        targetX = (clientX - rect.left) / rect.width;
-        targetY = (clientY - rect.top) / rect.height;
-
-        const dx = clientX - lastPointerX;
-        const dy = clientY - lastPointerY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        pointerSpeed = Math.min(1, dist / 50); // Normalize speed to a 0-1 range
-
-        lastPointerX = clientX;
-        lastPointerY = clientY;
+    // Update background color when theme changes
+    const updateBgColor = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      bgColor = isDark ? 'rgba(7, 8, 14, 0.03)' : 'rgba(247, 248, 252, 0.03)';
     };
+    updateBgColor();
 
-    const onPointerMove = (e: PointerEvent) => {
-      updatePointer(e.clientX, e.clientY);
-    };
-    window.addEventListener('pointermove', onPointerMove);
+    // Watch for theme changes
+    const observer = new MutationObserver(updateBgColor);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-    const onTouchMove = (e: TouchEvent) => {
-        const touch = e.touches[0];
-        if(!touch) return;
-        updatePointer(touch.clientX, touch.clientY);
-    };
-    window.addEventListener('touchmove', onTouchMove, { passive: true });
-
-    const createParticle = (): Particle => {
+    // Create LED-like halo spheres
+    const createSphere = (index: number, total: number): Sphere => {
       const hues = {
         [BrandTheme.RF]: [320, 270, 190],
         [BrandTheme.Contrast]: [190, 220, 150],
         [BrandTheme.Warm]: [330, 270, 40]
       }[brandTheme];
 
+      const angle = (index / total) * Math.PI * 2;
+      const radius = Math.min(vw, vh) * 0.3;
+      
       return {
-        x: Math.random() * vw,
-        y: Math.random() * vh,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        life: 0,
-        maxLife: 200 + Math.random() * 200,
-        hue: hues[Math.floor(Math.random() * hues.length)],
-        lightness: 50 + Math.random() * 15,
-        size: 2 + Math.random() * 4,
-        angle: Math.random() * Math.PI * 2
+        baseX: vw / 2 + Math.cos(angle) * radius,
+        baseY: vh / 2 + Math.sin(angle) * radius,
+        x: 0,
+        y: 0,
+        size: Math.min(vw, vh) * (0.15 + Math.random() * 0.1),
+        hue: hues[index % hues.length],
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.0003 + Math.random() * 0.0002,
+        pulseSpeed: 0.0008 + Math.random() * 0.0004
       };
     };
 
+    // Initialize spheres
+    const numSpheres = 4;
+    for (let i = 0; i < numSpheres; i++) {
+      spheres.push(createSphere(i, numSpheres));
+    }
+
     const draw = () => {
-      hx += (targetX - hx) * 0.04;
-      hy += (targetY - hy) * 0.04;
-
-      // Smoothly update and decay pointer speed
-      smoothSpeed += (pointerSpeed - smoothSpeed) * 0.1;
-      pointerSpeed *= 0.9; // Apply decay so effect fades when pointer stops
-
-      ctx.clearRect(0, 0, vw, vh);
-
-      const themeColors = {
-        [BrandTheme.RF]: ['rgba(231,59,163,0.3)', 'rgba(108,43,217,0.25)'],
-        [BrandTheme.Contrast]: ['rgba(0,212,255,0.3)', 'rgba(122,162,255,0.25)'],
-        [BrandTheme.Warm]: ['rgba(255,77,179,0.3)', 'rgba(182,109,255,0.25)']
-      };
+      time++;
+      
+      // Fade out instead of clearing - use cached bg color
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, vw, vh);
 
       ctx.globalCompositeOperation = 'lighter';
-      // Halo size expands with pointer speed
-      const haloSize = Math.min(vw, vh) * (0.45 + smoothSpeed * 0.3);
-      const grad = ctx.createRadialGradient(vw * hx, vh * hy, 0, vw * hx, vh * hy, haloSize);
-      grad.addColorStop(0, themeColors[brandTheme][0]);
-      grad.addColorStop(1, 'transparent');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, vw, vh);
-      
-      // Manage particles
-      if (particles.length < 100) {
-        particles.push(createParticle());
-      }
-      
-      const influenceRadius = vw * 0.15;
-      const influenceRadiusSq = influenceRadius * influenceRadius;
 
-      particles.forEach((p, i) => {
-        // Apply friction/drag
-        p.vx *= 0.98;
-        p.vy *= 0.98;
+      spheres.forEach((sphere) => {
+        // Very slow orbital movement
+        const orbitX = Math.cos(time * sphere.speed + sphere.phase) * 60;
+        const orbitY = Math.sin(time * sphere.speed + sphere.phase) * 40;
         
-        // Repel from cursor
-        const dx = p.x - (vw * hx);
-        const dy = p.y - (vh * hy);
-        const distSq = dx * dx + dy * dy;
+        sphere.x = sphere.baseX + orbitX;
+        sphere.y = sphere.baseY + orbitY;
 
-        if (distSq < influenceRadiusSq) {
-            const dist = Math.sqrt(distSq);
-            // Force is stronger closer to cursor and with higher speed
-            const force = (1 - dist / influenceRadius) * (smoothSpeed + 0.1) * 0.6;
-            p.vx += (dx / dist) * force;
-            p.vy += (dy / dist) * force;
-        }
+        // Slow pulsing
+        const pulse = 0.7 + Math.sin(time * sphere.pulseSpeed + sphere.phase) * 0.3;
+        const currentSize = sphere.size * pulse;
 
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life++;
+        // Create soft LED halo
+        const gradient = ctx.createRadialGradient(
+          sphere.x, sphere.y, 0,
+          sphere.x, sphere.y, currentSize
+        );
 
-        if (p.life > p.maxLife || p.x < -p.size || p.x > vw + p.size || p.y < -p.size || p.y > vh + p.size) {
-          particles[i] = createParticle();
-        }
+        // Faded colors
+        const opacity = 0.15;
+        gradient.addColorStop(0, `hsla(${sphere.hue}, 80%, 60%, ${opacity * 0.8})`);
+        gradient.addColorStop(0.4, `hsla(${sphere.hue}, 70%, 55%, ${opacity * 0.4})`);
+        gradient.addColorStop(0.7, `hsla(${sphere.hue}, 60%, 50%, ${opacity * 0.15})`);
+        gradient.addColorStop(1, 'transparent');
 
-        const fadeInOut = Math.sin((p.life / p.maxLife) * Math.PI);
-        const opacity = 0.6 * fadeInOut * (0.5 + Math.sin(p.life * 0.1) * 0.5);
-        
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.angle);
-        
-        const flareGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, p.size * 6);
-        flareGrad.addColorStop(0, `hsla(${p.hue}, 100%, ${p.lightness}%, ${opacity * 0.8})`);
-        flareGrad.addColorStop(1, `hsla(${p.hue}, 100%, ${p.lightness}%, 0)`);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(
+          sphere.x - currentSize,
+          sphere.y - currentSize,
+          currentSize * 2,
+          currentSize * 2
+        );
 
-        ctx.fillStyle = flareGrad;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, p.size * 6, p.size * 1.5, 0, 0, Math.PI * 2);
-        ctx.fill();
+        // Core glow
+        const coreGradient = ctx.createRadialGradient(
+          sphere.x, sphere.y, 0,
+          sphere.x, sphere.y, currentSize * 0.3
+        );
+        coreGradient.addColorStop(0, `hsla(${sphere.hue}, 100%, 80%, ${opacity * 0.6})`);
+        coreGradient.addColorStop(1, 'transparent');
 
-        ctx.fillStyle = `hsla(${p.hue}, 100%, 95%, ${opacity})`;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, p.size * 1.5, p.size * 0.4, 0, 0, Math.PI * 2);
-        ctx.fill();
-        
-        ctx.restore();
+        ctx.fillStyle = coreGradient;
+        ctx.fillRect(
+          sphere.x - currentSize * 0.3,
+          sphere.y - currentSize * 0.3,
+          currentSize * 0.6,
+          currentSize * 0.6
+        );
       });
 
       if (!reduced) {
@@ -190,8 +153,7 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('touchmove', onTouchMove);
+      observer.disconnect();
     };
   }, [brandTheme]);
 
