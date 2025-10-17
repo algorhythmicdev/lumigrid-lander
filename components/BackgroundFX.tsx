@@ -32,6 +32,7 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let animationFrameId: number;
     const spheres: Sphere[] = [];
+    let bgColor = 'rgba(7, 8, 14, 0.03)'; // Cache bg color
 
     const resize = () => {
       vw = canvas.width = window.innerWidth;
@@ -40,11 +41,16 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
     resize();
     window.addEventListener('resize', resize);
 
-    // Get background color from CSS variable
-    const getBgColor = () => {
+    // Update background color when theme changes
+    const updateBgColor = () => {
       const isDark = document.documentElement.classList.contains('dark');
-      return isDark ? 'rgba(7, 8, 14, 0.03)' : 'rgba(247, 248, 252, 0.03)';
+      bgColor = isDark ? 'rgba(7, 8, 14, 0.03)' : 'rgba(247, 248, 252, 0.03)';
     };
+    updateBgColor();
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateBgColor);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
     // Create LED-like halo spheres
     const createSphere = (index: number, total: number): Sphere => {
@@ -79,8 +85,8 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
     const draw = () => {
       time++;
       
-      // Fade out instead of clearing - use dynamic bg color
-      ctx.fillStyle = getBgColor();
+      // Fade out instead of clearing - use cached bg color
+      ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, vw, vh);
 
       ctx.globalCompositeOperation = 'lighter';
@@ -147,6 +153,7 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
+      observer.disconnect();
     };
   }, [brandTheme]);
 
