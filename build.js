@@ -7,16 +7,39 @@ const assetsDir = path.join(__dirname, 'assets');
 const cssDir = path.join(__dirname, 'css');
 const jsDir = path.join(__dirname, 'js');
 
-// Create dist directory
-if (!fs.existsSync(distDir)) {
-  fs.mkdirSync(distDir);
+function ensureDir(dir) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
 }
 
-// Copy files and directories
+function copyDir(src, dest) {
+  if (!fs.existsSync(src)) return;
+  ensureDir(dest);
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else if (entry.isSymbolicLink()) {
+      const target = fs.readlinkSync(srcPath);
+      fs.symlinkSync(target, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+if (fs.existsSync(distDir)) {
+  fs.rmSync(distDir, { recursive: true, force: true });
+}
+ensureDir(distDir);
+
 fs.copyFileSync(path.join(__dirname, 'index.html'), path.join(distDir, 'index.html'));
-fs.cpSync(publicDir, path.join(distDir, 'public'), { recursive: true });
-fs.cpSync(assetsDir, path.join(distDir, 'assets'), { recursive: true });
-fs.cpSync(cssDir, path.join(distDir, 'css'), { recursive: true });
-fs.cpSync(jsDir, path.join(distDir, 'js'), { recursive: true });
+copyDir(publicDir, path.join(distDir, 'public'));
+copyDir(assetsDir, path.join(distDir, 'assets'));
+copyDir(cssDir, path.join(distDir, 'css'));
+copyDir(jsDir, path.join(distDir, 'js'));
 
 console.log('Build complete!');
