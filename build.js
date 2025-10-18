@@ -24,7 +24,12 @@ function copyDir(src, dest) {
       copyDir(srcPath, destPath);
     } else if (entry.isSymbolicLink()) {
       const target = fs.readlinkSync(srcPath);
-      fs.symlinkSync(target, destPath);
+      let linkTarget = target;
+      if (!path.isAbsolute(target)) {
+        const resolvedTarget = path.resolve(path.dirname(srcPath), target);
+        linkTarget = path.relative(path.dirname(destPath), resolvedTarget) || '.';
+      }
+      fs.symlinkSync(linkTarget, destPath);
     } else {
       fs.copyFileSync(srcPath, destPath);
     }
