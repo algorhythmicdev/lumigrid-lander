@@ -26,7 +26,7 @@ function copyDir(src, dest) {
       const target = fs.readlinkSync(srcPath);
       let linkTarget = target;
       if (!path.isAbsolute(target)) {
-        const resolvedTarget = path.resolve(path.dirname(srcPath), target);
+        const resolvedTarget = path.resolve(path.dirname(destPath), target);
         linkTarget = path.relative(path.dirname(destPath), resolvedTarget) || '.';
       }
       fs.symlinkSync(linkTarget, destPath);
