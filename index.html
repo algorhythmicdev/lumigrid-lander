@@ -8,8 +8,8 @@
   <meta name="color-scheme" content="dark light"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
-  <link rel="icon" href="/public/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/css/lumigrid.css"/>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/lumigrid.css"/>
 </head>
 <body>
   <a class="sr-only" href="#main">Skip to content</a>
@@ -79,9 +79,9 @@
         <div class="card reveal" data-info-card="status"><h3>See what’s happening</h3><p>Open the web app to check zones, brightness, and the current scene. Change anything instantly.</p></div>
 
         <div class="grid grid-3 reveal" style="margin-top:1rem;">
-          <figure class="card"><img src="/assets/images/screen-1.svg" alt="Screenshot placeholder — Scenes" style="width:100%;height:auto"/><figcaption class="lead">Screenshot: Web app — Scenes</figcaption></figure>
-          <figure class="card"><img src="/assets/images/screen-2.svg" alt="Screenshot placeholder — Timeline" style="width:100%;height:auto"/><figcaption class="lead">Screenshot: Timeline editor</figcaption></figure>
-          <figure class="card"><img src="/assets/images/photo-1.svg" alt="Photo placeholder — Window install" style="width:100%;height:auto"/><figcaption class="lead">Photo: Shop window install</figcaption></figure>
+          <figure class="card"><img src="assets/images/screen-1.svg" alt="Screenshot placeholder — Scenes" style="width:100%;height:auto"/><figcaption class="lead">Screenshot: Web app — Scenes</figcaption></figure>
+          <figure class="card"><img src="assets/images/screen-2.svg" alt="Screenshot placeholder — Timeline" style="width:100%;height:auto"/><figcaption class="lead">Screenshot: Timeline editor</figcaption></figure>
+          <figure class="card"><img src="assets/images/photo-1.svg" alt="Photo placeholder — Window install" style="width:100%;height:auto"/><figcaption class="lead">Photo: Shop window install</figcaption></figure>
         </div>
       </div>
     </section>
@@ -196,13 +196,13 @@
     </div>
   </footer>
 
-  <script type="module" src="/js/lumigrid.js"></script>
+  <script type="module" src="js/lumigrid.js"></script>
   <script type="module">
     import {
       lgBindThemeToggle, lgBindBrandSelect, lgBindRipple,
       lgReveals, lgParallax, lgTimelineSpy, lgBackgroundFlares,
       lgBindTTS, lgBindPills, lgApplyLEDGradient
-    } from '/js/lumigrid.js';
+    } from './js/lumigrid.js';
 
     // FX canvas across the whole page
     lgBackgroundFlares({ canvasId:'lg-fx' });
