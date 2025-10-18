@@ -4,6 +4,6 @@
   "version": "1.0.0",
   "description": "LumiGrid \u2014 Creative Lighting & Signage Control (Reclame Fabriek R&D)",
   "scripts": {
-    "build": "echo 'No build needed - static site'"
+    "build": "node build.js"
   }
 }
