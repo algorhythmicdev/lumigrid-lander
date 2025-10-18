@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Wifi } from 'lucide-react';
+import { Shield, Wifi, HardDrive, Wrench } from 'lucide-react';
 
 const Card: React.FC<{ title: string, children: React.ReactNode, icon: React.ComponentType<any> }> = ({ title, children, icon: Icon }) => (
     <div className="bg-gradient-to-br from-white/8 to-white/[0.02] border border-white/15 backdrop-blur-md rounded-xl p-6 shadow-lg reveal group hover:border-white/25 transition-all">
@@ -21,13 +21,22 @@ const ReliabilitySection: React.FC<{ id: string, addParallaxRef: (el: HTMLElemen
              <div className="absolute -z-10 pointer-events-none left-[-10%] top-[-20%] w-3/5 h-3/5 bg-[radial-gradient(closest-side_at_30%_40%,var(--a),transparent_70%)] opacity-15 blur-3xl"></div>
             <div className="absolute -z-10 pointer-events-none right-[-15%] bottom-[-30%] w-[70%] h-[70%] bg-[radial-gradient(closest-side_at_70%_60%,var(--c),transparent_70%)] opacity-15 blur-3xl"></div>
             <div className="w-[min(1200px,92vw)] mx-auto">
-                <h2 ref={el => addParallaxRef(el, 0.12)} className="text-center m-0 mb-10 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">Built to Last</h2>
+                <h2 ref={el => addParallaxRef(el, 0.12)} className="text-center m-0 mb-2 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">Reliability you can trust</h2>
+                <p className="text-center text-lg text-[--muted] max-w-3xl mx-auto mb-12">
+                    LumiGrid is built on a foundation of robust hardware and intelligent software, ensuring your lighting works flawlessly, day in and day out.
+                </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                    <Card title="Autonomous Operation" icon={Shield}>
-                        Scenes continue running independently, even offline. Power cycles restore the last state automatically.
+                    <Card title="Solid-State Hardware" icon={HardDrive}>
+                        No moving parts means a longer lifespan and less maintenance.
                     </Card>
-                    <Card title="Local Network Control" icon={Wifi}>
-                        Direct communication on your network—no cloud dependency, no external servers.
+                    <Card title="Offline First" icon={Wifi}>
+                        Your lighting schedules and scenes run directly on the hardware, so they'll work even without an internet connection.
+                    </Card>
+                    <Card title="Secure" icon={Shield}>
+                        Connections are encrypted and authenticated, so you can be sure your system is safe from unauthorized access.
+                    </Card>
+                    <Card title="Low Maintenance" icon={Wrench}>
+                        Once you've set up your lighting, you can forget about it. LumiGrid is designed to be a set-and-forget solution.
                     </Card>
                 </div>
             </div>
