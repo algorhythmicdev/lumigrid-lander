@@ -25,18 +25,24 @@ const ReliabilitySection: React.FC<{ id: string, addParallaxRef: (el: HTMLElemen
                 <p className="text-center text-lg text-[--muted] max-w-3xl mx-auto mb-12">
                     LumiGrid is built on a foundation of robust hardware and intelligent software, ensuring your lighting works flawlessly, day in and day out.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                    <Card title="Solid-State Hardware" icon={HardDrive}>
-                        No moving parts means a longer lifespan and less maintenance.
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    <Card title="Fail-Safe Blackout" icon={Shield}>
+                        PCA9685 OE pin cuts power on fault or command, ensuring safety at all times.
                     </Card>
-                    <Card title="Offline First" icon={Wifi}>
-                        Your lighting schedules and scenes run directly on the hardware, so they'll work even without an internet connection.
+                    <Card title="Thermal / Voltage Watch" icon={HardDrive}>
+                        Automatic derate under stress to protect your hardware from damage.
                     </Card>
-                    <Card title="Secure" icon={Shield}>
-                        Connections are encrypted and authenticated, so you can be sure your system is safe from unauthorized access.
+                    <Card title="Watchdog & Diagnostics" icon={Wifi}>
+                        Continuous heap and task monitoring to ensure system stability.
                     </Card>
-                    <Card title="Low Maintenance" icon={Wrench}>
-                        Once you've set up your lighting, you can forget about it. LumiGrid is designed to be a set-and-forget solution.
+                    <Card title="Offline Autonomy" icon={Wrench}>
+                        Local schedules run even without the master, ensuring your lighting is always on.
+                    </Card>
+                    <Card title="Developer & Maker Friendliness" icon={Shield}>
+                        ESP-IDF v5 toolchain, CMake project structure, and firmware upgrades over USB or OTA.
+                    </Card>
+                    <Card title="Unit Tests" icon={HardDrive}>
+                        Unit tests for every effect (CRC-checked frame outputs) to ensure reliability.
                     </Card>
                 </div>
             </div>

@@ -52,68 +52,80 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
     const observer = new MutationObserver(updateBgColor);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-    // Create LED-like halo spheres
-    const createSphere = (index: number, total: number): Sphere => {
+    // Mouse and scroll tracking
+    let mx = vw / 2, my = vh / 2, sx = 0, sy = 0;
+
+    const onMouseMove = (e: MouseEvent) => {
+      mx = e.clientX;
+      my = e.clientY;
+    };
+    document.addEventListener('mousemove', onMouseMove);
+
+    const onScroll = () => {
+      const scrollElement = document.scrollingElement || document.documentElement;
+      sx = scrollElement.scrollLeft;
+      sy = scrollElement.scrollTop;
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+
+    // Create soft, faded flares
+    const createSphere = (index: number): Sphere => {
       const hues = {
         [BrandTheme.RF]: [320, 270, 190],
         [BrandTheme.Contrast]: [190, 220, 150],
         [BrandTheme.Warm]: [330, 270, 40]
       }[brandTheme];
 
-      const angle = (index / total) * Math.PI * 2;
-      const radius = Math.min(vw, vh) * 0.3;
-      
       return {
-        baseX: vw / 2 + Math.cos(angle) * radius,
-        baseY: vh / 2 + Math.sin(angle) * radius,
+        baseX: vw * (0.2 + Math.random() * 0.6),
+        baseY: vh * (0.3 + Math.random() * 0.4),
         x: 0,
         y: 0,
-        size: Math.min(vw, vh) * (0.15 + Math.random() * 0.1),
+        size: Math.min(vw, vh) * (0.3 + Math.random() * 0.3),
         hue: hues[index % hues.length],
         phase: Math.random() * Math.PI * 2,
-        speed: 0.0003 + Math.random() * 0.0002,
-        pulseSpeed: 0.0008 + Math.random() * 0.0004
+        speed: 0.00015 + Math.random() * 0.0001,
+        pulseSpeed: 0.0004 + Math.random() * 0.0002
       };
     };
 
     // Initialize spheres
-    const numSpheres = 4;
+    const numSpheres = 3;
     for (let i = 0; i < numSpheres; i++) {
-      spheres.push(createSphere(i, numSpheres));
+      spheres.push(createSphere(i));
     }
 
     const draw = () => {
       time++;
       
-      // Fade out instead of clearing - use cached bg color
       ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, vw, vh);
 
       ctx.globalCompositeOperation = 'lighter';
 
-      spheres.forEach((sphere) => {
-        // Very slow orbital movement
-        const orbitX = Math.cos(time * sphere.speed + sphere.phase) * 60;
-        const orbitY = Math.sin(time * sphere.speed + sphere.phase) * 40;
+      spheres.forEach((sphere, i) => {
+        // 3D parallax effect based on mouse and scroll
+        const parallaxFactor = 0.04 + i * 0.03;
+        const targetX = sphere.baseX + (mx - vw / 2) * parallaxFactor - sx * 0.2;
+        const targetY = sphere.baseY + (my - vh / 2) * parallaxFactor - sy * 0.3;
         
-        sphere.x = sphere.baseX + orbitX;
-        sphere.y = sphere.baseY + orbitY;
+        sphere.x += (targetX - sphere.x) * 0.06;
+        sphere.y += (targetY - sphere.y) * 0.06;
 
-        // Slow pulsing
-        const pulse = 0.7 + Math.sin(time * sphere.pulseSpeed + sphere.phase) * 0.3;
+        // Slow pulsing and color shifting
+        const pulse = 0.8 + Math.sin(time * sphere.pulseSpeed + sphere.phase) * 0.2;
         const currentSize = sphere.size * pulse;
+        const currentHue = sphere.hue + Math.sin(time * sphere.speed * 0.5 + sphere.phase) * 10;
 
-        // Create soft LED halo
+        // Create very soft, faded flare
         const gradient = ctx.createRadialGradient(
           sphere.x, sphere.y, 0,
           sphere.x, sphere.y, currentSize
         );
 
-        // Faded colors
-        const opacity = 0.15;
-        gradient.addColorStop(0, `hsla(${sphere.hue}, 80%, 60%, ${opacity * 0.8})`);
-        gradient.addColorStop(0.4, `hsla(${sphere.hue}, 70%, 55%, ${opacity * 0.4})`);
-        gradient.addColorStop(0.7, `hsla(${sphere.hue}, 60%, 50%, ${opacity * 0.15})`);
+        const opacity = 0.08;
+        gradient.addColorStop(0, `hsla(${currentHue}, 80%, 70%, ${opacity})`);
+        gradient.addColorStop(0.5, `hsla(${currentHue}, 70%, 60%, ${opacity * 0.5})`);
         gradient.addColorStop(1, 'transparent');
 
         ctx.fillStyle = gradient;
@@ -122,22 +134,6 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
           sphere.y - currentSize,
           currentSize * 2,
           currentSize * 2
-        );
-
-        // Core glow
-        const coreGradient = ctx.createRadialGradient(
-          sphere.x, sphere.y, 0,
-          sphere.x, sphere.y, currentSize * 0.3
-        );
-        coreGradient.addColorStop(0, `hsla(${sphere.hue}, 100%, 80%, ${opacity * 0.6})`);
-        coreGradient.addColorStop(1, 'transparent');
-
-        ctx.fillStyle = coreGradient;
-        ctx.fillRect(
-          sphere.x - currentSize * 0.3,
-          sphere.y - currentSize * 0.3,
-          currentSize * 0.6,
-          currentSize * 0.6
         );
       });
 
@@ -153,6 +149,8 @@ const BackgroundFX: React.FC<BackgroundFXProps> = ({ brandTheme }) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('scroll', onScroll);
       observer.disconnect();
     };
   }, [brandTheme]);

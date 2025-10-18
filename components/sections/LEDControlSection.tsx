@@ -1,5 +1,24 @@
 import React, { useState, useMemo } from 'react';
-import { Play, Pause, Zap, Sparkles, Waves, Flame, Radio, Sunrise } from 'lucide-react';
+import { Play, Pause, Zap, Sparkles, Waves, Flame, Radio, Sunrise, Paintbrush } from 'lucide-react';
+
+const EffectCategoryCard: React.FC<{ title: string, effects: string[], description: string }> = ({ title, effects, description }) => (
+    <div className="reveal p-6 bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-xl backdrop-blur-sm h-full">
+        <div className="flex items-start gap-3">
+            <div className="p-2 bg-gradient-to-br from-[--a]/20 to-[--c]/20 rounded-lg">
+                <Paintbrush size={20} className="text-[--c]" />
+            </div>
+            <div className="flex-1">
+                <h4 className="font-semibold text-[--ink] text-lg mb-1">{title}</h4>
+                <p className="text-[--muted] text-sm mb-3">{description}</p>
+                <div className="flex flex-wrap gap-2">
+                    {effects.map(effect => (
+                        <span key={effect} className="text-xs bg-white/10 text-[--muted] px-2 py-1 rounded-md">{effect}</span>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+);
 
 type Effect = 'breathe' | 'rainbow' | 'sparkle' | 'chase' | 'wave' | 'fire' | 'pulse' | 'strobe';
 type Palette = 'rf' | 'neon' | 'sunset' | 'mint' | 'ocean' | 'purple';
@@ -99,16 +118,29 @@ const LEDControlSection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement
       <div className="absolute -z-10 pointer-events-none right-[-15%] bottom-[-30%] w-[70%] h-[70%] bg-[radial-gradient(closest-side_at_70%_60%,var(--c),transparent_70%)] opacity-15 blur-3xl"></div>
       
       <div className="w-[min(1200px,92vw)] mx-auto">
-        <div className="text-center mb-8">
+        <div className="text-center mb-12">
           <h2 ref={el => addParallaxRef(el, 0.12)} className="m-0 mb-3 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">
-            LED Effects Demo
+            The LumiGrid LED Node
           </h2>
-          <p className="text-[--muted] max-w-2xl mx-auto text-lg">
-            Experience real-time lighting control
+          <p className="text-[--muted] max-w-3xl mx-auto text-lg">
+            The LED Node is the reference member of the LumiGrid family—the one that paints light. It bridges two worlds: precise PWM control for high-power “dumb” LED channels, and smooth addressable LED animation for pixel-based fixtures. Each node can perform solo, join an ensemble, or lead as a sync master.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h3 className="text-2xl font-bold mb-4 gradient-text">Hardware at a glance</h3>
+            <ul className="space-y-2 text-[--muted]">
+              <li><strong>Controller:</strong> ESP32-WROOM-32U</li>
+              <li><strong>PWM driver:</strong> PCA9685 (12-bit, 1 kHz) → 8 MOSFET channels</li>
+              <li><strong>Addressable outputs:</strong> 8 × level-shifted 5 V via SN74HCT245DWR</li>
+              <li><strong>Power:</strong> 5 V bus with fuse and thermal feedback</li>
+            </ul>
+            <h3 className="text-2xl font-bold mt-8 mb-4 gradient-text">Personality</h3>
+            <p className="text-[--muted]">
+              Every LED Node runs the same firmware stack as its siblings, but its “brain” specializes in light rendering. It can blend complex color effects in real time, maintain precise phase alignment with the grid, enforce power and thermal limits automatically, and expose its full state through human-friendly APIs.
+            </p>
+          </div>
           {/* Single LED Strip */}
           <div className="reveal p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 backdrop-blur-md shadow-2xl">
             <div className="relative h-16 bg-slate-900/80 rounded-xl overflow-hidden border border-white/20 shadow-inner">
@@ -195,13 +227,18 @@ const LEDControlSection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement
               ))}
             </div>
           </div>
+        </div>
 
-          {/* Description */}
-          <div className="mt-8 text-center reveal">
-            <p className="text-[--muted] max-w-2xl mx-auto">
-              The LED Node provides precise control over lighting effects with REST API integration. 
-              Create custom sequences, sync multiple nodes, and adjust power budgets in real-time.
-            </p>
+        {/* Visual Intelligence Section */}
+        <div className="mt-16">
+          <h3 className="text-2xl font-bold text-center mb-8 gradient-text">Visual Intelligence</h3>
+          <p className="text-center text-lg text-[--muted] max-w-3xl mx-auto mb-12">
+            The Effect Engine is both painter and conductor. It hosts a library of real-time shaders in C, categorized for a variety of applications.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <EffectCategoryCard title="Base" effects={['Solid', 'Gradient', 'Chase', 'Twinkle']} description="Foundational FX" />
+            <EffectCategoryCard title="Spectral" effects={['Rainbow', 'Noise Flow']} description="Animated color fields" />
+            <EffectCategoryCard title="Organic" effects={['Fire', 'Waves']} description="Procedural, beat-reactive" />
           </div>
         </div>
       </div>

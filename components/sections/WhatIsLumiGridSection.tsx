@@ -29,21 +29,24 @@ const WhatIsLumiGridSection: React.FC<{ id: string, addParallaxRef: (el: HTMLEle
     return (
         <Section id={id}>
             <div className="text-center max-w-3xl mx-auto">
-                <h2 ref={el => addParallaxRef(el, 0.12)} className="text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">The LumiGrid System</h2>
+                <h2 ref={el => addParallaxRef(el, 0.12)} className="text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">A living network of light</h2>
                 <p className="text-[--muted] mt-3 text-lg reveal max-w-2xl mx-auto">
-                    Networked LED control that synchronizes across nodes with precision timing and intelligent effects.
+                    LumiGrid is a distributed control architecture for modular, intelligent lighting and kinetic systems. At its core it turns light into a networked medium—each node thinking for itself, yet synchronized in a collective rhythm.
                 </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 mt-10 max-w-5xl mx-auto">
-                <PhilosophyCard title="Distributed" icon={Network}>
-                    Each node handles its own control, working in sync with the network.
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 max-w-6xl mx-auto">
+                <PhilosophyCard title="Distributed Intelligence" icon={Network}>
+                    Computation sits next to the hardware it controls, enabling fast and responsive performance.
                 </PhilosophyCard>
-                <PhilosophyCard title="Synchronized" icon={Zap}>
-                    Millisecond-precise timing across all connected devices.
+                <PhilosophyCard title="Deterministic Sync" icon={Zap}>
+                    Every node follows the same timeline, even across wireless networks, for perfectly synchronized effects.
                 </PhilosophyCard>
-                <PhilosophyCard title="Accessible" icon={Globe}>
-                    Control from any browser—no proprietary app needed.
+                <PhilosophyCard title="Openness" icon={Globe}>
+                    Each module exposes its state through open REST / MQTT APIs and serves its own web UI.
+                </PhilosophyCard>
+                <PhilosophyCard title="Human-Centered UX" icon={Network}>
+                    Installation, mapping, and show control happen from any browser—no proprietary app required.
                 </PhilosophyCard>
             </div>
         </Section>
