@@ -102,7 +102,7 @@ const App: React.FC = () => {
       <a className="skip-link absolute left-0 top-[-40px] bg-[#111] text-white p-2 px-3 z-[1000] focus:top-2" href="#main">
         Skip to content
       </a>
-      <BackgroundFX brandTheme={brandTheme} />
+      <BackgroundFX />
 
       <Header 
         brandTheme={brandTheme}
