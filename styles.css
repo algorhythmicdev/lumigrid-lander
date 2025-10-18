@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* WCAG Compliant Color Palettes & Gradients */
 :root {
   /* Background colors */
