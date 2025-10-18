@@ -1,8 +1,9 @@
 import React from 'react';
 import { Radio, Cpu, Globe } from 'lucide-react';
+import Section from '../Section';
 
 const Card: React.FC<{ title: string, children: React.ReactNode, icon: React.ComponentType<any> }> = ({ title, children, icon: Icon }) => (
-    <div className="bg-gradient-to-br from-white/8 to-white/[0.02] border border-white/15 backdrop-blur-md rounded-xl p-6 shadow-lg reveal h-full group hover:border-white/25 transition-all">
+    <div className="card reveal group hover:border-white/25 transition-all">
         <div className="flex items-start gap-3">
             <div className="p-2.5 bg-gradient-to-br from-[--b]/20 to-[--a]/20 rounded-lg group-hover:scale-110 transition-transform">
                 <Icon size={22} className="text-[--b]" />
