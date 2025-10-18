@@ -32,7 +32,7 @@ const ImplementationSection: React.FC<{ id: string, addParallaxRef: (el: HTMLEle
             <p className="center lead max-w-3xl mx-auto mb-12">
                 LumiGrid is engineered for seamless integration into your existing business operations, providing a robust and scalable solution for your lighting needs.
             </p>
-            <div className="grid grid-2 lg:grid-3 gap-6 max-w-5xl mx-auto">
+            <div className="grid md:grid-3 gap-6 max-w-5xl mx-auto">
                 <Card title="Retail" icon={ShoppingBag}>
                     Create dynamic and inviting storefronts that attract customers and highlight your products.
                 </Card>
@@ -43,7 +43,7 @@ const ImplementationSection: React.FC<{ id: string, addParallaxRef: (el: HTMLEle
                     Integrate with your existing systems to automate lighting changes based on time, weather, or other triggers.
                 </Card>
             </div>
-            <div className="grid grid-2 lg:grid-3 gap-6 mt-8 reveal max-w-5xl mx-auto">
+            <div className="grid md:grid-3 gap-6 mt-8 reveal max-w-5xl mx-auto">
                 <PhotoCard caption="Backlit letters with halo" image="/images/Asset-1-1.webp" />
                 <PhotoCard caption="Window strip install" image="/images/Untitled-7-01.webp" />
                 <PhotoCard caption="Façade lighting" image="/images/242193487_1740105769520457_5649896811511033318_n-1.png" />
