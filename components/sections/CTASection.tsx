@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { ArrowRight } from 'lucide-react';
 
 const CTASection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement | null, amt: number) => void }> = ({ id, addParallaxRef }) => {
     return (

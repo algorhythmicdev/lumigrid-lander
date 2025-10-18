@@ -11,13 +11,13 @@ const galleryItems = [
 ];
 
 const GalleryItem: React.FC<{ title: string, description: string, image: string, index: number }> = ({ title, description, image, index }) => (
-    <figure className="group relative overflow-hidden rounded-2xl shadow-2xl shadow-black/30 reveal" style={{ transitionDelay: `${index * 100}ms` }}>
-        <div className="w-full aspect-square bg-gradient-to-br from-[--bg-1] to-color-mix(in srgb, var(--bg-1) 80%, black) border border-white/10 flex items-center justify-center relative overflow-hidden transition-transform duration-500 ease-in-out group-hover:scale-105">
-            <img src={image} alt={title} className="w-full h-full object-cover" loading="lazy" />
+    <figure className="group relative overflow-hidden rounded-xl shadow-lg reveal border border-white/10 hover:border-white/20 transition-all" style={{ transitionDelay: `${index * 80}ms` }}>
+        <div className="w-full aspect-square bg-gradient-to-br from-[--bg-1] to-black/20 flex items-center justify-center relative overflow-hidden">
+            <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
         </div>
-        <figcaption className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-in-out">
-            <h3 className="font-bold text-lg text-white">{title}</h3>
-            <p className="text-[--muted] text-sm">{description}</p>
+        <figcaption className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/70 to-transparent translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+            <h3 className="font-bold text-lg text-white mb-1">{title}</h3>
+            <p className="text-gray-200 text-sm">{description}</p>
         </figcaption>
     </figure>
 );
@@ -25,12 +25,12 @@ const GalleryItem: React.FC<{ title: string, description: string, image: string,
 
 const ProjectGallerySection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement | null, amt: number) => void }> = ({ id, addParallaxRef }) => {
     return (
-        <section id={id} className="relative overflow-hidden p-[clamp(2rem,5vw,4.5rem)_0] bg-gradient-to-b from-[--b]/10 to-[--a]/10">
-             <div className="absolute -z-10 pointer-events-none left-[-10%] top-[-20%] w-3/5 h-3/5 bg-[radial-gradient(closest-side_at_30%_40%,var(--b),transparent_70%)] opacity-20 blur-2xl"></div>
-            <div className="absolute -z-10 pointer-events-none right-[-15%] bottom-[-30%] w-[70%] h-[70%] bg-[radial-gradient(closest-side_at_70%_60%,var(--a),transparent_70%)] opacity-20 blur-2xl"></div>
+        <section id={id} className="relative overflow-hidden p-[clamp(2rem,4vw,3.5rem)_0] bg-gradient-to-b from-[--b]/8 to-[--a]/8">
+             <div className="absolute -z-10 pointer-events-none left-[-10%] top-[-20%] w-3/5 h-3/5 bg-[radial-gradient(closest-side_at_30%_40%,var(--b),transparent_70%)] opacity-15 blur-3xl"></div>
+            <div className="absolute -z-10 pointer-events-none right-[-15%] bottom-[-30%] w-[70%] h-[70%] bg-[radial-gradient(closest-side_at_70%_60%,var(--a),transparent_70%)] opacity-15 blur-3xl"></div>
             <div className="w-[min(1200px,92vw)] mx-auto">
-                <h2 ref={el => addParallaxRef(el, 0.12)} className="text-center m-0 mb-6 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">Project Gallery</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[clamp(1rem,2.5vw,2rem)]">
+                <h2 ref={el => addParallaxRef(el, 0.12)} className="text-center m-0 mb-10 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">Project Gallery</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {galleryItems.map((item, index) => (
                         <GalleryItem key={item.title} title={item.title} description={item.description} image={item.image} index={index} />
                     ))}
