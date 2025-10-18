@@ -77,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ brandTheme, setBrandTheme, isDarkMode, 
             </nav>
 
             <div className="relative max-w-4xl text-center p-[clamp(1rem,3vw,2rem)] my-8 mx-auto">
-                <h1 ref={el => addParallaxRef(el, 0.18)} className="text-[clamp(2.2rem,6vw,3.8rem)] font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-[--a] via-[--b] to-[--c] [will-change:transform] hero-anim hero-anim-1">
+                <h1 ref={el => addParallaxRef(el, 0.18)} className="text-[clamp(2.2rem,6vw,3.8rem)] font-extrabold leading-tight gradient-text flowing-gradient [will-change:transform] hero-anim hero-anim-1">
                     Light that tells your story.
                 </h1>
                 <p className="lead text-[clamp(1.05rem,2.2vw,1.25rem)] text-[--muted] mt-2 hero-anim hero-anim-2">Create dynamic lighting experiences with intelligent control.</p>
