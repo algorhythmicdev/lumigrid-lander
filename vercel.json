@@ -1,19 +1,19 @@
 {
-  "version": 2,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(css|js|assets|public)/(.*)",
-      "headers": {
-        "cache-control": "public, max-age=31536000, immutable"
-      }
-    },
+      "source": "/favicon.ico",
+      "destination": "/public/favicon.svg"
+    }
+  ],
+  "headers": [
     {
-      "src": "/favicon.ico",
-      "dest": "/public/favicon.svg"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(css|js|assets|public)/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }
