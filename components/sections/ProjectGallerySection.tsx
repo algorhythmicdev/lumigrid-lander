@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { Building, Hotel, ShoppingCart, Briefcase, PaintBrush, Utensils } from 'lucide-react';
+import { Building, Hotel, ShoppingCart, Briefcase, Palette, Utensils } from 'lucide-react';
 
 const galleryItems = [
     { title: 'City Square', description: 'Dynamic facade lighting for a public space.', image: '/images/329097335_1799601813748930_5439712915188964678_n.jpg', icon: Building },
     { title: 'Boutique Hotel', description: 'Warm, inviting entrance and window accents.', image: '/images/342056334_539843445015464_754610997571639058_n-1.jpg', icon: Hotel },
     { title: 'Retail Flagship', description: 'Brand colors synchronized across the entire storefront.', image: '/images/Profile-NEON-NG-scaled.jpg', icon: ShoppingCart },
     { title: 'Corporate HQ', description: 'Subtle logo halo with scheduled color shifts.', image: '/images/433120922_940810311383809_3480163619584564884_n-2.jpg', icon: Briefcase },
-    { title: 'Art Installation', description: 'Interactive light display reacting to ambient sound.', image: '/images/20231220-1208-bilde3.png', icon: PaintBrush },
+    { title: 'Art Installation', description: 'Interactive light display reacting to ambient sound.', image: '/images/20231220-1208-bilde3.png', icon: Palette },
     { title: 'Restaurant Chain', description: 'Consistent and recognizable lighting signature.', image: '/images/Tanq-8-rotated.jpeg', icon: Utensils },
 ];
 
