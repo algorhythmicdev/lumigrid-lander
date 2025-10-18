@@ -16,13 +16,13 @@ const GalleryItem: React.FC<{ title: string, description: string, image: string,
         <div className="w-full aspect-square bg-gradient-to-br from-[--bg-1] to-black/20 flex items-center justify-center relative overflow-hidden">
             <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
         </div>
-        <figcaption className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/70 to-transparent">
+        <figcaption className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[--bg-1]/90 via-[--bg-1]/70 to-transparent">
             <div className="flex items-center gap-3">
                 <div className="p-2 bg-white/10 rounded-lg border border-white/20 group-hover:bg-[--a] transition-colors">
-                    <Icon size={20} className="text-white group-hover:animate-pulse" />
+                    <Icon size={20} className="text-[--ink] group-hover:animate-pulse" />
                 </div>
                 <div>
-                    <h3 className="font-bold text-lg text-white mb-0">{title}</h3>
+                    <h3 className="font-bold text-lg text-[--ink] mb-0">{title}</h3>
                 </div>
             </div>
         </figcaption>

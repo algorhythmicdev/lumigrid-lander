@@ -18,12 +18,12 @@ const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', size = '
         t.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
     };
 
-    const baseClasses = "font-semibold rounded-[0.95rem] border-2 cursor-pointer relative overflow-hidden text-[--ink] transition-opacity";
+    const baseClasses = "font-semibold rounded-[0.95rem] border-2 cursor-pointer relative overflow-hidden transition-opacity";
     const sizeClasses = size === 'big' ? 'py-4 px-5 text-[1.05rem]' : 'py-3 px-4';
     const variantClasses = {
-        primary: 'border-transparent bg-gradient-to-tr from-[--a] via-[--b] to-[--c] text-[#09101a]',
-        outline: 'border-[--c] bg-transparent',
-        ghost: 'bg-white/10 border-white/20',
+        primary: 'border-transparent bg-gradient-to-tr from-[--a] via-[--b] to-[--c] text-[--bg-0]',
+        outline: 'border-[--c] bg-transparent text-[--ink]',
+        ghost: 'bg-white/10 border-white/20 text-[--ink]',
     };
     const afterClasses = "after:content-[''] after:absolute after:inset-0 after:bg-[radial-gradient(120px_60px_at_var(--mx,50%)_var(--my,50%),rgba(255,255,255,.18),transparent_70%)] after:opacity-0 hover:after:opacity-100 after:transition-opacity";
 
@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ brandTheme, setBrandTheme, isDarkMode, 
                         {isDarkMode ? <Moon size={18} /> : <Sun size={18} />}
                     </Button>
                 </div>
-                <a className="hidden md:flex items-center gap-2 justify-center text-center no-underline font-semibold rounded-[0.95rem] py-3 px-4 border-2 border-transparent bg-gradient-to-tr from-[--a] via-[--b] to-[--c] text-[#09101a]" href="#cta">
+                <a className="hidden md:flex items-center gap-2 justify-center text-center no-underline font-semibold rounded-[0.95rem] py-3 px-4 border-2 border-transparent bg-gradient-to-tr from-[--a] via-[--b] to-[--c] text-[--bg-0]" href="#cta">
                     <Mail size={18} />
                     Contact
                 </a>
@@ -82,8 +82,8 @@ const Header: React.FC<HeaderProps> = ({ brandTheme, setBrandTheme, isDarkMode, 
                 </h1>
                 <p className="lead text-[clamp(1.05rem,2.2vw,1.25rem)] text-[--muted] mt-2 hero-anim hero-anim-2">Create dynamic lighting experiences with intelligent control.</p>
                 <div className="hero-cta flex gap-4 justify-center flex-wrap mt-3 hero-anim hero-anim-3">
-                    <a className="inline-block text-center no-underline font-semibold rounded-[0.95rem] py-3 px-4 border-2 border-transparent bg-gradient-to-tr from-[--a] via-[--b] to-[--c] text-[#09101a]" href="#system">See how it works</a>
-                    <a className="inline-block text-center no-underline font-semibold rounded-[0.95rem] py-3 px-4 border-2 border-[--c] bg-transparent" href="#deep-dive">Try LED control</a>
+                    <a className="inline-block text-center no-underline font-semibold rounded-[0.95rem] py-3 px-4 border-2 border-transparent bg-gradient-to-tr from-[--a] via-[--b] to-[--c] text-[--bg-0]" href="#system">See how it works</a>
+                    <a className="inline-block text-center no-underline font-semibold rounded-[0.95rem] py-3 px-4 border-2 border-[--c] bg-transparent text-[--ink]" href="#deep-dive">Try LED control</a>
                 </div>
                 <p className="credit text-[--muted] mt-2 hero-anim hero-anim-4">Developed by <a href="https://reclamefabriek.eu" target="_blank" rel="noopener" className="text-[--warm]">Reclame Fabriek R&amp;D</a></p>
             </div>
