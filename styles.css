@@ -102,10 +102,20 @@ html:not(.dark)[data-theme="warm"] {
 
 /* Base styles */
 body {
-  background-color: var(--bg-0);
-  color: var(--ink);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(17,25,52,.6) 0%, rgba(10,12,20,1) 45%),
+    #0a0c14;
+  color: #fafafa;
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
+}
+
+.glass{
+  background: color-mix(in oklab, rgba(255,255,255,0.08) 100%, transparent);
+  border: 1px solid rgba(255,255,255,.22);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+  border-radius: 1rem;
 }
 
 html:focus-within {
