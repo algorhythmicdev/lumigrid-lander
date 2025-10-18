@@ -1,13 +1,62 @@
-/* LUMIGRID UI KIT v1 — JS (module) */
-export function lgSetTheme(isDark){ document.documentElement.style.colorScheme = isDark ? 'dark' : 'light'; }
-export function lgBindThemeToggle(btn){
-  if(!btn) return;
-  let dark = matchMedia('(prefers-color-scheme: dark)').matches;
-  const set = d=>{ dark=d; lgSetTheme(dark); btn.setAttribute('aria-pressed', String(dark)); };
-  set(dark); btn.addEventListener('click', ()=> set(!dark));
+/* LUMIGRID UI KIT v2 — JS (module) */
+const THEME_KEY = 'lg-ui-theme';
+const BRAND_KEY = 'lg-brand-theme';
+const allowedThemes = new Set(['dark','light','contrast']);
+
+export function lgApplyThemeMode(mode='dark'){
+  const root = document.documentElement;
+  const choice = allowedThemes.has(mode) ? mode : 'dark';
+  root.setAttribute('data-ui-theme', choice);
+  root.style.colorScheme = choice === 'light' ? 'light' : 'dark';
+  try { localStorage.setItem(THEME_KEY, choice); } catch (err) { /* storage disabled */ }
+  return choice;
 }
-export function lgSetBrand(theme){ document.documentElement.setAttribute('data-theme', theme); }
-export function lgBindBrandSelect(sel){ if(!sel) return; lgSetBrand(sel.value||'rf'); sel.addEventListener('change', e=> lgSetBrand(e.target.value)); }
+
+export function lgBindThemeMode(selectEl){
+  if(!selectEl) return;
+  const prefersDark = matchMedia('(prefers-color-scheme: dark)');
+  let stored;
+  try { stored = localStorage.getItem(THEME_KEY); } catch (err) { stored = null; }
+  let current = stored && allowedThemes.has(stored) ? stored : (prefersDark.matches ? 'dark' : 'light');
+  current = lgApplyThemeMode(current);
+  selectEl.value = current;
+
+  selectEl.addEventListener('change', e=>{
+    const val = e.target.value;
+    current = lgApplyThemeMode(val);
+  });
+
+  const onPrefChange = ev=>{
+    let saved;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (err) { saved = null; }
+    if(saved) return; // user set a preference, do not override
+    const next = ev.matches ? 'dark' : 'light';
+    current = lgApplyThemeMode(next);
+    selectEl.value = current;
+  };
+  if(typeof prefersDark.addEventListener === 'function'){
+    prefersDark.addEventListener('change', onPrefChange);
+  } else if(typeof prefersDark.addListener === 'function'){
+    prefersDark.addListener(onPrefChange);
+  }
+}
+
+export function lgSetBrand(theme){
+  const root = document.documentElement;
+  const choice = theme || 'rf';
+  root.setAttribute('data-brand', choice);
+  try { localStorage.setItem(BRAND_KEY, choice); } catch (err) { /* storage disabled */ }
+}
+
+export function lgBindBrandSelect(sel){
+  if(!sel) return;
+  let stored;
+  try { stored = localStorage.getItem(BRAND_KEY); } catch (err) { stored = null; }
+  const initial = stored && [...sel.options].some(opt=> opt.value===stored) ? stored : (sel.value || 'rf');
+  sel.value = initial;
+  lgSetBrand(initial);
+  sel.addEventListener('change', e=> lgSetBrand(e.target.value));
+}
 
 export function lgBindRipple(root=document){
   root.addEventListener('pointermove', e=>{
@@ -40,6 +89,8 @@ export function lgTimelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-p
   const items = [...document.querySelectorAll(`${listSelector} li`)];
   const sections = ids.map(id=> document.getElementById(id)).filter(Boolean);
   const bar = document.querySelector(progressSelector);
+  const links = items.map(li=> li.querySelector('a'));
+  if(!items.length || !sections.length) return;
   function update(){
     const mid = window.scrollY + innerHeight/2;
     let active = 0;
@@ -47,15 +98,41 @@ export function lgTimelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-p
       const top = window.scrollY + sec.getBoundingClientRect().top;
       if (top <= mid) active = i;
     });
-    items.forEach((li,i)=> li.classList.toggle('is-active', i === active));
+    items.forEach((li,i)=>{
+      const isActive = i === active;
+      li.classList.toggle('is-active', isActive);
+      const link = links[i];
+      if(link){
+        if(isActive){ link.setAttribute('aria-current','location'); }
+        else { link.removeAttribute('aria-current'); }
+      }
+    });
     if(bar){
       const doc = document.body.scrollHeight - innerHeight;
       const p = Math.max(0, Math.min(1, (window.scrollY / doc)));
-      bar.style.maskSize = (p*100) + '% 100%';
+      const size = (p*100) + '% 100%';
+      bar.style.maskSize = size;
+      bar.style.webkitMaskSize = size;
     }
   }
   document.addEventListener('scroll', update, {passive:true});
   update();
+}
+
+export function lgHeroTimelineLoop({ selector='[data-hero-timeline]', duration=9000 }={}){
+  const el = document.querySelector(selector);
+  if(!el || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const progress = el.querySelector('.hero-timeline-progress');
+  if(!progress) return;
+  let start = performance.now();
+  const frame = now =>{
+    const t = ((now - start) % duration) / duration;
+    const eased = 0.5 - Math.cos(Math.PI * 2 * t)/2; // smooth loop
+    progress.style.width = `${Math.max(0.05, Math.min(0.98, eased)) * 100}%`;
+    el.style.setProperty('--hero-progress', Math.max(0.05, Math.min(0.98, eased)));
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
 }
 
 /* Background flares */
