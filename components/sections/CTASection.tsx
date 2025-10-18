@@ -32,7 +32,7 @@ const CTASection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement | null
                         ))}
                     </div>
                 </div>
-                <a className="inline-flex items-center gap-2 mt-6 no-underline text-center font-semibold rounded-full py-3 px-6 text-[1.05rem] border-2 border-transparent bg-gradient-to-tr from-[--a] via-[--b] to-[--c] text-white hover:opacity-90 transition-opacity" href="https://reclamefabriek.eu" target="_blank" rel="noopener">
+                <a className="inline-flex items-center gap-2 mt-6 no-underline text-center font-semibold rounded-full py-3 px-6 text-[1.05rem] border-2 border-transparent bg-gradient-to-tr from-[--a] via-[--b] to-[--c] text-[--bg-0] hover:opacity-90 transition-opacity" href="https://reclamefabriek.eu" target="_blank" rel="noopener">
                     Contact Us
                     <ArrowRight size={20} />
                 </a>

@@ -76,7 +76,7 @@ const LEDControlSection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement
       case 'fire':
         return {
           ...baseStyle,
-          background: 'linear-gradient(90deg, #ff4400, #ff8800, #ffaa00, #ff6600, #ff4400)',
+          background: 'var(--fire-gradient)',
           backgroundSize: '200% 100%',
           animation: `move ${duration} ease-in-out infinite`,
           filter: `brightness(${intensity}) saturate(${1.2 + intensity * 0.3}) blur(1px)`,

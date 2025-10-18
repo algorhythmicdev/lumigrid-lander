@@ -128,8 +128,6 @@ const BackgroundFX: React.FC = () => {
 
       ctx.clearRect(0, 0, vw, vh);
       ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = `rgba(0,0,0,0.25)`;
-      ctx.fillRect(0, 0, vw, vh);
       ctx.globalCompositeOperation = 'lighter';
 
       spawnAccumulator += FX_CONFIG.spawnRate;
@@ -181,9 +179,6 @@ const BackgroundFX: React.FC = () => {
 
     if (!prefersReducedMotion) {
       raf = requestAnimationFrame(frame);
-    } else {
-      ctx.fillStyle = '#0b1020';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     const handleVisibilityChange = () => {
@@ -205,8 +200,6 @@ const BackgroundFX: React.FC = () => {
           raf = null;
         }
         ctx.clearRect(0, 0, vw, vh);
-        ctx.fillStyle = '#0b1020';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
       } else if (!raf) {
         timeStart = performance.now();
         raf = requestAnimationFrame(frame);

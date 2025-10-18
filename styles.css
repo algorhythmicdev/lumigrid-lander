@@ -1,18 +1,18 @@
 /* WCAG Compliant Color Palettes & Gradients */
 :root {
   /* Background colors */
-  --bg-0: #07080E;
-  --bg-1: #0E1220;
+  --bg-0: #0B0F1A;
+  --bg-1: #131825;
   
-  /* Text colors */
-  --ink: #FBFBFF;
-  --muted: #A0AEC0;
+  /* Text colors - WCAG AA compliant (4.5:1 contrast) */
+  --ink: #F1F5F9;
+  --muted: #CBD5E1;
   
   /* Brand colors */
-  --a: #E73BA3;
-  --b: #6C2BD9;
-  --c: #1CC5DC;
-  --warm: #FFD166;
+  --a: #F472B6;
+  --b: #A78BFA;
+  --c: #67E8F9;
+  --warm: #FCD34D;
   
   /* UI tokens */
   --ring: var(--warm);
@@ -33,45 +33,48 @@
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
+  
+  /* Effect colors (theme-independent) */
+  --fire-gradient: linear-gradient(90deg, #ff4400, #ff8800, #ffaa00, #ff6600, #ff4400);
 }
 
 :root[data-theme="contrast"] {
-  --bg-0: #05070B;
-  --bg-1: #0B111A;
-  --ink: #FFFFFF;
-  --muted: #A0B3D1;
-  --a: #00D4FF;
-  --b: #7AA2FF;
-  --c: #00FFA3;
-  --warm: #FFE29A;
+  --bg-0: #0A0E17;
+  --bg-1: #111827;
+  --ink: #F9FAFB;
+  --muted: #D1D5DB;
+  --a: #67E8F9;
+  --b: #93C5FD;
+  --c: #6EE7B7;
+  --warm: #FDE68A;
 }
 
 :root[data-theme="warm"] {
-  --bg-0: #0B0910;
-  --bg-1: #110C1A;
-  --ink: #FFF9FD;
-  --muted: #E0CDE1;
-  --a: #FF4DB3;
-  --b: #B66DFF;
-  --c: #FFB86C;
-  --warm: #FFE29A;
+  --bg-0: #1A0F17;
+  --bg-1: #291824;
+  --ink: #FDF4FF;
+  --muted: #E9D5FF;
+  --a: #F9A8D4;
+  --b: #C4B5FD;
+  --c: #FCD34D;
+  --warm: #FDE68A;
 }
 
 /* Light theme - Enhanced contrast and readability */
 html:not(.dark) {
   /* Background colors */
-  --bg-0: #FAFBFC;
-  --bg-1: #FFFFFF;
+  --bg-0: #FFFFFF;
+  --bg-1: #F8FAFC;
   
-  /* Text colors */
+  /* Text colors - WCAG AAA compliant (7:1 contrast) */
   --ink: #0F172A;
-  --muted: #475569;
+  --muted: #334155;
   
-  /* Brand colors */
-  --a: #DB2777;
-  --b: #7C3AED;
-  --c: #0891B2;
-  --warm: #F59E0B;
+  /* Brand colors - adjusted for better contrast on light backgrounds */
+  --a: #BE185D;
+  --b: #6D28D9;
+  --c: #0E7490;
+  --warm: #D97706;
   
   /* UI tokens */
   --ring: var(--c);
@@ -81,31 +84,29 @@ html:not(.dark) {
 }
 
 html:not(.dark)[data-theme="contrast"] {
-  --bg-0: #F8FAFC;
-  --bg-1: #FFFFFF;
+  --bg-0: #FFFFFF;
+  --bg-1: #F8FAFC;
   --ink: #0F172A;
-  --muted: #334155;
+  --muted: #1E293B;
   --a: #0369A1;
-  --b: #4F46E5;
-  --c: #059669;
+  --b: #4338CA;
+  --c: #047857;
 }
 
 html:not(.dark)[data-theme="warm"] {
-  --bg-0: #FEF9F3;
-  --bg-1: #FFFFFF;
+  --bg-0: #FFFFFF;
+  --bg-1: #FEF9F3;
   --ink: #1C1917;
-  --muted: #57534E;
-  --a: #E11D48;
-  --b: #9333EA;
-  --c: #EA580C;
+  --muted: #44403C;
+  --a: #BE123C;
+  --b: #7C3AED;
+  --c: #C2410C;
 }
 
 /* Base styles */
 body {
-  background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(17,25,52,.6) 0%, rgba(10,12,20,1) 45%),
-    #0a0c14;
-  color: #fafafa;
+  background: var(--bg-0);
+  color: var(--ink);
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
 }
