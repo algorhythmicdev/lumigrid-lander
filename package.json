@@ -1,0 +1,12 @@
+{
+  "name": "lumigrid-landing",
+  "private": true,
+  "version": "1.0.0",
+  "description": "LumiGrid \u2014 Creative Lighting & Signage Control (Reclame Fabriek R&D)",
+  "scripts": {
+    "dev": "serve . -l 3000",
+    "build": "echo 'Static build ready'",
+    "start": "serve . -l 3000"
+  },
+  "devDependencies": {}
+}
