@@ -36,7 +36,7 @@ const ProjectGallerySection: React.FC<{ id: string, addParallaxRef: (el: HTMLEle
              <div className="absolute -z-10 pointer-events-none left-[-10%] top-[-20%] w-3/5 h-3/5 bg-[radial-gradient(closest-side_at_30%_40%,var(--b),transparent_70%)] opacity-15 blur-3xl"></div>
             <div className="absolute -z-10 pointer-events-none right-[-15%] bottom-[-30%] w-[70%] h-[70%] bg-[radial-gradient(closest-side_at_70%_60%,var(--a),transparent_70%)] opacity-15 blur-3xl"></div>
             <div className="w-[min(1200px,92vw)] mx-auto">
-                <h2 ref={el => addParallaxRef(el, 0.12)} className="text-center m-0 mb-2 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">From subtle to stunning</h2>
+                <h2 ref={el => addParallaxRef(el, 0.12)} className="text-center m-0 mb-2 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text flowing-gradient">From subtle to stunning</h2>
                 <p className="text-center text-lg text-[--muted] max-w-3xl mx-auto mb-12">
                     Our clients have used LumiGrid to create a wide variety of lighting solutions, from subtle accents to stunning centerpieces.
                 </p>

@@ -119,7 +119,7 @@ const LEDControlSection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement
       
       <div className="w-[min(1200px,92vw)] mx-auto">
         <div className="text-center mb-12">
-          <h2 ref={el => addParallaxRef(el, 0.12)} className="m-0 mb-3 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">
+          <h2 ref={el => addParallaxRef(el, 0.12)} className="m-0 mb-3 text-3xl md:text-4xl font-bold [will-change:transform] gradient-text flowing-gradient">
             The LumiGrid LED Node
           </h2>
           <p className="text-[--muted] max-w-3xl mx-auto text-lg">
@@ -129,14 +129,14 @@ const LEDControlSection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement
 
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
           <div>
-            <h3 className="text-2xl font-bold mb-4 gradient-text">Hardware at a glance</h3>
+            <h3 className="text-2xl font-bold mb-4 gradient-text flowing-gradient">Hardware at a glance</h3>
             <ul className="space-y-2 text-[--muted]">
               <li><strong>Controller:</strong> ESP32-WROOM-32U</li>
               <li><strong>PWM driver:</strong> PCA9685 (12-bit, 1 kHz) → 8 MOSFET channels</li>
               <li><strong>Addressable outputs:</strong> 8 × level-shifted 5 V via SN74HCT245DWR</li>
               <li><strong>Power:</strong> 5 V bus with fuse and thermal feedback</li>
             </ul>
-            <h3 className="text-2xl font-bold mt-8 mb-4 gradient-text">Personality</h3>
+            <h3 className="text-2xl font-bold mt-8 mb-4 gradient-text flowing-gradient">Personality</h3>
             <p className="text-[--muted]">
               Every LED Node runs the same firmware stack as its siblings, but its “brain” specializes in light rendering. It can blend complex color effects in real time, maintain precise phase alignment with the grid, enforce power and thermal limits automatically, and expose its full state through human-friendly APIs.
             </p>
@@ -231,7 +231,7 @@ const LEDControlSection: React.FC<{ id: string, addParallaxRef: (el: HTMLElement
 
         {/* Visual Intelligence Section */}
         <div className="mt-16">
-          <h3 className="text-2xl font-bold text-center mb-8 gradient-text">Visual Intelligence</h3>
+          <h3 className="text-2xl font-bold text-center mb-8 gradient-text flowing-gradient">Visual Intelligence</h3>
           <p className="text-center text-lg text-[--muted] max-w-3xl mx-auto mb-12">
             The Effect Engine is both painter and conductor. It hosts a library of real-time shaders in C, categorized for a variety of applications.
           </p>

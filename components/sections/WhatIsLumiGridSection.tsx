@@ -29,7 +29,7 @@ const WhatIsLumiGridSection: React.FC<{ id: string, addParallaxRef: (el: HTMLEle
     return (
         <Section id={id}>
             <div className="text-center max-w-3xl mx-auto">
-                <h2 ref={el => addParallaxRef(el, 0.12)} className="text-3xl md:text-4xl font-bold [will-change:transform] gradient-text">A living network of light</h2>
+                <h2 ref={el => addParallaxRef(el, 0.12)} className="text-3xl md:text-4xl font-bold [will-change:transform] gradient-text flowing-gradient">A living network of light</h2>
                 <p className="text-[--muted] mt-3 text-lg reveal max-w-2xl mx-auto">
                     LumiGrid is a distributed control architecture for modular, intelligent lighting and kinetic systems. At its core it turns light into a networked medium—each node thinking for itself, yet synchronized in a collective rhythm.
                 </p>

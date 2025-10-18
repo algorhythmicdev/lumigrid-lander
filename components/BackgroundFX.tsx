@@ -7,17 +7,16 @@ const FX_CONFIG = {
   depth: { near: 0.9, far: 3.2 },
   radiusPx: { near: 380, far: 120 },
   hueSet: [
-    {h: 316, s: 85, l: 60}, // magenta
-    {h: 265, s: 77, l: 62}, // violet
-    {h: 188, s: 82, l: 60}, // cyan
-    {h:  42, s: 97, l: 67}  // warm amber
+    { h: 316, s: 85, l: 60 }, // magenta
+    { h: 265, s: 77, l: 62 }, // violet
+    { h: 188, s: 82, l: 60 }, // cyan
+    { h: 42, s: 97, l: 67 } // warm amber
   ],
   baseOpacity: 0.18,
   addBloom: true,
   pointerParallax: 0.035,
   cameraDrift: 0.0008,
-  maxBlinkHz: 2.2,
-  reduceMotionMedia: typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false }
+  maxBlinkHz: 2.2
 };
 
 const dpr = typeof window !== 'undefined' ? Math.max(1, window.devicePixelRatio || 1) : 1;
@@ -44,7 +43,7 @@ const invLerp = (a: number, b: number, v: number) => (v-a) / (b-a);
 const easeInOut = (t: number) => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
 
 // --- Sprite Generation (run once) ---
-const makeSprite = (baseRadiusPx: number, colorStop: { h: number; s: number; l: number; }, feather = 1) => {
+const makeSprite = (baseRadiusPx: number, colorStop: { h: number; s: number; l: number }, feather = 1) => {
   const r = Math.max(8, Math.floor(baseRadiusPx * dpr));
   const off = document.createElement('canvas');
   off.width = off.height = r * 2;
@@ -64,22 +63,25 @@ const makeSprite = (baseRadiusPx: number, colorStop: { h: number; s: number; l: 
   return { canvas: off, r };
 };
 
-const SPRITES = FX_CONFIG.hueSet.map(hsl => ({
-  main:  makeSprite(320, hsl, 1.0),
-  bloom: FX_CONFIG.addBloom ? makeSprite(520, hsl, 0.55) : null
-}));
-
-
 // --- React Component ---
 const BackgroundFX: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
+
+    const sprites = FX_CONFIG.hueSet.map(hsl => ({
+      main: makeSprite(320, hsl, 1.0),
+      bloom: FX_CONFIG.addBloom ? makeSprite(520, hsl, 0.55) : null
+    }));
 
     let vw = 0, vh = 0;
     const handleResize = () => {
@@ -91,7 +93,8 @@ const BackgroundFX: React.FC = () => {
     handleResize();
     window.addEventListener('resize', handleResize, { passive: true });
 
-    const reduced = FX_CONFIG.reduceMotionMedia.matches;
+    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let prefersReducedMotion = reduceMotionQuery.matches;
     let pointer = { x: 0.5, y: 0.35 };
     let cam = { x: 0, y: 0 };
     const world = { w: 4000, h: 2600 };
@@ -106,7 +109,7 @@ const BackgroundFX: React.FC = () => {
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
 
     const spawnFlare = (): Flare => {
-      const palette = SPRITES[Math.floor(Math.random() * SPRITES.length)];
+      const palette = sprites[Math.floor(Math.random() * sprites.length)];
       const z = lerp(FX_CONFIG.depth.near, FX_CONFIG.depth.far, Math.random());
       const x = (Math.random() - 0.5) * world.w;
       const y = (Math.random() - 0.5) * world.h;
@@ -176,7 +179,7 @@ const BackgroundFX: React.FC = () => {
       raf = requestAnimationFrame(frame);
     };
 
-    if (!reduced) {
+    if (!prefersReducedMotion) {
       raf = requestAnimationFrame(frame);
     } else {
       ctx.fillStyle = '#0b1020';
@@ -187,18 +190,47 @@ const BackgroundFX: React.FC = () => {
       if (document.hidden && raf) {
         cancelAnimationFrame(raf);
         raf = null;
-      } else if (!document.hidden && !reduced && !raf) {
+      } else if (!document.hidden && !prefersReducedMotion && !raf) {
         timeStart = performance.now();
         raf = requestAnimationFrame(frame);
       }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
+    const handleReduceMotionChange = (event: MediaQueryListEvent) => {
+      prefersReducedMotion = event.matches;
+      if (prefersReducedMotion) {
+        if (raf) {
+          cancelAnimationFrame(raf);
+          raf = null;
+        }
+        ctx.clearRect(0, 0, vw, vh);
+        ctx.fillStyle = '#0b1020';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      } else if (!raf) {
+        timeStart = performance.now();
+        raf = requestAnimationFrame(frame);
+      }
+    };
+    if (typeof reduceMotionQuery.addEventListener === 'function') {
+      reduceMotionQuery.addEventListener('change', handleReduceMotionChange);
+    } else {
+      // Fallback for older browsers
+      // @ts-expect-error addListener is deprecated but still present in some engines
+      reduceMotionQuery.addListener(handleReduceMotionChange);
+    }
+
     return () => {
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('pointermove', handlePointerMove);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (typeof reduceMotionQuery.removeEventListener === 'function') {
+        reduceMotionQuery.removeEventListener('change', handleReduceMotionChange);
+      } else {
+        // @ts-expect-error removeListener is deprecated but still present in some engines
+        reduceMotionQuery.removeListener(handleReduceMotionChange);
+      }
     };
   }, []);
 
