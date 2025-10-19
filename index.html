@@ -94,10 +94,63 @@
                   <div class="hero-timeline" data-hero-timeline>
                     <div class="hero-timeline-track"></div>
                     <div class="hero-timeline-progress"></div>
-                    <div class="hero-keyframes">
-                      <div class="hero-keyframe">Dawn Calm</div>
-                      <div class="hero-keyframe">Open Glow</div>
-                      <div class="hero-keyframe">Evening Flow</div>
+                    <div class="hero-keyframes" role="list" aria-label="Scene timeline">
+                      <span class="hero-keyframe" role="listitem">
+                        <svg
+                          class="hero-keyframe-icon"
+                          aria-hidden="true"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"
+                          />
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 22v-2M12 4V2m10 10h-2M4 12H2m15.364 6.364-1.414-1.414M6.05 6.05 4.636 4.636m12.728 0L16.95 6.05M6.05 17.95l-1.414 1.414"
+                          />
+                        </svg>
+                        <span class="sr-only">Dawn Calm</span>
+                      </span>
+                      <span class="hero-keyframe" role="listitem">
+                        <svg
+                          class="hero-keyframe-icon"
+                          aria-hidden="true"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m9 6.75.969 2.906c.098.296.33.528.626.626L13.5 11.25l-2.905.969a1.125 1.125 0 0 0-.626.626L9 15.75l-.969-2.905a1.125 1.125 0 0 0-.626-.626L4.5 11.25l2.905-.969c.296-.098.528-.33.626-.626L9 6.75Zm7.5-3v3m0 9v3m2.25-7.5H21m-4.5 4.5H21M12 3v2.25m0 13.5V21"
+                          />
+                        </svg>
+                        <span class="sr-only">Open Glow</span>
+                      </span>
+                      <span class="hero-keyframe" role="listitem">
+                        <svg
+                          class="hero-keyframe-icon"
+                          aria-hidden="true"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M21 12.79A9 9 0 1 1 11.21 3a7.5 7.5 0 0 0 9.79 9.79Z"
+                          />
+                        </svg>
+                        <span class="sr-only">Evening Flow</span>
+                      </span>
                     </div>
                   </div>
                   <div class="hero-glass-card">
@@ -119,6 +172,8 @@
             </div>
           </div>
         </header>
+
+        <div class="section-divider" aria-hidden="true"></div>
 
         <main id="main" class="has-sidebar" tabindex="-1">
           <section id="system" class="section halo">
@@ -208,6 +263,8 @@
             </div>
           </section>
 
+          <div class="section-divider" aria-hidden="true"></div>
+
           <section id="deep" class="section halo soft">
             <div class="container">
               <h2 class="h2" data-parallax="0.12">
@@ -260,40 +317,151 @@
             </div>
           </section>
 
+          <div class="section-divider" aria-hidden="true"></div>
+
           <section id="led" class="section halo focus">
             <div class="container grid grid-2">
               <div class="glass reveal pad-md">
-                <div class="strip"></div>
-                <div class="strip"></div>
-                <div class="strip"></div>
-                <div class="led-palette-group">
-                  <button
-                    class="btn ghost"
-                    onclick="lgApplyLEDGradient('.strip','rf')"
-                  >
-                    RF
-                  </button>
-                  <button
-                    class="btn ghost"
-                    onclick="lgApplyLEDGradient('.strip','neon')"
-                  >
-                    Neon
-                  </button>
-                  <button
-                    class="btn ghost"
-                    onclick="lgApplyLEDGradient('.strip','sunset')"
-                  >
-                    Sunset
-                  </button>
-                  <button
-                    class="btn ghost"
-                    onclick="lgApplyLEDGradient('.strip','mint')"
-                  >
-                    Mint
-                  </button>
+                <div class="led-preview">
+                  <div class="strip" data-led-pattern="chase"></div>
+                  <div class="strip" data-led-pattern="chase"></div>
+                  <div class="strip" data-led-pattern="chase"></div>
+                  <div class="led-field" data-led-pattern="chase" aria-hidden="true">
+                    <div class="led-field-mesh"></div>
+                    <div class="led-field-dots">
+                      <span style="--i:0"></span>
+                      <span style="--i:1"></span>
+                      <span style="--i:2"></span>
+                      <span style="--i:3"></span>
+                      <span style="--i:4"></span>
+                      <span style="--i:5"></span>
+                      <span style="--i:6"></span>
+                      <span style="--i:7"></span>
+                      <span style="--i:8"></span>
+                      <span style="--i:9"></span>
+                      <span style="--i:10"></span>
+                      <span style="--i:11"></span>
+                      <span style="--i:12"></span>
+                      <span style="--i:13"></span>
+                      <span style="--i:14"></span>
+                      <span style="--i:15"></span>
+                      <span style="--i:16"></span>
+                      <span style="--i:17"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="led-controls">
+                  <div class="led-control-group">
+                    <span class="led-label">Palette</span>
+                    <div
+                      class="led-palette-group"
+                      role="group"
+                      aria-label="Choose palette"
+                    >
+                      <button
+                        class="btn ghost"
+                        type="button"
+                        data-led-palette="rf"
+                        aria-pressed="false"
+                      >
+                        RF
+                      </button>
+                      <button
+                        class="btn ghost"
+                        type="button"
+                        data-led-palette="neon"
+                        aria-pressed="false"
+                      >
+                        Neon
+                      </button>
+                      <button
+                        class="btn ghost"
+                        type="button"
+                        data-led-palette="sunset"
+                        aria-pressed="false"
+                      >
+                        Sunset
+                      </button>
+                      <button
+                        class="btn ghost"
+                        type="button"
+                        data-led-palette="mint"
+                        aria-pressed="false"
+                      >
+                        Mint
+                      </button>
+                    </div>
+                  </div>
+                  <div class="led-control-group">
+                    <span class="led-label">Pattern</span>
+                    <div
+                      class="led-pattern-group"
+                      role="group"
+                      aria-label="Choose motion pattern"
+                    >
+                      <button
+                        class="btn ghost"
+                        type="button"
+                        data-led-pattern-btn="chase"
+                        aria-pressed="false"
+                      >
+                        Chase
+                      </button>
+                      <button
+                        class="btn ghost"
+                        type="button"
+                        data-led-pattern-btn="pulse"
+                        aria-pressed="false"
+                      >
+                        Pulse
+                      </button>
+                      <button
+                        class="btn ghost"
+                        type="button"
+                        data-led-pattern-btn="wave"
+                        aria-pressed="false"
+                      >
+                        Wave
+                      </button>
+                    </div>
+                  </div>
+                  <div class="led-speed mt-xs" data-led-speed>
+                    <span aria-hidden="true">Speed</span>
+                    <label class="sr-only" for="ledSpeed"
+                      >LED animation speed</label
+                    >
+                    <input
+                      id="ledSpeed"
+                      type="range"
+                      min="0.5"
+                      max="2"
+                      step="0.1"
+                      value="1"
+                    />
+                    <span class="led-speed-value" data-led-speed-value
+                      >1.0×</span
+                    >
+                  </div>
+                  <div class="led-intensity mt-xs" data-led-intensity>
+                    <span aria-hidden="true">Glow</span>
+                    <label class="sr-only" for="ledIntensity"
+                      >LED glow intensity</label
+                    >
+                    <input
+                      id="ledIntensity"
+                      type="range"
+                      min="0.4"
+                      max="1.2"
+                      step="0.05"
+                      value="1"
+                    />
+                    <span class="led-intensity-value" data-led-intensity-value
+                      >100%</span
+                    >
+                  </div>
                 </div>
                 <div class="lead mt-xs">
-                  Use the palette buttons to preview different effect looks.
+                  Mix palette, pattern, and glow to preview different atmospheres.
                 </div>
               </div>
               <div class="card reveal">
@@ -323,6 +491,568 @@
               </div>
             </div>
           </section>
+
+          <div class="section-divider" aria-hidden="true"></div>
+
+          <section id="dayflow" class="section halo soft" data-dayflow>
+            <div class="container">
+              <div class="section-head">
+                <h2 class="h2" data-parallax="0.12">Plan a day of glow</h2>
+                <p class="big reveal">
+                  Sweep from dawn to nightlife — the strip updates as you slide through the playlist.
+                </p>
+              </div>
+              <div class="dayflow-grid">
+                <div class="dayflow-preview glass reveal">
+                  <div class="dayflow-preview-halo" aria-hidden="true"></div>
+                  <div class="dayflow-preview-strips">
+                    <span class="dayflow-preview-strip" data-dayflow-strip></span>
+                    <span class="dayflow-preview-strip" data-dayflow-strip></span>
+                    <span class="dayflow-preview-strip" data-dayflow-strip></span>
+                  </div>
+                  <div class="dayflow-preview-pulse" aria-hidden="true"></div>
+                  <div class="dayflow-preview-info">
+                    <span class="dayflow-time" data-dayflow-time>06:00</span>
+                    <div class="dayflow-title-row">
+                      <span class="dayflow-icon" data-dayflow-icon aria-hidden="true"></span>
+                      <h3 class="dayflow-name" data-dayflow-name>Dawn unveil</h3>
+                    </div>
+                    <p class="dayflow-copy" data-dayflow-copy>Warm wave • storefront wake-up</p>
+                  </div>
+                </div>
+                <div class="dayflow-controls reveal">
+                  <div class="dayflow-slider" data-dayflow-slider>
+                    <label for="dayflowRange" class="dayflow-label">Timeline</label>
+                    <div class="dayflow-track" aria-hidden="true">
+                      <span class="dayflow-track-fill" data-dayflow-track></span>
+                    </div>
+                    <input
+                      id="dayflowRange"
+                      type="range"
+                      min="0"
+                      max="3"
+                      step="1"
+                      value="0"
+                      data-dayflow-range
+                      aria-valuemin="0"
+                      aria-valuemax="3"
+                      aria-valuenow="0"
+                      aria-valuetext="Dawn unveil"
+                    />
+                    <ol class="dayflow-markers" aria-hidden="true">
+                      <li class="dayflow-marker" data-dayflow-marker data-dayflow-index="0" style="--dayflow-index:0">
+                        <span class="dayflow-marker-icon"
+                          ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 4.5v3m-3.536 1.036-2.121-2.12m12.727 2.12-2.12-2.12M18 15a6 6 0 0 1-12 0"
+                            />
+                          </svg>
+                        </span>
+                        <span class="dayflow-marker-label">Dawn</span>
+                      </li>
+                      <li class="dayflow-marker" data-dayflow-marker data-dayflow-index="1" style="--dayflow-index:1">
+                        <span class="dayflow-marker-icon"
+                          ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 18.75a6.75 6.75 0 1 0 0-13.5 6.75 6.75 0 0 0 0 13.5Z"
+                            />
+                          </svg>
+                        </span>
+                        <span class="dayflow-marker-label">Midday</span>
+                      </li>
+                      <li class="dayflow-marker" data-dayflow-marker data-dayflow-index="2" style="--dayflow-index:2">
+                        <span class="dayflow-marker-icon"
+                          ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M21 12.75a9 9 0 0 1-9 9 9 9 0 1 1 9-9Z"
+                            />
+                          </svg>
+                        </span>
+                        <span class="dayflow-marker-label">Afternoon</span>
+                      </li>
+                      <li class="dayflow-marker" data-dayflow-marker data-dayflow-index="3" style="--dayflow-index:3">
+                        <span class="dayflow-marker-icon"
+                          ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M21 12.79A9 9 0 1 1 11.21 3 7.5 7.5 0 0 0 21 12.79Z"
+                            />
+                          </svg>
+                        </span>
+                        <span class="dayflow-marker-label">Night</span>
+                      </li>
+                    </ol>
+                  </div>
+                  <p class="lead">
+                    Stop on a point to load its scene. Adjust palette, pattern, or glow to shape your own mix.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="section-divider" aria-hidden="true"></div>
+
+          <section id="scenes" class="section halo soft">
+            <div class="container">
+              <div class="section-head">
+                <h2 class="h2" data-parallax="0.12">Preset scenes you can tap</h2>
+                <p class="big reveal">
+                  Try a full-day playlist — each scene loads straight into the live LED preview.
+                </p>
+              </div>
+              <div
+                class="scene-deck reveal"
+                role="group"
+                aria-label="Preset lighting scenes"
+              >
+                <button
+                  type="button"
+                  class="scene-card"
+                  data-led-scene
+                  data-scene-palette="sunset"
+                  data-scene-pattern="wave"
+                  data-scene-speed="0.9"
+                  data-scene-intensity="0.95"
+                  data-scene-time="06:00"
+                  data-scene-title="Dawn unveil"
+                  data-scene-copy="Warm wave • storefront wake-up"
+                  aria-pressed="false"
+                >
+                  <span class="scene-card-bg" aria-hidden="true"></span>
+                  <span class="scene-card-halo" aria-hidden="true"></span>
+                  <span class="scene-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 3v1.5m5.657.843-1.06 1.06M21 12h-1.5m-.843 5.657-1.06-1.06M12 21v-1.5m-5.657-.843 1.06-1.06M3 12h1.5m.843-5.657 1.06 1.06M8.25 12a3.75 3.75 0 1 1 7.5 0 3.75 3.75 0 0 1-7.5 0Z"
+                      />
+                    </svg>
+                  </span>
+                  <span class="scene-copy">
+                    <span class="scene-title">Dawn unveil</span>
+                    <span class="scene-meta">Warm wave • storefront wake-up</span>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  class="scene-card"
+                  data-led-scene
+                  data-scene-palette="rf"
+                  data-scene-pattern="chase"
+                  data-scene-speed="1.2"
+                  data-scene-intensity="1"
+                  data-scene-time="11:00"
+                  data-scene-title="Midday motion"
+                  data-scene-copy="Energetic chase • high footfall"
+                  aria-pressed="false"
+                >
+                  <span class="scene-card-bg" aria-hidden="true"></span>
+                  <span class="scene-card-halo" aria-hidden="true"></span>
+                  <span class="scene-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M3 5.25h5.25M3 9h2.25M3 12.75h5.25M3 16.5h2.25M11.25 5.25H21M11.25 9H21M11.25 12.75H21M11.25 16.5H21M8.25 4.5v1.5m0 2.25v1.5m0 2.25v1.5m0 2.25v1.5"
+                      />
+                    </svg>
+                  </span>
+                  <span class="scene-copy">
+                    <span class="scene-title">Midday motion</span>
+                    <span class="scene-meta">Energetic chase • high footfall</span>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  class="scene-card"
+                  data-led-scene
+                  data-scene-palette="mint"
+                  data-scene-pattern="pulse"
+                  data-scene-speed="0.7"
+                  data-scene-intensity="0.85"
+                  data-scene-time="15:30"
+                  data-scene-title="Afternoon drift"
+                  data-scene-copy="Soft pulse • calm browsing"
+                  aria-pressed="false"
+                >
+                  <span class="scene-card-bg" aria-hidden="true"></span>
+                  <span class="scene-card-halo" aria-hidden="true"></span>
+                  <span class="scene-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M12 6.75c-2.9 0-5.25 2.35-5.25 5.25S9.1 17.25 12 17.25 17.25 14.9 17.25 12 14.9 6.75 12 6.75Zm0-4.5v3m0 12v3m-7.5-7.5h3m9 0h3"
+                      />
+                    </svg>
+                  </span>
+                  <span class="scene-copy">
+                    <span class="scene-title">Afternoon drift</span>
+                    <span class="scene-meta">Soft pulse • calm browsing</span>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  class="scene-card"
+                  data-led-scene
+                  data-scene-palette="neon"
+                  data-scene-pattern="wave"
+                  data-scene-speed="1.5"
+                  data-scene-intensity="1.1"
+                  data-scene-time="21:00"
+                  data-scene-title="After-hours halo"
+                  data-scene-copy="Vivid wave • nightlife draw"
+                  aria-pressed="false"
+                >
+                  <span class="scene-card-bg" aria-hidden="true"></span>
+                  <span class="scene-card-halo" aria-hidden="true"></span>
+                  <span class="scene-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M4.5 6.75h15m-15 4.5h15m-15 4.5h15M7.5 3v18"
+                      />
+                    </svg>
+                  </span>
+                  <span class="scene-copy">
+                    <span class="scene-title">After-hours halo</span>
+                    <span class="scene-meta">Vivid wave • nightlife draw</span>
+                  </span>
+                </button>
+              </div>
+              <p class="scene-note lead reveal">
+                Each recipe updates palette, motion, and glow — tweak the sliders to fine-tune your own variant.
+              </p>
+            </div>
+          </section>
+
+          <div class="section-divider" aria-hidden="true"></div>
+
+          <section id="layout" class="section halo" data-layout-root>
+            <div class="container">
+              <div class="section-head">
+                <h2 class="h2" data-parallax="0.12">Plot your layout on glass</h2>
+                <p class="big reveal">
+                  Preview how LumiGrid’s gradient runs across each fixture group — toggle zones to see coverage and glow levels
+                  respond instantly.
+                </p>
+              </div>
+              <div class="layout-grid">
+                <div class="layout-map glass reveal" data-layout-map>
+                  <span class="layout-floor" aria-hidden="true"></span>
+                  <span class="layout-ambient" aria-hidden="true"></span>
+                  <span class="layout-gridlines" aria-hidden="true"></span>
+                  <span class="layout-orbit layout-orbit--outer" aria-hidden="true"></span>
+                  <span class="layout-orbit layout-orbit--inner" aria-hidden="true"></span>
+                  <span class="layout-zone layout-zone--window is-active" data-layout-zone="window" aria-hidden="true"></span>
+                  <span class="layout-zone layout-zone--halo is-active" data-layout-zone="halo" aria-hidden="true"></span>
+                  <span class="layout-zone layout-zone--counter is-active" data-layout-zone="counter" aria-hidden="true"></span>
+                  <span class="layout-zone layout-zone--ceiling is-active" data-layout-zone="ceiling" aria-hidden="true"></span>
+                  <div class="layout-overlay">
+                    <span class="layout-mood" data-layout-mood>Covering 4 zones</span>
+                    <p class="layout-status" data-layout-status role="status" aria-live="polite">
+                      Window wash • Logo halo • Counter spark • Ceiling sweep highlighted
+                    </p>
+                  </div>
+                </div>
+                <div class="layout-controls">
+                  <div class="layout-toggle-group reveal" role="group" aria-label="Toggle fixture zones">
+                    <button
+                      type="button"
+                      class="layout-chip is-active"
+                      data-layout-zone-btn="window"
+                      data-layout-zone-label="Window wash"
+                      aria-pressed="true"
+                    >
+                      <span class="layout-chip-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M4.5 6.75h15m-15 10.5h15M7.5 3v18m9-18v18"
+                          />
+                        </svg>
+                      </span>
+                      Window wash
+                    </button>
+                    <button
+                      type="button"
+                      class="layout-chip is-active"
+                      data-layout-zone-btn="halo"
+                      data-layout-zone-label="Logo halo"
+                      aria-pressed="true"
+                    >
+                      <span class="layout-chip-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 6.75a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5Z"
+                          />
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 3v2.25m0 13.5V21m9-9h-2.25m-13.5 0H3"
+                          />
+                        </svg>
+                      </span>
+                      Logo halo
+                    </button>
+                    <button
+                      type="button"
+                      class="layout-chip is-active"
+                      data-layout-zone-btn="counter"
+                      data-layout-zone-label="Counter spark"
+                      aria-pressed="true"
+                    >
+                      <span class="layout-chip-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3.75 8.25h16.5M6 8.25v9.75m12-9.75v9.75M8.25 6V3.75m7.5 2.25V3.75"
+                          />
+                        </svg>
+                      </span>
+                      Counter spark
+                    </button>
+                    <button
+                      type="button"
+                      class="layout-chip is-active"
+                      data-layout-zone-btn="ceiling"
+                      data-layout-zone-label="Ceiling sweep"
+                      aria-pressed="true"
+                    >
+                      <span class="layout-chip-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M4.5 5.25h15m-15 13.5h15M4.5 9.75h6m3 0h6"
+                          />
+                        </svg>
+                      </span>
+                      Ceiling sweep
+                    </button>
+                  </div>
+                  <dl class="layout-stats reveal">
+                    <div class="layout-stat">
+                      <dt>Active zones</dt>
+                      <dd data-layout-count>4</dd>
+                    </div>
+                    <div class="layout-stat">
+                      <dt>Current palette</dt>
+                      <dd data-layout-palette>Signature spectrum</dd>
+                    </div>
+                    <div class="layout-stat">
+                      <dt>Pattern</dt>
+                      <dd data-layout-pattern>Chase ribbon</dd>
+                    </div>
+                    <div class="layout-stat">
+                      <dt>Motion</dt>
+                      <dd data-layout-speed>1.0×</dd>
+                    </div>
+                    <div class="layout-stat">
+                      <dt>Glow</dt>
+                      <dd data-layout-intensity>100%</dd>
+                    </div>
+                  </dl>
+                  <p class="layout-note lead reveal">
+                    Switch fixtures on or off to map coverage — palette, pattern, motion, and glow stay synced with the LED
+                    controls, scenes, and aura tweaks.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="section-divider" aria-hidden="true"></div>
+
+          <section id="aura" class="section halo soft" data-aura-lab>
+            <div class="container">
+              <div class="section-head">
+                <h2 class="h2" data-parallax="0.12">Shape the reactive aura</h2>
+                <p class="big reveal">
+                  Layer spark, halo, and scan effects onto any preset — the glass preview responds to your glow and speed tweaks in real time.
+                </p>
+              </div>
+              <div class="aura-grid">
+                <div class="aura-preview glass reveal" data-aura-preview data-aura-mode="ambient">
+                  <span class="aura-preview-layer aura-grid-lines" aria-hidden="true"></span>
+                  <span class="aura-preview-layer aura-scan" aria-hidden="true"></span>
+                  <span class="aura-preview-layer aura-halo" aria-hidden="true"></span>
+                  <span class="aura-preview-layer aura-sparks" aria-hidden="true"></span>
+                  <div class="aura-meter" aria-hidden="true">
+                    <span style="--i:0"></span>
+                    <span style="--i:1"></span>
+                    <span style="--i:2"></span>
+                    <span style="--i:3"></span>
+                    <span style="--i:4"></span>
+                    <span style="--i:5"></span>
+                  </div>
+                  <div class="aura-label">
+                    <span class="tiny">Live blend</span>
+                    <span class="aura-status" data-aura-status>Ambient wash</span>
+                  </div>
+                </div>
+                <div class="aura-controls reveal">
+                  <div class="aura-group">
+                    <h3>Base mood</h3>
+                    <div class="aura-modes" role="group" aria-label="Aura base mood">
+                      <button
+                        type="button"
+                        class="aura-chip"
+                        data-aura-mode="ambient"
+                        data-aura-label="Ambient wash"
+                        aria-pressed="false"
+                      >
+                        <span class="aura-chip-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M4.5 6.75h15m-15 4.5h15m-15 4.5h15M7.5 3v18"
+                            />
+                          </svg>
+                        </span>
+                        Ambient
+                      </button>
+                      <button
+                        type="button"
+                        class="aura-chip"
+                        data-aura-mode="pulse"
+                        data-aura-label="Pulse bloom"
+                        aria-pressed="false"
+                      >
+                        <span class="aura-chip-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M3 12s3-6 9-6 9 6 9 6-3 6-9 6-9-6-9-6Z"
+                            />
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                            />
+                          </svg>
+                        </span>
+                        Pulse
+                      </button>
+                      <button
+                        type="button"
+                        class="aura-chip"
+                        data-aura-mode="burst"
+                        data-aura-label="Burst prism"
+                        aria-pressed="false"
+                      >
+                        <span class="aura-chip-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="m12 3 7.5 4.5v9L12 21l-7.5-4.5v-9L12 3Z"
+                            />
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 8.25v7.5m3.75-5.25-7.5 3"
+                            />
+                          </svg>
+                        </span>
+                        Burst
+                      </button>
+                    </div>
+                  </div>
+                  <div class="aura-group">
+                    <h3>Layered effects</h3>
+                    <div class="aura-effects" role="group" aria-label="Aura overlays">
+                      <button
+                        type="button"
+                        class="aura-chip"
+                        data-aura-effect="spark"
+                        data-aura-label="Spark shower"
+                        aria-pressed="false"
+                      >
+                        <span class="aura-chip-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="m9 6 1.145 3.812a1.2 1.2 0 0 0 .781.781L14.75 12l-3.824 1.406a1.2 1.2 0 0 0-.78.781L9 18l-1.145-3.812a1.2 1.2 0 0 0-.781-.781L3.25 12l3.824-1.406a1.2 1.2 0 0 0 .781-.781L9 6Zm9-3v2.25m0 13.5V21m3-9h-2.25M5.25 12H3"
+                            />
+                          </svg>
+                        </span>
+                        Spark shower
+                      </button>
+                      <button
+                        type="button"
+                        class="aura-chip"
+                        data-aura-effect="halo"
+                        data-aura-label="Halo bloom"
+                        aria-pressed="false"
+                      >
+                        <span class="aura-chip-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 6.75a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5Z"
+                            />
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M12 3v2.25m0 13.5V21m9-9h-2.25m-13.5 0H3m15.364 6.364-1.59-1.59m-9.548-9.548-1.59-1.59m12.728 0-1.59 1.59m-9.548 9.548-1.59 1.59"
+                            />
+                          </svg>
+                        </span>
+                        Halo bloom
+                      </button>
+                      <button
+                        type="button"
+                        class="aura-chip"
+                        data-aura-effect="scan"
+                        data-aura-label="Scanner sweep"
+                        aria-pressed="false"
+                      >
+                        <span class="aura-chip-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M4.5 5.25h15m-15 13.5h15M4.5 9h9m-9 6h9"
+                            />
+                          </svg>
+                        </span>
+                        Scanner sweep
+                      </button>
+                    </div>
+                  </div>
+                  <p class="aura-note">
+                    Combine aura layers with preset scenes and the glow slider — the live meter reacts to your intensity and the scan follows your speed.
+                  </p>
+                  <ul class="aura-legend">
+                    <li><strong>Scene link</strong> mirrors the active preset gradient.</li>
+                    <li><strong>Meter bars</strong> climb as you raise glow intensity.</li>
+                    <li><strong>Scanner sweep</strong> accelerates with animation speed.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="section-divider" aria-hidden="true"></div>
 
           <section id="gallery" class="section halo">
             <div class="container">
@@ -384,6 +1114,8 @@
             </div>
           </section>
 
+          <div class="section-divider" aria-hidden="true"></div>
+
           <section id="implement" class="section halo soft">
             <div class="container">
               <h2 class="h2" data-parallax="0.12">
@@ -415,6 +1147,8 @@
             </div>
           </section>
 
+          <div class="section-divider" aria-hidden="true"></div>
+
           <section id="trust" class="section halo">
             <div class="container">
               <h2 class="h2" data-parallax="0.12">Reliable by design</h2>
@@ -436,6 +1170,8 @@
               </div>
             </div>
           </section>
+
+          <div class="section-divider" aria-hidden="true"></div>
 
           <section id="faq" class="section halo soft">
             <div class="container">
@@ -467,6 +1203,8 @@
               </details>
             </div>
           </section>
+
+          <div class="section-divider" aria-hidden="true"></div>
 
           <section id="contact" class="section halo soft center">
             <div class="container">
@@ -523,6 +1261,8 @@
               >
             </div>
           </section>
+
+          <div class="section-divider" aria-hidden="true"></div>
         </main>
 
         <footer class="section center pt-md">
@@ -539,15 +1279,202 @@
       <!-- Sticky timeline (desktop) -->
       <aside class="timeline-side glass" aria-label="Page sections">
         <ol id="lg-tl" class="tl">
-          <li><a href="#hero">Hero</a><span class="bar"></span></li>
-          <li><a href="#system">What is</a><span class="bar"></span></li>
-          <li><a href="#deep">How it works</a><span class="bar"></span></li>
-          <li><a href="#led">LED control</a><span class="bar"></span></li>
-          <li><a href="#gallery">Projects</a><span class="bar"></span></li>
-          <li><a href="#implement">Examples</a><span class="bar"></span></li>
-          <li><a href="#trust">Reliability</a><span class="bar"></span></li>
-          <li><a href="#faq">FAQ</a><span class="bar"></span></li>
-          <li><a href="#contact">Contact</a><span class="bar"></span></li>
+          <li>
+            <a href="#hero">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+                </svg>
+              </span>
+              <span class="sr-only">Hero</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#system">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">What is LumiGrid</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#deep">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Zm.75-12h9v9h-9v-9Z"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">How it works</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#led">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">LED control</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#dayflow">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 3v2.25m0 13.5V21m9-9h-2.25m-13.5 0H3m15.364 6.364-1.59-1.59m-9.548-9.548-1.59-1.59m12.728 0-1.59 1.59m-9.548 9.548-1.59 1.59M5.25 15A6.75 6.75 0 0 0 12 21a6.75 6.75 0 0 0 6.75-6 6.75 6.75 0 0 0-13.5 0Z"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">Day playlist</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#scenes">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4.5 6.75h15m-15 4.5h15m-15 4.5h15M8.25 3v18"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">Scene presets</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#layout">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4.5 5.25h15m-15 0A1.5 1.5 0 0 0 3 6.75v10.5a1.5 1.5 0 0 0 1.5 1.5h15a1.5 1.5 0 0 0 1.5-1.5V6.75a1.5 1.5 0 0 0-1.5-1.5m-15 0V5.25m4.5 0v13.5m6-13.5v13.5m0-7.5h6m-12 3h-6"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">Layout lab</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#aura">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 4.5v3m0 9v3m7.5-7.5h-3m-9 0H4.5m12.864-6.864-2.121 2.121m-6.486 6.486-2.121 2.121m0-10.728 2.121 2.121m6.486 6.486 2.121 2.121"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 8.25a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5Z"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">Aura lab</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#gallery">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">Projects</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#implement">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">Implementation examples</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#trust">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">Reliability</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#faq">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">FAQ</span>
+            </a>
+            <span class="bar"></span>
+          </li>
+          <li>
+            <a href="#contact">
+              <span class="tl-icon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                  />
+                </svg>
+              </span>
+              <span class="sr-only">Contact</span>
+            </a>
+            <span class="bar"></span>
+          </li>
         </ol>
         <span id="lg-tl-progress" class="tl-progress"></span>
       </aside>
@@ -566,7 +1493,11 @@
         lgBindTTS,
         lgBindPills,
         lgApplyLEDGradient,
+        lgSetPattern,
+        lgSetIntensity,
         lgHeroTimelineLoop,
+        lgSetSpeed,
+        lgLEDPalettes,
       } from "./js/lumigrid.js";
 
       // FX canvas across the whole page
@@ -584,6 +1515,10 @@
           "system",
           "deep",
           "led",
+          "dayflow",
+          "scenes",
+          "layout",
+          "aura",
           "gallery",
           "implement",
           "trust",
@@ -601,7 +1536,497 @@
       lgBindPills();
 
       // LED palette + hero animation
-      lgApplyLEDGradient(".strip", "rf");
+      const ledTargets = ".strip, .led-field, .layout-zone, .layout-map";
+      const paletteButtons = document.querySelectorAll("[data-led-palette]");
+      const patternButtons = document.querySelectorAll("[data-led-pattern-btn]");
+      const sceneButtons = document.querySelectorAll("[data-led-scene]");
+      const ledSpeedControl = document.getElementById("ledSpeed");
+      const ledSpeedValue = document.querySelector("[data-led-speed-value]");
+      const ledIntensityControl = document.getElementById("ledIntensity");
+      const ledIntensityValue = document.querySelector("[data-led-intensity-value]");
+      const dayflowRoot = document.querySelector("[data-dayflow]");
+      const dayflowRange = document.querySelector("[data-dayflow-range]");
+      const dayflowTrack = document.querySelector("[data-dayflow-track]");
+      const dayflowTime = document.querySelector("[data-dayflow-time]");
+      const dayflowName = document.querySelector("[data-dayflow-name]");
+      const dayflowCopy = document.querySelector("[data-dayflow-copy]");
+      const dayflowIcon = document.querySelector("[data-dayflow-icon]");
+      const dayflowMarkers = document.querySelectorAll("[data-dayflow-marker]");
+      const dayflowStrips = document.querySelectorAll("[data-dayflow-strip]");
+      const sceneArray = Array.from(sceneButtons);
+
+      const layoutRoot = document.querySelector("[data-layout-root]");
+      const layoutMap = layoutRoot?.querySelector("[data-layout-map]");
+      const layoutZoneButtons = layoutRoot ? Array.from(layoutRoot.querySelectorAll("[data-layout-zone-btn]")) : [];
+      const layoutZones = layoutRoot ? Array.from(layoutRoot.querySelectorAll("[data-layout-zone]")) : [];
+      const layoutStatus = layoutRoot?.querySelector("[data-layout-status]");
+      const layoutMood = layoutRoot?.querySelector("[data-layout-mood]");
+      const layoutPaletteLabel = layoutRoot?.querySelector("[data-layout-palette]");
+      const layoutPatternLabel = layoutRoot?.querySelector("[data-layout-pattern]");
+      const layoutIntensityLabel = layoutRoot?.querySelector("[data-layout-intensity]");
+      const layoutSpeedLabel = layoutRoot?.querySelector("[data-layout-speed]");
+      const layoutCountLabel = layoutRoot?.querySelector("[data-layout-count]");
+      const layoutPaletteNames = {
+        rf: "Signature spectrum",
+        neon: "Neon current",
+        sunset: "Sunset blend",
+        mint: "Mint drift",
+      };
+      const layoutGlowColors = {
+        rf: "rgba(28,197,220,0.38)",
+        neon: "rgba(0,229,255,0.4)",
+        sunset: "rgba(255,162,76,0.42)",
+        mint: "rgba(159,255,215,0.4)",
+      };
+      const layoutPatternNames = {
+        chase: "Chase ribbon",
+        pulse: "Pulse bloom",
+        wave: "Wave sweep",
+      };
+      const layoutZoneLabels = Object.fromEntries(
+        layoutZoneButtons.map((btn) => [
+          btn.dataset.layoutZoneBtn || btn.dataset.layoutZone || "",
+          btn.dataset.layoutZoneLabel || btn.textContent.trim(),
+        ]),
+      );
+
+      const updateLayoutStatus = () => {
+        if (!layoutRoot) {
+          return;
+        }
+        const activeButtons = layoutZoneButtons.filter((btn) => btn.getAttribute("aria-pressed") === "true");
+        const activeKeys = new Set(
+          activeButtons.map((btn) => btn.dataset.layoutZoneBtn || btn.dataset.layoutZone || ""),
+        );
+        layoutZones.forEach((zone) => {
+          const key = zone.dataset.layoutZone || "";
+          zone.classList.toggle("is-active", activeKeys.has(key));
+        });
+        if (layoutCountLabel) {
+          layoutCountLabel.textContent = String(activeButtons.length);
+        }
+        if (layoutStatus) {
+          if (activeButtons.length) {
+            const labels = activeButtons.map(
+              (btn) => layoutZoneLabels[btn.dataset.layoutZoneBtn || btn.dataset.layoutZone || ""] || btn.textContent.trim(),
+            );
+            layoutStatus.textContent = `${labels.join(" • ")} highlighted`;
+          } else {
+            layoutStatus.textContent = "No fixtures highlighted";
+          }
+        }
+        if (layoutMood) {
+          layoutMood.textContent = activeButtons.length
+            ? `Covering ${activeButtons.length} zone${activeButtons.length === 1 ? "" : "s"}`
+            : "Select a zone to preview coverage";
+        }
+      };
+
+      const syncLayoutPalette = (paletteKey) => {
+        if (!layoutRoot) {
+          return;
+        }
+        const label = layoutPaletteNames[paletteKey] || paletteKey;
+        if (layoutPaletteLabel) {
+          layoutPaletteLabel.textContent = label;
+        }
+        const gradient = lgLEDPalettes[paletteKey] || lgLEDPalettes.rf;
+        if (layoutMap) {
+          layoutMap.style.setProperty("--layout-grad", gradient);
+        }
+        layoutRoot.style.setProperty("--layout-grad", gradient);
+        layoutRoot.style.setProperty("--layout-glow", layoutGlowColors[paletteKey] || layoutGlowColors.rf);
+      };
+
+      const syncLayoutPattern = (patternKey) => {
+        if (!layoutRoot) {
+          return;
+        }
+        if (layoutPatternLabel) {
+          layoutPatternLabel.textContent = layoutPatternNames[patternKey] || patternKey;
+        }
+        layoutRoot.dataset.layoutPattern = patternKey;
+      };
+
+      const syncLayoutIntensity = (value) => {
+        if (!layoutRoot) {
+          return;
+        }
+        if (layoutIntensityLabel) {
+          layoutIntensityLabel.textContent = `${Math.round(value * 100)}%`;
+        }
+        layoutRoot.style.setProperty("--layout-intensity", value.toFixed(2));
+      };
+
+      const syncLayoutSpeed = (value) => {
+        if (!layoutRoot) {
+          return;
+        }
+        if (layoutSpeedLabel) {
+          layoutSpeedLabel.textContent = `${value.toFixed(1)}×`;
+        }
+        layoutRoot.style.setProperty("--layout-speed", value.toFixed(2));
+      };
+
+      layoutZoneButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const isPressed = btn.getAttribute("aria-pressed") === "true";
+          btn.setAttribute("aria-pressed", isPressed ? "false" : "true");
+          btn.classList.toggle("is-active", !isPressed);
+          updateLayoutStatus();
+        });
+      });
+
+      if (layoutRoot) {
+        updateLayoutStatus();
+      }
+
+
+      const auraRoot = document.querySelector("[data-aura-lab]");
+      const auraPreview = auraRoot?.querySelector("[data-aura-preview]");
+      const auraStatus = auraRoot?.querySelector("[data-aura-status]");
+      const auraModeButtons = auraRoot ? Array.from(auraRoot.querySelectorAll("[data-aura-mode]")) : [];
+      const auraEffectButtons = auraRoot ? Array.from(auraRoot.querySelectorAll("[data-aura-effect]")) : [];
+      const auraModeLabels = Object.fromEntries(
+        auraModeButtons.map((btn) => [btn.dataset.auraMode || "", btn.dataset.auraLabel || btn.textContent.trim()]),
+      );
+      const auraEffectLabels = Object.fromEntries(
+        auraEffectButtons.map((btn) => [btn.dataset.auraEffect || "", btn.dataset.auraLabel || btn.textContent.trim()]),
+      );
+      const auraGlowMap = {
+        ambient: "rgba(28,197,220,0.32)",
+        pulse: "rgba(231,59,163,0.32)",
+        burst: "rgba(255,209,102,0.38)",
+      };
+
+      const updateAuraStatus = () => {
+        if (!auraStatus) {
+          return;
+        }
+        const modeKey = (auraPreview?.getAttribute("data-aura-mode") || auraModeButtons[0]?.dataset.auraMode || "").trim();
+        const parts = [];
+        if (modeKey && auraModeLabels[modeKey]) {
+          parts.push(auraModeLabels[modeKey]);
+        }
+        const activeEffects = auraEffectButtons
+          .filter((btn) => btn.getAttribute("aria-pressed") === "true")
+          .map((btn) => auraEffectLabels[btn.dataset.auraEffect || ""] || btn.textContent.trim());
+        if (activeEffects.length) {
+          parts.push(activeEffects.join(" + "));
+        }
+        if (auraPreview?.dataset.auraScene) {
+          parts.push(`Scene: ${auraPreview.dataset.auraScene}`);
+        }
+        auraStatus.textContent = parts.join(" • ") || "Custom blend";
+      };
+
+      const setAuraMode = (mode) => {
+        if (!auraPreview) {
+          return;
+        }
+        const fallback = auraModeButtons[0]?.dataset.auraMode || auraPreview.getAttribute("data-aura-mode") || "ambient";
+        const choice = auraModeLabels[mode] ? mode : fallback;
+        auraPreview.setAttribute("data-aura-mode", choice);
+        if (auraRoot) {
+          auraRoot.style.setProperty("--aura-active-glow", auraGlowMap[choice] || auraGlowMap.ambient);
+        }
+        auraModeButtons.forEach((btn) => {
+          const isActive = btn.dataset.auraMode === choice;
+          btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+          btn.classList.toggle("is-active", isActive);
+        });
+        updateAuraStatus();
+      };
+
+      const setAuraEffectState = (effect, active) => {
+        if (!effect || !auraPreview) {
+          updateAuraStatus();
+          return;
+        }
+        const className = `has-${effect}`;
+        auraPreview.classList.toggle(className, Boolean(active));
+        auraEffectButtons.forEach((btn) => {
+          if (btn.dataset.auraEffect === effect) {
+            btn.setAttribute("aria-pressed", active ? "true" : "false");
+            btn.classList.toggle("is-active", Boolean(active));
+          }
+        });
+        updateAuraStatus();
+      };
+
+      const toggleAuraEffect = (effect) => {
+        if (!effect || !auraPreview) {
+          return;
+        }
+        const className = `has-${effect}`;
+        const next = !auraPreview.classList.contains(className);
+        setAuraEffectState(effect, next);
+      };
+
+      const setAuraScene = (title, gradient) => {
+        if (auraPreview) {
+          if (gradient) {
+            auraPreview.style.setProperty("--aura-scene", gradient);
+            auraPreview.classList.add("is-linked");
+          } else {
+            auraPreview.style.removeProperty("--aura-scene");
+            auraPreview.classList.remove("is-linked");
+          }
+          if (title) {
+            auraPreview.dataset.auraScene = title;
+          } else {
+            delete auraPreview.dataset.auraScene;
+          }
+        }
+        if (layoutMap) {
+          if (gradient) {
+            layoutMap.style.setProperty("--layout-scene", gradient);
+            layoutMap.classList.add("is-linked");
+          } else {
+            layoutMap.style.removeProperty("--layout-scene");
+            layoutMap.classList.remove("is-linked");
+          }
+        }
+        updateAuraStatus();
+      };
+
+      const clearSceneSelection = () => {
+        let hadActive = false;
+        sceneButtons.forEach((btn) => {
+          if (btn.classList.contains("is-active")) {
+            hadActive = true;
+          }
+          btn.setAttribute("aria-pressed", "false");
+          btn.classList.remove("is-active");
+        });
+        if (hadActive) {
+          setAuraScene("", "");
+        }
+      };
+
+      const syncDayflow = (btn, { fromSlider = false } = {}) => {
+        if (!btn) {
+          return;
+        }
+        const sceneIndex = sceneArray.indexOf(btn);
+        const title = btn.dataset.sceneTitle || btn.querySelector(".scene-title")?.textContent || "";
+        const copy = btn.dataset.sceneCopy || btn.querySelector(".scene-meta")?.textContent || "";
+        const time = btn.dataset.sceneTime || "";
+        const gradient = btn.dataset.sceneGradient || "";
+        const speed = parseFloat(btn.dataset.sceneSpeed || "1") || 1;
+        const intensity = parseFloat(btn.dataset.sceneIntensity || "1") || 1;
+
+        if (dayflowTime) {
+          dayflowTime.textContent = time;
+        }
+        if (dayflowName) {
+          dayflowName.textContent = title;
+        }
+        if (dayflowCopy) {
+          dayflowCopy.textContent = copy;
+        }
+        if (dayflowRange) {
+          if (!fromSlider && sceneIndex >= 0) {
+            dayflowRange.value = String(sceneIndex);
+          }
+          if (sceneIndex >= 0) {
+            dayflowRange.setAttribute("aria-valuenow", String(sceneIndex));
+          }
+          dayflowRange.setAttribute("aria-valuetext", title);
+        }
+        const stepCount = Math.max(1, sceneArray.length - 1);
+        const progress = sceneIndex >= 0 ? sceneIndex / stepCount : 0;
+        if (dayflowTrack) {
+          dayflowTrack.style.setProperty("--dayflow-progress", `${Math.max(0, Math.min(1, progress)) * 100}%`);
+        }
+        if (dayflowRoot) {
+          dayflowRoot.style.setProperty("--dayflow-progress", progress.toFixed(3));
+          const previewSpeed = Math.max(3, Math.min(12, 7 / speed));
+          dayflowRoot.style.setProperty("--dayflow-speed", `${previewSpeed.toFixed(2)}s`);
+          dayflowRoot.style.setProperty("--dayflow-intensity", intensity.toFixed(2));
+        }
+        if (dayflowMarkers.length && sceneIndex >= 0) {
+          dayflowMarkers.forEach((marker) => {
+            const markerIndex = Number(marker.dataset.dayflowIndex || "-1");
+            marker.classList.toggle("is-active", markerIndex === sceneIndex);
+          });
+        }
+        if (gradient && dayflowStrips.length) {
+          dayflowStrips.forEach((strip) => {
+            strip.style.setProperty("--scene-grad", gradient);
+          });
+        }
+        if (dayflowIcon) {
+          const iconSource = btn.querySelector(".scene-icon svg");
+          if (iconSource) {
+            dayflowIcon.innerHTML = iconSource.outerHTML;
+          }
+        }
+      };
+
+      const setPalette = (palette) => {
+        const applied = lgApplyLEDGradient(ledTargets, palette);
+        paletteButtons.forEach((btn) =>
+          btn.setAttribute(
+            "aria-pressed",
+            btn.dataset.ledPalette === applied ? "true" : "false",
+          ),
+        );
+        syncLayoutPalette(applied);
+        return applied;
+      };
+
+      const setPattern = (pattern) => {
+        const applied = lgSetPattern(ledTargets, pattern);
+        patternButtons.forEach((btn) =>
+          btn.setAttribute(
+            "aria-pressed",
+            btn.dataset.ledPatternBtn === applied ? "true" : "false",
+          ),
+        );
+        syncLayoutPattern(applied);
+        return applied;
+      };
+
+      const applySpeed = (value, { updateControl = false } = {}) => {
+        const desired = Math.max(0.5, Math.min(2, parseFloat(value) || 1));
+        const applied = lgSetSpeed(ledTargets, desired);
+        if (ledSpeedValue) {
+          ledSpeedValue.textContent = `${applied.toFixed(1)}×`;
+        }
+        if (updateControl && ledSpeedControl) {
+          const normalized = Math.round(applied * 10) / 10;
+          ledSpeedControl.value = normalized.toFixed(1);
+        }
+        if (auraRoot) {
+          auraRoot.style.setProperty("--aura-speed", applied.toFixed(2));
+        }
+        syncLayoutSpeed(applied);
+        return applied;
+      };
+
+      const applyIntensity = (value, { updateControl = false } = {}) => {
+        const desired = Math.max(0.4, Math.min(1.2, parseFloat(value) || 1));
+        const applied = lgSetIntensity(ledTargets, desired);
+        if (ledIntensityValue) {
+          ledIntensityValue.textContent = `${Math.round(applied * 100)}%`;
+        }
+        if (updateControl && ledIntensityControl) {
+          const normalized = Math.round(applied * 20) / 20;
+          ledIntensityControl.value = normalized.toString();
+        }
+        if (auraRoot) {
+          auraRoot.style.setProperty("--aura-level", applied.toFixed(2));
+        }
+        syncLayoutIntensity(applied);
+        return applied;
+      };
+
+      auraModeButtons.forEach((btn) =>
+        btn.addEventListener("click", () => setAuraMode(btn.dataset.auraMode || "")),
+      );
+      auraEffectButtons.forEach((btn) =>
+        btn.addEventListener("click", () => toggleAuraEffect(btn.dataset.auraEffect || "")),
+      );
+      if (auraModeButtons.length) {
+        setAuraMode(auraModeButtons[0].dataset.auraMode || "ambient");
+      } else if (auraPreview) {
+        setAuraMode(auraPreview.getAttribute("data-aura-mode") || "ambient");
+      } else {
+        updateAuraStatus();
+      }
+      auraEffectButtons.forEach((btn) => {
+        const isPressed = btn.getAttribute("aria-pressed") === "true";
+        setAuraEffectState(btn.dataset.auraEffect || "", isPressed);
+      });
+
+      paletteButtons.forEach((btn) =>
+        btn.addEventListener("click", () => {
+          clearSceneSelection();
+          setPalette(btn.dataset.ledPalette || "rf");
+        }),
+      );
+      patternButtons.forEach((btn) =>
+        btn.addEventListener("click", () => {
+          clearSceneSelection();
+          setPattern(btn.dataset.ledPatternBtn || "chase");
+        }),
+      );
+
+      const defaultPalette = paletteButtons[0]?.dataset.ledPalette || "rf";
+      const defaultPattern = patternButtons[0]?.dataset.ledPatternBtn || "chase";
+      setPalette(defaultPalette);
+      setPattern(defaultPattern);
+
+      if (ledSpeedControl) {
+        ledSpeedControl.addEventListener("input", () => {
+          clearSceneSelection();
+          applySpeed(ledSpeedControl.value);
+        });
+        applySpeed(ledSpeedControl.value, { updateControl: true });
+      } else {
+        applySpeed(1);
+      }
+
+      if (ledIntensityControl) {
+        ledIntensityControl.addEventListener("input", () => {
+          clearSceneSelection();
+          applyIntensity(ledIntensityControl.value);
+        });
+        applyIntensity(ledIntensityControl.value, { updateControl: true });
+      } else {
+        applyIntensity(1);
+      }
+
+      const applyScene = (btn, { fromSlider = false } = {}) => {
+        const sceneTitle = btn.dataset.sceneTitle || btn.querySelector(".scene-title")?.textContent || "";
+        const gradient = btn.dataset.sceneGradient || "";
+        const palette = btn.dataset.scenePalette || defaultPalette;
+        const pattern = btn.dataset.scenePattern || defaultPattern;
+        const speed = btn.dataset.sceneSpeed;
+        const intensity = btn.dataset.sceneIntensity;
+        setPalette(palette);
+        setPattern(pattern);
+        if (speed) {
+          applySpeed(speed, { updateControl: true });
+        }
+        if (intensity) {
+          applyIntensity(intensity, { updateControl: true });
+        }
+        sceneButtons.forEach((sceneBtn) => {
+          const isActive = sceneBtn === btn;
+          sceneBtn.setAttribute("aria-pressed", isActive ? "true" : "false");
+          sceneBtn.classList.toggle("is-active", isActive);
+        });
+        setAuraScene(sceneTitle, gradient);
+        syncDayflow(btn, { fromSlider });
+      };
+
+      sceneButtons.forEach((btn) => {
+        const paletteKey = btn.dataset.scenePalette || defaultPalette;
+        const gradient = lgLEDPalettes[paletteKey] || lgLEDPalettes[defaultPalette];
+        btn.dataset.sceneGradient = gradient;
+        btn.style.setProperty("--scene-grad", gradient);
+        btn.addEventListener("click", () => applyScene(btn));
+      });
+
+      if (sceneButtons.length) {
+        applyScene(sceneButtons[0]);
+      }
+
+      if (dayflowRange) {
+        const maxIndex = Math.max(0, sceneArray.length - 1);
+        dayflowRange.max = String(maxIndex);
+        dayflowRange.setAttribute("aria-valuemax", String(maxIndex));
+        dayflowRange.addEventListener("input", () => {
+          const idx = parseInt(dayflowRange.value, 10) || 0;
+          const target = sceneArray[idx];
+          if (target) {
+            applyScene(target, { fromSlider: true });
+          }
+        });
+      }
+
       lgHeroTimelineLoop();
 
       // Contact inline validation
