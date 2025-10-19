@@ -64,13 +64,17 @@
     });
   }
 
+  const isBrowser = typeof window !== 'undefined';
+
   function enableDepthTracking() {
+    if (!isBrowser) return;
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll);
   }
 
   function disableDepthTracking() {
+    if (!isBrowser) return;
     if (raf) cancelAnimationFrame(raf);
     window.removeEventListener('scroll', handleScroll);
     window.removeEventListener('resize', handleScroll);
@@ -106,6 +110,7 @@
   });
 
   onDestroy(() => {
+    if (!isBrowser) return;
     disableDepthTracking();
     removeMotionListener();
   });
