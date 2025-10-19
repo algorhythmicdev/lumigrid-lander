@@ -38,9 +38,9 @@
         <button class="pill">Live Status</button>
       </div>
       <div class="grid grid-3 reveal" style="margin-top:1rem;">
-        <figure class="card"><img src="/images/screen-scenes.svg" alt="Screenshot — Scenes" style="width:100%;height:auto"/><figcaption class="lead">Web app — Scenes</figcaption></figure>
-        <figure class="card"><img src="/images/screen-timeline.svg" alt="Screenshot — Timeline" style="width:100%;height:auto"/><figcaption class="lead">Timeline editor</figcaption></figure>
-        <figure class="card"><img src="/images/photo-window.svg" alt="Photo — Window install" style="width:100%;height:auto"/><figcaption class="lead">Shop window install</figcaption></figure>
+        <figure class="card"><img src="/images/screen-scenes.svg" alt="LumiGrid web app showing saved lighting scenes" style="width:100%;height:auto"/><figcaption class="lead">Web app — Scenes</figcaption></figure>
+        <figure class="card"><img src="/images/screen-timeline.svg" alt="LumiGrid timeline editor arranging scenes across the day" style="width:100%;height:auto"/><figcaption class="lead">Timeline editor</figcaption></figure>
+        <figure class="card"><img src="/images/photo-window.svg" alt="Shop window lit by a LumiGrid installation" style="width:100%;height:auto"/><figcaption class="lead">Shop window install</figcaption></figure>
       </div>
     </div>
   </section>
