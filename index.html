@@ -195,40 +195,42 @@
                 <button class="pill" data-info="status">Live Status</button>
               </div>
 
-              <div class="card reveal" data-info-card="sync">
-                <h3>Everything moves together</h3>
-                <p>
-                  Front letters, window strips, logo halo — when you press play,
-                  they stay in step.
-                </p>
-              </div>
-              <div class="card reveal" data-info-card="presets">
-                <h3>Looks you can save</h3>
-                <p>
-                  “Calm Evening,” “Bright Day,” “Promo Sparkle.” Save once,
-                  reuse forever. Swap with a tap.
-                </p>
-              </div>
-              <div class="card reveal" data-info-card="schedule">
-                <h3>Set and forget</h3>
-                <p>
-                  Morning to evening, weekday to holiday — your sign follows the
-                  plan.
-                </p>
-              </div>
-              <div class="card reveal" data-info-card="override">
-                <h3>One-tap spotlight</h3>
-                <p>
-                  Need attention now? Tap Quick Override for a short show; it
-                  fades back on its own.
-                </p>
-              </div>
-              <div class="card reveal" data-info-card="status">
-                <h3>See what’s happening</h3>
-                <p>
-                  Open the web app to check zones, brightness, and the current
-                  scene. Change anything instantly.
-                </p>
+              <div class="card-stack">
+                <div class="card reveal" data-info-card="sync">
+                  <h3>Everything moves together</h3>
+                  <p>
+                    Front letters, window strips, logo halo — when you press
+                    play, they stay in step.
+                  </p>
+                </div>
+                <div class="card reveal" data-info-card="presets">
+                  <h3>Looks you can save</h3>
+                  <p>
+                    “Calm Evening,” “Bright Day,” “Promo Sparkle.” Save once,
+                    reuse forever. Swap with a tap.
+                  </p>
+                </div>
+                <div class="card reveal" data-info-card="schedule">
+                  <h3>Set and forget</h3>
+                  <p>
+                    Morning to evening, weekday to holiday — your sign follows
+                    the plan.
+                  </p>
+                </div>
+                <div class="card reveal" data-info-card="override">
+                  <h3>One-tap spotlight</h3>
+                  <p>
+                    Need attention now? Tap Quick Override for a short show; it
+                    fades back on its own.
+                  </p>
+                </div>
+                <div class="card reveal" data-info-card="status">
+                  <h3>See what’s happening</h3>
+                  <p>
+                    Open the web app to check zones, brightness, and the
+                    current scene. Change anything instantly.
+                  </p>
+                </div>
               </div>
 
               <div class="grid grid-3 reveal mt-md">
@@ -323,9 +325,7 @@
             <div class="container grid grid-2">
               <div class="glass reveal pad-md">
                 <div class="led-preview">
-                  <div class="strip" data-led-pattern="chase"></div>
-                  <div class="strip" data-led-pattern="chase"></div>
-                  <div class="strip" data-led-pattern="chase"></div>
+                  <div class="led-ambient" data-led-pattern="chase" aria-hidden="true"></div>
                   <div class="led-field" data-led-pattern="chase" aria-hidden="true">
                     <div class="led-field-mesh"></div>
                     <div class="led-field-dots">
@@ -338,15 +338,6 @@
                       <span style="--i:6"></span>
                       <span style="--i:7"></span>
                       <span style="--i:8"></span>
-                      <span style="--i:9"></span>
-                      <span style="--i:10"></span>
-                      <span style="--i:11"></span>
-                      <span style="--i:12"></span>
-                      <span style="--i:13"></span>
-                      <span style="--i:14"></span>
-                      <span style="--i:15"></span>
-                      <span style="--i:16"></span>
-                      <span style="--i:17"></span>
                     </div>
                   </div>
                 </div>
@@ -1497,7 +1488,10 @@
         lgSetIntensity,
         lgHeroTimelineLoop,
         lgSetSpeed,
-        lgLEDPalettes,
+        lgGetLEDPalette,
+        lgGetLEDGlow,
+        lgGetAuraGlow,
+        lgTokenEvent,
       } from "./js/lumigrid.js";
 
       // FX canvas across the whole page
@@ -1536,7 +1530,7 @@
       lgBindPills();
 
       // LED palette + hero animation
-      const ledTargets = ".strip, .led-field, .layout-zone, .layout-map";
+      const ledTargets = ".led-ambient, .led-field, .layout-zone, .layout-map";
       const paletteButtons = document.querySelectorAll("[data-led-palette]");
       const patternButtons = document.querySelectorAll("[data-led-pattern-btn]");
       const sceneButtons = document.querySelectorAll("[data-led-scene]");
@@ -1554,6 +1548,11 @@
       const dayflowMarkers = document.querySelectorAll("[data-dayflow-marker]");
       const dayflowStrips = document.querySelectorAll("[data-dayflow-strip]");
       const sceneArray = Array.from(sceneButtons);
+      const getActiveSceneButton = () =>
+        sceneArray.find((btn) => btn.classList.contains("is-active"));
+      let activePaletteKey = "rf";
+      let activePatternKey = "chase";
+      let activeAuraMode = "ambient";
 
       const layoutRoot = document.querySelector("[data-layout-root]");
       const layoutMap = layoutRoot?.querySelector("[data-layout-map]");
@@ -1571,12 +1570,6 @@
         neon: "Neon current",
         sunset: "Sunset blend",
         mint: "Mint drift",
-      };
-      const layoutGlowColors = {
-        rf: "rgba(28,197,220,0.38)",
-        neon: "rgba(0,229,255,0.4)",
-        sunset: "rgba(255,162,76,0.42)",
-        mint: "rgba(159,255,215,0.4)",
       };
       const layoutPatternNames = {
         chase: "Chase ribbon",
@@ -1630,12 +1623,13 @@
         if (layoutPaletteLabel) {
           layoutPaletteLabel.textContent = label;
         }
-        const gradient = lgLEDPalettes[paletteKey] || lgLEDPalettes.rf;
+        const gradient = lgGetLEDPalette(paletteKey);
+        const glow = lgGetLEDGlow(paletteKey);
         if (layoutMap) {
           layoutMap.style.setProperty("--layout-grad", gradient);
         }
         layoutRoot.style.setProperty("--layout-grad", gradient);
-        layoutRoot.style.setProperty("--layout-glow", layoutGlowColors[paletteKey] || layoutGlowColors.rf);
+        layoutRoot.style.setProperty("--layout-glow", glow);
       };
 
       const syncLayoutPattern = (patternKey) => {
@@ -1693,11 +1687,6 @@
       const auraEffectLabels = Object.fromEntries(
         auraEffectButtons.map((btn) => [btn.dataset.auraEffect || "", btn.dataset.auraLabel || btn.textContent.trim()]),
       );
-      const auraGlowMap = {
-        ambient: "rgba(28,197,220,0.32)",
-        pulse: "rgba(231,59,163,0.32)",
-        burst: "rgba(255,209,102,0.38)",
-      };
 
       const updateAuraStatus = () => {
         if (!auraStatus) {
@@ -1728,8 +1717,9 @@
         const choice = auraModeLabels[mode] ? mode : fallback;
         auraPreview.setAttribute("data-aura-mode", choice);
         if (auraRoot) {
-          auraRoot.style.setProperty("--aura-active-glow", auraGlowMap[choice] || auraGlowMap.ambient);
+          auraRoot.style.setProperty("--aura-active-glow", lgGetAuraGlow(choice));
         }
+        activeAuraMode = choice;
         auraModeButtons.forEach((btn) => {
           const isActive = btn.dataset.auraMode === choice;
           btn.setAttribute("aria-pressed", isActive ? "true" : "false");
@@ -1864,6 +1854,15 @@
         }
       };
 
+      const updateSceneGradients = () => {
+        sceneButtons.forEach((btn) => {
+          const paletteKey = btn.dataset.scenePalette || activePaletteKey;
+          const gradient = lgGetLEDPalette(paletteKey);
+          btn.dataset.sceneGradient = gradient;
+          btn.style.setProperty("--scene-grad", gradient);
+        });
+      };
+
       const setPalette = (palette) => {
         const applied = lgApplyLEDGradient(ledTargets, palette);
         paletteButtons.forEach((btn) =>
@@ -1872,7 +1871,13 @@
             btn.dataset.ledPalette === applied ? "true" : "false",
           ),
         );
+        paletteButtons.forEach((btn) => {
+          const isActive = btn.dataset.ledPalette === applied;
+          btn.classList.toggle("is-active", isActive);
+        });
+        activePaletteKey = applied;
         syncLayoutPalette(applied);
+        updateSceneGradients();
         return applied;
       };
 
@@ -1884,6 +1889,11 @@
             btn.dataset.ledPatternBtn === applied ? "true" : "false",
           ),
         );
+        patternButtons.forEach((btn) => {
+          const isActive = btn.dataset.ledPatternBtn === applied;
+          btn.classList.toggle("is-active", isActive);
+        });
+        activePatternKey = applied;
         syncLayoutPattern(applied);
         return applied;
       };
@@ -1955,6 +1965,8 @@
 
       const defaultPalette = paletteButtons[0]?.dataset.ledPalette || "rf";
       const defaultPattern = patternButtons[0]?.dataset.ledPatternBtn || "chase";
+      activePaletteKey = defaultPalette;
+      activePatternKey = defaultPattern;
       setPalette(defaultPalette);
       setPattern(defaultPattern);
 
@@ -1980,13 +1992,13 @@
 
       const applyScene = (btn, { fromSlider = false } = {}) => {
         const sceneTitle = btn.dataset.sceneTitle || btn.querySelector(".scene-title")?.textContent || "";
-        const gradient = btn.dataset.sceneGradient || "";
         const palette = btn.dataset.scenePalette || defaultPalette;
         const pattern = btn.dataset.scenePattern || defaultPattern;
         const speed = btn.dataset.sceneSpeed;
         const intensity = btn.dataset.sceneIntensity;
         setPalette(palette);
         setPattern(pattern);
+        const gradient = btn.dataset.sceneGradient || lgGetLEDPalette(palette);
         if (speed) {
           applySpeed(speed, { updateControl: true });
         }
@@ -2003,12 +2015,9 @@
       };
 
       sceneButtons.forEach((btn) => {
-        const paletteKey = btn.dataset.scenePalette || defaultPalette;
-        const gradient = lgLEDPalettes[paletteKey] || lgLEDPalettes[defaultPalette];
-        btn.dataset.sceneGradient = gradient;
-        btn.style.setProperty("--scene-grad", gradient);
         btn.addEventListener("click", () => applyScene(btn));
       });
+      updateSceneGradients();
 
       if (sceneButtons.length) {
         applyScene(sceneButtons[0]);
@@ -2026,6 +2035,21 @@
           }
         });
       }
+
+      document.addEventListener(lgTokenEvent, () => {
+        const activeScene = getActiveSceneButton();
+        if (activeScene) {
+          applyScene(activeScene, { fromSlider: true });
+        } else {
+          setPalette(activePaletteKey);
+          setPattern(activePatternKey);
+        }
+        if (auraModeButtons.length) {
+          setAuraMode(activeAuraMode);
+        } else {
+          updateAuraStatus();
+        }
+      });
 
       lgHeroTimelineLoop();
 
