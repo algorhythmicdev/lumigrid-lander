@@ -4,6 +4,10 @@
   import Gallery from '$lib/components/Gallery.svelte';
   import LEDDemo from '$lib/components/LEDDemo.svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
+  import MeshNavigator from '$lib/components/MeshNavigator.svelte';
+  import DualOutputConfigurator from '$lib/components/DualOutputConfigurator.svelte';
+  import EffectPaletteCarousel from '$lib/components/EffectPaletteCarousel.svelte';
+  import RoadmapMicroInteractions from '$lib/components/RoadmapMicroInteractions.svelte';
 
   const sections = [
     { id: 'hero', label: 'Overview', icon: 'sparkles' },
@@ -115,6 +119,9 @@
             <p>Self-hosted UI plus open REST and MQTT APIs let any team orchestrate shows from a browser.</p>
           </article>
         </div>
+        <div class="reveal">
+          <DualOutputConfigurator />
+        </div>
         <p class="lead reveal">Crafted by <a href="https://reclamefabriek.eu" target="_blank" rel="noopener">Reclame Fabriek R&amp;D</a></p>
       </div>
     </header>
@@ -139,6 +146,9 @@
           <h3>Open automation stack</h3>
           <p>REST and MQTT endpoints plus shared schemas make LumiGrid easy to plug into creative toolchains.</p>
         </article>
+      </div>
+      <div class="reveal">
+        <MeshNavigator />
       </div>
     </div>
   </section>
@@ -318,43 +328,8 @@
     <div class="container">
       <h2 class="h2" data-parallax="0.12">Visual intelligence</h2>
       <p class="lead reveal">The Effect Engine acts as both painter and conductor, balancing drama with safety.</p>
-      <div class="table-wrap reveal">
-        <table>
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Example effects</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Base</strong></td>
-              <td>Solid, Gradient, Chase, Twinkle</td>
-              <td>Foundational looks for any installation</td>
-            </tr>
-            <tr>
-              <td><strong>Spectral</strong></td>
-              <td>Rainbow (palette-aware), Noise Flow</td>
-              <td>Animated colour fields with beat awareness</td>
-            </tr>
-            <tr>
-              <td><strong>Organic</strong></td>
-              <td>Fire, Waves</td>
-              <td>Procedural, beat-reactive scenes</td>
-            </tr>
-            <tr>
-              <td><strong>Utility</strong></td>
-              <td>Blackout, Flash, SyncPulse</td>
-              <td>Precision transitions for cues</td>
-            </tr>
-            <tr>
-              <td><strong>PWM FX</strong></td>
-              <td>Breath, Candle, Warm-Dim</td>
-              <td>Smooth analog dimming profiles</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="reveal">
+        <EffectPaletteCarousel />
       </div>
       <p class="lead reveal">
         Shared <code>effect_params_t</code> descriptors define speed, intensity, colours, blend, and segment ranges, while a power-budget module estimates current draw and auto-scales brightness to stay safe.
@@ -468,6 +443,9 @@
           <h3>Calendar-first scheduling</h3>
           <p>The built-in Schedules view evolves into a rich calendar planner so touring teams can pre-program cues visually.</p>
         </article>
+      </div>
+      <div class="reveal">
+        <RoadmapMicroInteractions />
       </div>
     </div>
   </section>
