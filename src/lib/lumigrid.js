@@ -61,18 +61,19 @@ export function lgApplyThemeMode(mode='dark'){
 }
 
 export function lgBindThemeMode(selectEl){
-  if(!selectEl) return;
-  const prefersDark = matchMedia('(prefers-color-scheme: dark)');
+  if(!selectEl) return () => {};
+  const prefersDark = typeof matchMedia === 'function' ? matchMedia('(prefers-color-scheme: dark)') : null;
   let stored;
   try { stored = localStorage.getItem(THEME_KEY); } catch (err) { stored = null; }
-  let current = stored && allowedThemes.has(stored) ? stored : (prefersDark.matches ? 'dark' : 'light');
+  let current = stored && allowedThemes.has(stored) ? stored : (prefersDark?.matches ? 'dark' : 'light');
   current = lgApplyThemeMode(current);
   selectEl.value = current;
 
-  selectEl.addEventListener('change', e=>{
+  const onChange = e=>{
     const val = e.target.value;
     current = lgApplyThemeMode(val);
-  });
+  };
+  selectEl.addEventListener('change', onChange);
 
   const onPrefChange = ev=>{
     let saved;
@@ -82,11 +83,24 @@ export function lgBindThemeMode(selectEl){
     current = lgApplyThemeMode(next);
     selectEl.value = current;
   };
-  if(typeof prefersDark.addEventListener === 'function'){
-    prefersDark.addEventListener('change', onPrefChange);
-  } else if(typeof prefersDark.addListener === 'function'){
-    prefersDark.addListener(onPrefChange);
+  if(prefersDark){
+    if(typeof prefersDark.addEventListener === 'function'){
+      prefersDark.addEventListener('change', onPrefChange);
+    } else if(typeof prefersDark.addListener === 'function'){
+      prefersDark.addListener(onPrefChange);
+    }
   }
+
+  return ()=>{
+    selectEl.removeEventListener('change', onChange);
+    if(prefersDark){
+      if(typeof prefersDark.removeEventListener === 'function'){
+        prefersDark.removeEventListener('change', onPrefChange);
+      } else if(typeof prefersDark.removeListener === 'function'){
+        prefersDark.removeListener(onPrefChange);
+      }
+    }
+  };
 }
 
 export function lgSetBrand(theme){
@@ -98,31 +112,40 @@ export function lgSetBrand(theme){
 }
 
 export function lgBindBrandSelect(sel){
-  if(!sel) return;
+  if(!sel) return () => {};
   let stored;
   try { stored = localStorage.getItem(BRAND_KEY); } catch (err) { stored = null; }
   const initial = stored && [...sel.options].some(opt=> opt.value===stored) ? stored : (sel.value || 'rf');
   sel.value = initial;
   lgSetBrand(initial);
-  sel.addEventListener('change', e=> lgSetBrand(e.target.value));
+  const onChange = e=> lgSetBrand(e.target.value);
+  sel.addEventListener('change', onChange);
+  return ()=> sel.removeEventListener('change', onChange);
 }
 
 export function lgBindRipple(root=document){
-  root.addEventListener('pointermove', e=>{
+  if(!root) return () => {};
+  const onMove = e=>{
     const t = e.target.closest?.('.btn'); if(!t) return;
     const r = t.getBoundingClientRect();
     t.style.setProperty('--mx', ((e.clientX - r.left)/r.width*100)+'%');
     t.style.setProperty('--my', ((e.clientY - r.top)/r.height*100)+'%');
-  });
+  };
+  root.addEventListener('pointermove', onMove);
+  return ()=> root.removeEventListener('pointermove', onMove);
 }
 
 export function lgReveals(selector='.reveal', threshold=0.12){
+  const targets = Array.from(document.querySelectorAll(selector));
+  if(!targets.length) return () => {};
   const io = new IntersectionObserver((entries)=> entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }),{threshold});
-  document.querySelectorAll(selector).forEach(el=> io.observe(el));
+  targets.forEach(el=> io.observe(el));
+  return ()=> io.disconnect();
 }
 
 export function lgParallax(selector='[data-parallax]'){
   const els = [...document.querySelectorAll(selector)];
+  if(!els.length) return () => {};
   const onScroll = ()=>{
     const y = window.scrollY || 0;
     els.forEach(el=>{
@@ -130,8 +153,10 @@ export function lgParallax(selector='[data-parallax]'){
       el.style.transform = `translateY(${y * amt * -0.1}px)`;
     });
   };
-  document.addEventListener('scroll', onScroll, {passive:true});
+  const passive = { passive: true };
+  document.addEventListener('scroll', onScroll, passive);
   onScroll();
+  return ()=> document.removeEventListener('scroll', onScroll, passive);
 }
 
 export function lgTimelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-progress', ids=[]}={}){
@@ -164,31 +189,42 @@ export function lgTimelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-p
       bar.style.webkitMaskSize = size;
     }
   }
-  document.addEventListener('scroll', update, {passive:true});
+  const passive = { passive: true };
+  document.addEventListener('scroll', update, passive);
   update();
+  return ()=> document.removeEventListener('scroll', update, passive);
 }
 
 export function lgHeroTimelineLoop({ selector='[data-hero-timeline]', duration=9000 }={}){
   const el = document.querySelector(selector);
-  if(!el || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const prefersReduce = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : null;
+  if(!el || prefersReduce?.matches) return () => {};
   const progress = el.querySelector('.hero-timeline-progress');
-  if(!progress) return;
+  if(!progress) return () => {};
   let start = performance.now();
+  let frameId;
+  let running = true;
   const frame = now =>{
+    if(!running) return;
     const t = ((now - start) % duration) / duration;
     const eased = 0.5 - Math.cos(Math.PI * 2 * t)/2; // smooth loop
-    progress.style.width = `${Math.max(0.05, Math.min(0.98, eased)) * 100}%`;
-    el.style.setProperty('--hero-progress', Math.max(0.05, Math.min(0.98, eased)));
-    requestAnimationFrame(frame);
+    const clamped = Math.max(0.05, Math.min(0.98, eased));
+    progress.style.width = `${clamped * 100}%`;
+    el.style.setProperty('--hero-progress', clamped);
+    frameId = requestAnimationFrame(frame);
   };
-  requestAnimationFrame(frame);
+  frameId = requestAnimationFrame(frame);
+  return ()=>{
+    running = false;
+    if(frameId) cancelAnimationFrame(frameId);
+  };
 }
 
 /* Background flares */
 export function lgBackgroundFlares({ canvasId='lg-fx', stripeCount=6, pulseCount=28, orbCount=4, pointerParallax=0.04 }={}){
-  const prefersReduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const prefersReduce = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   const canvas = document.getElementById(canvasId);
-  if(!canvas) return;
+  if(!canvas) return () => {};
   const ctx = canvas.getContext('2d', { alpha: true });
   let dpr = Math.max(1, devicePixelRatio || 1);
   let width = 0, height = 0;
@@ -223,7 +259,9 @@ export function lgBackgroundFlares({ canvasId='lg-fx', stripeCount=6, pulseCount
     canvas.style.height = innerHeight + 'px';
   };
   resize();
-  addEventListener('resize', resize, { passive: true });
+  const onResize = ()=> resize();
+  const passive = { passive: true };
+  addEventListener('resize', onResize, passive);
 
   const pointer = { x: 0.5, y: 0.35 };
   const setPointer = (x, y)=>{
@@ -232,8 +270,10 @@ export function lgBackgroundFlares({ canvasId='lg-fx', stripeCount=6, pulseCount
     pointer.x = Math.max(0, Math.min(1, x / w));
     pointer.y = Math.max(0, Math.min(1, y / h));
   };
-  addEventListener('pointermove', e=> setPointer(e.clientX, e.clientY), { passive: true });
-  addEventListener('touchmove', e=>{ const t = e.touches[0]; if(t) setPointer(t.clientX, t.clientY); }, { passive: true });
+  const onPointer = e=> setPointer(e.clientX, e.clientY);
+  const onTouch = e=>{ const t = e.touches[0]; if(t) setPointer(t.clientX, t.clientY); };
+  addEventListener('pointermove', onPointer, passive);
+  addEventListener('touchmove', onTouch, passive);
 
   const stripeTotal = Math.max(1, Math.floor(stripeCount));
   const pulseTotal = Math.max(1, Math.floor(pulseCount));
@@ -285,7 +325,8 @@ export function lgBackgroundFlares({ canvasId='lg-fx', stripeCount=6, pulseCount
     sparks.forEach(spark=>{ spark.hue = pickHue(); });
   };
 
-  document.addEventListener(TOKEN_EVENT, ()=>{ readPalette(); retint(); if(prefersReduce.matches) renderStatic(); });
+  const onTokenChange = ()=>{ readPalette(); retint(); if(prefersReduce.matches) renderStatic(); };
+  document.addEventListener(TOKEN_EVENT, onTokenChange);
 
   const renderStatic = ()=>{
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -300,10 +341,18 @@ export function lgBackgroundFlares({ canvasId='lg-fx', stripeCount=6, pulseCount
 
   if(prefersReduce.matches){
     renderStatic();
-    return;
+    return ()=>{
+      removeEventListener('resize', onResize, passive);
+      removeEventListener('pointermove', onPointer, passive);
+      removeEventListener('touchmove', onTouch, passive);
+      document.removeEventListener(TOKEN_EVENT, onTokenChange);
+    };
   }
 
+  let rafId;
+  let running = true;
   const frame = (now)=>{
+    if(!running) return;
     const w = width / dpr;
     const h = height / dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -442,35 +491,79 @@ export function lgBackgroundFlares({ canvasId='lg-fx', stripeCount=6, pulseCount
     ctx.fillStyle = 'rgba(3,5,16,0.38)';
     ctx.fillRect(0, 0, w, h);
 
-    requestAnimationFrame(frame);
+    rafId = requestAnimationFrame(frame);
   };
 
-  requestAnimationFrame(frame);
+  rafId = requestAnimationFrame(frame);
 
-  document.addEventListener('visibilitychange', ()=>{
+  const onVisibility = ()=>{
     if(document.hidden){ return; }
     resize();
-  });
+  };
+  document.addEventListener('visibilitychange', onVisibility);
+
+  return ()=>{
+    running = false;
+    if(rafId) cancelAnimationFrame(rafId);
+    removeEventListener('resize', onResize, passive);
+    removeEventListener('pointermove', onPointer, passive);
+    removeEventListener('touchmove', onTouch, passive);
+    document.removeEventListener(TOKEN_EVENT, onTokenChange);
+    document.removeEventListener('visibilitychange', onVisibility);
+  };
 }
 
 /* TTS */
 export function lgBindTTS(toggleBtn){
-  if(!toggleBtn) return;
-  let on=false; const set=v=>{ on=v; toggleBtn.setAttribute('aria-pressed', String(on)); toggleBtn.textContent = on ? 'Reading' : 'Read'; if(!on && speechSynthesis.speaking) speechSynthesis.cancel(); };
-  set(false); toggleBtn.addEventListener('click', ()=> set(!on));
-  document.addEventListener('dblclick', e=>{
-    if(!on) return; const node=e.target.closest('p, h1, h2, h3, li, summary, figcaption'); if(!node) return;
-    const u=new SpeechSynthesisUtterance(node.innerText); speechSynthesis.cancel(); speechSynthesis.speak(u);
-  });
+  if(!toggleBtn || typeof window === 'undefined' || typeof window.speechSynthesis === 'undefined'){
+    return () => {};
+  }
+  let on=false;
+  const set=v=>{
+    on=v;
+    toggleBtn.setAttribute('aria-pressed', String(on));
+    toggleBtn.textContent = on ? 'Reading' : 'Read';
+    if(!on && speechSynthesis.speaking) speechSynthesis.cancel();
+  };
+  set(false);
+  const onClick = ()=> set(!on);
+  const onDblClick = e=>{
+    if(!on) return;
+    const node=e.target.closest('p, h1, h2, h3, li, summary, figcaption');
+    if(!node) return;
+    const utterance=new SpeechSynthesisUtterance(node.innerText);
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utterance);
+  };
+  toggleBtn.addEventListener('click', onClick);
+  document.addEventListener('dblclick', onDblClick);
+  return ()=>{
+    speechSynthesis.cancel();
+    toggleBtn.removeEventListener('click', onClick);
+    document.removeEventListener('dblclick', onDblClick);
+  };
 }
 
 /* Pills -> cards */
 export function lgBindPills(){
-  const pills=document.querySelectorAll('.pill'); const cards=document.querySelectorAll('[data-info-card]');
-  pills.forEach(p=> p.addEventListener('click', ()=>{
-    pills.forEach(x=> x.setAttribute('aria-pressed','false')); p.setAttribute('aria-pressed','true');
-    const k=p.dataset.info; cards.forEach(c=> c.classList.toggle('in', c.dataset.infoCard===k));
-  })); pills[0]?.click();
+  const pills=[...document.querySelectorAll('.pill')];
+  const cards=document.querySelectorAll('[data-info-card]');
+  if(!pills.length) return () => {};
+  const handlers = new Map();
+  pills.forEach(p=>{
+    const handler = ()=>{
+      pills.forEach(x=> x.setAttribute('aria-pressed','false'));
+      p.setAttribute('aria-pressed','true');
+      const k=p.dataset.info;
+      cards.forEach(c=> c.classList.toggle('in', c.dataset.infoCard===k));
+    };
+    handlers.set(p, handler);
+    p.addEventListener('click', handler);
+  });
+  pills[0]?.click();
+  return ()=>{
+    handlers.forEach((handler, pill)=> pill.removeEventListener('click', handler));
+  };
 }
 
 /* LED helpers */
