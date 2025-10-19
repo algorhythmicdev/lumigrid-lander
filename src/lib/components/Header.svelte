@@ -1,20 +1,39 @@
 <script>
-  import { bindBrandSelect, bindThemeToggle, bindTTS } from '$lib/fx.js';
-  import { onMount } from 'svelte';
-  let brandSel; let themeBtn; let ttsBtn;
-  onMount(()=>{ bindBrandSelect(brandSel); bindThemeToggle(themeBtn); bindTTS(ttsBtn); });
+  import { bindBrandSelect, bindThemeToggle } from '$lib/fx.js';
+  import { onDestroy, onMount } from 'svelte';
+  let brandSel;
+  let themeBtn;
+  let themeMode = 'dark';
+  let cleanupTheme;
+  onMount(() => {
+    bindBrandSelect(brandSel);
+    cleanupTheme = bindThemeToggle(themeBtn, (mode) => (themeMode = mode));
+  });
+  onDestroy(() => {
+    cleanupTheme?.();
+  });
 </script>
-<nav class="glass" style="position:sticky;top:.75rem;display:grid;grid-template-columns:1fr auto auto;gap:.75rem;padding:.75rem;border-radius:1rem;">
-  <a href="/" class="h2 text-gradient" style="text-decoration:none;font-weight:800;">LumiGrid</a>
-  <div style="display:flex;gap:.5rem;align-items:center;">
+<nav class="glass top-nav">
+  <a href="/" class="h2 text-gradient brand">LumiGrid</a>
+  <div class="nav-controls">
     <label class="sr-only" for="brandTheme">Brand theme</label>
-    <select id="brandTheme" bind:this={brandSel} style="max-width:180px">
+    <select id="brandTheme" bind:this={brandSel}>
       <option value="rf">RF Default</option>
       <option value="contrast">High-Contrast Cyan</option>
       <option value="warm">Warm Magenta</option>
     </select>
-    <button id="ttsToggle" bind:this={ttsBtn} class="btn ghost" aria-pressed="false" aria-label="Read text aloud">Read</button>
-    <button id="themeToggle" bind:this={themeBtn} class="btn ghost" aria-pressed="false" aria-label="Toggle dark/light">Theme</button>
+    <button
+      id="themeToggle"
+      bind:this={themeBtn}
+      class="btn ghost theme-toggle"
+      type="button"
+      aria-pressed={themeMode === 'dark'}
+      aria-label="Toggle dark or light theme"
+      data-theme={themeMode}
+    >
+      <span class="btn-icon" aria-hidden="true">{themeMode === 'dark' ? '🌙' : '☀️'}</span>
+      <span class="btn-label">{themeMode === 'dark' ? 'Dark' : 'Light'}</span>
+    </button>
   </div>
-  <a class="btn primary" href="#contact">Contact</a>
+  <a class="btn primary cta" href="#contact">Contact</a>
 </nav>

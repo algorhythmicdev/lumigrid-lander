@@ -8,11 +8,27 @@ export function bindRipple(root=document){
   });
 }
 export function reveals(selector='.reveal', threshold=0.12){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const elements = [...document.querySelectorAll(selector)];
+  if(!elements.length) return;
+  const showAll = () => elements.forEach((el) => el.classList.add('in'));
+  if(reduce.matches){
+    showAll();
+    return;
+  }
   const io = new IntersectionObserver((entries)=> entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }),{threshold});
-  document.querySelectorAll(selector).forEach(el=> io.observe(el));
+  elements.forEach((el)=> io.observe(el));
+  reduce.addEventListener('change', (event) => {
+    if(event.matches){
+      showAll();
+      io.disconnect();
+    }
+  });
 }
 export function parallax(selector='[data-parallax]'){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const els = [...document.querySelectorAll(selector)];
+  if(!els.length) return;
   const onScroll = ()=>{
     const y = window.scrollY || 0;
     els.forEach(el=>{
@@ -20,8 +36,31 @@ export function parallax(selector='[data-parallax]'){
       el.style.transform = `translateY(${y * amt * -0.1}px)`;
     });
   };
-  document.addEventListener('scroll', onScroll, {passive:true});
-  onScroll();
+  let active = false;
+  const start = () => {
+    if(active) return;
+    active = true;
+    document.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  };
+  const stop = () => {
+    if(!active) return;
+    active = false;
+    document.removeEventListener('scroll', onScroll);
+    els.forEach((el)=> (el.style.transform = ''));
+  };
+  if(reduce.matches){
+    stop();
+  } else {
+    start();
+  }
+  reduce.addEventListener('change', (event) => {
+    if(event.matches){
+      stop();
+    } else {
+      start();
+    }
+  });
 }
 export function timelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-progress', ids=[]}={}){
   const items = [...document.querySelectorAll(`${listSelector} li`)];
@@ -34,23 +73,104 @@ export function timelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-pro
       const top = window.scrollY + sec.getBoundingClientRect().top;
       if (top <= mid) active = i;
     });
-    items.forEach((li,i)=> li.classList.toggle('is-active', i === active));
+    items.forEach((li,i)=>{
+      const isActive = i === active;
+      li.classList.toggle('is-active', isActive);
+      const link = li.querySelector('a');
+      if(link){
+        if(isActive){ link.setAttribute('aria-current','true'); }
+        else { link.removeAttribute('aria-current'); }
+      }
+    });
     if(bar){
       const doc = document.body.scrollHeight - innerHeight;
       const p = Math.max(0, Math.min(1, (window.scrollY / doc)));
-      bar.style.maskSize = (p*100) + '% 100%';
+      const size = (p*100) + '% 100%';
+      bar.style.maskSize = size;
+      bar.style.webkitMaskSize = size;
     }
   }
   document.addEventListener('scroll', update, {passive:true});
   update();
 }
 export function setBrand(theme){ document.documentElement.setAttribute('data-theme', theme); }
-export function bindBrandSelect(sel){ if(!sel) return; setBrand(sel.value||'rf'); sel.addEventListener('change', e=> setBrand(e.target.value)); }
-export function bindThemeToggle(btn){
-  if(!btn) return;
-  let dark = matchMedia('(prefers-color-scheme: dark)').matches;
-  const set = d=>{ dark=d; document.documentElement.style.colorScheme = dark ? 'dark' : 'light'; btn.setAttribute('aria-pressed', String(dark)); };
-  set(dark); btn.addEventListener('click', ()=> set(!dark));
+export function bindBrandSelect(sel){
+  if(!sel) return;
+  const storageKey = 'lg-brand';
+  const readStored = () => {
+    try {
+      return localStorage.getItem(storageKey);
+    } catch (err) {
+      return null;
+    }
+  };
+  const writeStored = (value) => {
+    try {
+      localStorage.setItem(storageKey, value);
+    } catch (err) {
+      /* noop */
+    }
+  };
+  const applyBrand = (value, persist = false) => {
+    const next = value && sel.querySelector(`option[value="${value}"]`) ? value : sel.value || 'rf';
+    sel.value = next;
+    setBrand(next);
+    if (persist) {
+      writeStored(next);
+    }
+  };
+  const stored = readStored();
+  applyBrand(stored ?? sel.value ?? 'rf', Boolean(stored));
+  sel.addEventListener('change', (e) => applyBrand(e.target.value, true));
+}
+export function bindThemeToggle(btn, onChange){
+  if(!btn) return () => {};
+  const root = document.documentElement;
+  const storageKey = 'lg-color';
+  const readStored = () => {
+    try {
+      return localStorage.getItem(storageKey);
+    } catch (err) {
+      return null;
+    }
+  };
+  const writeStored = (mode) => {
+    try {
+      localStorage.setItem(storageKey, mode);
+    } catch (err) {
+      /* noop */
+    }
+  };
+  const mq = matchMedia('(prefers-color-scheme: dark)');
+  let hasStored = false;
+  const apply = (mode, persist = false) => {
+    const value = mode === 'light' ? 'light' : 'dark';
+    root.dataset.color = value;
+    root.style.colorScheme = value;
+    btn.dataset.theme = value;
+    onChange?.(value);
+    if(persist){
+      writeStored(value);
+      hasStored = true;
+    }
+  };
+  const stored = readStored();
+  hasStored = stored !== null;
+  apply(stored ?? (mq.matches ? 'dark' : 'light'), hasStored);
+  const handler = () => {
+    const next = root.dataset.color === 'dark' ? 'light' : 'dark';
+    apply(next, true);
+  };
+  const autoHandler = (event) => {
+    if(hasStored) return;
+    apply(event.matches ? 'dark' : 'light', false);
+  };
+  btn.addEventListener('click', handler);
+  mq.addEventListener('change', autoHandler);
+  return () => {
+    btn.removeEventListener('click', handler);
+    mq.removeEventListener('change', autoHandler);
+  };
 }
 export function bindTTS(toggleBtn){
   if(!toggleBtn) return;
