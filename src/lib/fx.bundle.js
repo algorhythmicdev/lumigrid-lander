@@ -1,36 +1,69 @@
 // FX & UI helpers for LumiGrid (SvelteKit)
-export function bindRipple(root=document){
-  root.addEventListener('pointermove', (e)=>{
+
+const noop = () => {};
+const cleanupNoop = () => {};
+const mediaQueryFallback = {
+  matches: false,
+  addEventListener: noop,
+  removeEventListener: noop,
+  addListener: noop,
+  removeListener: noop
+};
+
+const getDocument = () => (typeof document === 'undefined' ? null : document);
+const getWindow = () => (typeof window === 'undefined' ? null : window);
+const getComputed = () => (typeof getComputedStyle === 'function' ? getComputedStyle : null);
+
+const getMediaQueryList = (query) => {
+  const win = getWindow();
+  return win?.matchMedia ? win.matchMedia(query) : mediaQueryFallback;
+};
+
+export function bindRipple(root = getDocument()){
+  if(!root) return cleanupNoop;
+  const handler = (e)=>{
     const t = e.target.closest?.('.btn'); if(!t) return;
     const r = t.getBoundingClientRect();
     t.style.setProperty('--mx', ((e.clientX - r.left)/r.width*100)+'%');
     t.style.setProperty('--my', ((e.clientY - r.top)/r.height*100)+'%');
-  });
+  };
+  root.addEventListener('pointermove', handler);
+  return () => root.removeEventListener('pointermove', handler);
 }
 export function reveals(selector='.reveal', threshold=0.12){
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  const elements = [...document.querySelectorAll(selector)];
-  if(!elements.length) return;
+  const doc = getDocument();
+  if(!doc) return cleanupNoop;
+  const reduce = getMediaQueryList('(prefers-reduced-motion: reduce)');
+  const elements = [...doc.querySelectorAll(selector)];
+  if(!elements.length) return cleanupNoop;
   const showAll = () => elements.forEach((el) => el.classList.add('in'));
   if(reduce.matches){
     showAll();
-    return;
+    return cleanupNoop;
   }
   const io = new IntersectionObserver((entries)=> entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }),{threshold});
   elements.forEach((el)=> io.observe(el));
-  reduce.addEventListener('change', (event) => {
+  const handleReduce = (event) => {
     if(event.matches){
       showAll();
       io.disconnect();
     }
-  });
+  };
+  reduce.addEventListener('change', handleReduce);
+  return () => {
+    io.disconnect();
+    reduce.removeEventListener('change', handleReduce);
+  };
 }
 export function parallax(selector='[data-parallax]'){
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-  const els = [...document.querySelectorAll(selector)];
-  if(!els.length) return;
+  const doc = getDocument();
+  const win = getWindow();
+  if(!doc || !win) return cleanupNoop;
+  const reduce = getMediaQueryList('(prefers-reduced-motion: reduce)');
+  const els = [...doc.querySelectorAll(selector)];
+  if(!els.length) return cleanupNoop;
   const onScroll = ()=>{
-    const y = window.scrollY || 0;
+    const y = win.scrollY || 0;
     els.forEach(el=>{
       const amt = parseFloat(el.dataset.parallax || '0.1');
       el.style.transform = `translateY(${y * amt * -0.1}px)`;
@@ -40,13 +73,13 @@ export function parallax(selector='[data-parallax]'){
   const start = () => {
     if(active) return;
     active = true;
-    document.addEventListener('scroll', onScroll, {passive:true});
+    doc.addEventListener('scroll', onScroll, {passive:true});
     onScroll();
   };
   const stop = () => {
     if(!active) return;
     active = false;
-    document.removeEventListener('scroll', onScroll);
+    doc.removeEventListener('scroll', onScroll);
     els.forEach((el)=> (el.style.transform = ''));
   };
   if(reduce.matches){
@@ -54,28 +87,36 @@ export function parallax(selector='[data-parallax]'){
   } else {
     start();
   }
-  reduce.addEventListener('change', (event) => {
+  const handleReduce = (event) => {
     if(event.matches){
       stop();
     } else {
       start();
     }
-  });
+  };
+  reduce.addEventListener('change', handleReduce);
+  return () => {
+    reduce.removeEventListener('change', handleReduce);
+    stop();
+  };
 }
 export function timelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-progress', ids=[], onActive}={}){
-  const items = [...document.querySelectorAll(`${listSelector} li`)];
-  const sections = ids.map((id) => document.getElementById(id)).filter(Boolean);
-  const bar = document.querySelector(progressSelector);
-  if(!items.length || !sections.length) return () => {};
+  const doc = getDocument();
+  const win = getWindow();
+  if(!doc || !win) return cleanupNoop;
+  const items = [...doc.querySelectorAll(`${listSelector} li`)];
+  const sections = ids.map((id) => doc.getElementById(id)).filter(Boolean);
+  const bar = doc.querySelector(progressSelector);
+  if(!items.length || !sections.length) return cleanupNoop;
   let raf = 0;
   let lastActive = -1;
   const update = () => {
     raf = 0;
-    const mid = window.scrollY + innerHeight / 2;
+    const mid = win.scrollY + win.innerHeight / 2;
     let active = 0;
     sections.forEach((sec, i) => {
       const rect = sec.getBoundingClientRect();
-      const top = window.scrollY + rect.top;
+      const top = win.scrollY + rect.top;
       if (top <= mid) {
         active = i;
       }
@@ -93,8 +134,8 @@ export function timelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-pro
       }
     });
     if (bar) {
-      const doc = Math.max(1, document.body.scrollHeight - innerHeight);
-      const p = Math.max(0, Math.min(1, window.scrollY / doc));
+      const docHeight = Math.max(1, doc.body.scrollHeight - win.innerHeight);
+      const p = Math.max(0, Math.min(1, win.scrollY / docHeight));
       const size = `${(p * 100).toFixed(2)}% 100%, 100% 100%`;
       bar.style.maskSize = size;
       bar.style.webkitMaskSize = size;
@@ -107,34 +148,35 @@ export function timelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-pro
   };
   const queueUpdate = () => {
     if (raf) return;
-    raf = requestAnimationFrame(update);
+    raf = win.requestAnimationFrame(update);
   };
-  document.addEventListener('scroll', queueUpdate, { passive: true });
-  window.addEventListener('resize', queueUpdate, { passive: true });
+  doc.addEventListener('scroll', queueUpdate, { passive: true });
+  win.addEventListener('resize', queueUpdate, { passive: true });
   update();
   return () => {
-    document.removeEventListener('scroll', queueUpdate);
-    window.removeEventListener('resize', queueUpdate);
+    doc.removeEventListener('scroll', queueUpdate);
+    win.removeEventListener('resize', queueUpdate);
     if (raf) {
-      cancelAnimationFrame(raf);
+      win.cancelAnimationFrame(raf);
       raf = 0;
     }
   };
 }
-export function setBrand(theme){ document.documentElement.setAttribute('data-theme', theme); }
+export function setBrand(theme){ const doc = getDocument(); doc?.documentElement?.setAttribute('data-theme', theme); }
 export function bindBrandSelect(sel){
-  if(!sel) return;
+  const win = getWindow();
+  if(!sel || !win) return cleanupNoop;
   const storageKey = 'lg-brand';
   const readStored = () => {
     try {
-      return localStorage.getItem(storageKey);
+      return win.localStorage?.getItem(storageKey);
     } catch (err) {
       return null;
     }
   };
   const writeStored = (value) => {
     try {
-      localStorage.setItem(storageKey, value);
+      win.localStorage?.setItem(storageKey, value);
     } catch (err) {
       /* noop */
     }
@@ -149,27 +191,31 @@ export function bindBrandSelect(sel){
   };
   const stored = readStored();
   applyBrand(stored ?? sel.value ?? 'rf', Boolean(stored));
-  sel.addEventListener('change', (e) => applyBrand(e.target.value, true));
+  const handler = (e) => applyBrand(e.target.value, true);
+  sel.addEventListener('change', handler);
+  return () => sel.removeEventListener('change', handler);
 }
 export function bindThemeToggle(btn, onChange){
-  if(!btn) return () => {};
-  const root = document.documentElement;
+  const doc = getDocument();
+  const win = getWindow();
+  if(!btn || !doc || !win) return cleanupNoop;
+  const root = doc.documentElement;
   const storageKey = 'lg-color';
   const readStored = () => {
     try {
-      return localStorage.getItem(storageKey);
+      return win.localStorage?.getItem(storageKey);
     } catch (err) {
       return null;
     }
   };
   const writeStored = (mode) => {
     try {
-      localStorage.setItem(storageKey, mode);
+      win.localStorage?.setItem(storageKey, mode);
     } catch (err) {
       /* noop */
     }
   };
-  const mq = matchMedia('(prefers-color-scheme: dark)');
+  const mq = getMediaQueryList('(prefers-color-scheme: dark)');
   let hasStored = false;
   const apply = (mode, persist = false) => {
     const value = mode === 'light' ? 'light' : 'dark';
@@ -201,22 +247,55 @@ export function bindThemeToggle(btn, onChange){
   };
 }
 export function bindTTS(toggleBtn){
-  if(!toggleBtn) return;
-  let on=false; const set=v=>{ on=v; toggleBtn.setAttribute('aria-pressed', String(on)); toggleBtn.textContent = on ? 'Reading' : 'Read'; if(!on && speechSynthesis.speaking) speechSynthesis.cancel(); };
-  set(false); toggleBtn.addEventListener('click', ()=> set(!on));
-  document.addEventListener('dblclick', e=>{
-    if(!on) return; const node=e.target.closest('p, h1, h2, h3, li, summary, figcaption'); if(!node) return;
-    const u=new SpeechSynthesisUtterance(node.innerText); speechSynthesis.cancel(); speechSynthesis.speak(u);
-  });
+  const doc = getDocument();
+  const win = getWindow();
+  if(!toggleBtn || !doc || !win || !('speechSynthesis' in win) || typeof win.SpeechSynthesisUtterance !== 'function'){
+    return cleanupNoop;
+  }
+  const synth = win.speechSynthesis;
+  let on=false;
+  const set=v=>{
+    on=v;
+    toggleBtn.setAttribute('aria-pressed', String(on));
+    toggleBtn.textContent = on ? 'Reading' : 'Read';
+    if(!on && synth.speaking) synth.cancel();
+  };
+  set(false);
+  const handleToggle = ()=> set(!on);
+  const handleDblClick = (e)=>{
+    if(!on) return;
+    const node=e.target.closest('p, h1, h2, h3, li, summary, figcaption');
+    if(!node) return;
+    const utterance=new win.SpeechSynthesisUtterance(node.innerText);
+    synth.cancel();
+    synth.speak(utterance);
+  };
+  toggleBtn.addEventListener('click', handleToggle);
+  doc.addEventListener('dblclick', handleDblClick);
+  return () => {
+    toggleBtn.removeEventListener('click', handleToggle);
+    doc.removeEventListener('dblclick', handleDblClick);
+    if(synth.speaking) synth.cancel();
+  };
 }
 export function backgroundFlares({ canvasId='lg-fx', count=42, spawnRate=0.08, depth={ near:0.9, far:3.2 }, radiusPx={ near:380, far:120 }, hues=[ {h:316,s:85,l:60},{h:265,s:77,l:62},{h:188,s:82,l:60},{h:42,s:97,l:67} ], baseOpacity=0.18, addBloom=true, pointerParallax=0.035, cameraDrift=0.0008, maxBlinkHz=2.2, palettes }={}){
-  const mReduce = matchMedia('(prefers-reduced-motion: reduce)');
-  const cvs = document.getElementById(canvasId); if(!cvs) return;
+  const doc = getDocument();
+  const win = getWindow();
+  if(!doc || !win) return cleanupNoop;
+  const mReduce = getMediaQueryList('(prefers-reduced-motion: reduce)');
+  const cvs = doc.getElementById(canvasId); if(!cvs) return cleanupNoop;
   const ctx = cvs.getContext('2d', { alpha:true });
-  const root = document.documentElement;
-  let dpr = Math.max(1, devicePixelRatio||1), vw=0, vh=0;
-  const resize=()=>{ vw=cvs.width=Math.floor(innerWidth*dpr); vh=cvs.height=Math.floor(innerHeight*dpr); cvs.style.width=innerWidth+'px'; cvs.style.height=innerHeight+'px'; };
-  resize(); addEventListener('resize', resize, {passive:true});
+  if(!ctx) return cleanupNoop;
+  const root = doc.documentElement;
+  let dpr = Math.max(1, win.devicePixelRatio||1), vw=0, vh=0;
+  const resize=()=>{
+    vw=cvs.width=Math.floor(win.innerWidth*dpr);
+    vh=cvs.height=Math.floor(win.innerHeight*dpr);
+    cvs.style.width=win.innerWidth+'px';
+    cvs.style.height=win.innerHeight+'px';
+  };
+  resize();
+  win.addEventListener('resize', resize, {passive:true});
   const defaultDark = { hues, baseOpacity, fill:'rgba(0,0,0,0.25)' };
   const defaultLight = {
     hues:[
@@ -238,7 +317,7 @@ export function backgroundFlares({ canvasId='lg-fx', count=42, spawnRate=0.08, d
     light: mergePalette(defaultLight, palettes?.light)
   };
   const currentMode = () => (root.dataset.color === 'light' ? 'light' : 'dark');
-  const makeSprite=(base,hsl,feather=1)=>{ const r=Math.max(8,Math.floor(base*dpr)); const off=document.createElement('canvas'); off.width=off.height=r*2; const g=off.getContext('2d'); const grad=g.createRadialGradient(r,r,0,r,r,r); grad.addColorStop(0.0,`hsla(${hsl.h},${hsl.s}%,${Math.min(96,hsl.l+15)}%,${0.95*feather})`); grad.addColorStop(0.35,`hsla(${hsl.h},${hsl.s}%,${hsl.l}%,${0.55*feather})`); grad.addColorStop(1.0,`hsla(${hsl.h},${Math.max(30,hsl.s-15)}%,${Math.max(20,hsl.l-25)}%,0)`); g.fillStyle=grad; g.beginPath(); g.arc(r,r,r,0,Math.PI*2); g.fill(); return {canvas:off,r}; };
+  const makeSprite=(base,hsl,feather=1)=>{ const r=Math.max(8,Math.floor(base*dpr)); const off=doc.createElement('canvas'); off.width=off.height=r*2; const g=off.getContext('2d'); const grad=g.createRadialGradient(r,r,0,r,r,r); grad.addColorStop(0.0,`hsla(${hsl.h},${hsl.s}%,${Math.min(96,hsl.l+15)}%,${0.95*feather})`); grad.addColorStop(0.35,`hsla(${hsl.h},${hsl.s}%,${hsl.l}%,${0.55*feather})`); grad.addColorStop(1.0,`hsla(${hsl.h},${Math.max(30,hsl.s-15)}%,${Math.max(20,hsl.l-25)}%,0)`); g.fillStyle=grad; g.beginPath(); g.arc(r,r,r,0,Math.PI*2); g.fill(); return {canvas:off,r}; };
   const buildSprites = (palette) => palette.hues.map(h=>({ main:makeSprite(320,h,1), bloom:addBloom?makeSprite(520,h,0.55):null }));
   const getPalette = (mode) => paletteConfig[mode] ?? paletteConfig.dark ?? defaultDark;
   let activePalette = getPalette(currentMode());
@@ -262,14 +341,17 @@ export function backgroundFlares({ canvasId='lg-fx', count=42, spawnRate=0.08, d
       flare.pal = SPR[Math.floor(Math.random()*SPR.length)];
     });
   };
-  const world={ w:4000, h:2600 }; let cam={x:0,y:0}; let pointer={x:.5,y:.35}, t0=performance.now(), flares=[], acc=0;
-  addEventListener('pointermove', e=>{ pointer.x=e.clientX/innerWidth; pointer.y=e.clientY/innerHeight; }, {passive:true});
-  addEventListener('touchmove', e=>{ const t=e.touches[0]; if(!t) return; pointer.x=t.clientX/innerWidth; pointer.y=t.clientY/innerHeight; }, {passive:true});
+  const perf = win.performance ?? { now: () => Date.now() };
+  const world={ w:4000, h:2600 }; let cam={x:0,y:0}; let pointer={x:.5,y:.35}, t0=perf.now(), flares=[], acc=0;
+  const pointerMove = e=>{ pointer.x=e.clientX/win.innerWidth; pointer.y=e.clientY/win.innerHeight; };
+  const touchMove = e=>{ const t=e.touches[0]; if(!t) return; pointer.x=t.clientX/win.innerWidth; pointer.y=t.clientY/win.innerHeight; };
+  win.addEventListener('pointermove', pointerMove, {passive:true});
+  win.addEventListener('touchmove', touchMove, {passive:true});
   const lerp=(a,b,t)=>a+(b-a)*t, invLerp=(a,b,v)=>(v-a)/(b-a), ease=(t)=> t<.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
-  const spawn=()=>{ const pal=SPR[Math.floor(Math.random()*SPR.length)]; const z=depth.near+Math.random()*(depth.far-depth.near); const x=(Math.random()-.5)*world.w, y=(Math.random()-.5)*world.h; const life=8000+Math.random()*10000, t0=performance.now(); const blink=0.6+Math.random()*(maxBlinkHz-0.6); const baseR=lerp(radiusPx.far, radiusPx.near, invLerp(depth.far, depth.near, z)); return {x,y,z,t0,life,blink,baseR,pal,dead:false}; };
+  const spawn=()=>{ const pal=SPR[Math.floor(Math.random()*SPR.length)]; const z=depth.near+Math.random()*(depth.far-depth.near); const x=(Math.random()-.5)*world.w, y=(Math.random()-.5)*world.h; const life=8000+Math.random()*10000, t0=perf.now(); const blink=0.6+Math.random()*(maxBlinkHz-0.6); const baseR=lerp(radiusPx.far, radiusPx.near, invLerp(depth.far, depth.near, z)); return {x,y,z,t0,life,blink,baseR,pal,dead:false}; };
   let observer;
-  if(typeof MutationObserver !== 'undefined'){
-    observer = new MutationObserver(()=> applyPalette(currentMode()));
+  if(typeof win.MutationObserver !== 'undefined'){
+    observer = new win.MutationObserver(()=> applyPalette(currentMode()));
     observer.observe(root, { attributes:true, attributeFilter:['data-color'] });
   }
   let raf=null;
@@ -289,27 +371,43 @@ export function backgroundFlares({ canvasId='lg-fx', count=42, spawnRate=0.08, d
       const alpha=activeBaseOpacity*fadeIn*fadeOut; if(alpha<=.002){ f.dead=(age>f.life); continue; }
       const blink=0.85 + 0.15*Math.sin(age*0.002*f.blink*Math.PI*2);
       const fov=420, sx=((f.x-cam.x)/f.z)*fov + (vw*.5), sy=((f.y-cam.y)/f.z)*fov + (vh*.5);
-      const scale=1/f.z, r=Math.max(8, f.baseR*scale) * (devicePixelRatio||1);
+      const scale=1/f.z, r=Math.max(8, f.baseR*scale) * (win.devicePixelRatio||1);
       if(f.pal.bloom){ const k=r/f.pal.bloom.r; ctx.globalAlpha=alpha*.6*blink; ctx.drawImage(f.pal.bloom.canvas, sx-f.pal.bloom.r*k, sy-f.pal.bloom.r*k, f.pal.bloom.canvas.width*k, f.pal.bloom.canvas.height*k); }
       const k2=r/f.pal.main.r; ctx.globalAlpha=alpha*blink; ctx.drawImage(f.pal.main.canvas, sx-f.pal.main.r*k2, sy-f.pal.main.r*k2, f.pal.main.canvas.width*k2, f.pal.main.canvas.height*k2);
     }
     ctx.globalAlpha=1; if(flares.length>count*2) flares=flares.filter(f=>!f.dead);
-    raf=requestAnimationFrame(frame);
+    raf=win.requestAnimationFrame(frame);
   };
-  if(!mReduce.matches){ raf=requestAnimationFrame(frame); } else { ctx.fillStyle=fillStyle; ctx.fillRect(0,0,cvs.width,cvs.height); }
-  document.addEventListener('visibilitychange', ()=>{ if(document.hidden && raf){ cancelAnimationFrame(raf); raf=null; } else if(!document.hidden && !mReduce.matches && !raf){ t0=performance.now(); raf=requestAnimationFrame(frame); } });
+  if(!mReduce.matches){ raf=win.requestAnimationFrame(frame); } else { ctx.fillStyle=fillStyle; ctx.fillRect(0,0,cvs.width,cvs.height); }
+  const visHandler = ()=>{
+    if(doc.hidden && raf){ win.cancelAnimationFrame(raf); raf=null; }
+    else if(!doc.hidden && !mReduce.matches && !raf){ t0=perf.now(); raf=win.requestAnimationFrame(frame); }
+  };
+  doc.addEventListener('visibilitychange', visHandler);
+  return () => {
+    win.removeEventListener('resize', resize);
+    win.removeEventListener('pointermove', pointerMove);
+    win.removeEventListener('touchmove', touchMove);
+    doc.removeEventListener('visibilitychange', visHandler);
+    if(observer) observer.disconnect();
+    if(raf){ win.cancelAnimationFrame(raf); }
+  };
 }
 
 export function sectionFlares({ selector='.section', rootMargin='-35% 0px -35%', threshold=0.35 }={}){
-  const sections = Array.from(document.querySelectorAll(selector));
-  if(!sections.length) return () => {};
-  const root = document.documentElement;
-  const computed = getComputedStyle(root);
+  const doc = getDocument();
+  const win = getWindow();
+  const compute = getComputed();
+  if(!doc || !win) return cleanupNoop;
+  const sections = Array.from(doc.querySelectorAll(selector));
+  if(!sections.length) return cleanupNoop;
+  const root = doc.documentElement;
+  const computed = compute ? compute(root) : null;
   const defaults = {
-    primary: computed.getPropertyValue('--active-orbit-a')?.trim() || 'var(--a)',
-    secondary: computed.getPropertyValue('--active-orbit-b')?.trim() || 'var(--b)',
-    glow: computed.getPropertyValue('--active-orbit-glow')?.trim() || 'var(--halo-glow)',
-    strength: computed.getPropertyValue('--active-orbit-strength')?.trim() || '.5'
+    primary: computed?.getPropertyValue('--active-orbit-a')?.trim() || 'var(--a)',
+    secondary: computed?.getPropertyValue('--active-orbit-b')?.trim() || 'var(--b)',
+    glow: computed?.getPropertyValue('--active-orbit-glow')?.trim() || 'var(--halo-glow)',
+    strength: computed?.getPropertyValue('--active-orbit-strength')?.trim() || '.5'
   };
   const applyFlare = (section) => {
     const current = section ?? null;
@@ -330,7 +428,7 @@ export function sectionFlares({ selector='.section', rootMargin='-35% 0px -35%',
   const nearestActive = () => {
     let best = null;
     let bestDistance = Number.POSITIVE_INFINITY;
-    const mid = innerHeight / 2;
+    const mid = win.innerHeight / 2;
     sections.forEach((section) => {
       if(section.dataset.active === 'true'){
         const rect = section.getBoundingClientRect();
@@ -354,10 +452,10 @@ export function sectionFlares({ selector='.section', rootMargin='-35% 0px -35%',
       section.dataset.active = 'false';
     }
   });
-  const supportsObserver = typeof IntersectionObserver === 'function';
+  const supportsObserver = typeof win.IntersectionObserver === 'function';
   let observer;
   if(supportsObserver){
-    observer = new IntersectionObserver((entries) => {
+    observer = new win.IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         entry.target.dataset.active = entry.isIntersecting ? 'true' : 'false';
       });
@@ -371,7 +469,7 @@ export function sectionFlares({ selector='.section', rootMargin='-35% 0px -35%',
   const stop = () => {
     observer?.disconnect();
   };
-  const reduce = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : null;
+  const reduce = getMediaQueryList('(prefers-reduced-motion: reduce)');
   const handleReduce = (event) => {
     if(event.matches){
       stop();
@@ -382,16 +480,16 @@ export function sectionFlares({ selector='.section', rootMargin='-35% 0px -35%',
       applyFlare(nearestActive());
     }
   };
-  if(reduce?.matches || !supportsObserver){
+  if(reduce.matches || !supportsObserver){
     setAll(true);
   } else {
     start();
     applyFlare(nearestActive());
   }
-  reduce?.addEventListener('change', handleReduce);
+  reduce.addEventListener('change', handleReduce);
   return () => {
     stop();
-    reduce?.removeEventListener('change', handleReduce);
+    reduce.removeEventListener('change', handleReduce);
     sections.forEach((section) => { delete section.dataset.active; });
     applyFlare(null);
     root.style.setProperty('--active-orbit-a', defaults.primary);
