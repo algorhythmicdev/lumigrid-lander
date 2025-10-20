@@ -2,188 +2,201 @@
   import Header from '$lib/components/Header.svelte';
   import SideTimeline from '$lib/components/SideTimeline.svelte';
   import LEDDemo from '$lib/components/LEDDemo.svelte';
-  import ContactForm from '$lib/components/ContactForm.svelte';
-  import Gallery from '$lib/components/Gallery.svelte';
 
   const sections = [
-    { id: 'hero', label: 'Story', icon: 'sparkles' },
-    { id: 'journey', label: 'Journey', icon: 'bolt' },
+    { id: 'hero', label: 'Overview', icon: 'sparkles' },
     { id: 'system', label: 'System', icon: 'cubeTransparent' },
+    { id: 'philosophy', label: 'Philosophy', icon: 'lightBulb' },
+    { id: 'layers', label: 'Layers', icon: 'serverStack' },
+    { id: 'nodes', label: 'Nodes', icon: 'users' },
     { id: 'led-node', label: 'LED Node', icon: 'sun' },
-    { id: 'experience', label: 'Experience', icon: 'cpuChip' },
-    { id: 'integration', label: 'Sync', icon: 'codeBracketSquare' },
-    { id: 'gallery', label: 'Gallery', icon: 'window' },
-    { id: 'support', label: 'Support', icon: 'shieldCheck' },
-    { id: 'updates', label: 'Updates', icon: 'commandLine' },
-    { id: 'launch', label: 'Launch', icon: 'rocketLaunch' },
-    { id: 'faq', label: 'FAQ', icon: 'lightBulb' },
-    { id: 'contact', label: 'Contact', icon: 'envelope' }
+    { id: 'firmware', label: 'Firmware', icon: 'cpuChip' },
+    { id: 'experience', label: 'Experience', icon: 'swatch' },
+    { id: 'integration', label: 'Connectivity', icon: 'codeBracketSquare' },
+    { id: 'applications', label: 'Applications', icon: 'rectangleGroup' },
+    { id: 'vision', label: 'Vision', icon: 'rocketLaunch' }
   ];
 
-  const galleryItems = [
+  const heroHighlights = [
+    'Distributed control architecture',
+    'Mesh of equal peers',
+    'Human-centred web UI'
+  ];
+
+  const systemOverview = [
+    'LumiGrid is a distributed control architecture for modular, intelligent lighting and kinetic systems. At its core it turns light into a networked medium—each node thinking for itself, yet synchronised in a collective rhythm.',
+    'Instead of one controller fanning out to passive fixtures, LumiGrid builds a mesh of equal peers: compact nodes that can drive LEDs, motors, sensors, or mixed loads. Any node can become the master clock; others align automatically over Wi-Fi or Ethernet multicast.'
+  ];
+
+  const systemMotion = [
+    'Imagine a retail façade covered in addressable LED panels, a few kinetic logo elements, and a line of ambient wall-washers. A single LumiGrid master broadcasts the global clock and cues.',
+    'Every LED Node interprets that timeline locally: gradients ripple in sync, servos swing at the beat, and PWM fixtures fade precisely on the downbeat. The choreography is data-light—just timestamps and preset names—yet the visual result is tightly unified.'
+  ];
+
+  const designPhilosophy = [
+    'Distributed intelligence: computation sits next to the hardware it controls.',
+    'Deterministic sync: every node follows the same timeline, even across wireless networks.',
+    'Openness: each module exposes its state through open REST / MQTT APIs and serves its own web UI.',
+    'Human-centred UX: installation, mapping, and show control happen from any browser—no proprietary app required.',
+    'Hardware pragmatism: built around inexpensive, readily available ESP-class MCUs and a few precision analog helpers.'
+  ];
+
+  const systemLayers = [
+    { step: '01', title: 'Sync Protocol', detail: 'UDP multicast “ticks” and “cues” keep all nodes aligned to the same millisecond grid.' },
+    { step: '02', title: 'Trigger Engine', detail: 'Interprets incoming actions—play preset, blackout, beat—and routes them to the right subsystem.' },
+    { step: '03', title: 'Effect Engine', detail: 'Renders visual or kinetic effects in real time, respecting frame-rate, power, and timing constraints.' },
+    { step: '04', title: 'Scheduler', detail: 'Executes time-based scenes, daily schedules, or show playlists.' },
+    { step: '05', title: 'Networking & APIs', detail: 'REST + MQTT endpoints expose every parameter to higher-level controllers or creative tools.' },
+    { step: '06', title: 'Web UI', detail: 'A self-hosted control panel served by each node for configuration, diagnostics, and live sequencing.' }
+  ];
+
+  const humanInteraction = [
+    'Browser Sequencer: every node can open a timeline view to assemble cues visually.',
+    'Mobile Setup Portal: on first power-up, nodes create an AP and captive portal for Wi-Fi onboarding.',
+    'MQTT / OSC Bridge (optional): allows real-time control from DAWs, game engines, or show controllers.',
+    'SSE Telemetry: live feedback of playhead, FPS, temperature, and power-limit state.'
+  ];
+
+  const techStack = [
+    'ESP-IDF v5 + FreeRTOS',
+    'LittleFS',
+    'esp_http_server',
+    'LWIP UDP multicast',
+    'RMT driver',
+    'I²C',
+    'MQTT client',
+    'cJSON',
+    'Pure-HTML + vanilla JS UI'
+  ];
+
+  const nodeFamily = [
     {
-      title: 'Atrium shimmer',
-      subtitle: 'Layered gradients for hospitality lobbies',
-      href: '#gallery',
-      accent: 'var(--a)',
-      accentB: 'var(--halo-glow)',
-      accentC: 'color-mix(in oklab, var(--c) 40%, transparent)'
+      name: 'LED Node',
+      function: 'Drives “dumb” PWM and addressable LEDs, effects engine, sync participant',
+      hardware: 'ESP32 + PCA9685 + SN74HCT245'
     },
     {
-      title: 'Skybridge wash',
-      subtitle: 'Elevated path lit with airy pulses',
-      href: '#gallery',
-      accent: 'var(--c)',
-      accentB: 'var(--b)',
-      accentC: 'color-mix(in oklab, var(--a) 38%, transparent)'
+      name: 'Kinetic Node',
+      function: 'Motor/servo driver with motion profiles synced to grid',
+      hardware: 'ESP32 + DRV8833 / servo expander'
     },
     {
-      title: 'Show window loops',
-      subtitle: 'Retail frames with sequenced halos',
-      href: '#gallery',
-      accent: 'var(--b)',
-      accentB: 'var(--a)',
-      accentC: 'color-mix(in oklab, var(--halo-glow) 45%, transparent)'
+      name: 'Sensor Node',
+      function: 'Aggregates ambient, motion, or proximity sensors; publishes events',
+      hardware: 'ESP32 + I²C sensor hub'
     },
     {
-      title: 'Outdoor runway',
-      subtitle: 'Evening reveals guided by calm sweeps',
-      href: '#gallery',
-      accent: 'var(--c)',
-      accentB: 'var(--halo-glow)',
-      accentC: 'color-mix(in oklab, var(--a) 42%, transparent)'
+      name: 'Hub Node / Master',
+      function: 'Acts as time-base, playlist server, and cloud bridge',
+      hardware: 'ESP32-S3 / Raspberry Pi gateway'
     },
     {
-      title: 'Lobby lanterns',
-      subtitle: 'Soft cubes breathing with visitors',
-      href: '#gallery',
-      accent: 'color-mix(in oklab, var(--halo-glow) 60%, transparent)',
-      accentB: 'var(--a)',
-      accentC: 'var(--c)'
+      name: 'Light Bar Module',
+      function: 'Linear LED Node variant for architectural strips',
+      hardware: 'Slim ESP32 + MOSFET array'
     },
     {
-      title: 'Festival canopy',
-      subtitle: 'Ambient ribbons above pop-up venues',
-      href: '#gallery',
-      accent: 'var(--b)',
-      accentB: 'var(--c)',
-      accentC: 'var(--halo-glow)'
-    },
-    {
-      title: 'Gallery drift',
-      subtitle: 'Art walls kissed with responsive fades',
-      href: '#gallery',
-      accent: 'var(--a)',
-      accentB: 'var(--b)',
-      accentC: 'color-mix(in oklab, var(--c) 40%, transparent)'
-    },
-    {
-      title: 'Night market pulse',
-      subtitle: 'Clean sight-lines with subtle emphasis',
-      href: '#gallery',
-      accent: 'var(--halo-glow)',
-      accentB: 'var(--a)',
-      accentC: 'color-mix(in oklab, var(--b) 42%, transparent)'
+      name: 'Logic Node',
+      function: 'Headless compute module running choreography or AI inference',
+      hardware: 'Jetson Nano / Pi 5 companion'
     }
   ];
 
-  const updates = [
-    {
-      tag: 'Addition',
-      title: 'Halos sync with every section',
-      summary:
-        'Section flares now drive the global orbit palette so header glass, separators, and progress accents inherit the active gradient as you scroll.'
-    },
-    {
-      tag: 'Improvement',
-      title: 'Mobile navigation stays calm',
-      summary:
-        'The sticky glass bar locks scroll, dims the background, and exposes inert states so phones keep their layout intact when the hamburger opens.'
-    },
-    {
-      tag: 'Update',
-      title: 'Animated gallery placeholders',
-      summary:
-        'Gradient tiles pulse with orbit colours, giving clients a live preview slot for venue photography while preserving the airy light theme.'
-    },
-    {
-      tag: 'Care',
-      title: 'Age-friendly readability pass',
-      summary:
-        'Baseline text sizing now scales up sooner with viewport width and line-height, easing long-form reading for partners across generations.'
-    },
-    {
-      tag: 'Roadmap',
-      title: 'Launch timeline kept current',
-      summary:
-        'The 2026 rollout milestones highlight design freeze, pilot installs, and the founding batch so teams can align marketing and procurement.'
-    }
+  const ledPurpose = [
+    'The LED Node bridges precise PWM control for high-power “dumb” LED channels and smooth addressable LED animation for pixel-based fixtures.',
+    'Each node can perform solo, join an ensemble, or lead as a sync master.'
   ];
 
-  const productSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: 'LumiGrid LED Node',
-    description:
-      'Distributed LED control node with PWM and addressable outputs for signage, façades, and experiential lighting. Part of the LumiGrid creative lighting OS, launching in 2026.',
-    url: 'https://reclamefabriek.eu',
-    brand: {
-      '@type': 'Brand',
-      name: 'LumiGrid'
-    },
-    manufacturer: {
-      '@type': 'Organization',
-      name: 'Reclame Fabriek R&D',
-      url: 'https://reclamefabriek.eu'
-    },
-    releaseDate: '2026-01-01',
-    productLine: 'LumiGrid System',
-    offers: {
-      '@type': 'AggregateOffer',
-      availabilityStarts: '2026-01-01',
-      priceCurrency: 'EUR'
-    },
-    isSimilarTo: [
-      'Modular LED controllers',
-      'Stage lighting sync engines',
-      'Architectural lighting control systems'
-    ]
-  };
+  const hardwareSpecs = [
+    'Controller: ESP32-WROOM-32U',
+    'PWM driver: PCA9685 (12-bit, 1 kHz) → 8 MOSFET channels',
+    'Addressable outputs: 8 × level-shifted 5 V via SN74HCT245DWR',
+    'I²C bus: SDA 21 / SCL 22 @ 400 kHz',
+    'OE / Blackout: GPIO 25',
+    'ALED GPIOs: 16, 4, 17, 18, 19, 23, 26, 27',
+    'Power: 5 V bus with fuse and thermal feedback',
+    'Expansion slot: 8 extra PWM lines for future servo or relay use'
+  ];
+
+  const personalityPoints = [
+    'Blend complex colour effects in real time.',
+    'Maintain precise phase alignment with the grid.',
+    'Enforce power and thermal limits automatically.',
+    'Expose its full state through human-friendly APIs.'
+  ];
+
+  const firmwareLayers = [
+    { step: '01', title: 'Board Init', detail: 'Sets GPIO, I²C, mounts LittleFS, reads config.' },
+    { step: '02', title: 'PWM Driver', detail: 'Wraps PCA9685 with fade curves, soft-start, and OE safety.' },
+    { step: '03', title: 'RMT Driver', detail: 'Outputs WS2812 / SK6812 data streams with 100 ns precision.' },
+    { step: '04', title: 'Effect Engine', detail: 'Modular renderer supporting base + overlay, blend modes, and virtual segments.' },
+    { step: '05', title: 'Scheduler / Cue Player', detail: 'Interprets JSON timelines into real-time sequences.' },
+    { step: '06', title: 'Sync Protocol', detail: 'Keeps phase with the master clock via multicast tick/cue.' },
+    { step: '07', title: 'REST / SSE Server', detail: 'Exposes status and accepts triggers from the UI.' },
+    { step: '08', title: 'MQTT Bridge', detail: 'Optional cloud/control-room integration.' }
+  ];
+
+  const effectCategories = [
+    { title: 'Base', examples: 'Solid, Gradient, Chase, Twinkle', notes: 'Foundational FX.' },
+    { title: 'Spectral', examples: 'Rainbow (palette-aware), Noise Flow', notes: 'Animated colour fields.' },
+    { title: 'Organic', examples: 'Fire, Waves', notes: 'Procedural, beat-reactive.' },
+    { title: 'Utility', examples: 'Blackout, Flash, SyncPulse', notes: 'Cue-driven transitions.' },
+    { title: 'PWM FX', examples: 'Breath, Candle, Warm-Dim', notes: 'Smooth analogue dimming.' }
+  ];
+
+  const webExperience = [
+    'Dashboard: status, health, quick test controls.',
+    'Nodes: discover peers, view RSSI and firmware.',
+    'Sequencer: interactive canvas timeline with zoom and live playhead.',
+    'Presets: local library, instant preview, editable JSON.',
+    'Schedules: calendar view (in progress).',
+    'Settings: network, MQTT, and theme preferences.'
+  ];
+
+  const connectivityEndpoints = [
+    { endpoint: 'GET /api/status', description: 'Returns node info, role, mode, uptime, heap, FPS.' },
+    { endpoint: 'POST /api/config', description: 'Merge or overwrite configuration JSON.' },
+    { endpoint: 'GET/POST/DELETE /api/presets', description: 'Manage stored presets.' },
+    { endpoint: 'POST /api/trigger', description: 'Execute actions: play_preset, set_pwm, blackout, beat.' },
+    { endpoint: 'POST /api/cue', description: 'Schedule time-bound clips.' },
+    { endpoint: 'GET /events', description: 'Server-Sent Events stream (status, playhead, power limit).' }
+  ];
+
+  const reliabilityPoints = [
+    'Fail-safe blackout: PCA9685 OE pin cuts power on fault or command.',
+    'Thermal / voltage watch: automatic derate under stress.',
+    'Watchdog & diagnostics: continuous heap and task monitoring.',
+    'Offline autonomy: local schedules run even without the master.'
+  ];
+
+  const developerPoints = [
+    'ESP-IDF v5 toolchain, CMake project structure.',
+    'Firmware upgrades over USB or OTA.',
+    'All endpoints documented; simulator for effect testing on desktop.',
+    'Unit tests for every effect (CRC-checked frame outputs).',
+    'Web UI open-source and editable in any HTML editor.'
+  ];
+
+  const applications = [
+    'Interactive signage and ambient installations.',
+    'Stage lighting with precise tempo lock.',
+    'Architectural façades with power budgeting.',
+    'Educational kits for embedded lighting control.',
+    'Art projects blending light, motion, and sound.'
+  ];
+
+  const visionForward = [
+    'LumiGrid is evolving toward a multi-node creative OS: future releases will bring adaptive colour calibration, distributed audio analysis for beat detection, and a shared cloud timeline for installations spanning cities.',
+    'The LED Node is just the first spark—the foundation on which an ecosystem of intelligent, responsive light will grow.'
+  ];
 </script>
 
 <svelte:head>
-  <title>LumiGrid LED Node — Light, orchestrated</title>
+  <title>LumiGrid — A living network of light</title>
   <meta
     name="description"
-    content="Discover how the LumiGrid ecosystem crescendos into the LED Node hero, presented in a lighter glassy layout ahead of the 2026 launch."
+    content="Explore the LumiGrid system: distributed lighting control, planned node family, LED Node hardware, firmware, and APIs drawn directly from the LumiGrid whitepaper."
   />
-  <meta
-    name="keywords"
-    content="LumiGrid LED Node, lighting controller, distributed lighting system, 2026 launch"
-  />
-  <meta property="og:title" content="LumiGrid LED Node — Light, orchestrated" />
-  <meta
-    property="og:description"
-    content="A refined, story-led journey from the LumiGrid system to the LED Node spotlight."
-  />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://reclamefabriek.eu" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="LumiGrid LED Node — Light, orchestrated" />
-  <meta
-    name="twitter:description"
-    content="Follow the quiet build-up of LumiGrid before the LED Node takes the stage."
-  />
-  <meta name="theme-color" content="#05060d" media="(prefers-color-scheme: dark)" />
-  <meta name="theme-color" content="#f6f7fb" media="(prefers-color-scheme: light)" />
-  <meta name="color-scheme" content="dark light" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
 </svelte:head>
 
 <div class="page-shell">
@@ -204,62 +217,38 @@
           <div class="hero-aura" aria-hidden="true"></div>
           <div class="hero-frame">
             <div class="hero-copy">
-              <span class="hero-label">2026 global premiere · LumiGrid OS</span>
+              <span class="hero-label">A living network of light</span>
               <h1 class="hero-marquee" data-parallax="0.18">
                 <span class="hero-marquee-word">LUMIGRID</span>
                 <span class="hero-marquee-divider">×</span>
                 <span class="hero-marquee-word accent">LED NODE</span>
               </h1>
-              <p class="hero-intro">
-                The flagship controller erupts from the LumiGrid ecosystem with glass-smooth power, pixel-perfect
-                choreography, and a halo built to drench architecture in story.
-              </p>
+              {#each systemOverview as paragraph}
+                <p class="hero-intro">{paragraph}</p>
+              {/each}
               <div class="hero-actions">
-                <a class="btn primary" href="#led-node">Experience the node</a>
-                <a class="btn ghost" href="#launch">Join the launch constellation</a>
+                <a class="btn primary" href="#led-node">Meet the LED Node</a>
+                <a class="btn ghost" href="#vision">See the vision</a>
               </div>
-              <div class="hero-highlights" aria-label="Key promises">
-                <span class="highlight-pill">Zero rack chaos</span>
-                <span class="highlight-pill">Epic architectural pulses</span>
-                <span class="highlight-pill">Live glass interface</span>
+              <div class="hero-highlights" aria-label="Principles">
+                {#each heroHighlights as item}
+                  <span class="highlight-pill">{item}</span>
+                {/each}
               </div>
             </div>
             <div class="hero-visual" aria-hidden="true">
               <div class="hero-visual-shell">
                 <LEDDemo />
-                <div class="hero-stat-grid">
-                  <div class="hero-stat-card">
-                    <span class="stat-label">Pixels in sync</span>
-                    <span class="stat-value">65K</span>
-                    <span class="stat-foot">per node mesh burst</span>
-                  </div>
-                  <div class="hero-stat-card">
-                    <span class="stat-label">Power envelope</span>
-                    <span class="stat-value">48V</span>
-                    <span class="stat-foot">wide headroom</span>
-                  </div>
-                  <div class="hero-stat-card">
-                    <span class="stat-label">Glass UI boot</span>
-                    <span class="stat-value">3s</span>
-                    <span class="stat-foot">to status & cues</span>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
-          <div class="hero-ribbon" aria-hidden="true">
-            <span>LUMIGRID ECOSYSTEM</span>
-            <span>LED NODE VANGUARD</span>
-            <span>IMMERSIVE LIGHT ORCHESTRATION</span>
-          </div>
         </div>
-        <p class="hero-subtle reveal">Scroll to feel the orbit tighten around the LED Node crescendo.</p>
       </div>
     </header>
 
     <main id="main" tabindex="-1">
       <section
-        id="journey"
+        id="system"
         class="section halo section-journey"
         style="--orbit-a: color-mix(in oklab, var(--c) 44%, transparent); --orbit-b: color-mix(in oklab, var(--a) 38%, transparent); --orbit-strength:.5;"
         data-flare-primary="color-mix(in oklab, var(--c) 44%, transparent)"
@@ -270,37 +259,106 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container journey-wrap">
           <div class="section-header">
-            <p class="eyebrow">Narrative arc</p>
-            <h2 class="h2" data-parallax="0.1">From quiet groundwork to centre stage</h2>
-            <p class="lead">Three carefully staged acts prime the LED Node reveal and keep the crescendo smooth.</p>
+            <p class="eyebrow">System story</p>
+            <h2 class="h2" data-parallax="0.1">The mesh in motion</h2>
+            <p class="lead">LumiGrid nodes share timing, cues, and motion so venues behave like one organism.</p>
           </div>
           <div class="journey-stage reveal">
             <div class="journey-intro glass-panel">
-              <p class="journey-eyebrow">How we build the swell</p>
-              <p class="journey-summary">
-                LumiGrid’s story starts in the background—edge devices learn the venue, designers layer motion, then LED Node walks on with the confidence of a conductor.
-              </p>
-              <ul class="journey-pillars">
-                <li>Every act inherits the previous palette and tempo.</li>
-                <li>All cues test against real fixtures inside the lab.</li>
-                <li>Clients feel the swell before hardware ships.</li>
-              </ul>
+              <p class="journey-eyebrow">How it feels</p>
+              {#each systemMotion as paragraph}
+                <p class="journey-summary">{paragraph}</p>
+              {/each}
             </div>
-            <div class="journey-track" role="list">
-              <article class="journey-act glass-card" role="listitem" data-step="I">
-                <h3>Act I · Canvas</h3>
-                <p>Satellite nodes listen close to every zone, learning the building’s pulse.</p>
-                <span class="card-foot">Invisible groundwork</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="philosophy"
+        class="section halo section-system"
+        style="--orbit-a: color-mix(in oklab, var(--c) 36%, transparent); --orbit-b: color-mix(in oklab, var(--b) 42%, transparent); --orbit-strength:.48;"
+        data-flare-primary="color-mix(in oklab, var(--c) 36%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--b) 42%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 48%, transparent)"
+        data-flare-strength=".48"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container system">
+          <div class="section-header">
+            <p class="eyebrow">Design philosophy</p>
+            <h2 class="h2" data-parallax="0.12">Principles that guide LumiGrid</h2>
+            <p class="lead">Every guideline below is drawn directly from the LumiGrid whitepaper.</p>
+          </div>
+          <div class="system-stage reveal">
+            <div class="system-columns philosophy-list" role="list">
+              {#each designPhilosophy as principle}
+                <article class="glass-card" role="listitem">
+                  <p>{principle}</p>
+                </article>
+              {/each}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="layers"
+        class="section halo section-architecture"
+        style="--orbit-a: color-mix(in oklab, var(--b) 38%, transparent); --orbit-b: color-mix(in oklab, var(--halo-glow) 42%, transparent); --orbit-strength:.5;"
+        data-flare-primary="color-mix(in oklab, var(--b) 38%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--halo-glow) 42%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 52%, transparent)"
+        data-flare-strength=".5"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container architecture">
+          <div class="section-header">
+            <p class="eyebrow">Core layers</p>
+            <h2 class="h2" data-parallax="0.12">Software stack and human touch</h2>
+            <p class="lead">The same runtime keeps timing, effects, and the browser console in lockstep.</p>
+          </div>
+          <div class="architecture-stage reveal">
+            <article class="architecture-stack glass-panel">
+              <span class="stack-badge">System architecture</span>
+              <ol class="stack-list">
+                {#each systemLayers as layer (layer.title)}
+                  <li>
+                    <span class="stack-step">{layer.step}</span>
+                    <div>
+                      <h3>{layer.title}</h3>
+                      <p>{layer.detail}</p>
+                    </div>
+                  </li>
+                {/each}
+              </ol>
+            </article>
+            <div class="architecture-column">
+              <article class="glass-panel architecture-ui">
+                <h3>Human interaction</h3>
+                <ul class="architecture-points">
+                  {#each humanInteraction as point}
+                    <li>{point}</li>
+                  {/each}
+                </ul>
               </article>
-              <article class="journey-act glass-card" role="listitem" data-step="II">
-                <h3>Act II · Choreography</h3>
-                <p>The LumiGrid OS sketches motion with translucent controls instead of racks of gear.</p>
-                <span class="card-foot">Calm creative tools</span>
-              </article>
-              <article class="journey-act glass-card" role="listitem" data-step="III">
-                <h3>Act III · Spotlight</h3>
-                <p>The LED Node arrives, blending power and pixels with a single glass dial.</p>
-                <span class="card-foot">Hero moment</span>
+              <article class="glass-panel architecture-tech">
+                <h3>Technology stack</h3>
+                <ul class="tech-tags">
+                  {#each techStack as tool}
+                    <li>{tool}</li>
+                  {/each}
+                </ul>
               </article>
             </div>
           </div>
@@ -313,51 +371,40 @@
       </div>
 
       <section
-        id="system"
-        class="section halo section-system"
-        style="--orbit-a: color-mix(in oklab, var(--c) 36%, transparent); --orbit-b: color-mix(in oklab, var(--b) 42%, transparent); --orbit-strength:.48;"
-        data-flare-primary="color-mix(in oklab, var(--c) 36%, transparent)"
-        data-flare-secondary="color-mix(in oklab, var(--b) 42%, transparent)"
-        data-flare-glow="color-mix(in oklab, var(--halo-glow) 48%, transparent)"
-        data-flare-strength=".48"
+        id="nodes"
+        class="section halo section-nodes"
+        style="--orbit-a: color-mix(in oklab, var(--a) 42%, transparent); --orbit-b: color-mix(in oklab, var(--c) 38%, transparent); --orbit-strength:.5;"
+        data-flare-primary="color-mix(in oklab, var(--a) 42%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--c) 38%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 50%, transparent)"
+        data-flare-strength=".5"
       >
         <span class="section-orbit" aria-hidden="true"></span>
-        <div class="container system">
+        <div class="container nodes">
           <div class="section-header">
-            <p class="eyebrow">Ecosystem</p>
-            <h2 class="h2" data-parallax="0.12">A calm network of tiny directors</h2>
-            <p class="lead">A distributed mesh keeps façades, runways, and plazas breathing in sync without ever flashing a panic.</p>
+            <p class="eyebrow">Planned family</p>
+            <h2 class="h2" data-parallax="0.12">Nodes ready for every role</h2>
+            <p class="lead">Each module shares the same firmware skeleton and API language.</p>
           </div>
-          <div class="system-stage reveal">
-            <div class="system-map glass-panel">
-              <p class="map-label">Live mesh snapshot</p>
-              <p class="map-summary">
-                Every node shares timing whispers with the next. LED Node surfaces it all in one glass console—no racks, no turbulence.
-              </p>
-              <div class="system-nodes" role="presentation">
-                <span class="mesh-node core" aria-hidden="true"></span>
-                <span class="mesh-node branch" aria-hidden="true"></span>
-                <span class="mesh-node halo" aria-hidden="true"></span>
-                <span class="mesh-node drift" aria-hidden="true"></span>
-                <span class="mesh-node surge" aria-hidden="true"></span>
-              </div>
-            </div>
-            <div class="system-columns" role="list">
-              <article class="glass-card" role="listitem">
-                <h3>Local instincts</h3>
-                <p>Onboard smoothing keeps fades intact, no matter the network rush.</p>
-                <span class="card-foot">Latency proofed</span>
-              </article>
-              <article class="glass-card" role="listitem">
-                <h3>Shared rhythm</h3>
-                <p>A lightweight sync mesh aligns tempo across city blocks and pop-ups.</p>
-                <span class="card-foot">Neighbour aware</span>
-              </article>
-              <article class="glass-card" role="listitem">
-                <h3>Open bridges</h3>
-                <p>Simple links and APIs welcome designers, integrators, and makers alike.</p>
-                <span class="card-foot">Plug-in friendly</span>
-              </article>
+          <div class="nodes-stage reveal">
+            <div class="nodes-grid" role="list">
+              {#each nodeFamily as node (node.name)}
+                <article class="node-card glass-card" role="listitem">
+                  <header class="node-head">
+                    <h3>{node.name}</h3>
+                  </header>
+                  <dl class="node-meta">
+                    <div>
+                      <dt>Core function</dt>
+                      <dd>{node.function}</dd>
+                    </div>
+                    <div>
+                      <dt>Typical hardware</dt>
+                      <dd>{node.hardware}</dd>
+                    </div>
+                  </dl>
+                </article>
+              {/each}
             </div>
           </div>
         </div>
@@ -380,61 +427,92 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container led">
           <div class="section-header">
-            <p class="eyebrow">Hero hardware</p>
-            <h2 class="h2" data-parallax="0.12">Meet the LED Node</h2>
-            <p class="lead">A palm-sized conductor for power, pixels, and timing inside one glass enclosure.</p>
+            <p class="eyebrow">Part II highlight</p>
+            <h2 class="h2" data-parallax="0.12">The LumiGrid LED Node</h2>
+            <p class="lead">Purpose-built to paint light while staying in sync with the entire mesh.</p>
           </div>
           <div class="led-stage reveal">
             <div class="led-diagram glass-panel">
-              <span class="diagram-badge">Node topology</span>
-              <p class="diagram-summary">
-                Dual domains share a single brain: constant-voltage fixtures and pixel tapes receive synchronized cues with zero rack gymnastics.
-              </p>
-              <div class="diagram-grid" role="presentation">
-                <div class="diagram-slice power">
-                  <h3>Power bus</h3>
-                  <p>8× 12-bit PWM, smoothing filters, 48&nbsp;V headroom.</p>
-                </div>
-                <div class="diagram-core">
-                  <span class="core-ring" aria-hidden="true"></span>
-                  <span class="core-glow" aria-hidden="true"></span>
-                  <p>ESP32 dual-core<br />Sub-ms sync</p>
-                </div>
-                <div class="diagram-slice pixels">
-                  <h3>Pixel matrix</h3>
-                  <p>8 level-shifted lanes ready for long runs.</p>
-                </div>
-              </div>
+              <span class="diagram-badge">Purpose</span>
+              <ul>
+                {#each ledPurpose as point}
+                  <li>{point}</li>
+                {/each}
+              </ul>
             </div>
             <div class="led-details">
               <article class="glass-panel">
-                <h3>Why it shines</h3>
+                <h3>Hardware at a glance</h3>
                 <ul>
-                  <li>Dual outputs drive voltage fixtures and addressable strips in sync.</li>
-                  <li>Instant glass UI shows health, cues, and safe limits seconds after power-on.</li>
-                  <li>Mesh timing keeps motion flowing even if the uplink dips.</li>
+                  {#each hardwareSpecs as spec}
+                    <li>{spec}</li>
+                  {/each}
                 </ul>
-                <p class="panel-foot">All wrapped in a smoked acrylic shell sized for DIN or wall niches.</p>
               </article>
-              <article class="spec-callout glass-panel">
-                <h3>Essentials</h3>
-                <dl>
-                  <div>
-                    <dt>Core</dt>
-                    <dd>ESP32 dual-core radio tuned for sub-millisecond timing.</dd>
-                  </div>
-                  <div>
-                    <dt>Power</dt>
-                    <dd>Eight 12-bit PWM channels with smoothing filters on-board.</dd>
-                  </div>
-                  <div>
-                    <dt>Pixels</dt>
-                    <dd>Eight level-shifted data lanes ready for long architectural runs.</dd>
-                  </div>
-                </dl>
-                <div class="spec-foot">
-                  <p>Works with 12–48 VDC supplies, with onboard protection and thermal watch.</p>
-                </div>
+              <article class="glass-panel">
+                <h3>Personality</h3>
+                <ul>
+                  {#each personalityPoints as trait}
+                    <li>{trait}</li>
+                  {/each}
+                </ul>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="firmware"
+        class="section halo section-firmware"
+        style="--orbit-a: color-mix(in oklab, var(--b) 36%, transparent); --orbit-b: color-mix(in oklab, var(--halo-glow) 40%, transparent); --orbit-strength:.5;"
+        data-flare-primary="color-mix(in oklab, var(--b) 36%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--halo-glow) 40%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 48%, transparent)"
+        data-flare-strength=".5"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container firmware">
+          <div class="section-header">
+            <p class="eyebrow">Firmware layers</p>
+            <h2 class="h2" data-parallax="0.12">Runtime built for showtime</h2>
+            <p class="lead">The firmware stack mirrors the whitepaper, from board init to MQTT.</p>
+          </div>
+          <div class="firmware-stage reveal">
+            <div class="firmware-grid">
+              <article class="glass-panel firmware-stack">
+                <span class="stack-badge">Node runtime</span>
+                <ol class="stack-list stack-list--firmware">
+                  {#each firmwareLayers as layer (layer.title)}
+                    <li>
+                      <span class="stack-step">{layer.step}</span>
+                      <div>
+                        <h3>{layer.title}</h3>
+                        <p>{layer.detail}</p>
+                      </div>
+                    </li>
+                  {/each}
+                </ol>
+              </article>
+              <article class="glass-panel firmware-effects">
+                <h3>Effect library</h3>
+                <p class="firmware-effects-summary">The Effect Engine hosts real-time shaders written in C.</p>
+                <ul class="effects-list">
+                  {#each effectCategories as fx (fx.title)}
+                    <li>
+                      <div class="effects-head">
+                        <span class="effects-title">{fx.title}</span>
+                        <span class="effects-examples">{fx.examples}</span>
+                      </div>
+                      <p>{fx.notes}</p>
+                    </li>
+                  {/each}
+                </ul>
               </article>
             </div>
           </div>
@@ -458,48 +536,18 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container experience">
           <div class="section-header">
-            <p class="eyebrow">Experience</p>
-            <h2 class="h2" data-parallax="0.12">A gentle interface for live light</h2>
-            <p class="lead">Glass panels, live feedback, and presets that crews can trust in a rush.</p>
+            <p class="eyebrow">Web console</p>
+            <h2 class="h2" data-parallax="0.12">Experience on every node</h2>
+            <p class="lead">Opening the node’s IP reveals the LumiGrid UI without extra software.</p>
           </div>
           <div class="experience-stage reveal">
-            <div class="experience-console glass-panel">
-              <span class="console-badge">Operator console</span>
-              <p class="console-summary">
-                Operators ride a calm dashboard that mirrors every LED Node pulse. Palette swaps, FX triggers, and diagnostics cascade across the strip, modules, and signage in one gesture.
-              </p>
-              <div class="console-status" role="presentation">
-                <div class="status-card">
-                  <span class="status-label">Live palette</span>
-                  <span class="status-value">Mythica Strand</span>
-                </div>
-                <div class="status-card">
-                  <span class="status-label">Sync span</span>
-                  <span class="status-value">12 venues</span>
-                </div>
-                <div class="status-card">
-                  <span class="status-label">Confidence</span>
-                  <span class="status-value">99.2%</span>
-                </div>
-              </div>
-            </div>
-            <div class="experience-grid" role="list">
-              <article class="glass-card" role="listitem">
-                <h3>Immediate status</h3>
-                <p>Live power, temperature, and pixel health with colour-coded comfort zones.</p>
-                <span class="card-foot">Always-on, even on mobile</span>
-              </article>
-              <article class="glass-card" role="listitem">
-                <h3>Scene studio</h3>
-                <p>Sketch moods with layered gradients, fades, and tempo-driven sequences.</p>
-                <span class="card-foot">Drag, blend, and handoff cues instantly</span>
-              </article>
-              <article class="glass-card" role="listitem">
-                <h3>Open bridges</h3>
-                <p>REST and MQTT hooks invite show control, signage CMS, or custom art tools.</p>
-                <span class="card-foot">Friendly to integrators and makers</span>
-              </article>
-            </div>
+            <article class="glass-panel experience-list">
+              <ul>
+                {#each webExperience as item}
+                  <li>{item}</li>
+                {/each}
+              </ul>
+            </article>
           </div>
         </div>
       </section>
@@ -511,100 +559,6 @@
 
       <section
         id="integration"
-        class="section halo section-integration"
-        style="--orbit-a: color-mix(in oklab, var(--b) 40%, transparent); --orbit-b: color-mix(in oklab, var(--a) 44%, transparent); --orbit-strength:.52;"
-        data-flare-primary="color-mix(in oklab, var(--b) 40%, transparent)"
-        data-flare-secondary="color-mix(in oklab, var(--a) 44%, transparent)"
-        data-flare-glow="color-mix(in oklab, var(--halo-glow) 52%, transparent)"
-        data-flare-strength=".52"
-      >
-        <span class="section-orbit" aria-hidden="true"></span>
-        <div class="container integration">
-          <div class="section-header">
-            <p class="eyebrow">Synchronisation</p>
-            <h2 class="h2" data-parallax="0.12">One palette, every surface</h2>
-            <p class="lead">LED Node bridges signage, strips, and architectural fixtures so the glow reads as one cue.</p>
-          </div>
-          <div class="integration-stage reveal">
-            <div class="integration-sync glass-panel">
-              <span class="integration-badge">Live link stack</span>
-              <p class="integration-summary">
-                Map content, palettes, and FX once—LED Node fans it out to Mythica Strand signage, linear strips, and halo modules without drift.
-              </p>
-              <ul class="integration-bridges">
-                <li>Palette packets roll through DMX, Art-Net, and native LumiGrid APIs.</li>
-                <li>Colour intent and tempo metadata stay intact from design tool to venue.</li>
-                <li>Fallback scenes keep brand-safe looks humming if an uplink drops.</li>
-              </ul>
-            </div>
-            <div class="integration-grid" role="list">
-              <article class="glass-card" role="listitem">
-                <h3>Design suites</h3>
-                <p>Import cues straight from Unreal, Notch, or browser shaders.</p>
-                <span class="card-foot">Creative-first workflow</span>
-              </article>
-              <article class="glass-card" role="listitem">
-                <h3>Control protocols</h3>
-                <p>Blend DMX universes with websocket cues inside one timing mesh.</p>
-                <span class="card-foot">No more competing clocks</span>
-              </article>
-              <article class="glass-card" role="listitem">
-                <h3>Safety rails</h3>
-                <p>Thermal, voltage, and brightness guards keep installs within spec.</p>
-                <span class="card-foot">Peace of mind for venues</span>
-              </article>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="section-separator" aria-hidden="true">
-        <span class="separator-glow"></span>
-        <span class="separator-strip"></span>
-      </div>
-
-      <section
-        id="gallery"
-        class="section halo section-gallery"
-        style="--orbit-a: color-mix(in oklab, var(--a) 38%, transparent); --orbit-b: color-mix(in oklab, var(--b) 46%, transparent); --orbit-strength:.48;"
-        data-flare-primary="color-mix(in oklab, var(--a) 38%, transparent)"
-        data-flare-secondary="color-mix(in oklab, var(--b) 46%, transparent)"
-        data-flare-glow="color-mix(in oklab, var(--halo-glow) 54%, transparent)"
-        data-flare-strength=".48"
-      >
-        <span class="section-orbit" aria-hidden="true"></span>
-        <div class="container gallery-wrap">
-          <div class="section-header">
-            <p class="eyebrow">Scenes</p>
-            <h2 class="h2" data-parallax="0.12">Glassy moodboard in motion</h2>
-            <p class="lead">
-              Animated placeholders hint at the installations our crews prototype ahead of the LED Node launch.
-            </p>
-          </div>
-          <div class="gallery-stage reveal">
-            <div class="gallery-frame glass-panel">
-              <span class="frame-label">Palette sync demo</span>
-              <p class="frame-summary">
-                Strip, halo modules, and Mythica Strand signage follow the selected palette so clients can preview a cohesive show before a single bracket is drilled.
-              </p>
-            </div>
-            <div class="gallery-viewport">
-              <Gallery items={galleryItems} />
-            </div>
-          </div>
-          <p class="gallery-note reveal">
-            Each tile is a live gradient placeholder—swap in venue shots while keeping the halo rhythm in sync with your theme.
-          </p>
-        </div>
-      </section>
-
-      <div class="section-separator" aria-hidden="true">
-        <span class="separator-glow"></span>
-        <span class="separator-strip"></span>
-      </div>
-
-      <section
-        id="support"
         class="section halo section-support"
         style="--orbit-a: color-mix(in oklab, var(--c) 40%, transparent); --orbit-b: color-mix(in oklab, var(--b) 42%, transparent); --orbit-strength:.5;"
         data-flare-primary="color-mix(in oklab, var(--c) 40%, transparent)"
@@ -615,37 +569,26 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container support">
           <div class="section-header">
-            <p class="eyebrow">Partner care</p>
-            <h2 class="h2" data-parallax="0.12">Crew, docs, and diagnostics in sync</h2>
-            <p class="lead">Our launch network blends human guidance with always-on monitoring so your show never feels unattended.</p>
+            <p class="eyebrow">Connectivity & safety</p>
+            <h2 class="h2" data-parallax="0.12">APIs, telemetry, and safeguards</h2>
+            <p class="lead">Endpoints, monitoring, and protections all surface from the README story.</p>
           </div>
           <div class="support-stage reveal">
             <div class="support-grid" role="list">
-              <article class="glass-card" role="listitem">
-                <h3>Concierge engineers</h3>
-                <p>Design reviews, wiring plans, and FX choreography check-ins before hardware ships.</p>
-                <span class="card-foot">Every pilot gets a named crew</span>
-              </article>
-              <article class="glass-card" role="listitem">
-                <h3>Knowledge orbit</h3>
-                <p>Interactive docs, presets, and venue-ready templates updated with each firmware drop.</p>
-                <span class="card-foot">Learning stays lightweight</span>
-              </article>
-              <article class="glass-card" role="listitem">
-                <h3>24/7 telemetry</h3>
-                <p>Health dashboards mirror venue conditions, raising safe limits before guests notice.</p>
-                <span class="card-foot">Alerts in Slack, Teams, or SMS</span>
-              </article>
+              {#each connectivityEndpoints as entry (entry.endpoint)}
+                <article class="glass-card" role="listitem">
+                  <h3>{entry.endpoint}</h3>
+                  <p>{entry.description}</p>
+                </article>
+              {/each}
             </div>
             <aside class="support-panel glass-panel">
-              <span class="support-badge">Crew signal</span>
-              <h3>Concierge service window</h3>
+              <h3>Reliability and safety</h3>
               <ul class="support-benefits">
-                <li>12-hour design response during build weeks.</li>
-                <li>5-minute incident acknowledgement once live.</li>
-                <li>Hardware advance replacements stocked regionally.</li>
+                {#each reliabilityPoints as item}
+                  <li>{item}</li>
+                {/each}
               </ul>
-              <p class="support-foot">All wrapped in the same rounded glass aesthetic—no sharp edges in product or service.</p>
             </aside>
           </div>
         </div>
@@ -657,7 +600,7 @@
       </div>
 
       <section
-        id="updates"
+        id="applications"
         class="section halo section-updates"
         style="--orbit-a: color-mix(in oklab, var(--a) 36%, transparent); --orbit-b: color-mix(in oklab, var(--halo-glow) 42%, transparent); --orbit-strength:.5;"
         data-flare-primary="color-mix(in oklab, var(--a) 36%, transparent)"
@@ -668,28 +611,26 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container narrow">
           <div class="section-header">
-            <p class="eyebrow">What changed</p>
-            <h2 class="h2" data-parallax="0.14">Additions, improvements, updates</h2>
-            <p class="lead">
-              A quick ledger of the glow work completed for this pass—grounded in the LumiGrid story and tuned for calm, age-inclusive reading.
-            </p>
+            <p class="eyebrow">In the field</p>
+            <h2 class="h2" data-parallax="0.14">Applications and maker care</h2>
+            <p class="lead">Where LumiGrid fits today and how builders stay supported.</p>
           </div>
           <div class="updates-stage reveal">
             <div class="updates-ledger" role="list">
-              {#each updates as entry, index}
+              {#each applications as item, index}
                 <article class="glass-card update-card" role="listitem">
                   <span class="update-sequence" aria-hidden="true">{index + 1}</span>
-                  <span class="update-tag" aria-hidden="true">{entry.tag}</span>
-                  <h3>{entry.title}</h3>
-                  <p>{entry.summary}</p>
+                  <p>{item}</p>
                 </article>
               {/each}
             </div>
             <aside class="updates-note glass-panel">
-              <p class="note-title">Why the ledger matters</p>
-              <p>
-                Each entry reflects the new sync between hero preview, copy rhythm, and accessibility polish. Stakeholders can scan the feed or dive deep without losing the thread.
-              </p>
+              <h3>Developer & maker friendliness</h3>
+              <ul>
+                {#each developerPoints as item}
+                  <li>{item}</li>
+                {/each}
+              </ul>
             </aside>
           </div>
         </div>
@@ -701,7 +642,7 @@
       </div>
 
       <section
-        id="launch"
+        id="vision"
         class="section halo center section-launch"
         style="--orbit-a: color-mix(in oklab, var(--c) 34%, transparent); --orbit-b: color-mix(in oklab, var(--halo-glow) 38%, transparent); --orbit-strength:.46;"
         data-flare-primary="color-mix(in oklab, var(--c) 34%, transparent)"
@@ -712,134 +653,17 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container narrow">
           <div class="section-header">
-            <p class="eyebrow">Road to release</p>
-            <h2 class="h2" data-parallax="0.12">2026 is the opening night</h2>
-            <p class="lead">Final hardware, pilot venues, and the founding batch are already in motion.</p>
+            <p class="eyebrow">Vision forward</p>
+            <h2 class="h2" data-parallax="0.12">Where LumiGrid is heading</h2>
+            <p class="lead">Future releases continue the ecosystem described in the README.</p>
           </div>
           <div class="launch-stage reveal">
-            <div class="launch-timeline" role="list">
-              <article class="launch-stop glass-card" role="listitem">
-                <span class="stop-node" aria-hidden="true"></span>
-                <h3>Now</h3>
-                <p>Design freeze and endurance testing with architectural partners.</p>
-              </article>
-              <article class="launch-stop glass-card" role="listitem">
-                <span class="stop-node" aria-hidden="true"></span>
-                <h3>Mid 2025</h3>
-                <p>Pilot installs, creative labs, and firmware polish with early crews.</p>
-              </article>
-              <article class="launch-stop glass-card" role="listitem">
-                <span class="stop-node" aria-hidden="true"></span>
-                <h3>2026 Launch</h3>
-                <p>LED Node release bundled with LumiGrid OS, docs, and maker kits.</p>
-              </article>
-            </div>
-            <aside class="launch-burst glass-panel">
-              <p class="burst-title">What the launch unlocks</p>
-              <ul>
-                <li>Founding partner installs across hospitality, retail, and transit.</li>
-                <li>Developer SDK with palette, FX, and signage bridges.</li>
-                <li>Global service mesh with 24/7 diagnostics.</li>
-              </ul>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <div class="section-separator" aria-hidden="true">
-        <span class="separator-glow"></span>
-        <span class="separator-strip"></span>
-      </div>
-
-      <section
-        id="faq"
-        class="section halo section-faq"
-        style="--orbit-a: color-mix(in oklab, var(--a) 40%, transparent); --orbit-b: color-mix(in oklab, var(--c) 42%, transparent); --orbit-strength:.5;"
-        data-flare-primary="color-mix(in oklab, var(--a) 40%, transparent)"
-        data-flare-secondary="color-mix(in oklab, var(--c) 42%, transparent)"
-        data-flare-glow="color-mix(in oklab, var(--halo-glow) 50%, transparent)"
-        data-flare-strength=".5"
-      >
-        <span class="section-orbit" aria-hidden="true"></span>
-        <div class="container faq">
-          <div class="section-header">
-            <p class="eyebrow">Questions</p>
-            <h2 class="h2" data-parallax="0.12">Answers for curious crews</h2>
-            <p class="lead">Quick clarifications on how LumiGrid keeps every edge rounded and every cue in sync.</p>
-          </div>
-          <div class="faq-stage reveal">
-            <div class="faq-grid">
-              <details class="faq-item glass-panel">
-                <summary>How do palettes stay matched across signage, strips, and modules?</summary>
-                <p>
-                  Palettes carry timing, hue, and brightness metadata. LED Node reads the packet and mirrors it to the Mythica Strand signage, strip, and module drivers so every surface flips together.
-                </p>
-              </details>
-              <details class="faq-item glass-panel">
-                <summary>Can we feed content from our own control systems?</summary>
-                <p>
-                  Yes—Art-Net, sACN, and LumiGrid’s websocket bridge all land in the same rounded console. Your cues flow through the mesh while our safety rails ensure fixtures stay within spec.
-                </p>
-              </details>
-              <details class="faq-item glass-panel">
-                <summary>What happens if the network link drops mid-show?</summary>
-                <p>
-                  Each LED Node caches the active scene, palette, and fallback looks. Mesh timing keeps motion smooth, and once the uplink returns the signage display rejoins without harsh jumps.
-                </p>
-              </details>
-              <details class="faq-item glass-panel">
-                <summary>How fast can support respond during a live activation?</summary>
-                <p>
-                  Concierge engineers watch the same telemetry you do. Incidents ping our crew within five minutes, with regional spares and remote tuning standing by to keep your glow uninterrupted.
-                </p>
-              </details>
-            </div>
-            <aside class="faq-note glass-panel">
-              <p class="faq-note-title">Need a deeper dive?</p>
-              <p>
-                Bring us your wildest signage layout—LumiGrid will sketch rounded prototypes, align on palettes, and choreograph the LED Node reveal alongside your team.
-              </p>
-              <a class="btn ghost" href="#contact">Talk with LumiGrid</a>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <div class="section-separator" aria-hidden="true">
-        <span class="separator-glow"></span>
-        <span class="separator-strip"></span>
-      </div>
-
-      <section
-        id="contact"
-        class="section halo center section-contact"
-        style="--orbit-a: color-mix(in oklab, var(--a) 42%, transparent); --orbit-b: color-mix(in oklab, var(--warm) 40%, transparent); --orbit-strength:.5;"
-        data-flare-primary="color-mix(in oklab, var(--a) 42%, transparent)"
-        data-flare-secondary="color-mix(in oklab, var(--warm) 40%, transparent)"
-        data-flare-glow="color-mix(in oklab, var(--halo-glow) 48%, transparent)"
-        data-flare-strength=".5"
-      >
-        <span class="section-orbit" aria-hidden="true"></span>
-        <div class="container narrow">
-          <div class="section-header">
-            <p class="eyebrow">Stay close</p>
-            <h2 class="h2" data-parallax="0.12">Join the launch list</h2>
-            <p class="lead">Tell us what you want to light in 2026 and we’ll set the scene together.</p>
-          </div>
-          <div class="contact-stage reveal">
-            <aside class="contact-note glass-panel">
-              <p class="contact-title">First-wave perks</p>
-              <ul>
-                <li>Invite-only previews of new palettes, FX, and signage scripts.</li>
-                <li>Priority access to launch hardware and integration slots.</li>
-                <li>Direct line to LumiGrid designers for co-creation.</li>
-              </ul>
-            </aside>
-            <div class="contact-form-shell">
-              <ContactForm />
-              <a class="btn outline big" href="https://reclamefabriek.eu" target="_blank" rel="noopener"
-                >Visit Reclame Fabriek</a
-              >
+            <div class="launch-timeline vision-copy">
+              {#each visionForward as paragraph}
+                <article class="launch-stop glass-card">
+                  <p>{paragraph}</p>
+                </article>
+              {/each}
             </div>
           </div>
         </div>
@@ -853,15 +677,13 @@
   <div class="container footer">
     <div class="footer-stage glass-panel">
       <div class="footer-brand">
-        <span class="footer-badge">LumiGrid × LED Node</span>
-        <h2 class="footer-headline">Keep every beam in concert.</h2>
+        <span class="footer-badge">LumiGrid</span>
+        <h2 class="footer-headline">A network where light, code, and rhythm move together.</h2>
         <p class="footer-copy">
-          Our strip, halo modules, and Mythica Strand signage pulse together across the entire page. Stay in the orbit so your
-          venues launch with that same precision.
+          Text across this page is sourced from the LumiGrid README so the landing mirrors the whitepaper faithfully.
         </p>
         <div class="footer-actions">
-          <a class="btn primary" href="#launch">Track the launch</a>
-          <a class="btn ghost" href="#hero">Back to top</a>
+          <a class="btn primary" href="#hero">Back to top</a>
         </div>
       </div>
       <div class="footer-grid">
@@ -873,37 +695,10 @@
             {/each}
           </ul>
         </div>
-        <div class="footer-column">
-          <h3>Connect</h3>
-          <ul class="footer-nav">
-            <li><a href="#contact">Join the launch list</a></li>
-            <li><a href="mailto:hello@reclamefabriek.eu">hello@reclamefabriek.eu</a></li>
-            <li>
-              <a href="https://reclamefabriek.eu" target="_blank" rel="noopener">reclamefabriek.eu</a>
-            </li>
-          </ul>
-        </div>
-        <div class="footer-column footer-column--note">
-          <h3>Signal path</h3>
-          <p>
-            LED Node pilots open with signage sync, mesh diagnostics, and palette drops. Tell us what needs light and we’ll lace
-            the cues together.
-          </p>
-        </div>
       </div>
     </div>
-    <div class="footer-ribbon" aria-hidden="true">
-      <span>SYNCED STRIP</span>
-      <span>HALO MODULES</span>
-      <span>MYTHICA STRAND</span>
-      <span>2026 LAUNCH</span>
-    </div>
     <div class="footer-legal">
-      <p>
-        © Reclame Fabriek — R&D •
-        <a href="https://reclamefabriek.eu" target="_blank" rel="noopener">reclamefabriek.eu</a>
-      </p>
-      <a class="footer-scroll" href="#hero">Return to story</a>
+      <p>© LumiGrid — README-aligned presentation.</p>
     </div>
   </div>
 </footer>
