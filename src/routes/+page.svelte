@@ -3,6 +3,7 @@
   import SideTimeline from '$lib/components/SideTimeline.svelte';
   import LEDDemo from '$lib/components/LEDDemo.svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
+  import Gallery from '$lib/components/Gallery.svelte';
 
   const sections = [
     { id: 'hero', label: 'Story', icon: 'sparkles' },
@@ -10,8 +11,110 @@
     { id: 'system', label: 'System', icon: 'cubeTransparent' },
     { id: 'led-node', label: 'LED Node', icon: 'sun' },
     { id: 'experience', label: 'Experience', icon: 'cpuChip' },
+    { id: 'gallery', label: 'Gallery', icon: 'window' },
+    { id: 'updates', label: 'Updates', icon: 'commandLine' },
     { id: 'launch', label: 'Launch', icon: 'rocketLaunch' },
     { id: 'contact', label: 'Contact', icon: 'envelope' }
+  ];
+
+  const galleryItems = [
+    {
+      title: 'Atrium shimmer',
+      subtitle: 'Layered gradients for hospitality lobbies',
+      href: '#gallery',
+      accent: 'var(--a)',
+      accentB: 'var(--halo-glow)',
+      accentC: 'color-mix(in oklab, var(--c) 40%, transparent)'
+    },
+    {
+      title: 'Skybridge wash',
+      subtitle: 'Elevated path lit with airy pulses',
+      href: '#gallery',
+      accent: 'var(--c)',
+      accentB: 'var(--b)',
+      accentC: 'color-mix(in oklab, var(--a) 38%, transparent)'
+    },
+    {
+      title: 'Show window loops',
+      subtitle: 'Retail frames with sequenced halos',
+      href: '#gallery',
+      accent: 'var(--b)',
+      accentB: 'var(--a)',
+      accentC: 'color-mix(in oklab, var(--halo-glow) 45%, transparent)'
+    },
+    {
+      title: 'Outdoor runway',
+      subtitle: 'Evening reveals guided by calm sweeps',
+      href: '#gallery',
+      accent: 'var(--c)',
+      accentB: 'var(--halo-glow)',
+      accentC: 'color-mix(in oklab, var(--a) 42%, transparent)'
+    },
+    {
+      title: 'Lobby lanterns',
+      subtitle: 'Soft cubes breathing with visitors',
+      href: '#gallery',
+      accent: 'color-mix(in oklab, var(--halo-glow) 60%, transparent)',
+      accentB: 'var(--a)',
+      accentC: 'var(--c)'
+    },
+    {
+      title: 'Festival canopy',
+      subtitle: 'Ambient ribbons above pop-up venues',
+      href: '#gallery',
+      accent: 'var(--b)',
+      accentB: 'var(--c)',
+      accentC: 'var(--halo-glow)'
+    },
+    {
+      title: 'Gallery drift',
+      subtitle: 'Art walls kissed with responsive fades',
+      href: '#gallery',
+      accent: 'var(--a)',
+      accentB: 'var(--b)',
+      accentC: 'color-mix(in oklab, var(--c) 40%, transparent)'
+    },
+    {
+      title: 'Night market pulse',
+      subtitle: 'Clean sight-lines with subtle emphasis',
+      href: '#gallery',
+      accent: 'var(--halo-glow)',
+      accentB: 'var(--a)',
+      accentC: 'color-mix(in oklab, var(--b) 42%, transparent)'
+    }
+  ];
+
+  const updates = [
+    {
+      tag: 'Addition',
+      title: 'Halos sync with every section',
+      summary:
+        'Section flares now drive the global orbit palette so header glass, separators, and progress accents inherit the active gradient as you scroll.'
+    },
+    {
+      tag: 'Improvement',
+      title: 'Mobile navigation stays calm',
+      summary:
+        'The sticky glass bar locks scroll, dims the background, and exposes inert states so phones keep their layout intact when the hamburger opens.'
+    },
+    {
+      tag: 'Update',
+      title: 'Animated gallery placeholders',
+      summary:
+        'Gradient tiles pulse with orbit colours, giving clients a live preview slot for venue photography while preserving the airy light theme.'
+    },
+    {
+      tag: 'Care',
+      title: 'Age-friendly readability pass',
+      summary:
+        'Baseline text sizing now scales up sooner with viewport width and line-height, easing long-form reading for partners across generations.'
+    },
+    {
+      tag: 'Roadmap',
+      title: 'Launch timeline kept current',
+      summary:
+        'The 2026 rollout milestones highlight design freeze, pilot installs, and the founding batch so teams can align marketing and procurement.'
+    }
   ];
 
   const productSchema = {
@@ -82,7 +185,16 @@
 
 <div class="page-shell">
   <div class="page-main">
-    <header id="hero" class="section hero-shell">
+    <header
+      id="hero"
+      class="section hero-shell"
+      style="--orbit-a: color-mix(in oklab, var(--a) 58%, transparent); --orbit-b: color-mix(in oklab, var(--halo-glow) 48%, transparent); --orbit-strength:.58;"
+      data-flare-primary="color-mix(in oklab, var(--a) 58%, transparent)"
+      data-flare-secondary="color-mix(in oklab, var(--halo-glow) 48%, transparent)"
+      data-flare-glow="color-mix(in oklab, var(--halo-glow) 60%, transparent)"
+      data-flare-strength=".58"
+    >
+      <span class="section-orbit" aria-hidden="true"></span>
       <div class="container hero">
         <Header />
         <div class="hero-topline">
@@ -113,7 +225,16 @@
     </header>
 
     <main id="main" tabindex="-1">
-      <section id="journey" class="section halo">
+      <section
+        id="journey"
+        class="section halo"
+        style="--orbit-a: color-mix(in oklab, var(--c) 44%, transparent); --orbit-b: color-mix(in oklab, var(--a) 38%, transparent); --orbit-strength:.5;"
+        data-flare-primary="color-mix(in oklab, var(--c) 44%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--a) 38%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 45%, transparent)"
+        data-flare-strength=".5"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
         <div class="container narrow">
           <div class="section-header">
             <p class="eyebrow">Narrative arc</p>
@@ -145,7 +266,16 @@
         <span class="separator-strip"></span>
       </div>
 
-      <section id="system" class="section halo">
+      <section
+        id="system"
+        class="section halo"
+        style="--orbit-a: color-mix(in oklab, var(--c) 36%, transparent); --orbit-b: color-mix(in oklab, var(--b) 42%, transparent); --orbit-strength:.48;"
+        data-flare-primary="color-mix(in oklab, var(--c) 36%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--b) 42%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 48%, transparent)"
+        data-flare-strength=".48"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
         <div class="container system">
           <div class="section-header">
             <p class="eyebrow">Ecosystem</p>
@@ -183,7 +313,16 @@
         <span class="separator-strip"></span>
       </div>
 
-      <section id="led-node" class="section halo">
+      <section
+        id="led-node"
+        class="section halo"
+        style="--orbit-a: color-mix(in oklab, var(--a) 46%, transparent); --orbit-b: color-mix(in oklab, var(--c) 38%, transparent); --orbit-strength:.52;"
+        data-flare-primary="color-mix(in oklab, var(--a) 46%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--c) 38%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 52%, transparent)"
+        data-flare-strength=".52"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
         <div class="container led">
           <div class="section-header">
             <p class="eyebrow">Hero hardware</p>
@@ -229,7 +368,16 @@
         <span class="separator-strip"></span>
       </div>
 
-      <section id="experience" class="section halo">
+      <section
+        id="experience"
+        class="section halo"
+        style="--orbit-a: color-mix(in oklab, var(--c) 42%, transparent); --orbit-b: color-mix(in oklab, var(--halo-glow) 40%, transparent); --orbit-strength:.5;"
+        data-flare-primary="color-mix(in oklab, var(--c) 42%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--halo-glow) 40%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 50%, transparent)"
+        data-flare-strength=".5"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
         <div class="container experience">
           <div class="section-header">
             <p class="eyebrow">Experience</p>
@@ -261,7 +409,84 @@
         <span class="separator-strip"></span>
       </div>
 
-      <section id="launch" class="section halo center">
+      <section
+        id="gallery"
+        class="section halo"
+        style="--orbit-a: color-mix(in oklab, var(--a) 38%, transparent); --orbit-b: color-mix(in oklab, var(--b) 46%, transparent); --orbit-strength:.48;"
+        data-flare-primary="color-mix(in oklab, var(--a) 38%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--b) 46%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 54%, transparent)"
+        data-flare-strength=".48"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container gallery-wrap">
+          <div class="section-header">
+            <p class="eyebrow">Scenes</p>
+            <h2 class="h2" data-parallax="0.12">Glassy moodboard in motion</h2>
+            <p class="lead">
+              Animated placeholders hint at the installations our crews prototype ahead of the LED Node launch.
+            </p>
+          </div>
+          <div class="reveal">
+            <Gallery items={galleryItems} />
+          </div>
+          <p class="gallery-note reveal">
+            Each tile is a live gradient placeholder—swap in venue shots while keeping the halo rhythm in sync with your
+            theme.
+          </p>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="updates"
+        class="section halo"
+        style="--orbit-a: color-mix(in oklab, var(--a) 36%, transparent); --orbit-b: color-mix(in oklab, var(--halo-glow) 42%, transparent); --orbit-strength:.5;"
+        data-flare-primary="color-mix(in oklab, var(--a) 36%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--halo-glow) 42%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--c) 40%, transparent)"
+        data-flare-strength=".5"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container narrow">
+          <div class="section-header">
+            <p class="eyebrow">What changed</p>
+            <h2 class="h2" data-parallax="0.14">Additions, improvements, updates</h2>
+            <p class="lead">
+              A quick ledger of the glow work completed for this pass—grounded in the LumiGrid story and tuned for calm, age-inclusive reading.
+            </p>
+          </div>
+          <div class="updates-grid" role="list">
+            {#each updates as entry}
+              <article class="glass-card update-card reveal" role="listitem">
+                <span class="update-tag" aria-hidden="true">{entry.tag}</span>
+                <h3>{entry.title}</h3>
+                <p>{entry.summary}</p>
+              </article>
+            {/each}
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="launch"
+        class="section halo center"
+        style="--orbit-a: color-mix(in oklab, var(--c) 34%, transparent); --orbit-b: color-mix(in oklab, var(--halo-glow) 38%, transparent); --orbit-strength:.46;"
+        data-flare-primary="color-mix(in oklab, var(--c) 34%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--halo-glow) 38%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 46%, transparent)"
+        data-flare-strength=".46"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
         <div class="container narrow">
           <div class="section-header">
             <p class="eyebrow">Road to release</p>
@@ -290,7 +515,16 @@
         <span class="separator-strip"></span>
       </div>
 
-      <section id="contact" class="section halo center">
+      <section
+        id="contact"
+        class="section halo center"
+        style="--orbit-a: color-mix(in oklab, var(--a) 42%, transparent); --orbit-b: color-mix(in oklab, var(--warm) 40%, transparent); --orbit-strength:.5;"
+        data-flare-primary="color-mix(in oklab, var(--a) 42%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--warm) 40%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 48%, transparent)"
+        data-flare-strength=".5"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
         <div class="container narrow">
           <div class="section-header">
             <p class="eyebrow">Stay close</p>
