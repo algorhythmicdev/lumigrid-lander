@@ -57,7 +57,9 @@
 
   onDestroy(() => {
     cleanupTheme?.();
-    window.removeEventListener('keydown', handleKeydown);
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('keydown', handleKeydown);
+    }
     mediaCleanup?.();
     if (typeof document !== 'undefined') {
       delete document.documentElement.dataset.navOpen;
