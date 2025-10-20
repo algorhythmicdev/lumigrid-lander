@@ -1,7 +1,7 @@
 <script>
   import { timelineSpy } from '$lib/fx.js';
   import { getIconPaths } from '$lib/icons.js';
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   export let items = [];
   let listEl, progressEl;
   let normalized = [];
@@ -12,9 +12,13 @@
         : { id: item.id, label: item.label ?? item.id, icon: item.icon };
     return { ...base, icon: base.icon ?? 'sparkles' };
   });
+  let releaseSpy;
   onMount(() => {
     const ids = normalized.map((item) => item.id);
-    timelineSpy({ listSelector: '#lg-tl', progressSelector: '#lg-tl-progress', ids });
+    releaseSpy = timelineSpy({ listSelector: '#lg-tl', progressSelector: '#lg-tl-progress', ids });
+  });
+  onDestroy(() => {
+    releaseSpy?.();
   });
 </script>
 <aside class="timeline-side glass" aria-label="Page sections" role="navigation">
