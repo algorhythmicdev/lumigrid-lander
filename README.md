@@ -5,21 +5,57 @@ Ultra‑modern, glassy, depthy landing for creative signage makers. Truthful, si
 ## Dev
 
 ```bash
-pnpm i   # or npm i / yarn
-pnpm dev # or npm run dev
+npm install
+npm run dev -- --open
 ```
 
-Open http://localhost:5173
+Open http://localhost:5173. Run `npm run check` for a quick Svelte/TypeScript sanity check before committing changes.
+Execute `npm run test` to exercise the contact endpoint unit tests.
 
-## Deploy to Vercel
+## Deploy to Google Cloud Run
 
 ```bash
-pnpm i
-pnpm build
-npx vercel deploy --prod
+# Build and push using Cloud Build (updates LOCATION/PROJECT/REPOSITORY as needed)
+gcloud builds submit --config=cloudbuild.yaml --region=LOCATION \
+  --substitutions=_SERVICE=lumigrid-lander
+
+# Deploy the freshly built image (replace placeholders to match your project)
+gcloud run deploy lumigrid-lander \
+  --image=LOCATION-docker.pkg.dev/PROJECT/REPOSITORY/lumigrid-lander:$COMMIT_SHA \
+  --platform=managed \
+  --region=LOCATION \
+  --allow-unauthenticated
 ```
 
-Uses `@sveltejs/adapter-vercel` (no extra config needed).
+The Dockerfile produces a Node 20 image that runs `node build`, and `cloudbuild.yaml`
+encodes a reproducible build. If you prefer a local build, run `npm run build`, then
+`docker build --tag lumigrid-lander:local .` and deploy that image instead.
+
+### Contact form webhooks
+
+The `/api/contact` endpoint will forward submissions to any HTTPS webhook you
+expose via the `CONTACT_WEBHOOK_URL` (or legacy `CONTACT_WEBHOOK`) environment
+variable. Configure the variable during `gcloud run deploy` to hand messages off
+to Slack, Email, or Pub/Sub:
+
+```bash
+gcloud run deploy lumigrid-lander \
+  --image=... \
+  --region=LOCATION \
+  --allow-unauthenticated \
+  --set-env-vars=CONTACT_WEBHOOK_URL=https://hooks.slack.com/services/XXX/YYY/ZZZ
+```
+
+When no webhook is configured, submissions are logged to the service console so
+Cloud Run logs retain the message payloads for manual follow-up.
+
+#### Built-in abuse defences
+
+- A hidden honeypot field quietly rejects basic bot submissions.
+- Submissions filled in suspiciously fast (under ~3 seconds) are throttled with a `429` response.
+- Payloads are clipped to 2000 characters to protect downstream webhooks.
+
+These checks run server-side, so even if the front-end is bypassed the API still enforces them.
 
 ## Structure
 
