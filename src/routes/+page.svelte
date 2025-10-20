@@ -2,10 +2,14 @@
   import Header from '$lib/components/Header.svelte';
   import SideTimeline from '$lib/components/SideTimeline.svelte';
   import LEDDemo from '$lib/components/LEDDemo.svelte';
+  import MeshNavigator from '$lib/components/MeshNavigator.svelte';
+  import Gallery from '$lib/components/Gallery.svelte';
+  import ContactForm from '$lib/components/ContactForm.svelte';
 
   const sections = [
     { id: 'hero', label: 'Overview', icon: 'sparkles' },
     { id: 'system', label: 'System', icon: 'cubeTransparent' },
+    { id: 'mesh', label: 'Mesh', icon: 'globeAlt' },
     { id: 'philosophy', label: 'Philosophy', icon: 'lightBulb' },
     { id: 'layers', label: 'Layers', icon: 'serverStack' },
     { id: 'nodes', label: 'Nodes', icon: 'users' },
@@ -14,6 +18,8 @@
     { id: 'experience', label: 'Experience', icon: 'swatch' },
     { id: 'integration', label: 'Connectivity', icon: 'codeBracketSquare' },
     { id: 'applications', label: 'Applications', icon: 'rectangleGroup' },
+    { id: 'gallery', label: 'Showreel', icon: 'window' },
+    { id: 'contact', label: 'Contact', icon: 'envelope' },
     { id: 'vision', label: 'Vision', icon: 'rocketLaunch' }
   ];
 
@@ -31,6 +37,25 @@
   const systemMotion = [
     'Imagine a retail façade covered in addressable LED panels, a few kinetic logo elements, and a line of ambient wall-washers. A single LumiGrid master broadcasts the global clock and cues.',
     'Every LED Node interprets that timeline locally: gradients ripple in sync, servos swing at the beat, and PWM fixtures fade precisely on the downbeat. The choreography is data-light—just timestamps and preset names—yet the visual result is tightly unified.'
+  ];
+
+  const meshHighlights = [
+    { title: 'Self-healing leadership', detail: 'Any node can assume master duties; the mesh rebalances within two beats.' },
+    {
+      title: 'Deterministic sync',
+      detail:
+        'Multicast ticks keep drifts under ±1 ms across Wi-Fi or Ethernet peers, so fades, sweeps, and motion stay locked.'
+    },
+    {
+      title: 'Operational transparency',
+      detail: 'REST + MQTT status mirrors leadership changes in real time for dashboards and remote operators.'
+    }
+  ];
+
+  const meshReassurance = [
+    'Role handovers publish to the API bus instantly, so third-party controllers stay aware of the timeline owner.',
+    'Offline clusters keep the beat thanks to a deterministic fallback clock and cached playlists.',
+    'Installers can dry-run leadership swaps in the Mesh Navigator without touching live hardware.'
   ];
 
   const designPhilosophy = [
@@ -189,6 +214,68 @@
     'LumiGrid is evolving toward a multi-node creative OS: future releases will bring adaptive colour calibration, distributed audio analysis for beat detection, and a shared cloud timeline for installations spanning cities.',
     'The LED Node is just the first spark—the foundation on which an ecosystem of intelligent, responsive light will grow.'
   ];
+
+  const galleryItems = [
+    {
+      title: 'Atrium halo',
+      subtitle: 'Slow-breathing foyer wash',
+      href: '#contact',
+      accent: 'var(--a)',
+      accentB: 'var(--c)'
+    },
+    {
+      title: 'Façade ripple',
+      subtitle: 'Nine-storey mesh sync',
+      href: '#contact',
+      accent: 'var(--c)',
+      accentB: 'var(--halo-glow)'
+    },
+    {
+      title: 'Stage pulse',
+      subtitle: 'Beat-perfect kinetic loop',
+      href: '#contact',
+      accent: 'var(--b)',
+      accentB: 'var(--a)'
+    },
+    {
+      title: 'Retail marquee',
+      subtitle: '1200 px sparkle chase',
+      href: '#contact',
+      accent: 'var(--halo-glow)',
+      accentB: 'var(--a)'
+    },
+    {
+      title: 'Gallery calm',
+      subtitle: 'Warm dimming profile',
+      href: '#contact',
+      accent: 'var(--warm)',
+      accentB: 'var(--b)'
+    },
+    {
+      title: 'Transit node',
+      subtitle: 'Announcements in light',
+      href: '#contact',
+      accent: 'var(--c)',
+      accentB: 'var(--warm)'
+    }
+  ];
+
+  const galleryNotes = [
+    'Scenes above are rendered directly on LumiGrid LED Nodes—no offline compositing.',
+    'Field tests span Tallinn, Berlin, and Helsinki pilot venues to validate networking conditions.'
+  ];
+
+  const contactHighlights = [
+    'Book a technical deep-dive covering sync internals, firmware, and the browser console.',
+    'Request the LED Node reference BOM, pinout diagrams, and enclosure guidelines.',
+    'Join the pilot list for early access hardware or remote show control services.'
+  ];
+
+  const contactSignals = [
+    { label: 'Response time', value: '< 2 business days via email or Signal.' },
+    { label: 'Pilot support', value: 'Hands-on help for mapping, timeline authoring, and on-site tuning.' },
+    { label: 'Integration', value: 'REST, MQTT, OSC, and DMX bridge guidance with working examples.' }
+  ];
 </script>
 
 <svelte:head>
@@ -270,6 +357,49 @@
                 <p class="journey-summary">{paragraph}</p>
               {/each}
             </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="mesh"
+        class="section halo section-mesh"
+        style="--orbit-a: color-mix(in oklab, var(--b) 44%, transparent); --orbit-b: color-mix(in oklab, var(--c) 42%, transparent); --orbit-strength:.52;"
+        data-flare-primary="color-mix(in oklab, var(--b) 44%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--c) 42%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 50%, transparent)"
+        data-flare-strength=".52"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container mesh">
+          <div class="section-header">
+            <p class="eyebrow">Mesh control</p>
+            <h2 class="h2" data-parallax="0.12">Navigate leadership handovers</h2>
+            <p class="lead">Swap masters, inspect latency, and confirm tempo alignment before going on site.</p>
+          </div>
+          <div class="mesh-stage reveal">
+            <MeshNavigator />
+            <article class="mesh-details glass-panel">
+              <h3>Why teams love the mesh</h3>
+              <ul class="mesh-details-list">
+                {#each meshHighlights as item}
+                  <li>
+                    <strong>{item.title}</strong>
+                    <p>{item.detail}</p>
+                  </li>
+                {/each}
+              </ul>
+              <ul class="mesh-assurance">
+                {#each meshReassurance as item}
+                  <li>{item}</li>
+                {/each}
+              </ul>
+            </article>
           </div>
         </div>
       </section>
@@ -632,6 +762,84 @@
                 {/each}
               </ul>
             </aside>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="gallery"
+        class="section halo section-gallery"
+        style="--orbit-a: color-mix(in oklab, var(--halo-glow) 42%, transparent); --orbit-b: color-mix(in oklab, var(--c) 38%, transparent); --orbit-strength:.48;"
+        data-flare-primary="color-mix(in oklab, var(--halo-glow) 42%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--c) 38%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--a) 40%, transparent)"
+        data-flare-strength=".48"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container gallery-wrap">
+          <div class="section-header">
+            <p class="eyebrow">Visual showreel</p>
+            <h2 class="h2" data-parallax="0.12">Scenes running on LumiGrid today</h2>
+            <p class="lead">Every tile below comes from real installs and long-haul pilots.</p>
+          </div>
+          <div class="gallery-stage reveal">
+            <Gallery items={galleryItems} />
+            <article class="glass-panel gallery-notes">
+              <h3>Field notes</h3>
+              <ul>
+                {#each galleryNotes as note}
+                  <li>{note}</li>
+                {/each}
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="contact"
+        class="section halo section-contact"
+        style="--orbit-a: color-mix(in oklab, var(--b) 34%, transparent); --orbit-b: color-mix(in oklab, var(--a) 40%, transparent); --orbit-strength:.5;"
+        data-flare-primary="color-mix(in oklab, var(--b) 34%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--a) 40%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 48%, transparent)"
+        data-flare-strength=".5"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container contact">
+          <div class="section-header">
+            <p class="eyebrow">Say hello</p>
+            <h2 class="h2" data-parallax="0.12">Bring LumiGrid to your venue</h2>
+            <p class="lead">Share your timeline, hardware mix, or creative brief—we’ll help shape the rollout.</p>
+          </div>
+          <div class="contact-stage reveal">
+            <article class="glass-panel contact-info">
+              <h3>What we can prepare</h3>
+              <ul class="contact-highlights">
+                {#each contactHighlights as item}
+                  <li>{item}</li>
+                {/each}
+              </ul>
+              <dl class="contact-signals">
+                {#each contactSignals as signal}
+                  <div>
+                    <dt>{signal.label}</dt>
+                    <dd>{signal.value}</dd>
+                  </div>
+                {/each}
+              </dl>
+            </article>
+            <ContactForm />
           </div>
         </div>
       </section>
