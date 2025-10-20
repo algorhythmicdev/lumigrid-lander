@@ -96,7 +96,7 @@
         <span class="btn-label">{themeMode === 'dark' ? 'Dark' : 'Light'}</span>
       </button>
     </div>
-    <a class="btn primary cta" href="#contact" on:click={closeMenu}>Contact</a>
+    <a class="btn primary cta" href="#vision" on:click={closeMenu}>Vision</a>
   </div>
   <button
     class="menu-toggle"
