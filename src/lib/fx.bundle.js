@@ -62,12 +62,13 @@ export function parallax(selector='[data-parallax]'){
     }
   });
 }
-export function timelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-progress', ids=[]}={}){
+export function timelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-progress', ids=[], onActive}={}){
   const items = [...document.querySelectorAll(`${listSelector} li`)];
   const sections = ids.map((id) => document.getElementById(id)).filter(Boolean);
   const bar = document.querySelector(progressSelector);
   if(!items.length || !sections.length) return () => {};
   let raf = 0;
+  let lastActive = -1;
   const update = () => {
     raf = 0;
     const mid = window.scrollY + innerHeight / 2;
@@ -97,6 +98,11 @@ export function timelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-pro
       const size = `${(p * 100).toFixed(2)}% 100%, 100% 100%`;
       bar.style.maskSize = size;
       bar.style.webkitMaskSize = size;
+    }
+    if(active !== lastActive){
+      lastActive = active;
+      const id = ids[active];
+      onActive?.({ index: active, id, item: items[active] });
     }
   };
   const queueUpdate = () => {
