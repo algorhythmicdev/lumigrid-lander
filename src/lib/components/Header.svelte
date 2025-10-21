@@ -69,6 +69,7 @@
   });
 </script>
 <nav class="glass top-nav" data-open={menuOpen}>
+  <span class="nav-halo" aria-hidden="true"></span>
   <a href="/" class="h2 text-gradient brand" on:click={closeMenu}>LumiGrid</a>
   <div
     id="header-menu"

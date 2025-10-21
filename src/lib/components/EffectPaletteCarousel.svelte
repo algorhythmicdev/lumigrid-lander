@@ -201,24 +201,48 @@
 <style>
   .effects-wrap {
     display: grid;
-    gap: clamp(1.4rem, 3vw, 2.2rem);
+    gap: clamp(1.4rem, 3vw, 2.4rem);
+    position: relative;
+    isolation: isolate;
   }
 
   .table-wrap {
-    overflow-x: auto;
+    position: relative;
+    border-radius: var(--radius-panel);
+    border: 1px solid var(--border-glass);
+    background: color-mix(in oklab, var(--surface-glass-strong) 92%, transparent);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .table-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -120% -80% 40%;
+    background: var(--aurora-tertiary);
+    opacity: 0.45;
+    filter: blur(90px);
+    pointer-events: none;
+    animation: table-glow var(--halo-speed-alt) linear infinite;
   }
 
   table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: 0.95rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  thead {
+    background: color-mix(in oklab, var(--surface-soft) 95%, transparent);
   }
 
   th,
   td {
     text-align: left;
-    padding: 0.75rem 0.9rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.75rem 1rem;
   }
 
   th {
@@ -227,6 +251,25 @@
     letter-spacing: 0.12em;
     font-size: 0.75rem;
     color: color-mix(in oklab, var(--muted) 75%, white 25%);
+    border-bottom: 1px solid color-mix(in oklab, var(--border-soft) 70%, transparent);
+  }
+
+  tbody tr {
+    position: relative;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  tbody tr:hover {
+    background: color-mix(in oklab, var(--surface-soft) 85%, transparent);
+    transform: translateY(-1px);
+  }
+
+  tbody tr td {
+    border-bottom: 1px solid color-mix(in oklab, var(--border-soft) 60%, transparent);
+  }
+
+  tbody tr:last-of-type td {
+    border-bottom: 0;
   }
 
   .effect-buttons {
@@ -239,20 +282,26 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.35rem 0.75rem;
-    border-radius: 999px;
-    border: 1px solid rgba(148, 163, 184, 0.25);
-    background: rgba(15, 23, 42, 0.35);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--border-soft);
+    background: color-mix(in oklab, var(--surface-soft) 88%, transparent);
     color: inherit;
     cursor: pointer;
-    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
+    box-shadow: 0 10px 26px color-mix(in oklab, rgba(8, 12, 26, 0.75) 35%, transparent);
+  }
+
+  .effect-btn:hover {
+    border-color: color-mix(in oklab, var(--b) 30%, var(--border-soft));
   }
 
   .effect-btn[aria-pressed='true'] {
-    background: linear-gradient(120deg, var(--a), var(--b));
-    border-color: color-mix(in oklab, var(--a) 50%, transparent);
-    color: #09101a;
+    background: linear-gradient(135deg, color-mix(in oklab, var(--a) 20%, var(--surface-soft)), color-mix(in oklab, var(--b) 38%, transparent));
+    border-color: color-mix(in oklab, var(--b) 55%, var(--border-soft));
+    color: color-mix(in oklab, var(--ink) 85%, white 15%);
+    box-shadow: 0 16px 34px color-mix(in oklab, var(--glow-secondary) 42%, transparent);
   }
 
   .effect-btn:focus-visible {
@@ -261,23 +310,37 @@
   }
 
   .effect-preview {
+    position: relative;
     display: grid;
     gap: 1rem;
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: clamp(1rem, 2.4vw, 1.6rem);
-    padding: clamp(1.2rem, 2.8vw, 1.8rem);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--glass-stroke);
+    background: color-mix(in oklab, var(--surface-glass) 95%, transparent);
+    padding: clamp(1.2rem, 2.8vw, 1.9rem);
     box-shadow: var(--shadow);
     min-width: 0;
+    overflow: hidden;
+  }
+
+  .effect-preview::before {
+    content: '';
+    position: absolute;
+    inset: -30% -20% auto;
+    height: 60%;
+    background: var(--aurora-primary);
+    opacity: 0.55;
+    filter: blur(70px);
+    pointer-events: none;
   }
 
   .effect-canvas {
     position: relative;
-    height: 220px;
-    border-radius: 1.2rem;
+    height: clamp(220px, 32vw, 260px);
+    border-radius: var(--radius-media);
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    background: rgba(8, 11, 22, 0.65);
+    border: 1px solid var(--border-track);
+    background: linear-gradient(180deg, rgba(7, 10, 20, 0.85), rgba(5, 7, 16, 0.95));
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.12) 45%, transparent);
   }
 
   .shader-layer {
@@ -285,33 +348,34 @@
     inset: 0;
     mix-blend-mode: screen;
     opacity: 0.85;
-    animation: layer-shift 12s linear infinite;
+    animation: layer-shift 16s linear infinite;
   }
 
   .effect-canvas.is-rainbow .shader-layer:nth-child(1) {
     background: linear-gradient(90deg, #ff5f9e, #facc15, #22d3ee, #a855f7);
-    animation-duration: 8s;
+    animation-duration: 10s;
   }
 
   .effect-canvas.is-rainbow .shader-layer:nth-child(2) {
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.25), transparent 65%);
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.28), transparent 65%);
     mix-blend-mode: overlay;
+    animation-duration: 18s;
   }
 
   .effect-canvas.is-noise-flow .shader-layer:nth-child(1) {
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.7" fill="%230ff0fc"/></svg>');
     background-size: 200% 200%;
-    animation-duration: 14s;
-  }
-
-  .effect-canvas.is-noise-flow .shader-layer:nth-child(2) {
-    background: linear-gradient(135deg, rgba(108, 43, 217, 0.6), rgba(231, 59, 163, 0.3));
     animation-duration: 18s;
   }
 
+  .effect-canvas.is-noise-flow .shader-layer:nth-child(2) {
+    background: linear-gradient(135deg, rgba(108, 43, 217, 0.65), rgba(231, 59, 163, 0.4));
+    animation-duration: 24s;
+  }
+
   .effect-canvas.is-fire .shader-layer:nth-child(1) {
-    background: radial-gradient(circle at 50% 90%, rgba(249, 115, 22, 0.85), rgba(127, 29, 29, 0.2));
-    animation-duration: 6s;
+    background: radial-gradient(circle at 50% 90%, rgba(249, 115, 22, 0.85), rgba(127, 29, 29, 0.25));
+    animation-duration: 8s;
   }
 
   .effect-canvas.is-fire .shader-layer:nth-child(2) {
@@ -321,12 +385,12 @@
 
   .effect-canvas.is-warm-dim .shader-layer:nth-child(1) {
     background: linear-gradient(90deg, rgba(255, 214, 165, 0.9), rgba(255, 125, 64, 0.7));
-    animation-duration: 10s;
+    animation-duration: 12s;
   }
 
   .effect-canvas.is-warm-dim .shader-layer:nth-child(2) {
     background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.22), transparent 70%);
-    animation: warm-dim 5s ease-in-out infinite;
+    animation: warm-dim 6s ease-in-out infinite;
   }
 
   .effect-caption h3 {
@@ -347,7 +411,7 @@
       transform: translate3d(-5%, 0, 0) scale(1.05);
     }
     50% {
-      transform: translate3d(5%, 0, 0) scale(1.1);
+      transform: translate3d(5%, 0, 0) scale(1.12);
     }
     100% {
       transform: translate3d(-5%, 0, 0) scale(1.05);
@@ -355,22 +419,36 @@
   }
 
   @keyframes fire-flicker {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.6;
       transform: scale(0.95);
     }
     40% {
       opacity: 1;
-      transform: scale(1.05);
+      transform: scale(1.08);
     }
   }
 
   @keyframes warm-dim {
-    0%, 100% {
+    0%,
+    100% {
       filter: hue-rotate(0deg);
     }
     50% {
       filter: hue-rotate(-18deg);
+    }
+  }
+
+  @keyframes table-glow {
+    0% {
+      transform: translate3d(-6%, -6%, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(8%, 8%, 0) rotate(160deg);
+    }
+    100% {
+      transform: translate3d(-6%, -6%, 0) rotate(360deg);
     }
   }
 
@@ -381,7 +459,7 @@
     }
   }
 
-  @media (max-width: 820px) {
+  @media (max-width: 840px) {
     table,
     thead,
     tbody,
@@ -406,13 +484,15 @@
     tbody {
       display: grid;
       gap: 1rem;
+      padding: clamp(1rem, 3vw, 1.3rem);
     }
 
     tr {
       padding: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 1rem;
-      background: rgba(9, 16, 26, 0.4);
+      border-radius: var(--radius-card);
+      border: 1px solid color-mix(in oklab, var(--border-soft) 70%, transparent);
+      background: color-mix(in oklab, var(--surface-soft) 90%, transparent);
+      box-shadow: 0 16px 38px color-mix(in oklab, rgba(8, 12, 26, 0.75) 30%, transparent);
       min-width: 0;
     }
 
@@ -434,7 +514,8 @@
     .effect-buttons {
       margin-top: 0.35rem;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: stretch;
+      gap: 0.4rem;
     }
   }
 
@@ -468,6 +549,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .table-wrap::before,
     .shader-layer,
     .effect-canvas.is-fire .shader-layer:nth-child(2),
     .effect-canvas.is-warm-dim .shader-layer:nth-child(2) {

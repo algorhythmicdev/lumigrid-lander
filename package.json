@@ -15,7 +15,7 @@
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "@sveltejs/adapter-node": "^5.2.0",
+    "@sveltejs/adapter-node": "^5.4.0",
     "@sveltejs/kit": "^2.5.0",
     "svelte": "^5.0.0",
     "svelte-check": "^4.3.3",

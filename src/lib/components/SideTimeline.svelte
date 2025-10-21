@@ -34,6 +34,7 @@
 </script>
 <aside class="timeline-side glass" aria-label="Page sections" role="navigation">
   <div class="tl-head">
+    <span class="tl-head-glow" aria-hidden="true"></span>
     <span class="tl-head-icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none">
         {#each activePaths as d}
@@ -50,6 +51,7 @@
   <ol id="lg-tl" class="tl" bind:this={listEl}>
     {#each normalized as item}
       <li data-id={item.id}>
+        <span class="tl-node-glow" aria-hidden="true"></span>
         <a href={'#' + item.id} aria-label={item.label} title={item.label}>
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             {#each getIconPaths(item.icon) as d}
