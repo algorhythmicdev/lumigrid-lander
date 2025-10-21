@@ -1,6 +1,8 @@
 <script>
   import { onMount } from 'svelte';
 
+  const MESSAGE_LIMIT = 2000;
+
   let name = '';
   let email = '';
   let message = '';
@@ -12,6 +14,8 @@
   let note = '';
   let state = 'idle';
   let startedAt = Date.now();
+  let trimmedMessageLength = 0;
+  let messageRemaining = MESSAGE_LIMIT;
 
   $: noteTone = state === 'success' ? 'success' : state === 'error' ? 'error' : '';
 
@@ -28,11 +32,40 @@
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  $: trimmedMessageLength = message.trim().length;
+  $: messageRemaining = Math.max(0, MESSAGE_LIMIT - trimmedMessageLength);
+
   const validate = () => {
-    errName = name.trim() ? '' : 'Please enter your name.';
-    errEmail = emailPattern.test(email) ? '' : 'Please enter a valid email.';
-    errMsg = message.trim() ? '' : 'Tell us a little about your project.';
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const currentTrimmedLength = message.trim().length;
+
+    errName = trimmedName ? '' : 'Please enter your name.';
+    errEmail = emailPattern.test(trimmedEmail) ? '' : 'Please enter a valid email.';
+
+    if (!currentTrimmedLength) {
+      errMsg = 'Tell us a little about your project.';
+    } else if (currentTrimmedLength > MESSAGE_LIMIT) {
+      const overBy = currentTrimmedLength - MESSAGE_LIMIT;
+      errMsg = `Please keep your message under ${MESSAGE_LIMIT} characters (${overBy} over).`;
+    } else {
+      errMsg = '';
+    }
+
     return !(errName || errEmail || errMsg);
+  };
+
+  const applyServerDetails = (details) => {
+    if (!details || typeof details !== 'object') return;
+    if (typeof details.name === 'string') {
+      errName = details.name;
+    }
+    if (typeof details.email === 'string') {
+      errEmail = details.email;
+    }
+    if (typeof details.message === 'string') {
+      errMsg = details.message;
+    }
   };
 
   const handleInput = () => {
@@ -42,7 +75,7 @@
 
   const submit = async () => {
     if (!validate()) {
-      note = 'Please fix the highlighted fields.';
+      note = errMsg || errName || errEmail || 'Please fix the highlighted fields.';
       state = 'error';
       return;
     }
@@ -59,7 +92,9 @@
 
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || payload?.ok === false) {
-        const errorMessage = payload?.error ?? 'Please try again later or email hello@lumigrid.dev.';
+        applyServerDetails(payload?.details);
+        const errorMessage =
+          errMsg || payload?.details?.message || payload?.error || 'Please try again later or email hello@lumigrid.dev.';
         throw new Error(errorMessage);
       }
 
@@ -120,10 +155,12 @@
       bind:value={message}
       required
       aria-invalid={errMsg ? 'true' : 'false'}
-      aria-describedby="msg-error"
+      aria-describedby="msg-error msg-limit"
+      maxlength={MESSAGE_LIMIT}
       on:input={handleInput}
     ></textarea>
     <small id="msg-error" class="error">{errMsg}</small>
+    <small id="msg-limit" class="hint" aria-live="polite">{messageRemaining} characters remaining</small>
   </div>
   <div class="f-row honeypot" aria-hidden="true">
     <label for="company">Company</label>
