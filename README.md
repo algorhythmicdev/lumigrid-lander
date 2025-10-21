@@ -12,6 +12,11 @@ npm run dev -- --open
 Open http://localhost:5173. Run `npm run check` for a quick Svelte/TypeScript sanity check before committing changes.
 Execute `npm run test` to exercise the contact endpoint unit tests.
 
+### Accessibility helpers
+
+Enable the "Read aloud" toggle in the navigation bar to activate speech synthesis. While it is on, double-click any headline,
+paragraph, list item, or caption to hear it read through the browser's voice engine.
+
 ## Deploy to Google Cloud Run
 
 ```bash
@@ -30,6 +35,12 @@ gcloud run deploy lumigrid-lander \
 The Dockerfile produces a Node 20 image that runs `node build`, and `cloudbuild.yaml`
 encodes a reproducible build. If you prefer a local build, run `npm run build`, then
 `docker build --tag lumigrid-lander:local .` and deploy that image instead.
+
+### Hosting requirements
+
+The contact form is fulfilled by the `/api/contact` server endpoint. The site therefore ships with prerendering disabled so the
+Node/SSR runtime is always available. Static-only adapters (e.g. Vercel Static or GitHub Pages) are unsupported unless you
+remove or replace the form with an external service.
 
 ### Contact form webhooks
 

@@ -253,18 +253,26 @@ export function bindTTS(toggleBtn){
     return cleanupNoop;
   }
   const synth = win.speechSynthesis;
+  const labelEl = toggleBtn.querySelector('[data-tts-label]') ?? toggleBtn;
+  const indicatorEl = toggleBtn.querySelector('[data-tts-indicator]');
+  const labelOn = toggleBtn.getAttribute('data-label-on') ?? 'Reading';
+  const labelOff = toggleBtn.getAttribute('data-label-off') ?? 'Read aloud';
   let on=false;
-  const set=v=>{
-    on=v;
+  const set=(value)=>{
+    on=value;
     toggleBtn.setAttribute('aria-pressed', String(on));
-    toggleBtn.textContent = on ? 'Reading' : 'Read';
+    toggleBtn.dataset.tts = on ? 'on' : 'off';
+    labelEl.textContent = on ? labelOn : labelOff;
+    if(indicatorEl){
+      indicatorEl.hidden = !on;
+    }
     if(!on && synth.speaking) synth.cancel();
   };
   set(false);
   const handleToggle = ()=> set(!on);
-  const handleDblClick = (e)=>{
+  const handleDblClick = (event)=>{
     if(!on) return;
-    const node=e.target.closest('p, h1, h2, h3, li, summary, figcaption');
+    const node=event.target.closest('p, h1, h2, h3, li, summary, figcaption');
     if(!node) return;
     const utterance=new win.SpeechSynthesisUtterance(node.innerText);
     synth.cancel();
