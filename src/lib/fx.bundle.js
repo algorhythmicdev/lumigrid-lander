@@ -278,119 +278,353 @@ export function bindTTS(toggleBtn){
     if(synth.speaking) synth.cancel();
   };
 }
-export function backgroundFlares({ canvasId='lg-fx', count=42, spawnRate=0.08, depth={ near:0.9, far:3.2 }, radiusPx={ near:380, far:120 }, hues=[ {h:316,s:85,l:60},{h:265,s:77,l:62},{h:188,s:82,l:60},{h:42,s:97,l:67} ], baseOpacity=0.18, addBloom=true, pointerParallax=0.035, cameraDrift=0.0008, maxBlinkHz=2.2, palettes }={}){
+export function backgroundFlares({ canvasId = 'lg-fx' } = {}) {
   const doc = getDocument();
   const win = getWindow();
-  if(!doc || !win) return cleanupNoop;
-  const mReduce = getMediaQueryList('(prefers-reduced-motion: reduce)');
-  const cvs = doc.getElementById(canvasId); if(!cvs) return cleanupNoop;
-  const ctx = cvs.getContext('2d', { alpha:true });
-  if(!ctx) return cleanupNoop;
+  if (!doc || !win) return cleanupNoop;
+  const canvas = doc.getElementById(canvasId);
+  if (!canvas) return cleanupNoop;
+  const ctx = canvas.getContext('2d', { alpha: true });
+  if (!ctx) return cleanupNoop;
   const root = doc.documentElement;
-  let dpr = Math.max(1, win.devicePixelRatio||1), vw=0, vh=0;
-  const resize=()=>{
-    vw=cvs.width=Math.floor(win.innerWidth*dpr);
-    vh=cvs.height=Math.floor(win.innerHeight*dpr);
-    cvs.style.width=win.innerWidth+'px';
-    cvs.style.height=win.innerHeight+'px';
-  };
-  resize();
-  win.addEventListener('resize', resize, {passive:true});
-  const defaultDark = { hues, baseOpacity, fill:'rgba(0,0,0,0.25)' };
-  const defaultLight = {
-    hues:[
-      {h:305,s:72,l:70},
-      {h:248,s:68,l:66},
-      {h:188,s:64,l:68},
-      {h:48,s:84,l:72}
-    ],
-    baseOpacity: Math.max(0.12, baseOpacity * 0.8),
-    fill:'rgba(246,248,255,0.45)'
-  };
-  const mergePalette = (base, override={}) => ({
-    hues: override.hues ?? base.hues,
-    baseOpacity: override.baseOpacity ?? base.baseOpacity,
-    fill: override.fill ?? base.fill
-  });
-  const paletteConfig = {
-    dark: mergePalette(defaultDark, palettes?.dark),
-    light: mergePalette(defaultLight, palettes?.light)
-  };
-  const currentMode = () => (root.dataset.color === 'light' ? 'light' : 'dark');
-  const makeSprite=(base,hsl,feather=1)=>{ const r=Math.max(8,Math.floor(base*dpr)); const off=doc.createElement('canvas'); off.width=off.height=r*2; const g=off.getContext('2d'); const grad=g.createRadialGradient(r,r,0,r,r,r); grad.addColorStop(0.0,`hsla(${hsl.h},${hsl.s}%,${Math.min(96,hsl.l+15)}%,${0.95*feather})`); grad.addColorStop(0.35,`hsla(${hsl.h},${hsl.s}%,${hsl.l}%,${0.55*feather})`); grad.addColorStop(1.0,`hsla(${hsl.h},${Math.max(30,hsl.s-15)}%,${Math.max(20,hsl.l-25)}%,0)`); g.fillStyle=grad; g.beginPath(); g.arc(r,r,r,0,Math.PI*2); g.fill(); return {canvas:off,r}; };
-  const buildSprites = (palette) => palette.hues.map(h=>({ main:makeSprite(320,h,1), bloom:addBloom?makeSprite(520,h,0.55):null }));
-  const getPalette = (mode) => paletteConfig[mode] ?? paletteConfig.dark ?? defaultDark;
-  let activePalette = getPalette(currentMode());
-  let SPR = buildSprites(activePalette);
-  if(!SPR.length){
-    activePalette = defaultDark;
-    SPR = buildSprites(activePalette);
-  }
-  let fillStyle = activePalette.fill;
-  let activeBaseOpacity = activePalette.baseOpacity;
-  const applyPalette = (mode) => {
-    activePalette = getPalette(mode);
-    SPR = buildSprites(activePalette);
-    if(!SPR.length){
-      activePalette = defaultDark;
-      SPR = buildSprites(activePalette);
+  const compute = getComputed();
+  const reduceMotion = getMediaQueryList('(prefers-reduced-motion: reduce)');
+  const schemeMedia = win.matchMedia('(prefers-color-scheme: dark)');
+
+  const clampByte = (value) => Math.max(0, Math.min(255, Math.round(value)));
+  const hexToRgb = (hex) => {
+    if (!hex) return null;
+    let value = hex.trim().replace('#', '');
+    if (!value) return null;
+    if (value.length === 3) {
+      value = value
+        .split('')
+        .map((char) => char + char)
+        .join('');
     }
-    fillStyle = activePalette.fill;
-    activeBaseOpacity = activePalette.baseOpacity;
-    flares.forEach((flare)=>{
-      flare.pal = SPR[Math.floor(Math.random()*SPR.length)];
+    if (value.length !== 6) return null;
+    const int = Number.parseInt(value, 16);
+    if (Number.isNaN(int)) return null;
+    return {
+      r: (int >> 16) & 255,
+      g: (int >> 8) & 255,
+      b: int & 255
+    };
+  };
+  const rgbStringToRgb = (input) => {
+    if (!input) return null;
+    const match = input
+      .trim()
+      .match(/rgba?\s*\(([^)]+)\)/i);
+    if (!match) return null;
+    const parts = match[1].split(',').map((part) => part.trim());
+    if (parts.length < 3) return null;
+    const [r, g, b] = parts.map((part) => clampByte(Number.parseFloat(part)));
+    if ([r, g, b].some((channel) => Number.isNaN(channel))) return null;
+    return { r, g, b };
+  };
+  const parseColor = (value, fallback) =>
+    rgbStringToRgb(value) ?? hexToRgb(value) ?? rgbStringToRgb(fallback) ?? hexToRgb(fallback) ?? { r: 0, g: 0, b: 0 };
+  const colorWithAlpha = ({ r, g, b }, alpha) => `rgba(${clampByte(r)}, ${clampByte(g)}, ${clampByte(b)}, ${Math.max(0, Math.min(1, alpha))})`;
+
+  const readPalette = () => {
+    const styles = compute ? compute(root) : null;
+    const readColor = (prop, fallback) => {
+      const raw = styles?.getPropertyValue(prop)?.trim();
+      return parseColor(raw && raw.length ? raw : undefined, fallback);
+    };
+    const basePrimary = styles?.getPropertyValue('--a')?.trim() || '#e73ba3';
+    const baseSecondary = styles?.getPropertyValue('--b')?.trim() || '#6c2bd9';
+    const baseTertiary = styles?.getPropertyValue('--c')?.trim() || '#1cc5dc';
+    const baseWarmth = styles?.getPropertyValue('--warm')?.trim() || '#ffd166';
+    const baseTwinkle = styles?.getPropertyValue('--ink')?.trim() || '#f8fbff';
+    const baseSurface = styles?.getPropertyValue('--bg-0')?.trim() || '#05060d';
+    const accentPrimary = styles?.getPropertyValue('--active-orbit-a')?.trim();
+    const accentSecondary = styles?.getPropertyValue('--active-orbit-b')?.trim();
+    const accentGlow = styles?.getPropertyValue('--active-orbit-glow')?.trim();
+    const accentStrengthRaw = styles?.getPropertyValue('--active-orbit-strength');
+    const accentStrengthParsed = Number.parseFloat(accentStrengthRaw ?? '');
+    const accentStrength = Number.isNaN(accentStrengthParsed) ? 0.5 : accentStrengthParsed;
+    return {
+      primary: readColor('--a', basePrimary),
+      secondary: readColor('--b', baseSecondary),
+      tertiary: readColor('--c', baseTertiary),
+      warmth: readColor('--warm', baseWarmth),
+      twinkle: readColor('--ink', baseTwinkle),
+      base: readColor('--bg-0', baseSurface),
+      accentPrimary: parseColor(accentPrimary, basePrimary),
+      accentSecondary: parseColor(accentSecondary, baseSecondary),
+      accentGlow: parseColor(accentGlow, baseTertiary),
+      accentStrength
+    };
+  };
+
+  let palette = readPalette();
+  let dpr = Math.max(1, win.devicePixelRatio || 1);
+  let width = 0;
+  let height = 0;
+  let running = false;
+  let raf = 0;
+  const pointer = { x: 0.5, y: 0.35 };
+  const target = { x: 0.5, y: 0.35 };
+  let scrollProgress = 0;
+  const twinkles = Array.from({ length: 60 }, () => ({
+    baseX: Math.random(),
+    baseY: Math.random(),
+    driftX: 0.015 + Math.random() * 0.03,
+    driftY: 0.02 + Math.random() * 0.035,
+    phase: Math.random() * Math.PI * 2,
+    radius: 0.75 + Math.random() * 1.35
+  }));
+
+  const clamp01 = (value) => Math.max(0, Math.min(1, value));
+  const stageCache = {
+    '--stage-grid-focus-x': '',
+    '--stage-grid-focus-y': '',
+    '--stage-grid-offset-x': '',
+    '--stage-grid-offset-y': ''
+  };
+  const setStageVar = (name, value) => {
+    if(stageCache[name] === value) return;
+    stageCache[name] = value;
+    root.style.setProperty(name, value);
+  };
+  const projectPointerY = (rawY, scroll) => {
+    const anchor = 0.25 + scroll * 0.5;
+    const desired = Math.min(0.92, Math.max(0.1, anchor * 0.6 + rawY * 0.4));
+    return desired;
+  };
+  const applyStageFocus = (px, py, scroll) => {
+    const clampedX = clamp01(px);
+    const clampedY = clamp01(py);
+    const focusX = `${(clampedX * 100).toFixed(2)}%`;
+    const focusY = `${(clampedY * 100).toFixed(2)}%`;
+    const offsetX = `${((clampedX - 0.5) * 32).toFixed(2)}px`;
+    const offsetY = `${(((scroll - 0.5) * 60) + (clampedY - 0.5) * 26).toFixed(2)}px`;
+    setStageVar('--stage-grid-focus-x', focusX);
+    setStageVar('--stage-grid-focus-y', focusY);
+    setStageVar('--stage-grid-offset-x', offsetX);
+    setStageVar('--stage-grid-offset-y', offsetY);
+  };
+
+  const now = () => win.performance?.now?.() ?? Date.now();
+
+  const drawInstant = () => {
+    if (running) return;
+    drawFrame(now(), true);
+  };
+
+  const resize = () => {
+    dpr = Math.max(1, win.devicePixelRatio || 1);
+    width = Math.floor(win.innerWidth * dpr);
+    height = Math.floor(win.innerHeight * dpr);
+    canvas.width = width;
+    canvas.height = height;
+    canvas.style.width = `${win.innerWidth}px`;
+    canvas.style.height = `${win.innerHeight}px`;
+    applyStageFocus(pointer.x, pointer.y, scrollProgress);
+    drawInstant();
+  };
+
+  const updatePalette = () => {
+    palette = readPalette();
+    drawInstant();
+  };
+
+  const updateScroll = () => {
+    const docHeight = Math.max(1, doc.documentElement.scrollHeight - win.innerHeight);
+    scrollProgress = docHeight > 0 ? (win.scrollY || 0) / docHeight : 0;
+    const projected = projectPointerY(target.y, scrollProgress);
+    applyStageFocus(target.x, projected, scrollProgress);
+    drawInstant();
+  };
+
+  const pointerMove = (event) => {
+    target.x = event.clientX / win.innerWidth;
+    target.y = event.clientY / win.innerHeight;
+    const projected = projectPointerY(target.y, scrollProgress);
+    applyStageFocus(target.x, projected, scrollProgress);
+    drawInstant();
+  };
+
+  const pointerLeave = () => {
+    target.x = 0.5;
+    target.y = 0.35;
+    const projected = projectPointerY(target.y, scrollProgress);
+    applyStageFocus(target.x, projected, scrollProgress);
+    drawInstant();
+  };
+
+  const touchMove = (event) => {
+    const touch = event.touches?.[0];
+    if (!touch) return;
+    target.x = touch.clientX / win.innerWidth;
+    target.y = touch.clientY / win.innerHeight;
+    const projected = projectPointerY(target.y, scrollProgress);
+    applyStageFocus(target.x, projected, scrollProgress);
+    drawInstant();
+  };
+
+  function drawFrame(timestamp, immediate = false) {
+    const time = (timestamp || 0) * 0.001;
+    if (immediate) {
+      pointer.x = target.x;
+    } else {
+      pointer.x += (target.x - pointer.x) * 0.06;
+    }
+    const scrollAnchor = 0.25 + scrollProgress * 0.5;
+    const desiredY = projectPointerY(target.y, scrollProgress);
+    if (immediate) {
+      pointer.y = desiredY;
+    } else {
+      pointer.y += (desiredY - pointer.y) * 0.065;
+    }
+
+    applyStageFocus(pointer.x, pointer.y, scrollProgress);
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.globalCompositeOperation = 'source-over';
+    const accentStrength = Math.min(0.9, Math.max(0.2, palette.accentStrength ?? 0.5));
+    ctx.fillStyle = colorWithAlpha(palette.base, 0.08 + accentStrength * 0.06);
+    ctx.fillRect(0, 0, width, height);
+
+    const minDim = Math.min(width, height);
+    const x1 = width * pointer.x + 36 * dpr * Math.sin(time * 0.6);
+    const y1 = height * pointer.y + 28 * dpr * Math.cos(time * 0.5);
+    const auraConfigs = [
+      {
+        x: x1,
+        y: y1,
+        radius: minDim * 0.85,
+        stops: [
+          { offset: 0, color: colorWithAlpha(palette.accentPrimary, 0.24 + accentStrength * 0.18) },
+          { offset: 0.55, color: colorWithAlpha(palette.accentSecondary, 0.18 + accentStrength * 0.12) },
+          { offset: 1, color: 'rgba(0,0,0,0)' }
+        ]
+      },
+      {
+        x: width * (0.18 + pointer.x * 0.55),
+        y: height * (0.22 + scrollProgress * 0.5),
+        radius: minDim * 0.68,
+        stops: [
+          { offset: 0, color: colorWithAlpha(palette.accentGlow, 0.18 + accentStrength * 0.1) },
+          { offset: 0.6, color: colorWithAlpha(palette.tertiary, 0.12 + accentStrength * 0.1) },
+          { offset: 1, color: 'rgba(0,0,0,0)' }
+        ]
+      },
+      {
+        x: width * (0.88 - pointer.x * 0.45),
+        y: height * (0.82 - scrollProgress * 0.4),
+        radius: minDim * 0.74,
+        stops: [
+          { offset: 0, color: colorWithAlpha(palette.secondary, 0.22 + accentStrength * 0.12) },
+          { offset: 0.58, color: colorWithAlpha(palette.warmth, 0.14 + accentStrength * 0.08) },
+          { offset: 1, color: 'rgba(0,0,0,0)' }
+        ]
+      }
+    ];
+
+    ctx.globalCompositeOperation = 'lighter';
+    auraConfigs.forEach(({ x, y, radius, stops }) => {
+      const gradient = ctx.createRadialGradient(x, y, radius * 0.08, x, y, radius);
+      stops.forEach(({ offset, color }) => gradient.addColorStop(offset, color));
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
     });
-  };
-  const perf = win.performance ?? { now: () => Date.now() };
-  const world={ w:4000, h:2600 }; let cam={x:0,y:0}; let pointer={x:.5,y:.35}, t0=perf.now(), flares=[], acc=0;
-  const pointerMove = e=>{ pointer.x=e.clientX/win.innerWidth; pointer.y=e.clientY/win.innerHeight; };
-  const touchMove = e=>{ const t=e.touches[0]; if(!t) return; pointer.x=t.clientX/win.innerWidth; pointer.y=t.clientY/win.innerHeight; };
-  win.addEventListener('pointermove', pointerMove, {passive:true});
-  win.addEventListener('touchmove', touchMove, {passive:true});
-  const lerp=(a,b,t)=>a+(b-a)*t, invLerp=(a,b,v)=>(v-a)/(b-a), ease=(t)=> t<.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
-  const spawn=()=>{ const pal=SPR[Math.floor(Math.random()*SPR.length)]; const z=depth.near+Math.random()*(depth.far-depth.near); const x=(Math.random()-.5)*world.w, y=(Math.random()-.5)*world.h; const life=8000+Math.random()*10000, t0=perf.now(); const blink=0.6+Math.random()*(maxBlinkHz-0.6); const baseR=lerp(radiusPx.far, radiusPx.near, invLerp(depth.far, depth.near, z)); return {x,y,z,t0,life,blink,baseR,pal,dead:false}; };
-  let observer;
-  if(typeof win.MutationObserver !== 'undefined'){
-    observer = new win.MutationObserver(()=> applyPalette(currentMode()));
-    observer.observe(root, { attributes:true, attributeFilter:['data-color'] });
+
+    twinkles.forEach((twinkle, index) => {
+      const wave = time * 0.35 + twinkle.phase + index * 0.035;
+      const x = ((twinkle.baseX + scrollProgress * 0.25 + time * twinkle.driftX) % 1) * width;
+      const y = ((twinkle.baseY + scrollProgress * 0.4 + time * twinkle.driftY) % 1) * height;
+      const blink = 0.35 + 0.45 * Math.sin(wave * 4);
+      const size = (twinkle.radius + 0.4 * Math.sin(wave * 3.2)) * dpr;
+      ctx.fillStyle = colorWithAlpha(palette.twinkle, 0.16 + blink * 0.3);
+      ctx.beginPath();
+      ctx.arc(x, y, Math.max(size, 0.6 * dpr), 0, Math.PI * 2);
+      ctx.fill();
+    });
   }
-  let raf=null;
-  const frame=(now)=>{
-    const t=now-t0;
-    cam.x=Math.sin(t*cameraDrift)*120 + (pointer.x-.5)*world.w*pointerParallax;
-    cam.y=Math.cos(t*cameraDrift*1.2)*80  + (pointer.y-.5)*world.h*pointerParallax;
-    ctx.clearRect(0,0,vw,vh);
-    ctx.globalCompositeOperation='source-over'; ctx.fillStyle=fillStyle; ctx.fillRect(0,0,vw,vh);
-    ctx.globalCompositeOperation='lighter';
-    acc+=spawnRate; while(acc>1){ flares.push(spawn()); acc-=1; }
-    if(flares.length<count && Math.random()<spawnRate) flares.push(spawn());
-    flares.sort((a,b)=> b.z-a.z);
-    for(const f of flares){
-      const age=now-f.t0, nt=Math.min(1, age/f.life);
-      const fadeIn=ease(Math.min(nt*1.3,1)), fadeOut=ease(1 - Math.max(0,(age-f.life*.6)/(f.life*.4)));
-      const alpha=activeBaseOpacity*fadeIn*fadeOut; if(alpha<=.002){ f.dead=(age>f.life); continue; }
-      const blink=0.85 + 0.15*Math.sin(age*0.002*f.blink*Math.PI*2);
-      const fov=420, sx=((f.x-cam.x)/f.z)*fov + (vw*.5), sy=((f.y-cam.y)/f.z)*fov + (vh*.5);
-      const scale=1/f.z, r=Math.max(8, f.baseR*scale) * (win.devicePixelRatio||1);
-      if(f.pal.bloom){ const k=r/f.pal.bloom.r; ctx.globalAlpha=alpha*.6*blink; ctx.drawImage(f.pal.bloom.canvas, sx-f.pal.bloom.r*k, sy-f.pal.bloom.r*k, f.pal.bloom.canvas.width*k, f.pal.bloom.canvas.height*k); }
-      const k2=r/f.pal.main.r; ctx.globalAlpha=alpha*blink; ctx.drawImage(f.pal.main.canvas, sx-f.pal.main.r*k2, sy-f.pal.main.r*k2, f.pal.main.canvas.width*k2, f.pal.main.canvas.height*k2);
+
+  const loop = (timestamp) => {
+    raf = 0;
+    drawFrame(timestamp);
+    if (running) {
+      raf = win.requestAnimationFrame(loop);
     }
-    ctx.globalAlpha=1; if(flares.length>count*2) flares=flares.filter(f=>!f.dead);
-    raf=win.requestAnimationFrame(frame);
   };
-  if(!mReduce.matches){ raf=win.requestAnimationFrame(frame); } else { ctx.fillStyle=fillStyle; ctx.fillRect(0,0,cvs.width,cvs.height); }
-  const visHandler = ()=>{
-    if(doc.hidden && raf){ win.cancelAnimationFrame(raf); raf=null; }
-    else if(!doc.hidden && !mReduce.matches && !raf){ t0=perf.now(); raf=win.requestAnimationFrame(frame); }
+
+  const start = () => {
+    if (running) return;
+    running = true;
+    raf = win.requestAnimationFrame(loop);
   };
-  doc.addEventListener('visibilitychange', visHandler);
+
+  const stop = () => {
+    if (!running) return;
+    running = false;
+    if (raf) {
+      win.cancelAnimationFrame(raf);
+      raf = 0;
+    }
+  };
+
+  const visibilityHandler = () => {
+    if (doc.hidden) {
+      stop();
+    } else if (!reduceMotion.matches) {
+      start();
+    } else {
+      drawInstant();
+    }
+  };
+
+  const reduceHandler = (event) => {
+    if (event.matches) {
+      stop();
+      drawFrame(now(), true);
+    } else {
+      updateScroll();
+      start();
+    }
+  };
+
+  const themeObserver = typeof win.MutationObserver !== 'undefined'
+    ? new win.MutationObserver(updatePalette)
+    : null;
+
+  resize();
+  updateScroll();
+  updatePalette();
+  if (!reduceMotion.matches) {
+    start();
+  } else {
+    drawFrame(now(), true);
+  }
+
+  win.addEventListener('resize', resize, { passive: true });
+  doc.addEventListener('scroll', updateScroll, { passive: true });
+  win.addEventListener('pointermove', pointerMove, { passive: true });
+  win.addEventListener('pointerleave', pointerLeave, { passive: true });
+  win.addEventListener('touchmove', touchMove, { passive: true });
+  doc.addEventListener('visibilitychange', visibilityHandler);
+  reduceMotion.addEventListener('change', reduceHandler);
+  themeObserver?.observe(root, { attributes: true, attributeFilter: ['data-theme', 'data-color', 'data-section', 'style'] });
+  schemeMedia.addEventListener('change', updatePalette);
+
   return () => {
+    stop();
     win.removeEventListener('resize', resize);
+    doc.removeEventListener('scroll', updateScroll);
     win.removeEventListener('pointermove', pointerMove);
+    win.removeEventListener('pointerleave', pointerLeave);
     win.removeEventListener('touchmove', touchMove);
-    doc.removeEventListener('visibilitychange', visHandler);
-    if(observer) observer.disconnect();
-    if(raf){ win.cancelAnimationFrame(raf); }
+    doc.removeEventListener('visibilitychange', visibilityHandler);
+    reduceMotion.removeEventListener('change', reduceHandler);
+    themeObserver?.disconnect();
+    schemeMedia.removeEventListener('change', updatePalette);
+    Object.keys(stageCache).forEach((key) => root.style.removeProperty(key));
   };
 }
 

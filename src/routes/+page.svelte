@@ -13,312 +13,302 @@
   import OperationsObservatory from '$lib/components/OperationsObservatory.svelte';
 
   const sections = [
-    { id: 'hero', label: 'Overview', icon: 'sparkles' },
-    { id: 'system', label: 'System', icon: 'cubeTransparent' },
-    { id: 'mesh', label: 'Mesh', icon: 'globeAlt' },
-    { id: 'console', label: 'Configurator', icon: 'commandLine' },
-    { id: 'philosophy', label: 'Philosophy', icon: 'lightBulb' },
-    { id: 'layers', label: 'Layers', icon: 'serverStack' },
-    { id: 'nodes', label: 'Nodes', icon: 'users' },
+    { id: 'hero', label: 'Welcome', icon: 'sparkles' },
+    { id: 'system', label: 'Story', icon: 'cubeTransparent' },
+    { id: 'mesh', label: 'Friendship', icon: 'globeAlt' },
+    { id: 'console', label: 'Play Console', icon: 'commandLine' },
+    { id: 'philosophy', label: 'Promise', icon: 'lightBulb' },
+    { id: 'layers', label: 'Story Layers', icon: 'serverStack' },
+    { id: 'nodes', label: 'Node Family', icon: 'users' },
     { id: 'led-node', label: 'LED Node', icon: 'sun' },
-    { id: 'firmware', label: 'Firmware', icon: 'cpuChip' },
-    { id: 'experience', label: 'Experience', icon: 'cog6Tooth' },
-    { id: 'effects', label: 'Effects', icon: 'swatch' },
-    { id: 'deployment', label: 'Deployment', icon: 'shieldCheck' },
-    { id: 'operations', label: 'Operations', icon: 'cloud' },
-    { id: 'integration', label: 'Connectivity', icon: 'codeBracketSquare' },
-    { id: 'applications', label: 'Applications', icon: 'rectangleGroup' },
+    { id: 'firmware', label: 'Inside', icon: 'cpuChip' },
+    { id: 'experience', label: 'Web Home', icon: 'cog6Tooth' },
+    { id: 'effects', label: 'Light Stories', icon: 'swatch' },
+    { id: 'deployment', label: 'Launch Pad', icon: 'shieldCheck' },
+    { id: 'operations', label: 'Showtime', icon: 'cloud' },
+    { id: 'integration', label: 'Bridges', icon: 'codeBracketSquare' },
+    { id: 'applications', label: 'Places', icon: 'rectangleGroup' },
     { id: 'gallery', label: 'Showreel', icon: 'window' },
-    { id: 'contact', label: 'Contact', icon: 'envelope' },
-    { id: 'vision', label: 'Vision', icon: 'rocketLaunch' }
+    { id: 'contact', label: 'Hello', icon: 'envelope' },
+    { id: 'vision', label: 'Future', icon: 'rocketLaunch' }
   ];
 
-  const heroHighlights = [
-    'Distributed control architecture',
-    'Mesh of equal peers',
-    'Human-centred web UI'
-  ];
+  const heroHighlights = ['LED Node leads kindly', 'Easy-peasy controls', 'Stories that glow'];
 
   const systemOverview = [
-    'LumiGrid is a distributed control architecture for modular, intelligent lighting and kinetic systems. At its core it turns light into a networked medium—each node thinking for itself, yet synchronised in a collective rhythm.',
-    'Instead of one controller fanning out to passive fixtures, LumiGrid builds a mesh of equal peers: compact nodes that can drive LEDs, motors, sensors, or mixed loads. Any node can become the master clock; others align automatically over Wi-Fi or Ethernet multicast.'
+    'LumiGrid is a family of little light helpers led by the LED Node. They hum the same song, chat softly, and keep every wall, floor, and ceiling glowing as one story.',
+    'Instead of one bossy box, the mesh is a circle of friends. The LED Node can lead the parade, clap along, or rest, and the room still feels smooth and welcoming.'
   ];
 
   const systemMotion = [
-    'Imagine a retail façade covered in addressable LED panels, a few kinetic logo elements, and a line of ambient wall-washers. A single LumiGrid master broadcasts the global clock and cues.',
-    'Every LED Node interprets that timeline locally: gradients ripple in sync, servos swing at the beat, and PWM fixtures fade precisely on the downbeat. The choreography is data-light—just timestamps and preset names—yet the visual result is tightly unified.'
+    'Imagine a shop window at sunset. Soft colour pours across the glass, tiny sparkles dance on the edges, and the LED Node whispers hello when someone walks close.',
+    'When the music swells, every node follows the same heartbeat. Waves of light glide around the space like a choreographed dance that feels magical, not mechanical.'
   ];
 
   const meshHighlights = [
-    { title: 'Self-healing leadership', detail: 'Any node can assume master duties; the mesh rebalances within two beats.' },
+    { title: 'Glow baton', detail: 'Any friend can say “I’ve got this” while the rest hum along without missing a beat.' },
     {
-      title: 'Deterministic sync',
-      detail:
-        'Multicast ticks keep drifts under ±1 ms across Wi-Fi or Ethernet peers, so fades, sweeps, and motion stay locked.'
+      title: 'Shared heartbeat',
+      detail: 'Warm dimmers and playful pixels breathe in the same gentle tempo.'
     },
     {
-      title: 'Operational transparency',
-      detail: 'REST + MQTT status mirrors leadership changes in real time for dashboards and remote operators.'
+      title: 'Window of feelings',
+      detail: 'A bright dashboard shows who is leading, what scene is next, and how the team feels.'
     }
   ];
 
   const meshReassurance = [
-    'Role handovers publish to the API bus instantly, so third-party controllers stay aware of the timeline owner.',
-    'Offline clusters keep the beat thanks to a deterministic fallback clock and cached playlists.',
-    'Installers can dry-run leadership swaps in the Mesh Navigator without touching live hardware.'
+    'Leadership hand-offs feel like passing a glowing baton—guests only notice a steady show.',
+    'Teams practice swaps in Mesh Navigator first, so the real performance stays calm.',
+    'Friendly status lights bloom across the glass window for crews near and far.'
   ];
 
   const consoleHighlights = [
     {
-      title: 'Blend analog + pixel',
-      detail:
-        'PWM wall-wash channels and WS2812 strips track the same blend curve so architectural and pixel fixtures stay in phase.'
+      title: 'One cosy remote',
+      detail: 'Blend soft wall light and sparkly strips with a single, gentle swipe.'
     },
     {
-      title: 'Guarded by firmware',
-      detail:
-        'The README’s power budgeting heuristics apply in real time, tapering PWM levels when the effect engine predicts overdraw.'
+      title: 'Practice makes playful',
+      detail: 'Save favourite looks like storybook pages and rehearse them anytime.'
     },
     {
-      title: 'Field friendly presets',
-      detail: 'Scenarios ship as JSON presets so technicians can swap looks without rewriting timelines mid-show.'
+      title: 'Changes in the moment',
+      detail: 'Tap glowing buttons on the glass console to brighten, slow, or surprise.'
     }
   ];
 
   const designPhilosophy = [
-    'Distributed intelligence: computation sits next to the hardware it controls.',
-    'Deterministic sync: every node follows the same timeline, even across wireless networks.',
-    'Openness: each module exposes its state through open REST / MQTT APIs and serves its own web UI.',
-    'Human-centred UX: installation, mapping, and show control happen from any browser—no proprietary app required.',
-    'Hardware pragmatism: built around inexpensive, readily available ESP-class MCUs and a few precision analog helpers.'
+    'Light is a character: each node adds its own glow to the scene.',
+    'People first: the browser becomes a friendly stage manager, no downloads needed.',
+    'Honest sharing: whatever the mesh feels, the crew sees in clear colours.',
+    'Soft recoveries: if one friend gets tired, another steps in without a hiccup.',
+    'Open doors: partners can join the story with simple, welcoming tools.'
   ];
 
   const systemLayers = [
-    { step: '01', title: 'Sync Protocol', detail: 'UDP multicast “ticks” and “cues” keep all nodes aligned to the same millisecond grid.' },
-    { step: '02', title: 'Trigger Engine', detail: 'Interprets incoming actions—play preset, blackout, beat—and routes them to the right subsystem.' },
-    { step: '03', title: 'Effect Engine', detail: 'Renders visual or kinetic effects in real time, respecting frame-rate, power, and timing constraints.' },
-    { step: '04', title: 'Scheduler', detail: 'Executes time-based scenes, daily schedules, or show playlists.' },
-    { step: '05', title: 'Networking & APIs', detail: 'REST + MQTT endpoints expose every parameter to higher-level controllers or creative tools.' },
-    { step: '06', title: 'Web UI', detail: 'A self-hosted control panel served by each node for configuration, diagnostics, and live sequencing.' }
+    { step: '01', title: 'Heartbeat hum', detail: 'A gentle pulse keeps every friend moving together like dancers.' },
+    { step: '02', title: 'Story beats', detail: 'Scenes line up like comic panels, ready to play in order.' },
+    { step: '03', title: 'Canvas brush', detail: 'Light, colour, and motion paint the room in real time.' },
+    { step: '04', title: 'Daily chapters', detail: 'Morning, afternoon, and evening moments glide in on cue.' },
+    { step: '05', title: 'Sharing signals', detail: 'Dashboards and helpers show the same cheerful status.' },
+    { step: '06', title: 'Glass console', detail: 'A friendly control room that lives right on each node.' }
   ];
 
   const humanInteraction = [
-    'Browser Sequencer: every node can open a timeline view to assemble cues visually.',
-    'Mobile Setup Portal: on first power-up, nodes create an AP and captive portal for Wi-Fi onboarding.',
-    'MQTT / OSC Bridge (optional): allows real-time control from DAWs, game engines, or show controllers.',
-    'SSE Telemetry: live feedback of playhead, FPS, temperature, and power-limit state.'
+    'Timeline Studio: doodle chapters that spring to life on-screen.',
+    'Quickstart Portal: first power-up feels like a guided tour with bubbly tips.',
+    'Bridge Modes: invite music friends without tangled wires.',
+    'Story Whispers: playful charts share health, power, and tempo in real time.'
   ];
 
   const techStack = [
-    'ESP-IDF v5 + FreeRTOS',
-    'LittleFS',
-    'esp_http_server',
-    'LWIP UDP multicast',
-    'RMT driver',
-    'I²C',
-    'MQTT client',
-    'cJSON',
-    'Pure-HTML + vanilla JS UI'
+    'Quick-thinking glow brain that wakes instantly to host the show.',
+    'Velvet slider that makes walls blush without a flicker.',
+    'Sparkle painter that sprinkles ribbon trails on cue.',
+    'Cozy memory shelf that keeps favourite looks tucked in tight.',
+    'Always-on glass console ready for quick chats with the crew.',
+    'Mesh hug over Wi-Fi or tidy cables when the room prefers.',
+    'Gentle updates that add new tricks while everyone keeps glowing.'
   ];
 
   const nodeFamily = [
     {
       name: 'LED Node',
-      function: 'Drives “dumb” PWM and addressable LEDs, effects engine, sync participant',
-      hardware: 'ESP32 + PCA9685 + SN74HCT245'
+      superpower: 'Flagship light painter mixing cosy glows with playful sparkles.',
+      loves: 'Feels happiest leading big rooms and matching every helper’s beat.'
     },
     {
       name: 'Kinetic Node',
-      function: 'Motor/servo driver with motion profiles synced to grid',
-      hardware: 'ESP32 + DRV8833 / servo expander'
+      superpower: 'Helps moving pieces sway and twirl in time with the lights.',
+      loves: 'Pairs with motors and moving art that need gentle choreography.'
     },
     {
       name: 'Sensor Node',
-      function: 'Aggregates ambient, motion, or proximity sensors; publishes events',
-      hardware: 'ESP32 + I²C sensor hub'
+      superpower: 'Listens for footsteps, sunshine, or sound and turns them into stories.',
+      loves: 'Befriends sensors and turns their chatter into calm cues.'
     },
     {
-      name: 'Hub Node / Master',
-      function: 'Acts as time-base, playlist server, and cloud bridge',
-      hardware: 'ESP32-S3 / Raspberry Pi gateway'
+      name: 'Hub Node',
+      superpower: 'Waves the conductor wand and keeps the mesh connected to helpers in the cloud.',
+      loves: 'Steps in to lead, mirror the show, or call for reinforcements.'
     },
     {
-      name: 'Light Bar Module',
-      function: 'Linear LED Node variant for architectural strips',
-      hardware: 'Slim ESP32 + MOSFET array'
+      name: 'Light Bar',
+      superpower: 'Slim partner that washes shelves, coves, and trim with even glow.',
+      loves: 'Snaps in beside the LED Node for tidy hardware loops.'
     },
     {
       name: 'Logic Node',
-      function: 'Headless compute module running choreography or AI inference',
-      hardware: 'Jetson Nano / Pi 5 companion'
+      superpower: 'Dreams up interactive surprises and playful reactions.',
+      loves: 'Shares LumiGrid timing with extra imagination power.'
     }
   ];
 
   const ledPurpose = [
-    'The LED Node bridges precise PWM control for high-power “dumb” LED channels and smooth addressable LED animation for pixel-based fixtures.',
-    'Each node can perform solo, join an ensemble, or lead as a sync master.'
+    'LED Node mixes warm glow and pixel sparkle from the same friendly heart.',
+    'It can lead the dance, join the chorus, or shine solo while staying in step.'
   ];
 
   const hardwareSpecs = [
-    'Controller: ESP32-WROOM-32U',
-    'PWM driver: PCA9685 (12-bit, 1 kHz) → 8 MOSFET channels',
-    'Addressable outputs: 8 × level-shifted 5 V via SN74HCT245DWR',
-    'I²C bus: SDA 21 / SCL 22 @ 400 kHz',
-    'OE / Blackout: GPIO 25',
-    'ALED GPIOs: 16, 4, 17, 18, 19, 23, 26, 27',
-    'Power: 5 V bus with fuse and thermal feedback',
-    'Expansion slot: 8 extra PWM lines for future servo or relay use'
+    'Quick-thinking glow brain that loves telling light stories.',
+    'Velvet slider that makes walls blush without a flicker.',
+    'Eight sparkle paths ready for ribbons, dots, and halos.',
+    'Gentle guardian watching power and temperature all night.',
+    'One-tap calm-down button for instant hush moments.',
+    'Secret side door waiting for future sensors or surprise tricks.',
+    'Cozy memory nest that holds scenes even when the lights snooze.',
+    'Tidy connectors arranged for neat loops and easy visits.'
   ];
 
   const personalityPoints = [
-    'Blend complex colour effects in real time.',
-    'Maintain precise phase alignment with the grid.',
-    'Enforce power and thermal limits automatically.',
-    'Expose its full state through human-friendly APIs.'
+    'Speaks in cosy glows and sparkles at the same time.',
+    'Keeps steady rhythm even when another friend leads.',
+    'Looks after power and temperature without being asked.',
+    'Shares feelings through a friendly on-board window.'
   ];
 
   const firmwareLayers = [
-    { step: '01', title: 'Board Init', detail: 'Sets GPIO, I²C, mounts LittleFS, reads config.' },
-    { step: '02', title: 'PWM Driver', detail: 'Wraps PCA9685 with fade curves, soft-start, and OE safety.' },
-    { step: '03', title: 'RMT Driver', detail: 'Outputs WS2812 / SK6812 data streams with 100 ns precision.' },
-    { step: '04', title: 'Effect Engine', detail: 'Modular renderer supporting base + overlay, blend modes, and virtual segments.' },
-    { step: '05', title: 'Scheduler / Cue Player', detail: 'Interprets JSON timelines into real-time sequences.' },
-    { step: '06', title: 'Sync Protocol', detail: 'Keeps phase with the master clock via multicast tick/cue.' },
-    { step: '07', title: 'REST / SSE Server', detail: 'Exposes status and accepts triggers from the UI.' },
-    { step: '08', title: 'MQTT Bridge', detail: 'Optional cloud/control-room integration.' }
+    { step: '01', title: 'Morning stretch', detail: 'The node yawns awake, checks every light, and smiles at the crew.' },
+    { step: '02', title: 'Glow painter', detail: 'Velvet curves keep each fade dreamy and slow.' },
+    { step: '03', title: 'Sparkle stream', detail: 'Colourful doodles flow out to ribbons like animated story pages.' },
+    { step: '04', title: 'Memory shelf', detail: 'Favourite looks sit on a tidy shelf ready to mix and match.' },
+    { step: '05', title: 'Story player', detail: 'Scenes play in order like tracks on a mixtape.' },
+    { step: '06', title: 'Beat hug', detail: 'Keeps time with whichever friend is leading right now.' },
+    { step: '07', title: 'Glass postcards', detail: 'Sends friendly updates to the console and helpers.' },
+    { step: '08', title: 'Cloud wave', detail: 'Waves hello to remote support when the adventure grows.' }
   ];
 
   const effectCategories = [
-    { title: 'Base', examples: 'Solid, Gradient, Chase, Twinkle', notes: 'Foundational FX.' },
-    { title: 'Spectral', examples: 'Rainbow (palette-aware), Noise Flow', notes: 'Animated colour fields.' },
-    { title: 'Organic', examples: 'Fire, Waves', notes: 'Procedural, beat-reactive.' },
-    { title: 'Utility', examples: 'Blackout, Flash, SyncPulse', notes: 'Cue-driven transitions.' },
-    { title: 'PWM FX', examples: 'Breath, Candle, Warm-Dim', notes: 'Smooth analogue dimming.' }
+    { title: 'Foundations', examples: 'Fade, Glow, Spark', notes: 'Gentle moods that set the stage.' },
+    { title: 'Spectra', examples: 'Aurora, Driftwave', notes: 'Colour journeys that sway with the beat.' },
+    { title: 'Organic', examples: 'Ember, Tide', notes: 'Patterns that feel alive, like nature in light.' },
+    { title: 'Transitions', examples: 'Blackout, Flash, Sweep', notes: 'Quick changes to reset the story softly.' },
+    { title: 'Analog Aura', examples: 'Warm-Dim, Candle', notes: 'Hand-crafted glows for cosy corners.' }
   ];
 
   const effectHighlights = [
     {
-      title: 'Deterministic playback',
-      detail: 'Every shader seeds from the multicast tick so distributed nodes render identical frames.'
+      title: 'Heartbeat buddies',
+      detail: 'Every effect listens to the LED Node’s pulse so walls and sparkles stay together.'
     },
     {
-      title: 'Palette tokens aware',
-      detail: 'Effects pull from the same colour tokens as the UI, making installs feel bespoke without code edits.'
+      title: 'Colour-cozy',
+      detail: 'Colours pick from your palette tokens so everything feels instantly on-theme.'
     },
     {
-      title: 'Power-budget smart',
-      detail: 'PWM and pixel layers respect the firmware’s current and thermal guard rails before drawing a frame.'
+      title: 'Energy kind',
+      detail: 'If power gets tight, effects gently slow down instead of popping.'
     }
   ];
 
   const webExperience = [
-    'Dashboard: status, health, quick test controls.',
-    'Nodes: discover peers, view RSSI and firmware.',
-    'Sequencer: interactive canvas timeline with zoom and live playhead.',
-    'Presets: local library, instant preview, editable JSON.',
-    'Schedules: calendar view (in progress).',
-    'Settings: network, MQTT, and theme preferences.'
+    'Home: the LED Node waves hello with its glow, beat, and mood.',
+    'Story tracks: drag cheerful scene cards like stickers on a timeline.',
+    'Preset shelf: tuck favourite chapters away for instant play.',
+    'Schedules: sketch sunrise to moonlight with gentle prompts.',
+    'Helper roster: peek at every node’s colour, name, and heartbeat lights.',
+    'Settings: wrap themes, bridges, and support pings in one tidy spot.'
   ];
 
   const connectivityEndpoints = [
-    { endpoint: 'GET /api/status', description: 'Returns node info, role, mode, uptime, heap, FPS.' },
-    { endpoint: 'POST /api/config', description: 'Merge or overwrite configuration JSON.' },
-    { endpoint: 'GET/POST/DELETE /api/presets', description: 'Manage stored presets.' },
-    { endpoint: 'POST /api/trigger', description: 'Execute actions: play_preset, set_pwm, blackout, beat.' },
-    { endpoint: 'POST /api/cue', description: 'Schedule time-bound clips.' },
-    { endpoint: 'GET /events', description: 'Server-Sent Events stream (status, playhead, power limit).' }
+    { endpoint: 'Glow pulse postcard', description: 'See who is leading and the mood they are sharing right now.' },
+    { endpoint: 'Story mixer', description: 'Blend colours and timing while the show keeps smiling.' },
+    { endpoint: 'Preset shelf', description: 'Browse shared looks and gift them to friends.' },
+    { endpoint: 'Magic button', description: 'Send gentle cues, hugs, or surprises in real time.' },
+    { endpoint: 'Story timeline', description: 'Lay out chapters that roll while you rest.' },
+    { endpoint: 'Whisper stream', description: 'Follow heartbeat, power, and temperature whispers.' }
   ];
 
   const reliabilityPoints = [
-    'Fail-safe blackout: PCA9685 OE pin cuts power on fault or command.',
-    'Thermal / voltage watch: automatic derate under stress.',
-    'Watchdog & diagnostics: continuous heap and task monitoring.',
-    'Offline autonomy: local schedules run even without the master.'
+    'One calm button hushes the room and keeps guests feeling safe.',
+    'Friendly sensors whisper before things get too warm.',
+    'If a leader naps, another node catches the beat without fuss.',
+    'Offline mode carries the evening if the internet daydreams.'
   ];
 
   const integrationTelemetry = [
-    { label: 'Mesh heartbeat', value: '62 bpm · ±1.2 ms jitter' },
-    { label: 'REST latency', value: '38 ms median from field tablet' },
-    { label: 'Power headroom', value: '28% reserve across active nodes' }
+    { label: 'Glow pulse', value: '60 heartbeats · content and steady' },
+    { label: 'Wave ripple', value: 'Soft shimmer gliding across the floor' },
+    { label: 'Headroom', value: 'Plenty of space for surprise crescendos' }
   ];
 
   const opsScenarios = [
     {
-      time: '17:40',
-      title: 'Blue hour preflight',
-      detail: 'Nodes preheat optics, run halo diagnostics, and cache playlists from the launch pad.'
+      time: '17:15',
+      title: 'Doors soon',
+      detail: 'Nodes warm the room, line up the beat, and whisper a welcome glow.'
     },
     {
-      time: '18:05',
-      title: 'Show open handshake',
-      detail: 'Backup leader syncs via warm-start, PWM fades ramp, and pixel cascades verify against the README preset.'
+      time: '18:00',
+      title: 'Show handoff',
+      detail: 'Another node catches the baton and guests simply feel the music lift.'
     },
     {
-      time: '21:30',
-      title: 'Wind-down fallback',
-      detail: 'Ambient scene fades in, telemetry snapshots archive, and the mesh arms autonomous overnight mode.'
+      time: '21:45',
+      title: 'Evening wind-down',
+      detail: 'The mesh eases into night mode and saves notes for tomorrow.'
     }
   ];
 
   const opsSignals = [
-    { label: 'Global uptime', value: '99.982% · rolling 90 days' },
-    { label: 'Mesh leader', value: 'Node K3 · drift 0.6 ms' },
-    { label: 'Support SLA', value: '6 min response in active show' },
-    { label: 'Firmware parity', value: 'v1.4.7 across 12 nodes' }
+    { label: 'Glow mood', value: 'Balanced · Leader Nova A2' },
+    { label: 'Heartbeat', value: '60 bpm · smooth and gentle' },
+    { label: 'Support friends', value: 'Friendly humans ready within minutes' },
+    { label: 'Sparkle sync', value: 'Latest sparkle shared across every node' }
   ];
 
   const opsPlaybooks = [
     {
-      title: 'Halo start-up',
-      summary: 'Graceful power-on routine before doors open.',
+      title: 'Halo open',
+      summary: 'Bring the venue to life with calm confidence.',
       steps: [
-        'Energise mains, confirm thermal sensors, and run soft-start on PWM drivers.',
-        'Mesh discovery assigns leadership and verifies multicast tick health.',
-        'Preset 01 warm-up plays while operators confirm power headroom and RSSI.'
+        'Power flows in gentle waves while sensors nod along.',
+        'The mesh chooses a leader and hums through a quick rehearsal.',
+        'Signature welcome look blooms just as doors open.'
       ]
     },
     {
-      title: 'Mid-show leadership swap',
-      summary: 'Hot handover to standby node without disrupting guests.',
+      title: 'Mid-show baton pass',
+      summary: 'Swap leadership without breaking the beat.',
       steps: [
-        'Announce takeover in the console and mirror cues to the standby node.',
-        'Initiate warm-start sync so PWM + pixel layers stay phase-locked.',
-        'Verify drift below 1 ms, then release the previous leader to follower mode.'
+        'Shadow leader mirrors cues inside the console.',
+        'Warm-start sync keeps dimmers and pixels breathing together.',
+        'Crew watches the glow stay steady before waving to the former lead.'
       ]
     }
   ];
 
   const opsRoster = [
-    { role: 'Primary operator', person: 'Sia · Control booth' },
-    { role: 'Network steward', person: 'Noel · Remote NOC' },
-    { role: 'Firmware liaison', person: 'Aria · Field laptop' }
+    { role: 'Lead storyteller', person: 'Sia · Front-of-house' },
+    { role: 'Mesh guardian', person: 'Noel · Remote room' },
+    { role: 'Experience guide', person: 'Aria · On-site roam' }
   ];
 
   const opsEscalations = [
-    'Thermal guard trip auto-derates channels and pings the NOC bridge.',
-    'Fallback playlist engages after two missed multicast ticks.',
-    'Manual halo blackout stays one tap away inside the glass console.'
+    'Warm guardrails ease output gently and ping support.',
+    'If the heartbeat pauses, the mesh plays a safe, calm playlist.',
+    'Manual quiet mode stays one tap away inside the glass console.'
   ];
 
   const developerPoints = [
-    'ESP-IDF v5 toolchain, CMake project structure.',
-    'Firmware upgrades over USB or OTA.',
-    'All endpoints documented; simulator for effect testing on desktop.',
-    'Unit tests for every effect (CRC-checked frame outputs).',
-    'Web UI open-source and editable in any HTML editor.'
+    'Guides feel like a friendly chat right inside the glass console.',
+    'Updates roll out softly with a cosy safety net.',
+    'Simulator scenes let teams rehearse from anywhere.',
+    'Shared UI tokens invite partners to tint the glow their way.'
   ];
 
   const applications = [
-    'Interactive signage and ambient installations.',
-    'Stage lighting with precise tempo lock.',
-    'Architectural façades with power budgeting.',
-    'Educational kits for embedded lighting control.',
-    'Art projects blending light, motion, and sound.'
+    'Flagship stores that greet guests with light that follows the day’s story.',
+    'Atrium sculptures where moving pieces and colours sway together.',
+    'Hotels and lounges that slip from sunrise breakfast to moonlit calm.',
+    'Museums that explain exhibits with gentle light chapters.',
+    'Studios that sketch big ideas in light before sharing them with the world.'
   ];
 
   const visionForward = [
-    'LumiGrid is evolving toward a multi-node creative OS: future releases will bring adaptive colour calibration, distributed audio analysis for beat detection, and a shared cloud timeline for installations spanning cities.',
-    'The LED Node is just the first spark—the foundation on which an ecosystem of intelligent, responsive light will grow.'
+    'LumiGrid is growing into a creative playground—smarter colours, cloud story timelines, and shared imagination are on the horizon.',
+    'The LED Node is the first storybook hero; more friends will join to make every space feel warm, responsive, and alive.'
   ];
 
   const galleryItems = [
@@ -367,20 +357,20 @@
   ];
 
   const galleryNotes = [
-    'Scenes above are rendered directly on LumiGrid LED Nodes—no offline compositing.',
-    'Field tests span Tallinn, Berlin, and Helsinki pilot venues to validate networking conditions.'
+    'Captured straight from LumiGrid pilots—no filters, no extras.',
+    'Shown through breezy Northern seasons to prove the glow lasts all year.'
   ];
 
   const contactHighlights = [
-    'Book a technical deep-dive covering sync internals, firmware, and the browser console.',
-    'Request the LED Node reference BOM, pinout diagrams, and enclosure guidelines.',
-    'Join the pilot list for early access hardware or remote show control services.'
+    'Book a gentle walkthrough to dream up your first glowing adventure.',
+    'Request the LED Node story kit with sketches and planning tips.',
+    'Join the pilot family for early hardware and remote show support.'
   ];
 
   const contactSignals = [
-    { label: 'Response time', value: '< 2 business days via email or Signal.' },
-    { label: 'Pilot support', value: 'Hands-on help for mapping, timeline authoring, and on-site tuning.' },
-    { label: 'Integration', value: 'REST, MQTT, OSC, and DMX bridge guidance with working examples.' }
+    { label: 'Reply rhythm', value: 'Replies within two business days.' },
+    { label: 'Pilot care', value: 'Hands-on mapping and rehearsal support.' },
+    { label: 'Bridge help', value: 'Friendly guidance for bridges and custom flows.' }
   ];
 </script>
 
@@ -388,7 +378,7 @@
   <title>LumiGrid — A living network of light</title>
   <meta
     name="description"
-    content="Explore the LumiGrid system: distributed lighting control, planned node family, LED Node hardware, firmware, and APIs drawn directly from the LumiGrid whitepaper."
+    content="Meet LumiGrid, a storybook family of light helpers led by the LED Node. Explore playful chapters, shiny glass UI, and gentle tools that keep every space glowing together."
   />
 </svelte:head>
 
@@ -452,11 +442,11 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container journey-wrap">
           <div class="section-header">
-            <p class="eyebrow">System story</p>
-            <h2 class="h2" data-parallax="0.1">The mesh in motion</h2>
-            <p class="lead">LumiGrid nodes share timing, cues, and motion so venues behave like one organism.</p>
+            <p class="eyebrow">Story heartbeat</p>
+            <h2 class="h2" data-parallax="0.1">How the mesh keeps smiling</h2>
+            <p class="lead">Every LumiGrid helper follows the LED Node’s gentle beat, so rooms feel like one friendly creature.</p>
           </div>
-          <div class="journey-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface journey-stage stage-solo reveal">
             <div class="journey-intro glass-panel">
               <p class="journey-eyebrow">How it feels</p>
               {#each systemMotion as paragraph}
@@ -484,11 +474,11 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container mesh">
           <div class="section-header">
-            <p class="eyebrow">Mesh control</p>
-            <h2 class="h2" data-parallax="0.12">Navigate leadership handovers</h2>
-            <p class="lead">Swap masters, inspect latency, and confirm tempo alignment before going on site.</p>
+            <p class="eyebrow">Mesh friendships</p>
+            <h2 class="h2" data-parallax="0.12">Practice passing the glow</h2>
+            <p class="lead">Before visitors arrive, the LED Node and friends rehearse glow handoffs so the show never hiccups.</p>
           </div>
-          <div class="mesh-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface mesh-stage stage-wide reveal">
             <MeshNavigator />
             <article class="mesh-details glass-panel">
               <h3>Why teams love the mesh</h3>
@@ -527,15 +517,15 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container console-wrap">
           <div class="section-header">
-            <p class="eyebrow">Console blend</p>
-            <h2 class="h2" data-parallax="0.12">Balance PWM and pixel energy</h2>
-            <p class="lead">The dual-output navigator mirrors how installers mix analog and addressable loads.</p>
+            <p class="eyebrow">Console playground</p>
+            <h2 class="h2" data-parallax="0.12">Mix cosy glow and sparkle</h2>
+            <p class="lead">One shiny panel lets you swirl warm washes and playful pixels like stirring paint.</p>
           </div>
-          <div class="console-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface console-stage stage-wide reveal">
             <article class="glass-panel console-brief">
-              <span class="console-badge">Why it matters</span>
-              <h3>Blend both engines without scripts</h3>
-              <p class="console-summary">Guided presets let technicians dry-run wall-wash power and pixel sparkle before doors open.</p>
+              <span class="console-badge">Why crews smile</span>
+              <h3>Mix both light friends without code words</h3>
+              <p class="console-summary">Guided presets help the LED Node rehearse cosy wall light and joyful pixel trails before doors open.</p>
               <ul class="console-points">
                 {#each consoleHighlights as item}
                   <li>
@@ -544,7 +534,7 @@
                   </li>
                 {/each}
               </ul>
-              <p class="console-foot">These scenarios match the LumiGrid README deployment checklist so rehearsals and live nights feel identical.</p>
+              <p class="console-foot">Every tip echoes the LumiGrid storybook, keeping rehearsals and show nights in harmony.</p>
             </article>
             <DualOutputConfigurator />
           </div>
@@ -568,11 +558,11 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container system">
           <div class="section-header">
-            <p class="eyebrow">Design philosophy</p>
-            <h2 class="h2" data-parallax="0.12">Principles that guide LumiGrid</h2>
-            <p class="lead">Every guideline below is drawn directly from the LumiGrid whitepaper.</p>
+            <p class="eyebrow">Guiding promises</p>
+            <h2 class="h2" data-parallax="0.12">Promises that steer LumiGrid</h2>
+            <p class="lead">These guiding stars keep LumiGrid friendly, welcoming, and full of wonder.</p>
           </div>
-          <div class="system-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface system-stage stage-tight reveal">
             <div class="system-columns philosophy-list" role="list">
               {#each designPhilosophy as principle}
                 <article class="glass-card" role="listitem">
@@ -601,11 +591,11 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container architecture">
           <div class="section-header">
-            <p class="eyebrow">Core layers</p>
-            <h2 class="h2" data-parallax="0.12">Software stack and human touch</h2>
-            <p class="lead">The same runtime keeps timing, effects, and the browser console in lockstep.</p>
+            <p class="eyebrow">Story layers</p>
+            <h2 class="h2" data-parallax="0.12">Layers of the LumiGrid tale</h2>
+            <p class="lead">Each layer plays like a relay of friends, passing the beat and the story along together.</p>
           </div>
-          <div class="architecture-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface architecture-stage stage-wide reveal">
             <article class="architecture-stack glass-panel">
               <span class="stack-badge">System architecture</span>
               <ol class="stack-list">
@@ -661,9 +651,9 @@
           <div class="section-header">
             <p class="eyebrow">Planned family</p>
             <h2 class="h2" data-parallax="0.12">Nodes ready for every role</h2>
-            <p class="lead">Each module shares the same firmware skeleton and API language.</p>
+            <p class="lead">Every planned friend follows the same gentle rules and glassy interface.</p>
           </div>
-          <div class="nodes-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface nodes-stage stage-wide reveal">
             <div class="nodes-grid" role="list">
               {#each nodeFamily as node (node.name)}
                 <article class="node-card glass-card" role="listitem">
@@ -672,12 +662,12 @@
                   </header>
                   <dl class="node-meta">
                     <div>
-                      <dt>Core function</dt>
-                      <dd>{node.function}</dd>
+                      <dt>Superpower</dt>
+                      <dd>{node.superpower}</dd>
                     </div>
                     <div>
-                      <dt>Typical hardware</dt>
-                      <dd>{node.hardware}</dd>
+                      <dt>Loves to help</dt>
+                      <dd>{node.loves}</dd>
                     </div>
                   </dl>
                 </article>
@@ -706,9 +696,9 @@
           <div class="section-header">
             <p class="eyebrow">Part II highlight</p>
             <h2 class="h2" data-parallax="0.12">The LumiGrid LED Node</h2>
-            <p class="lead">Purpose-built to paint light while staying in sync with the entire mesh.</p>
+            <p class="lead">A tiny flagship made to paint light and stay in step with every friend in the mesh.</p>
           </div>
-          <div class="led-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface led-stage stage-wide reveal">
             <div class="led-diagram glass-panel">
               <span class="diagram-badge">Purpose</span>
               <ul>
@@ -756,11 +746,11 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container firmware">
           <div class="section-header">
-            <p class="eyebrow">Firmware layers</p>
-            <h2 class="h2" data-parallax="0.12">Runtime built for showtime</h2>
-            <p class="lead">The firmware stack mirrors the whitepaper, from board init to MQTT.</p>
+            <p class="eyebrow">Inside the node</p>
+            <h2 class="h2" data-parallax="0.12">Daily routine behind the glow</h2>
+            <p class="lead">Peek inside the LED Node’s daily routine and how it keeps the show humming softly.</p>
           </div>
-          <div class="firmware-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface firmware-stage stage-wide reveal">
             <div class="firmware-grid">
               <article class="glass-panel firmware-stack">
                 <span class="stack-badge">Node runtime</span>
@@ -778,7 +768,7 @@
               </article>
               <article class="glass-panel firmware-effects">
                 <h3>Effect library</h3>
-                <p class="firmware-effects-summary">The Effect Engine hosts real-time shaders written in C.</p>
+                <p class="firmware-effects-summary">The Effect Engine keeps a shelf of ready-to-play stories for any room.</p>
                 <ul class="effects-list">
                   {#each effectCategories as fx (fx.title)}
                     <li>
@@ -814,10 +804,10 @@
         <div class="container experience">
           <div class="section-header">
             <p class="eyebrow">Web console</p>
-            <h2 class="h2" data-parallax="0.12">Experience on every node</h2>
-            <p class="lead">Opening the node’s IP reveals the LumiGrid UI without extra software.</p>
+            <h2 class="h2" data-parallax="0.12">Web home on every node</h2>
+            <p class="lead">Every node hosts a shiny web console that opens in your browser like magic.</p>
           </div>
-          <div class="experience-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface experience-stage stage-narrow reveal">
             <article class="glass-panel experience-list">
               <ul>
                 {#each webExperience as item}
@@ -846,14 +836,14 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container effects">
           <div class="section-header">
-            <p class="eyebrow">Effect engine</p>
-            <h2 class="h2" data-parallax="0.12">Palette-aware scenes ready to deploy</h2>
-            <p class="lead">Browse the same library LumiGrid nodes ship with straight from the README.</p>
+            <p class="eyebrow">Light storybook</p>
+            <h2 class="h2" data-parallax="0.12">Light stories ready to play</h2>
+            <p class="lead">Flip through the same light tales tucked inside every LED Node.</p>
           </div>
-          <div class="effects-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface effects-stage stage-wide reveal">
             <EffectPaletteCarousel />
             <aside class="glass-panel effects-notes">
-              <h3>Why creatives trust it</h3>
+              <h3>Why creators trust it</h3>
               <ul class="effects-points">
                 {#each effectHighlights as item}
                   <li>
@@ -862,7 +852,7 @@
                   </li>
                 {/each}
               </ul>
-              <p class="effects-foot">All scenes live in /api/presets so shows match the LumiGrid firmware docs exactly.</p>
+              <p class="effects-foot">All scenes live inside each node, so live shows match what crews rehearse.</p>
             </aside>
           </div>
         </div>
@@ -886,10 +876,10 @@
         <div class="container deployment">
           <div class="section-header">
             <p class="eyebrow">Launch ready</p>
-            <h2 class="h2" data-parallax="0.12">Deployment runbook on glass</h2>
-            <p class="lead">Commission, rehearse, and go live using the same halo console as the demo mesh.</p>
+            <h2 class="h2" data-parallax="0.12">Launch pad on glass</h2>
+            <p class="lead">Power up, rehearse, and launch using the same glowing console that lives on every LED Node.</p>
           </div>
-          <div class="deployment-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface deployment-stage stage-wide reveal">
             <DeploymentLaunchPad />
           </div>
         </div>
@@ -912,11 +902,11 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container operations">
           <div class="section-header">
-            <p class="eyebrow">Operations</p>
-            <h2 class="h2" data-parallax="0.12">Operations observatory on standby</h2>
-            <p class="lead">Monitor uptime, stage handovers, and trigger halo playbooks mid-show.</p>
+            <p class="eyebrow">Showtime care</p>
+            <h2 class="h2" data-parallax="0.12">Showtime helpers on standby</h2>
+            <p class="lead">Peek at the LED Node’s show, pass the baton softly, and open helpful playbooks with a tap.</p>
           </div>
-          <div class="operations-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface operations-stage stage-wide reveal">
             <OperationsObservatory
               scenarios={opsScenarios}
               signals={opsSignals}
@@ -945,11 +935,11 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container support">
           <div class="section-header">
-            <p class="eyebrow">Connectivity & safety</p>
-            <h2 class="h2" data-parallax="0.12">APIs, telemetry, and safeguards</h2>
-            <p class="lead">Endpoints, monitoring, and protections all surface from the README story.</p>
+            <p class="eyebrow">Bridges & safety</p>
+            <h2 class="h2" data-parallax="0.12">Friendly bridges and safety hugs</h2>
+            <p class="lead">Gentle bridges, caring monitoring, and safety nets keep the LED Node feeling brave from the very first plug-in.</p>
           </div>
-          <div class="support-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface support-stage stage-wide reveal">
             <IntegrationMatrix
               endpoints={connectivityEndpoints}
               safeguards={reliabilityPoints}
@@ -977,10 +967,10 @@
         <div class="container narrow">
           <div class="section-header">
             <p class="eyebrow">In the field</p>
-            <h2 class="h2" data-parallax="0.14">Applications and maker care</h2>
-            <p class="lead">Where LumiGrid fits today and how builders stay supported.</p>
+            <h2 class="h2" data-parallax="0.14">Places LumiGrid already plays</h2>
+            <p class="lead">Peek at spaces already glowing with the LED Node and how makers stay cared for.</p>
           </div>
-          <div class="updates-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface updates-stage stage-tight reveal">
             <div class="updates-ledger" role="list">
               {#each applications as item, index}
                 <article class="glass-card update-card" role="listitem">
@@ -1019,10 +1009,10 @@
         <div class="container gallery-wrap">
           <div class="section-header">
             <p class="eyebrow">Visual showreel</p>
-            <h2 class="h2" data-parallax="0.12">Scenes running on LumiGrid today</h2>
-            <p class="lead">Every tile below comes from real installs and long-haul pilots.</p>
+            <h2 class="h2" data-parallax="0.12">Scenes already shining today</h2>
+            <p class="lead">Every tile below comes from real spaces already glowing with the LED Node.</p>
           </div>
-          <div class="gallery-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface gallery-stage stage-wide reveal">
             <Gallery items={galleryItems} />
             <article class="glass-panel gallery-notes">
               <h3>Field notes</h3>
@@ -1054,10 +1044,10 @@
         <div class="container contact">
           <div class="section-header">
             <p class="eyebrow">Say hello</p>
-            <h2 class="h2" data-parallax="0.12">Bring LumiGrid to your venue</h2>
-            <p class="lead">Share your timeline, hardware mix, or creative brief—we’ll help shape the rollout.</p>
+            <h2 class="h2" data-parallax="0.12">Invite LumiGrid to your place</h2>
+            <p class="lead">Tell us about your space and we’ll map how the LED Node can glow there, step by friendly step.</p>
           </div>
-          <div class="contact-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface contact-stage stage-wide reveal">
             <article class="glass-panel contact-info">
               <h3>What we can prepare</h3>
               <ul class="contact-highlights">
@@ -1097,12 +1087,12 @@
         <div class="container narrow">
           <div class="section-header">
             <p class="eyebrow">Vision forward</p>
-            <h2 class="h2" data-parallax="0.12">Where LumiGrid is heading</h2>
-            <p class="lead">Future releases continue the ecosystem described in the README.</p>
+            <h2 class="h2" data-parallax="0.12">Where LumiGrid wanders next</h2>
+            <p class="lead">This is only the first chapter—more playful updates already sparkle on the horizon.</p>
           </div>
-          <div class="launch-stage reveal">
+          <div class="section-stage section-stage-grid stage-surface launch-stage stage-tight reveal">
             <div class="launch-timeline vision-copy">
-              <span class="vision-badge">Whitepaper horizon</span>
+              <span class="vision-badge">Next chapters</span>
               {#each visionForward as paragraph}
                 <article class="launch-stop glass-card">
                   <p>{paragraph}</p>
@@ -1123,9 +1113,9 @@
     <div class="footer-stage glass-panel">
       <div class="footer-brand">
         <span class="footer-badge">LumiGrid</span>
-        <h2 class="footer-headline">A network where light, code, and rhythm move together.</h2>
+        <h2 class="footer-headline">A family where light, rhythm, and stories move together.</h2>
         <p class="footer-copy">
-          Text across this page is sourced from the LumiGrid README so the landing mirrors the whitepaper faithfully.
+          Every section is written to feel like a storybook for LumiGrid and its shining LED Node.
         </p>
         <div class="footer-actions">
           <a class="btn primary" href="#hero">Back to top</a>
@@ -1143,7 +1133,7 @@
       </div>
     </div>
     <div class="footer-legal">
-      <p>© LumiGrid — README-aligned presentation.</p>
+      <p>© LumiGrid — Crafted with glow, care, and plenty of friendly stories.</p>
     </div>
   </div>
 </footer>
