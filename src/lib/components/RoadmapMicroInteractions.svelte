@@ -90,62 +90,109 @@
 
 <style>
   .roadmap-card {
-    margin-top: clamp(2rem, 5vw, 3rem);
-    padding: clamp(1.4rem, 3vw, 2rem);
+    margin-top: clamp(2rem, 5vw, 3.2rem);
+    padding: clamp(1.5rem, 3.2vw, 2.3rem);
     display: grid;
-    gap: clamp(1rem, 2.4vw, 1.6rem);
-    max-width: 840px;
+    gap: clamp(1.1rem, 2.6vw, 1.8rem);
+    max-width: 880px;
     margin-inline: auto;
+    position: relative;
+  }
+
+  .roadmap-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .roadmap-card::before {
+    content: '';
+    position: absolute;
+    inset: -28% -18% 35% -18%;
+    background: var(--aurora-secondary);
+    opacity: 0.55;
+    filter: blur(110px);
+    pointer-events: none;
+    animation: halo-drift var(--halo-speed) linear infinite;
+  }
+
+  header {
+    display: grid;
+    gap: 0.5rem;
   }
 
   header h3 {
     margin: 0;
-    font-size: 1.3rem;
+    font-size: clamp(1.25rem, 3vw, 1.45rem);
   }
 
   header p {
-    margin: 0.35rem 0 0;
+    margin: 0;
     color: var(--muted);
+    max-width: 58ch;
   }
 
   .focus-grid {
     display: grid;
-    gap: 0.75rem;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.85rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 
   .focus-chip {
     display: grid;
-    gap: 0.25rem;
-    padding: 0.85rem 1rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.22);
-    background: color-mix(in oklab, var(--glass) 85%, transparent);
+    gap: 0.3rem;
+    padding: clamp(0.85rem, 2.2vw, 1rem);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--glass-stroke);
+    background: color-mix(in oklab, var(--surface-glass) 94%, transparent);
     cursor: pointer;
     text-align: left;
-    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 12px 34px color-mix(in oklab, rgba(8, 12, 26, 0.75) 35%, transparent);
+  }
+
+  .focus-chip::before {
+    content: '';
+    position: absolute;
+    inset: -120% -40% auto;
+    height: 70%;
+    background: linear-gradient(135deg, hsla(var(--hue), 82%, 62%, 0.4), transparent 70%);
+    opacity: 0;
+    filter: blur(60px);
+    transition: opacity 0.35s ease;
+    pointer-events: none;
   }
 
   .focus-chip::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, hsla(var(--hue), 82%, 62%, 0.35), transparent 70%);
+    background: linear-gradient(135deg, hsla(var(--hue), 82%, 62%, 0.32), transparent 70%);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
 
+  .focus-chip:hover {
+    border-color: color-mix(in oklab, hsla(var(--hue), 82%, 62%, 0.35) 55%, var(--glass-stroke));
+    box-shadow: 0 18px 42px color-mix(in oklab, hsla(var(--hue), 82%, 62%, 0.45) 45%, transparent);
+  }
+
   .focus-chip[aria-pressed='true'] {
-    border-color: hsla(var(--hue), 82%, 62%, 0.6);
-    background: linear-gradient(135deg, hsla(var(--hue), 82%, 18%, 0.35), rgba(12, 16, 30, 0.75));
+    border-color: color-mix(in oklab, hsla(var(--hue), 82%, 62%, 0.65) 70%, var(--glass-stroke));
+    background: color-mix(in oklab, hsla(var(--hue), 82%, 32%, 0.42) 45%, var(--surface-glass-strong));
     transform: translateY(-3px);
+    box-shadow: 0 22px 46px color-mix(in oklab, hsla(var(--hue), 82%, 62%, 0.55) 40%, transparent);
   }
 
   .focus-chip:focus-visible {
     outline: 2px solid hsla(var(--hue), 82%, 70%, 0.75);
     outline-offset: 3px;
+  }
+
+  .focus-chip:hover::before,
+  .focus-chip[aria-pressed='true']::before {
+    opacity: 0.6;
   }
 
   .focus-chip[aria-pressed='true']::after {
@@ -158,17 +205,34 @@
 
   .focus-detail {
     font-size: 0.85rem;
-    color: var(--muted);
+    color: color-mix(in oklab, var(--muted) 85%, var(--ink) 15%);
   }
 
   .cta-line {
     display: grid;
-    gap: 0.5rem;
+    gap: 0.65rem;
     align-items: center;
+    padding: clamp(0.75rem, 2vw, 1rem);
+    border-radius: var(--radius-panel);
+    border: 1px solid var(--border-soft);
+    background: color-mix(in oklab, var(--surface-soft) 92%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.14) 35%, transparent);
   }
 
   .micro-note {
     color: color-mix(in oklab, var(--muted) 85%, white 15%);
+  }
+
+  @keyframes halo-drift {
+    0% {
+      transform: translate3d(-4%, -4%, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(6%, 6%, 0) rotate(140deg);
+    }
+    100% {
+      transform: translate3d(-4%, -4%, 0) rotate(360deg);
+    }
   }
 
   @media (min-width: 720px) {
@@ -179,22 +243,14 @@
   }
 
   @media (min-width: 960px) {
-    .roadmap-card {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
     header {
-      max-width: 540px;
-    }
-
-    .focus-grid {
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      max-width: 560px;
     }
   }
 
   @media (max-width: 540px) {
     .roadmap-card {
-      padding: 1.2rem;
+      padding: clamp(1.2rem, 4.4vw, 1.4rem);
     }
 
     .focus-grid {
@@ -202,7 +258,7 @@
     }
 
     .focus-chip {
-      padding: 0.75rem 0.9rem;
+      padding: 0.8rem 0.95rem;
     }
 
     .focus-detail {
@@ -237,6 +293,10 @@
     .focus-chip[aria-pressed='true'] {
       transition: none;
       transform: none;
+    }
+
+    .focus-chip::before {
+      animation: none;
     }
   }
 </style>

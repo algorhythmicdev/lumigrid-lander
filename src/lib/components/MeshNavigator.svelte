@@ -216,31 +216,57 @@
 
 <style>
   .mesh-navigator {
-    margin-top: clamp(2rem, 5vw, 3.5rem);
-    padding: clamp(1.4rem, 3vw, 2rem);
+    margin-top: clamp(2rem, 5vw, 3.8rem);
+    padding: clamp(1.5rem, 3.2vw, 2.4rem);
     display: grid;
-    gap: clamp(1rem, 2.2vw, 1.6rem);
+    gap: clamp(1.1rem, 2.4vw, 1.8rem);
     position: relative;
     overflow: hidden;
     max-width: 980px;
     margin-inline: auto;
   }
 
+  .mesh-navigator > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .mesh-navigator::before {
+    content: '';
+    position: absolute;
+    inset: -30% -20% 10% -20%;
+    background: var(--aurora-primary), var(--aurora-secondary);
+    opacity: 0.55;
+    filter: blur(120px);
+    pointer-events: none;
+    animation: halo-drift var(--halo-speed-alt) linear infinite;
+  }
+
   .mesh-header {
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    gap: 1rem;
   }
 
   .toggle-group {
-    display: flex;
+    display: inline-flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+    padding: 0.4rem;
+    border-radius: var(--radius-ribbon);
+    border: 1px solid var(--border-soft);
+    background: color-mix(in oklab, var(--surface-soft) 92%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.14) 40%, transparent);
+  }
+
+  .toggle-group .btn {
+    padding-inline: 1rem;
   }
 
   .toggle-group .btn[aria-selected='true'] {
     border-color: color-mix(in oklab, var(--b) 60%, transparent);
-    background: color-mix(in oklab, var(--b) 18%, transparent);
+    background: color-mix(in oklab, var(--b) 20%, var(--btn-ghost-bg));
+    box-shadow: 0 14px 28px color-mix(in oklab, var(--glow-secondary) 35%, transparent);
   }
 
   .mode-copy h3 {
@@ -251,35 +277,55 @@
   .mode-copy p {
     margin: 0;
     color: var(--muted);
+    max-width: 48ch;
   }
 
   .mesh-stage {
     position: relative;
     display: grid;
-    gap: 1.25rem;
+    gap: 1.35rem;
     perspective: 900px;
     justify-items: center;
   }
 
+  .mesh-stage::before {
+    content: '';
+    position: absolute;
+    inset: -20% -40% 10% -40%;
+    background: radial-gradient(120% 120% at 50% 50%, color-mix(in oklab, var(--glow-ambient) 35%, transparent), transparent 75%);
+    opacity: 0.5;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+
   .mesh-plane {
     position: relative;
-    width: min(100%, clamp(420px, 48vw, 560px));
+    width: min(100%, clamp(420px, 48vw, 580px));
     aspect-ratio: 4 / 3;
-    background: radial-gradient(circle at 50% 50%, rgba(108, 43, 217, 0.15), rgba(7, 9, 18, 0.8));
-    border-radius: clamp(1rem, 2.4vw, 1.6rem);
-    border: 1px solid color-mix(in oklab, var(--card-border) 80%, transparent);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    background: radial-gradient(circle at 50% 55%, color-mix(in oklab, var(--glow-secondary) 40%, transparent), color-mix(in oklab, rgba(7, 9, 18, 0.9) 88%, transparent));
+    border-radius: var(--radius-shell);
+    border: 1px solid var(--glass-stroke);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--border-track) 70%, transparent);
     transform-style: preserve-3d;
     overflow: hidden;
     transition: transform 0.6s ease;
   }
 
+  .mesh-plane::before {
+    content: '';
+    position: absolute;
+    inset: 12% 10% 10% 10%;
+    border-radius: var(--radius-card);
+    border: 1px solid color-mix(in oklab, var(--border-track) 65%, transparent);
+    opacity: 0.35;
+  }
+
   .mesh-plane::after {
     content: '';
     position: absolute;
-    inset: 12% 10% auto;
+    inset: 16% 15% auto;
     height: 1px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+    background: linear-gradient(90deg, var(--border-track), transparent);
     opacity: 0.4;
   }
 
@@ -291,8 +337,8 @@
     height: 2px;
     transform-origin: 0 50%;
     transform: translate(-50%, -50%) rotate(var(--angle));
-    background: linear-gradient(90deg, rgba(28, 197, 220, 0.75), rgba(108, 43, 217, 0.75));
-    box-shadow: 0 0 16px rgba(28, 197, 220, 0.35);
+    background: linear-gradient(90deg, color-mix(in oklab, var(--glow-secondary) 85%, transparent), color-mix(in oklab, var(--halo-glow) 70%, transparent));
+    box-shadow: 0 0 22px color-mix(in oklab, var(--glow-secondary) 65%, transparent);
   }
 
   .mesh-node {
@@ -301,21 +347,34 @@
     top: var(--y);
     transform: translate(-50%, -50%) translateZ(calc(var(--depth) * 60px));
     display: grid;
-    gap: 0.2rem;
-    padding: 0.6rem 0.8rem;
-    border-radius: 0.95rem;
-    border: 1px solid color-mix(in oklab, var(--card-border) 65%, transparent);
-    background: color-mix(in oklab, var(--glass) 75%, transparent);
+    gap: 0.24rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: var(--radius-control);
+    border: 1px solid color-mix(in oklab, var(--glass-stroke) 70%, transparent);
+    background: color-mix(in oklab, var(--surface-glass) 95%, transparent);
     color: inherit;
     cursor: pointer;
-    box-shadow: 0 10px 32px rgba(8, 12, 26, 0.35);
-    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    box-shadow: 0 12px 36px color-mix(in oklab, rgba(8, 12, 26, 0.75) 45%, transparent);
+    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+  }
+
+  .mesh-node::after {
+    content: '';
+    position: absolute;
+    inset: -60% -50% auto;
+    height: 60%;
+    background: var(--aurora-tertiary);
+    opacity: 0.45;
+    filter: blur(48px);
+    pointer-events: none;
   }
 
   .mesh-node:hover,
   .mesh-node[aria-pressed='true'] {
     border-color: color-mix(in oklab, var(--a) 55%, transparent);
-    background: color-mix(in oklab, var(--a) 18%, var(--glass));
+    background: color-mix(in oklab, var(--a) 18%, var(--surface-glass));
+    box-shadow: 0 20px 48px color-mix(in oklab, var(--glow-primary) 55%, transparent);
     transform: translate(-50%, -50%) translateZ(calc(80px + var(--depth) * 40px));
   }
 
@@ -330,32 +389,32 @@
 
   .mesh-tempo {
     display: grid;
-    gap: 0.6rem;
-    width: min(100%, clamp(360px, 44vw, 520px));
+    gap: 0.65rem;
+    width: min(100%, clamp(360px, 44vw, 540px));
     margin-inline: auto;
   }
 
   .tempo-row {
     display: grid;
-    grid-template-columns: 100px minmax(0, 1fr);
-    gap: 0.8rem;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 0.85rem;
     align-items: center;
   }
 
   .tempo-label {
     font-size: 0.85rem;
-    color: var(--muted);
+    color: color-mix(in oklab, var(--muted) 90%, var(--ink) 10%);
   }
 
   .tempo-track {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 1.1rem;
-    padding: 0.45rem 0.75rem;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.04);
+    gap: 1rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--border-soft);
+    background: color-mix(in oklab, var(--surface-track) 92%, transparent);
     overflow: hidden;
   }
 
@@ -363,17 +422,17 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(28, 197, 220, 0.2), rgba(108, 43, 217, 0.25));
-    opacity: 0.4;
+    background: linear-gradient(90deg, color-mix(in oklab, var(--glow-secondary) 45%, transparent), color-mix(in oklab, var(--halo-glow) 50%, transparent));
+    opacity: 0.45;
   }
 
   .tempo-pulse {
     position: relative;
     width: 12px;
     height: 12px;
-    border-radius: 999px;
+    border-radius: var(--r-circle);
     background: linear-gradient(120deg, var(--c), var(--a));
-    box-shadow: 0 0 16px rgba(28, 197, 220, 0.45);
+    box-shadow: 0 0 16px color-mix(in oklab, var(--glow-secondary) 80%, transparent);
     animation: tempo-pulse 1.6s ease-in-out infinite;
     animation-delay: calc(var(--offset) * -1s);
   }
@@ -384,7 +443,7 @@
 
   .mesh-footer {
     font-size: 0.95rem;
-    color: var(--muted);
+    color: color-mix(in oklab, var(--muted) 85%, var(--ink) 15%);
   }
 
   @keyframes tempo-pulse {
@@ -395,6 +454,18 @@
     40% {
       transform: scale(1.15);
       opacity: 1;
+    }
+  }
+
+  @keyframes halo-drift {
+    0% {
+      transform: translate3d(-4%, -4%, 0) rotate(0deg);
+    }
+    50% {
+      transform: translate3d(6%, 6%, 0) rotate(140deg);
+    }
+    100% {
+      transform: translate3d(-4%, -4%, 0) rotate(360deg);
     }
   }
 

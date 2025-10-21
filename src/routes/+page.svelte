@@ -3,19 +3,29 @@
   import SideTimeline from '$lib/components/SideTimeline.svelte';
   import LEDDemo from '$lib/components/LEDDemo.svelte';
   import MeshNavigator from '$lib/components/MeshNavigator.svelte';
+  import DualOutputConfigurator from '$lib/components/DualOutputConfigurator.svelte';
+  import EffectPaletteCarousel from '$lib/components/EffectPaletteCarousel.svelte';
+  import RoadmapMicroInteractions from '$lib/components/RoadmapMicroInteractions.svelte';
   import Gallery from '$lib/components/Gallery.svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
+  import DeploymentLaunchPad from '$lib/components/DeploymentLaunchPad.svelte';
+  import IntegrationMatrix from '$lib/components/IntegrationMatrix.svelte';
+  import OperationsObservatory from '$lib/components/OperationsObservatory.svelte';
 
   const sections = [
     { id: 'hero', label: 'Overview', icon: 'sparkles' },
     { id: 'system', label: 'System', icon: 'cubeTransparent' },
     { id: 'mesh', label: 'Mesh', icon: 'globeAlt' },
+    { id: 'console', label: 'Configurator', icon: 'commandLine' },
     { id: 'philosophy', label: 'Philosophy', icon: 'lightBulb' },
     { id: 'layers', label: 'Layers', icon: 'serverStack' },
     { id: 'nodes', label: 'Nodes', icon: 'users' },
     { id: 'led-node', label: 'LED Node', icon: 'sun' },
     { id: 'firmware', label: 'Firmware', icon: 'cpuChip' },
-    { id: 'experience', label: 'Experience', icon: 'swatch' },
+    { id: 'experience', label: 'Experience', icon: 'cog6Tooth' },
+    { id: 'effects', label: 'Effects', icon: 'swatch' },
+    { id: 'deployment', label: 'Deployment', icon: 'shieldCheck' },
+    { id: 'operations', label: 'Operations', icon: 'cloud' },
     { id: 'integration', label: 'Connectivity', icon: 'codeBracketSquare' },
     { id: 'applications', label: 'Applications', icon: 'rectangleGroup' },
     { id: 'gallery', label: 'Showreel', icon: 'window' },
@@ -56,6 +66,23 @@
     'Role handovers publish to the API bus instantly, so third-party controllers stay aware of the timeline owner.',
     'Offline clusters keep the beat thanks to a deterministic fallback clock and cached playlists.',
     'Installers can dry-run leadership swaps in the Mesh Navigator without touching live hardware.'
+  ];
+
+  const consoleHighlights = [
+    {
+      title: 'Blend analog + pixel',
+      detail:
+        'PWM wall-wash channels and WS2812 strips track the same blend curve so architectural and pixel fixtures stay in phase.'
+    },
+    {
+      title: 'Guarded by firmware',
+      detail:
+        'The README’s power budgeting heuristics apply in real time, tapering PWM levels when the effect engine predicts overdraw.'
+    },
+    {
+      title: 'Field friendly presets',
+      detail: 'Scenarios ship as JSON presets so technicians can swap looks without rewriting timelines mid-show.'
+    }
   ];
 
   const designPhilosophy = [
@@ -169,6 +196,21 @@
     { title: 'PWM FX', examples: 'Breath, Candle, Warm-Dim', notes: 'Smooth analogue dimming.' }
   ];
 
+  const effectHighlights = [
+    {
+      title: 'Deterministic playback',
+      detail: 'Every shader seeds from the multicast tick so distributed nodes render identical frames.'
+    },
+    {
+      title: 'Palette tokens aware',
+      detail: 'Effects pull from the same colour tokens as the UI, making installs feel bespoke without code edits.'
+    },
+    {
+      title: 'Power-budget smart',
+      detail: 'PWM and pixel layers respect the firmware’s current and thermal guard rails before drawing a frame.'
+    }
+  ];
+
   const webExperience = [
     'Dashboard: status, health, quick test controls.',
     'Nodes: discover peers, view RSSI and firmware.',
@@ -192,6 +234,70 @@
     'Thermal / voltage watch: automatic derate under stress.',
     'Watchdog & diagnostics: continuous heap and task monitoring.',
     'Offline autonomy: local schedules run even without the master.'
+  ];
+
+  const integrationTelemetry = [
+    { label: 'Mesh heartbeat', value: '62 bpm · ±1.2 ms jitter' },
+    { label: 'REST latency', value: '38 ms median from field tablet' },
+    { label: 'Power headroom', value: '28% reserve across active nodes' }
+  ];
+
+  const opsScenarios = [
+    {
+      time: '17:40',
+      title: 'Blue hour preflight',
+      detail: 'Nodes preheat optics, run halo diagnostics, and cache playlists from the launch pad.'
+    },
+    {
+      time: '18:05',
+      title: 'Show open handshake',
+      detail: 'Backup leader syncs via warm-start, PWM fades ramp, and pixel cascades verify against the README preset.'
+    },
+    {
+      time: '21:30',
+      title: 'Wind-down fallback',
+      detail: 'Ambient scene fades in, telemetry snapshots archive, and the mesh arms autonomous overnight mode.'
+    }
+  ];
+
+  const opsSignals = [
+    { label: 'Global uptime', value: '99.982% · rolling 90 days' },
+    { label: 'Mesh leader', value: 'Node K3 · drift 0.6 ms' },
+    { label: 'Support SLA', value: '6 min response in active show' },
+    { label: 'Firmware parity', value: 'v1.4.7 across 12 nodes' }
+  ];
+
+  const opsPlaybooks = [
+    {
+      title: 'Halo start-up',
+      summary: 'Graceful power-on routine before doors open.',
+      steps: [
+        'Energise mains, confirm thermal sensors, and run soft-start on PWM drivers.',
+        'Mesh discovery assigns leadership and verifies multicast tick health.',
+        'Preset 01 warm-up plays while operators confirm power headroom and RSSI.'
+      ]
+    },
+    {
+      title: 'Mid-show leadership swap',
+      summary: 'Hot handover to standby node without disrupting guests.',
+      steps: [
+        'Announce takeover in the console and mirror cues to the standby node.',
+        'Initiate warm-start sync so PWM + pixel layers stay phase-locked.',
+        'Verify drift below 1 ms, then release the previous leader to follower mode.'
+      ]
+    }
+  ];
+
+  const opsRoster = [
+    { role: 'Primary operator', person: 'Sia · Control booth' },
+    { role: 'Network steward', person: 'Noel · Remote NOC' },
+    { role: 'Firmware liaison', person: 'Aria · Field laptop' }
+  ];
+
+  const opsEscalations = [
+    'Thermal guard trip auto-derates channels and pings the NOC bridge.',
+    'Fallback playlist engages after two missed multicast ticks.',
+    'Manual halo blackout stays one tap away inside the glass console.'
   ];
 
   const developerPoints = [
@@ -400,6 +506,47 @@
                 {/each}
               </ul>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="console"
+        class="section halo section-console"
+        style="--orbit-a: color-mix(in oklab, var(--a) 40%, transparent); --orbit-b: color-mix(in oklab, var(--halo-glow) 42%, transparent); --orbit-strength:.5;"
+        data-flare-primary="color-mix(in oklab, var(--a) 40%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--halo-glow) 42%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--c) 42%, transparent)"
+        data-flare-strength=".5"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container console-wrap">
+          <div class="section-header">
+            <p class="eyebrow">Console blend</p>
+            <h2 class="h2" data-parallax="0.12">Balance PWM and pixel energy</h2>
+            <p class="lead">The dual-output navigator mirrors how installers mix analog and addressable loads.</p>
+          </div>
+          <div class="console-stage reveal">
+            <article class="glass-panel console-brief">
+              <span class="console-badge">Why it matters</span>
+              <h3>Blend both engines without scripts</h3>
+              <p class="console-summary">Guided presets let technicians dry-run wall-wash power and pixel sparkle before doors open.</p>
+              <ul class="console-points">
+                {#each consoleHighlights as item}
+                  <li>
+                    <strong>{item.title}</strong>
+                    <p>{item.detail}</p>
+                  </li>
+                {/each}
+              </ul>
+              <p class="console-foot">These scenarios match the LumiGrid README deployment checklist so rehearsals and live nights feel identical.</p>
+            </article>
+            <DualOutputConfigurator />
           </div>
         </div>
       </section>
@@ -688,6 +835,105 @@
       </div>
 
       <section
+        id="effects"
+        class="section halo section-effects"
+        style="--orbit-a: color-mix(in oklab, var(--halo-glow) 44%, transparent); --orbit-b: color-mix(in oklab, var(--b) 40%, transparent); --orbit-strength:.48;"
+        data-flare-primary="color-mix(in oklab, var(--halo-glow) 44%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--b) 40%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--a) 38%, transparent)"
+        data-flare-strength=".48"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container effects">
+          <div class="section-header">
+            <p class="eyebrow">Effect engine</p>
+            <h2 class="h2" data-parallax="0.12">Palette-aware scenes ready to deploy</h2>
+            <p class="lead">Browse the same library LumiGrid nodes ship with straight from the README.</p>
+          </div>
+          <div class="effects-stage reveal">
+            <EffectPaletteCarousel />
+            <aside class="glass-panel effects-notes">
+              <h3>Why creatives trust it</h3>
+              <ul class="effects-points">
+                {#each effectHighlights as item}
+                  <li>
+                    <strong>{item.title}</strong>
+                    <p>{item.detail}</p>
+                  </li>
+                {/each}
+              </ul>
+              <p class="effects-foot">All scenes live in /api/presets so shows match the LumiGrid firmware docs exactly.</p>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="deployment"
+        class="section halo section-deployment"
+        style="--orbit-a: color-mix(in oklab, var(--a) 40%, transparent); --orbit-b: color-mix(in oklab, var(--halo-glow) 44%, transparent); --orbit-strength:.52;"
+        data-flare-primary="color-mix(in oklab, var(--a) 40%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--halo-glow) 44%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--c) 42%, transparent)"
+        data-flare-strength=".52"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container deployment">
+          <div class="section-header">
+            <p class="eyebrow">Launch ready</p>
+            <h2 class="h2" data-parallax="0.12">Deployment runbook on glass</h2>
+            <p class="lead">Commission, rehearse, and go live using the same halo console as the demo mesh.</p>
+          </div>
+          <div class="deployment-stage reveal">
+            <DeploymentLaunchPad />
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
+        id="operations"
+        class="section halo section-operations"
+        style="--orbit-a: color-mix(in oklab, var(--c) 38%, transparent); --orbit-b: color-mix(in oklab, var(--a) 42%, transparent); --orbit-strength:.5;"
+        data-flare-primary="color-mix(in oklab, var(--c) 38%, transparent)"
+        data-flare-secondary="color-mix(in oklab, var(--a) 42%, transparent)"
+        data-flare-glow="color-mix(in oklab, var(--halo-glow) 46%, transparent)"
+        data-flare-strength=".5"
+      >
+        <span class="section-orbit" aria-hidden="true"></span>
+        <div class="container operations">
+          <div class="section-header">
+            <p class="eyebrow">Operations</p>
+            <h2 class="h2" data-parallax="0.12">Operations observatory on standby</h2>
+            <p class="lead">Monitor uptime, stage handovers, and trigger halo playbooks mid-show.</p>
+          </div>
+          <div class="operations-stage reveal">
+            <OperationsObservatory
+              scenarios={opsScenarios}
+              signals={opsSignals}
+              playbooks={opsPlaybooks}
+              roster={opsRoster}
+              escalations={opsEscalations}
+            />
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true">
+        <span class="separator-glow"></span>
+        <span class="separator-strip"></span>
+      </div>
+
+      <section
         id="integration"
         class="section halo section-support"
         style="--orbit-a: color-mix(in oklab, var(--c) 40%, transparent); --orbit-b: color-mix(in oklab, var(--b) 42%, transparent); --orbit-strength:.5;"
@@ -704,22 +950,11 @@
             <p class="lead">Endpoints, monitoring, and protections all surface from the README story.</p>
           </div>
           <div class="support-stage reveal">
-            <div class="support-grid" role="list">
-              {#each connectivityEndpoints as entry (entry.endpoint)}
-                <article class="glass-card" role="listitem">
-                  <h3>{entry.endpoint}</h3>
-                  <p>{entry.description}</p>
-                </article>
-              {/each}
-            </div>
-            <aside class="support-panel glass-panel">
-              <h3>Reliability and safety</h3>
-              <ul class="support-benefits">
-                {#each reliabilityPoints as item}
-                  <li>{item}</li>
-                {/each}
-              </ul>
-            </aside>
+            <IntegrationMatrix
+              endpoints={connectivityEndpoints}
+              safeguards={reliabilityPoints}
+              telemetry={integrationTelemetry}
+            />
           </div>
         </div>
       </section>
@@ -867,12 +1102,14 @@
           </div>
           <div class="launch-stage reveal">
             <div class="launch-timeline vision-copy">
+              <span class="vision-badge">Whitepaper horizon</span>
               {#each visionForward as paragraph}
                 <article class="launch-stop glass-card">
                   <p>{paragraph}</p>
                 </article>
               {/each}
             </div>
+            <RoadmapMicroInteractions />
           </div>
         </div>
       </section>
