@@ -17,7 +17,15 @@ Execute `npm run test` to exercise the contact endpoint unit tests.
 Enable the "Read aloud" toggle in the navigation bar to activate speech synthesis. While it is on, double-click any headline,
 paragraph, list item, or caption to hear it read through the browser's voice engine.
 
-## Deploy to Alibaba Cloud
+## Deployment
+
+This project supports two primary deployment targets: Netlify for preview builds and Alibaba Cloud for production.
+
+### Netlify
+
+This project is configured for deployment to Netlify. To deploy your own copy, connect your Git repository to Netlify and it will be built and deployed automatically using the `build:netlify` script.
+
+### Alibaba Cloud
 
 ```bash
 # This script builds and pushes a Docker image to an Alibaba Cloud container registry.
