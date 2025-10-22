@@ -1,14 +1,29 @@
-import adapter from '@sveltejs/adapter-netlify';
+import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
+const isCI = process.env.GITHUB_ACTIONS === 'true';
+const repo = process.env.BASE_PATH || '';
+
+/** @type {import('@sveltejs/kit').Config} */
 const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter({
-      edge: false,
-      split: false
+      pages: 'build',
+      assets: 'build'
+      // If you ever need SPA fallback, uncomment the next line:
+      // fallback: 'index.html'
     }),
-    alias: { $lib: 'src/lib' }
+    paths: {
+      base: isCI ? repo : '',
+      relative: true
+    },
+    prerender: {
+      entries: ['*']
+    },
+    alias: {
+      $lib: 'src/lib'
+    }
   }
 };
 

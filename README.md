@@ -10,7 +10,7 @@ npm run dev -- --open
 ```
 
 Open http://localhost:5173. Run `npm run check` for a quick Svelte/TypeScript sanity check before committing changes.
-Execute `npm run test` to exercise the contact endpoint unit tests.
+Execute `npm run test` to run the Vitest suite (if present).
 
 ### Accessibility helpers
 
@@ -19,11 +19,15 @@ paragraph, list item, or caption to hear it read through the browser's voice eng
 
 ## Deployment
 
-This project supports two primary deployment targets: Netlify for preview builds and Alibaba Cloud for production.
+The site now ships as a fully static export via `@sveltejs/adapter-static` and is ready for GitHub Pages.
 
-### Netlify
+### GitHub Pages
 
-This project is configured for deployment to Netlify. To deploy your own copy, connect your Git repository to Netlify and it will be built and deployed automatically using the `build:netlify` script.
+1. Update `.github/workflows/pages.yml` if your repository name differs from `/lumigrid-lander`, or set `BASE_PATH: ''` when deploying to a `username.github.io` root site.
+2. Push to `main` or trigger the **Deploy (GitHub Pages)** workflow manually.
+3. In **Settings → Pages**, set the source to “GitHub Actions”.
+
+Assets and links automatically respect the repository subpath thanks to `paths.base`/`paths.relative` in `svelte.config.js`.
 
 ### Alibaba Cloud
 
@@ -39,9 +43,7 @@ The Dockerfile produces a Node 20 image that runs `node build`. If you prefer a 
 
 ### Hosting requirements
 
-The contact form is fulfilled by the `/api/contact` server endpoint. The site therefore ships with prerendering disabled so the
-Node/SSR runtime is always available. Static-only adapters (e.g. Vercel Static or GitHub Pages) are unsupported unless you
-remove or replace the form with an external service.
+The contact form now opens the visitor’s email client with a pre-filled message to `hello@lumigrid.dev`. No server runtime is required for production hosting, so any static file host (including GitHub Pages) will work out of the box.
 
 ## CI/CD
 

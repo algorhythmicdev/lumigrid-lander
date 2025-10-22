@@ -1,27 +1,20 @@
 <script>
-  import { onMount } from 'svelte';
-
   const MESSAGE_LIMIT = 2000;
+  const CONTACT_EMAIL = 'hello@lumigrid.dev';
 
   let name = '';
   let email = '';
   let message = '';
-  let honeypot = '';
 
   let errName = '';
   let errEmail = '';
   let errMsg = '';
   let note = '';
   let state = 'idle';
-  let startedAt = Date.now();
   let trimmedMessageLength = 0;
   let messageRemaining = MESSAGE_LIMIT;
 
   $: noteTone = state === 'success' ? 'success' : state === 'error' ? 'error' : '';
-
-  onMount(() => {
-    startedAt = Date.now();
-  });
 
   const resetNote = () => {
     if (state !== 'success') {
@@ -55,25 +48,41 @@
     return !(errName || errEmail || errMsg);
   };
 
-  const applyServerDetails = (details) => {
-    if (!details || typeof details !== 'object') return;
-    if (typeof details.name === 'string') {
-      errName = details.name;
-    }
-    if (typeof details.email === 'string') {
-      errEmail = details.email;
-    }
-    if (typeof details.message === 'string') {
-      errMsg = details.message;
-    }
-  };
-
   const handleInput = () => {
     resetNote();
     validate();
   };
 
-  const submit = async () => {
+  const buildMailtoHref = () => {
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedMessage = message.trim();
+
+    const subjectName = trimmedName || 'LumiGrid friend';
+    const subject = encodeURIComponent(`LumiGrid inquiry from ${subjectName}`);
+    const bodyLines = [
+      `Name: ${trimmedName || '—'}`,
+      `Email: ${trimmedEmail || '—'}`,
+      '',
+      trimmedMessage
+    ];
+
+    const body = encodeURIComponent(bodyLines.join('\n'));
+    return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+  };
+
+  const openMailApp = (href) => {
+    if (typeof window === 'undefined') return false;
+    try {
+      window.location.href = href;
+      return true;
+    } catch (error) {
+      console.error('Failed to open mail client', error);
+      return false;
+    }
+  };
+
+  const submit = () => {
     if (!validate()) {
       note = errMsg || errName || errEmail || 'Please fix the highlighted fields.';
       state = 'error';
@@ -81,38 +90,21 @@
     }
 
     state = 'sending';
-    note = 'Sending…';
+    note = 'Opening your email app…';
 
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message, startedAt, company: honeypot })
-      });
+    const mailtoHref = buildMailtoHref();
+    const opened = openMailApp(mailtoHref);
 
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok || payload?.ok === false) {
-        applyServerDetails(payload?.details);
-        const errorMessage =
-          errMsg || payload?.details?.message || payload?.error || 'Please try again later or email hello@lumigrid.dev.';
-        throw new Error(errorMessage);
-      }
-
-      note = payload?.message ?? 'Thanks! We’ll get back to you shortly.';
-      state = 'success';
-      name = '';
-      email = '';
-      message = '';
-      honeypot = '';
-      startedAt = Date.now();
-      errName = '';
-      errEmail = '';
-      errMsg = '';
-    } catch (error) {
-      console.error('Contact form submission failed', error);
-      note = error instanceof Error && error.message ? error.message : 'We could not send your message. Please try again later.';
-      state = 'error';
-    }
+    state = 'success';
+    note = opened
+      ? `If nothing opens automatically, email ${CONTACT_EMAIL}.`
+      : `Please email ${CONTACT_EMAIL} and paste your message manually.`;
+    name = '';
+    email = '';
+    message = '';
+    errName = '';
+    errEmail = '';
+    errMsg = '';
   };
 </script>
 <form
@@ -162,21 +154,9 @@
     <small id="msg-error" class="error">{errMsg}</small>
     <small id="msg-limit" class="hint" aria-live="polite">{messageRemaining} characters remaining</small>
   </div>
-  <div class="f-row honeypot" aria-hidden="true">
-    <label for="company">Company</label>
-    <input
-      id="company"
-      name="company"
-      bind:value={honeypot}
-      tabindex="-1"
-      autocomplete="off"
-      data-lpignore="true"
-      on:input={handleInput}
-    />
-  </div>
   <div class="f-row inline">
     <button class="btn primary big" disabled={state === 'sending'}>
-      {state === 'sending' ? 'Sending…' : 'Send'}
+      {state === 'sending' ? 'Opening…' : 'Send'}
     </button>
     <span class={`form-note ${noteTone}`} aria-live="polite" role="status">{note}</span>
   </div>
