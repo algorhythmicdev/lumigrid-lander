@@ -292,6 +292,14 @@ export function backgroundFlares({ canvasId = 'lg-fx' } = {}) {
   if (!doc || !win) return cleanupNoop;
   const canvas = doc.getElementById(canvasId);
   if (!canvas) return cleanupNoop;
+  canvas.style.pointerEvents = 'none';
+  canvas.style.position = 'fixed';
+  canvas.style.setProperty('inset', '0');
+  canvas.style.zIndex = '-1';
+  if (!canvas.style.top) canvas.style.top = '0';
+  if (!canvas.style.right) canvas.style.right = '0';
+  if (!canvas.style.bottom) canvas.style.bottom = '0';
+  if (!canvas.style.left) canvas.style.left = '0';
   const ctx = canvas.getContext('2d', { alpha: true });
   if (!ctx) return cleanupNoop;
   const root = doc.documentElement;
