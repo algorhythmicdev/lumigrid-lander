@@ -35,6 +35,10 @@ The contact form is fulfilled by the `/api/contact` server endpoint. The site th
 Node/SSR runtime is always available. Static-only adapters (e.g. Vercel Static or GitHub Pages) are unsupported unless you
 remove or replace the form with an external service.
 
+## CI/CD
+
+This project uses GitHub Actions to automatically run tests and build the application on every push and pull request to the `main` branch. The workflow is defined in the `.github/workflows/ci.yml` file.
+
 ## Structure
 
 - `src/routes/+layout.svelte` — global FX canvas + global hooks
