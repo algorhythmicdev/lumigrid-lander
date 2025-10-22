@@ -292,10 +292,10 @@ export function backgroundFlares({ canvasId = 'lg-fx' } = {}) {
   if (!doc || !win) return cleanupNoop;
   const canvas = doc.getElementById(canvasId);
   if (!canvas) return cleanupNoop;
-  canvas.style.pointerEvents = 'none';
-  canvas.style.position = 'fixed';
-  canvas.style.setProperty('inset', '0');
-  canvas.style.zIndex = '-1';
+  canvas.style.setProperty('pointer-events', 'none', 'important');
+  canvas.style.setProperty('position', 'fixed', 'important');
+  canvas.style.setProperty('inset', '0', 'important');
+  canvas.style.setProperty('z-index', '-1', 'important');
   if (!canvas.style.top) canvas.style.top = '0';
   if (!canvas.style.right) canvas.style.right = '0';
   if (!canvas.style.bottom) canvas.style.bottom = '0';
