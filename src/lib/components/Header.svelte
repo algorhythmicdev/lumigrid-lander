@@ -1,6 +1,7 @@
 <script>
   import { bindBrandSelect, bindThemeToggle, bindTTS } from '$lib/fx.js';
   import { onDestroy, onMount, tick } from 'svelte';
+  import { fade } from 'svelte/transition';
   let brandSel;
   let themeBtn;
   let ttsBtn;
@@ -245,6 +246,11 @@
     </span>
   </button>
 </nav>
-{#if isCompact}
-  <div class="nav-overlay" data-open={menuOpen} aria-hidden="true" on:click={closeMenu}></div>
+{#if isCompact && menuOpen}
+  <div
+    class="nav-overlay"
+    aria-hidden="true"
+    on:click={closeMenu}
+    transition:fade={{ duration: 200 }}
+  ></div>
 {/if}
