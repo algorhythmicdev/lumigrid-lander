@@ -32,21 +32,38 @@ export function bindRipple(root = getDocument()){
 }
 export function reveals(selector='.reveal', threshold=0.12){
   const doc = getDocument();
+  const win = getWindow();
   if(!doc) return cleanupNoop;
   const reduce = getMediaQueryList('(prefers-reduced-motion: reduce)');
   const elements = [...doc.querySelectorAll(selector)];
   if(!elements.length) return cleanupNoop;
+  const ratio = Math.max(0, Math.min(1, Number.isFinite(threshold) ? threshold : 0));
   const showAll = () => elements.forEach((el) => el.classList.add('in'));
+  const markInitial = () => {
+    if(!win) return;
+    const viewport = win.innerHeight || doc.documentElement?.clientHeight || 0;
+    const lowerBound = -viewport * ratio;
+    elements.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if(rect.top <= viewport && rect.bottom >= lowerBound){
+        el.classList.add('in');
+      }
+    });
+  };
   if(reduce.matches){
     showAll();
     return cleanupNoop;
   }
+  markInitial();
   const io = new IntersectionObserver((entries)=> entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }),{threshold});
   elements.forEach((el)=> io.observe(el));
   const handleReduce = (event) => {
     if(event.matches){
       showAll();
       io.disconnect();
+    } else {
+      markInitial();
+      elements.forEach((el)=> io.observe(el));
     }
   };
   reduce.addEventListener('change', handleReduce);
