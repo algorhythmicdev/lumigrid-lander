@@ -1,7 +1,9 @@
 /* Global tokens & components (see chat) */
 * { box-sizing: border-box; }
 html:focus-within { scroll-behavior: smooth; }
-:where(body){ margin:0; line-height:1.6; text-rendering: optimizeLegibility; }
+:where(body){ margin:0; line-height:1.6; text-rendering: optimizeLegibility; isolation:isolate; }
+:where(.main-root){ position:relative; z-index:0; }
+:where(#lg-fx){ position:fixed; inset:0; z-index:-1; pointer-events:none; }
 :focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
 .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
 
