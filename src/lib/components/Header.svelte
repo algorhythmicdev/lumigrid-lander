@@ -1,5 +1,6 @@
 <script>
   import { bindBrandSelect, bindThemeToggle, bindTTS } from '$lib/fx.js';
+  import { base } from '$app/paths';
   import { onDestroy, onMount, tick } from 'svelte';
   import { fade } from 'svelte/transition';
   let brandSel;
@@ -177,7 +178,7 @@
 </script>
 <nav class="glass top-nav" data-open={menuOpen} data-compact={isCompact}>
   <span class="nav-halo" aria-hidden="true"></span>
-  <a href="/" class="h2 text-gradient brand" on:click={closeMenu}>LumiGrid</a>
+  <a href={`${base}/`} class="h2 text-gradient brand" on:click={closeMenu}>LumiGrid</a>
   <div
     id="header-menu"
     class="nav-controls"

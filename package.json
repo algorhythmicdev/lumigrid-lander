@@ -9,13 +9,13 @@
     "preview": "vite preview",
     "start": "node build",
     "check": "svelte-kit sync && svelte-check --fail-on-warnings",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "@sveltejs/adapter-netlify": "^4.3.4",
+    "@sveltejs/adapter-static": "^3.0.10",
     "@sveltejs/kit": "^2.5.0",
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
     "svelte": "^5.0.0",
