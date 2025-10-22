@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "build:netlify": "svelte-kit build --config svelte.config.netlify.js",
     "preview": "vite preview",
     "start": "node build",
     "check": "svelte-kit sync && svelte-check --fail-on-warnings",
@@ -15,6 +16,7 @@
     "node": ">=20.0.0"
   },
   "devDependencies": {
+    "@sveltejs/adapter-netlify": "^5.2.4",
     "@sveltejs/adapter-node": "^5.4.0",
     "@sveltejs/kit": "^2.5.0",
     "svelte": "^5.0.0",
