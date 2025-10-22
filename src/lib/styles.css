@@ -256,7 +256,7 @@ body{ font-family: var(--font); color: var(--ink);
   .page-shell{ display:grid; grid-template-columns: var(--shell-rail-span) minmax(0,1fr); column-gap: var(--shell-rail-gap); row-gap: var(--shell-gap); align-items:start; }
   .page-main{ min-width:0;  }
 }
-.top-nav{ position:sticky; top:clamp(.75rem, 2vw, 1.4rem); z-index:6; display:flex; flex-wrap:wrap; align-items:center; gap:clamp(.5rem,1.6vw,1rem); padding:clamp(.65rem,1.4vw,.95rem) clamp(.85rem,2vw,1.25rem); border-radius:var(--r-lg); backdrop-filter:saturate(180%) blur(18px); -webkit-backdrop-filter:saturate(180%) blur(18px); box-shadow:var(--shadow); transition: box-shadow .6s ease; overflow:hidden; isolation:isolate; }
+.top-nav{ position:sticky; top:clamp(.75rem, 2vw, 1.4rem); z-index:60; display:flex; flex-wrap:wrap; align-items:center; gap:clamp(.5rem,1.6vw,1rem); padding:clamp(.65rem,1.4vw,.95rem) clamp(.85rem,2vw,1.25rem); border-radius:var(--r-lg); backdrop-filter:saturate(180%) blur(18px); -webkit-backdrop-filter:saturate(180%) blur(18px); box-shadow:var(--shadow); transition: box-shadow .6s ease; overflow:hidden; isolation:isolate; }
 .top-nav .nav-halo{ position:absolute; inset:-65% -25% -55%; background: var(--halo-sheen-gradient); opacity:.28; filter: blur(calc(var(--halo-sheen-blur) * .6)); pointer-events:none; mix-blend-mode:screen; animation: halo-pan calc(var(--halo-sheen-speed) * .85) ease-in-out infinite; transform: rotate(8deg) translate3d(0, 6%, 0); }
 .top-nav:hover .nav-halo,
 .top-nav:focus-within .nav-halo{ opacity:.4; filter: blur(calc(var(--halo-sheen-blur) * .5)); transform: rotate(6deg) translate3d(0, 0, 0); }
@@ -285,10 +285,8 @@ body{ font-family: var(--font); color: var(--ink);
 .top-nav[data-open='true'] .menu-icon span:nth-child(1){ transform: translateY(6px) rotate(45deg); }
 .top-nav[data-open='true'] .menu-icon span:nth-child(2){ opacity:0; width:0; }
 .top-nav[data-open='true'] .menu-icon span:nth-child(3){ transform: translateY(-6px) rotate(-45deg); }
-.nav-overlay{ position:fixed; inset:0; background: radial-gradient(120% 80% at 50% 20%, color-mix(in oklab, var(--active-orbit-a) 45%, rgba(17,23,48,.85)) 0%, rgba(7,11,24,.6) 68%); opacity:0; pointer-events:none; transition: opacity .35s ease; z-index:5; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-.nav-overlay[data-open='true']{ opacity:.55; pointer-events:auto; }
-:root[data-color='light'] .nav-overlay{ background: radial-gradient(120% 80% at 50% 18%, color-mix(in oklab, var(--active-orbit-a) 35%, rgba(224,236,255,.82)) 0%, color-mix(in oklab, var(--active-orbit-b) 30%, rgba(188,206,255,.55)) 65%); }
-:root[data-color='light'] .nav-overlay[data-open='true']{ opacity:.65; }
+.nav-overlay{ position:fixed; inset:0; background: radial-gradient(120% 80% at 50% 20%, color-mix(in oklab, var(--active-orbit-a) 45%, rgba(17,23,48,.85)) 0%, rgba(7,11,24,.6) 68%); opacity:.55; pointer-events:auto; z-index:40; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+:root[data-color='light'] .nav-overlay{ background: radial-gradient(120% 80% at 50% 18%, color-mix(in oklab, var(--active-orbit-a) 35%, rgba(224,236,255,.82)) 0%, color-mix(in oklab, var(--active-orbit-b) 30%, rgba(188,206,255,.55)) 65%); opacity:.65; }
 .top-nav[data-compact='true']{ padding-inline:clamp(.75rem,4vw,1.25rem); top:clamp(.5rem, 2vw, .85rem); align-items:flex-start; }
 .top-nav[data-compact='true'] .nav-controls{ width:100%; flex-direction:column; align-items:stretch; justify-content:flex-start; gap:.75rem; max-height:0; overflow:hidden; opacity:0; pointer-events:none; padding-top:0; margin-top:0; border-top:0; transition:max-height .35s ease, opacity .35s ease, padding .35s ease, margin .35s ease, border-color .35s ease; }
 .top-nav[data-compact='true'][data-open='true'] .nav-controls{ max-height:min(600px, calc(100vh - clamp(3.5rem, 8vw, 5.5rem))); opacity:1; pointer-events:auto; padding-top:.85rem; margin-top:.75rem; border-top:1px solid var(--glass-border); overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable both-edges; -webkit-overflow-scrolling:touch; }
