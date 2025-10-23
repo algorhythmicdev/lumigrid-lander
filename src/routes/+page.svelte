@@ -378,7 +378,7 @@
       >
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container narrow">
-          <div class="section-header">
+          <div class="section-header" id="vision">
             <p class="eyebrow">Launch journey</p>
             <h2 class="h2" data-parallax="0.12">Help us open the first chapter</h2>
             <p class="lead">The LED Node release is a guided rollout—designed so every early space feels supported and celebrated.</p>
