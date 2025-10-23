@@ -5,62 +5,62 @@
     rf: {
       label: 'RF',
       gradient:
-        'repeating-linear-gradient(90deg, rgba(28,197,220,.95) 0 6px, rgba(231,59,163,.95) 6px 12px, rgba(108,43,217,.95) 12px 18px, rgba(255,209,102,.95) 18px 24px)',
-      accent: 'rgba(231,59,163,1)',
-      glow: 'rgba(108,43,217,.65)',
-      sheen: 'rgba(28,197,220,.6)',
+        'repeating-linear-gradient(90deg, color-mix(in oklab, var(--c) 92%, transparent) 0 6px, color-mix(in oklab, var(--a) 92%, transparent) 6px 12px, color-mix(in oklab, var(--b) 88%, transparent) 12px 18px, color-mix(in oklab, var(--warm) 92%, transparent) 18px 24px)',
+      accent: 'color-mix(in oklab, var(--a) 90%, transparent)',
+      glow: 'color-mix(in oklab, var(--b) 70%, transparent)',
+      sheen: 'color-mix(in oklab, var(--c) 68%, transparent)',
       signageBg:
-        'linear-gradient(135deg, rgba(231,59,163,.92) 0%, rgba(28,197,220,.88) 52%, rgba(108,43,217,.88) 100%)',
+        'linear-gradient(135deg, color-mix(in oklab, var(--a) 90%, transparent) 0%, color-mix(in oklab, var(--c) 88%, transparent) 52%, color-mix(in oklab, var(--b) 85%, transparent) 100%)',
       signageOverlay:
-        'radial-gradient(140% 120% at 12% 18%, rgba(255,209,102,.35) 0%, transparent 48%), radial-gradient(120% 140% at 82% 78%, rgba(28,197,220,.36) 0%, transparent 58%)',
-      signageText: '#05060d',
-      signageSecondary: 'rgba(255,255,255,.88)',
-      signageBadge: 'rgba(255,255,255,.18)'
+        'radial-gradient(140% 120% at 12% 18%, color-mix(in oklab, var(--warm) 45%, transparent) 0%, transparent 48%), radial-gradient(120% 140% at 82% 78%, color-mix(in oklab, var(--c) 40%, transparent) 0%, transparent 58%)',
+      signageText: 'var(--signage-text-strong)',
+      signageSecondary: 'var(--signage-secondary-strong)',
+      signageBadge: 'var(--signage-badge-base)'
     },
     neon: {
       label: 'Neon',
       gradient:
-        'repeating-linear-gradient(90deg, rgba(0,229,255,.95) 0 6px, rgba(119,247,203,.95) 6px 12px, rgba(199,247,1,.95) 12px 18px, rgba(0,191,255,.95) 18px 24px)',
-      accent: 'rgba(0,229,255,1)',
-      glow: 'rgba(0,191,255,.65)',
-      sheen: 'rgba(119,247,203,.55)',
+        'repeating-linear-gradient(90deg, color-mix(in oklab, var(--c) 95%, transparent) 0 6px, color-mix(in oklab, var(--halo-secondary) 82%, transparent) 6px 12px, color-mix(in oklab, var(--warm) 60%, transparent) 12px 18px, color-mix(in oklab, var(--halo-primary) 80%, transparent) 18px 24px)',
+      accent: 'color-mix(in oklab, var(--c) 92%, transparent)',
+      glow: 'color-mix(in oklab, var(--halo-primary) 70%, transparent)',
+      sheen: 'color-mix(in oklab, var(--halo-secondary) 72%, transparent)',
       signageBg:
-        'linear-gradient(140deg, rgba(0,229,255,.92) 0%, rgba(119,247,203,.9) 48%, rgba(0,191,255,.88) 100%)',
+        'linear-gradient(140deg, color-mix(in oklab, var(--c) 92%, transparent) 0%, color-mix(in oklab, var(--halo-secondary) 88%, transparent) 48%, color-mix(in oklab, var(--halo-primary) 85%, transparent) 100%)',
       signageOverlay:
-        'radial-gradient(140% 140% at 18% 16%, rgba(199,247,1,.38) 0%, transparent 52%), radial-gradient(120% 120% at 78% 84%, rgba(0,229,255,.34) 0%, transparent 60%)',
-      signageText: '#021317',
-      signageSecondary: 'rgba(255,255,255,.85)',
-      signageBadge: 'rgba(255,255,255,.16)'
+        'radial-gradient(140% 140% at 18% 16%, color-mix(in oklab, var(--warm) 45%, transparent) 0%, transparent 52%), radial-gradient(120% 120% at 78% 84%, color-mix(in oklab, var(--c) 42%, transparent) 0%, transparent 60%)',
+      signageText: 'var(--signage-text-strong)',
+      signageSecondary: 'var(--signage-secondary-strong)',
+      signageBadge: 'var(--signage-badge-base)'
     },
     sunset: {
       label: 'Sunset',
       gradient:
-        'repeating-linear-gradient(90deg, rgba(255,123,123,.95) 0 6px, rgba(255,162,76,.95) 6px 12px, rgba(255,209,102,.95) 12px 18px, rgba(255,214,231,.95) 18px 24px)',
-      accent: 'rgba(255,162,76,1)',
-      glow: 'rgba(255,123,123,.62)',
-      sheen: 'rgba(255,214,231,.55)',
+        'repeating-linear-gradient(90deg, color-mix(in oklab, var(--warm) 90%, transparent) 0 6px, color-mix(in oklab, var(--a) 88%, transparent) 6px 12px, color-mix(in oklab, var(--warm) 94%, transparent) 12px 18px, color-mix(in oklab, var(--halo-glow) 70%, transparent) 18px 24px)',
+      accent: 'color-mix(in oklab, var(--warm) 88%, transparent)',
+      glow: 'color-mix(in oklab, var(--a) 70%, transparent)',
+      sheen: 'color-mix(in oklab, var(--halo-glow) 68%, transparent)',
       signageBg:
-        'linear-gradient(135deg, rgba(255,162,76,.95) 0%, rgba(255,123,123,.9) 50%, rgba(255,214,231,.88) 100%)',
+        'linear-gradient(135deg, color-mix(in oklab, var(--warm) 92%, transparent) 0%, color-mix(in oklab, var(--a) 88%, transparent) 50%, color-mix(in oklab, var(--halo-glow) 82%, transparent) 100%)',
       signageOverlay:
-        'radial-gradient(140% 140% at 20% 20%, rgba(255,209,102,.4) 0%, transparent 52%), radial-gradient(120% 140% at 82% 80%, rgba(255,123,123,.32) 0%, transparent 58%)',
-      signageText: '#32070f',
-      signageSecondary: 'rgba(255,246,238,.88)',
-      signageBadge: 'rgba(255,255,255,.2)'
+        'radial-gradient(140% 140% at 20% 20%, color-mix(in oklab, var(--warm) 52%, transparent) 0%, transparent 52%), radial-gradient(120% 140% at 82% 80%, color-mix(in oklab, var(--a) 42%, transparent) 0%, transparent 58%)',
+      signageText: 'var(--signage-text-strong)',
+      signageSecondary: 'var(--signage-secondary-strong)',
+      signageBadge: 'var(--signage-badge-base)'
     },
     mint: {
       label: 'Mint',
       gradient:
-        'repeating-linear-gradient(90deg, rgba(159,255,215,.95) 0 6px, rgba(118,231,255,.95) 6px 12px, rgba(202,166,255,.95) 12px 18px, rgba(217,255,247,.95) 18px 24px)',
-      accent: 'rgba(118,231,255,1)',
-      glow: 'rgba(202,166,255,.62)',
-      sheen: 'rgba(159,255,215,.58)',
+        'repeating-linear-gradient(90deg, color-mix(in oklab, var(--c) 85%, transparent) 0 6px, color-mix(in oklab, var(--halo-secondary) 88%, transparent) 6px 12px, color-mix(in oklab, var(--b) 82%, transparent) 12px 18px, color-mix(in oklab, var(--halo-primary) 75%, transparent) 18px 24px)',
+      accent: 'color-mix(in oklab, var(--halo-secondary) 88%, transparent)',
+      glow: 'color-mix(in oklab, var(--b) 72%, transparent)',
+      sheen: 'color-mix(in oklab, var(--halo-primary) 68%, transparent)',
       signageBg:
-        'linear-gradient(135deg, rgba(118,231,255,.92) 0%, rgba(159,255,215,.9) 46%, rgba(202,166,255,.88) 100%)',
+        'linear-gradient(135deg, color-mix(in oklab, var(--halo-secondary) 90%, transparent) 0%, color-mix(in oklab, var(--c) 86%, transparent) 46%, color-mix(in oklab, var(--b) 82%, transparent) 100%)',
       signageOverlay:
-        'radial-gradient(140% 140% at 18% 18%, rgba(217,255,247,.38) 0%, transparent 54%), radial-gradient(120% 120% at 78% 84%, rgba(202,166,255,.32) 0%, transparent 60%)',
-      signageText: '#042126',
-      signageSecondary: 'rgba(255,255,255,.88)',
-      signageBadge: 'rgba(255,255,255,.18)'
+        'radial-gradient(140% 140% at 18% 18%, color-mix(in oklab, var(--halo-primary) 42%, transparent) 0%, transparent 54%), radial-gradient(120% 120% at 78% 84%, color-mix(in oklab, var(--b) 38%, transparent) 0%, transparent 60%)',
+      signageText: 'var(--signage-text-strong)',
+      signageSecondary: 'var(--signage-secondary-strong)',
+      signageBadge: 'var(--signage-badge-base)'
     }
   };
 
@@ -71,7 +71,7 @@
       badge: 'FX · Drift',
       eyebrow: 'Ambient drift FX',
       headline: 'Drifted halos ease the promenade.',
-      sub: 'Wide sweeps ripple through Mythica Strand while the modules exhale softly.',
+      sub: 'Wide sweeps ripple through Mythica Strand while the signage frame holds a soft campaign glow.',
       stripSpeed: 'calc(var(--chase-speed, 2.6s) * 1.15)',
       stripDirection: 'normal',
       glowSpeed: 'calc(var(--chase-speed, 2.6s) * 1.3)',
@@ -94,13 +94,42 @@
       auraSpeed: 'calc(var(--chase-speed, 2.6s) * 1.9)',
       auraDirection: 'alternate'
     },
+    relay: {
+      label: 'Relay',
+      mood: 'Signage handoff',
+      badge: 'FX · Relay',
+      eyebrow: 'Signage relay FX',
+      headline: 'Campaign loops relay across the mesh.',
+      sub: 'Hero posters glide into the marquee while support tickers echo across the halo and PWM cools the room.',
+      stripSpeed: 'calc(var(--chase-speed, 2.6s) * 1.15)',
+      stripDirection: 'alternate',
+      glowSpeed: 'calc(var(--chase-speed, 2.6s) * 0.95)',
+      glowDirection: 'normal',
+      moduleSpeed: 'calc(var(--chase-speed, 2.6s) * 1.1)',
+      moduleDirection: 'alternate',
+      moduleGleamSpeed: 'calc(var(--chase-speed, 2.6s) * 1.35)',
+      moduleGleamDirection: 'alternate-reverse',
+      motifSpeed: 'calc(var(--chase-speed, 2.6s) * 1.25)',
+      motifDirection: 'alternate',
+      motifOpacity: '.34',
+      motifAltSpeed: 'calc(var(--chase-speed, 2.6s) * 1.55)',
+      motifAltDirection: 'reverse',
+      motifAltOpacity: '.3',
+      burstScale: '1.06',
+      burstOpacity: '.48',
+      burstSpeed: 'calc(var(--chase-speed, 2.6s) * 1.45)',
+      signagePanSpeed: 'calc(var(--chase-speed, 2.6s) * 2.05)',
+      signagePanDirection: 'alternate',
+      auraSpeed: 'calc(var(--chase-speed, 2.6s) * 1.65)',
+      auraDirection: 'alternate'
+    },
     surge: {
       label: 'Surge',
       mood: 'Arena burst',
       badge: 'FX · Surge',
       eyebrow: 'Arena burst FX',
       headline: 'Surging chases ignite the skyline.',
-      sub: 'Tight bursts hammer the strip while the signage flashes promo beats for launches.',
+      sub: 'Tight bursts hammer the strip while the signage flashes promo beats and badge overlays for launches.',
       stripSpeed: 'calc(var(--chase-speed, 2.6s) * 0.75)',
       stripDirection: 'reverse',
       glowSpeed: 'calc(var(--chase-speed, 2.6s) * 0.9)',
@@ -129,7 +158,7 @@
       badge: 'FX · Cascade',
       eyebrow: 'Skyfall cascade FX',
       headline: 'Cascading beams pour over the plaza.',
-      sub: 'Staggered descents flow from the modules into the Strand billboard in one sweep.',
+      sub: 'Staggered descents flow from the modules into the Strand billboard and asset kit in one sweep.',
       stripSpeed: 'calc(var(--chase-speed, 2.6s) * 1.05)',
       stripDirection: 'alternate',
       glowSpeed: 'calc(var(--chase-speed, 2.6s) * 1.2)',
@@ -156,6 +185,29 @@
 
   const paletteKeys = Object.keys(palettes);
   const effectKeys = Object.keys(effects);
+
+  const signagePlaceholders = [
+    {
+      title: 'Poster slot',
+      detail: 'Drop brand stills to confirm safe areas and contrast.'
+    },
+    {
+      title: 'Loop window',
+      detail: 'Load 15-second MP4 loops to sync with drift and surge FX.'
+    },
+    {
+      title: 'Ticker lane',
+      detail: 'Test CMS exports, translations, and accessibility copy on the band.'
+    },
+    {
+      title: 'Caption rail',
+      detail: 'Reserve bilingual captions that inherit accessible contrast tokens.'
+    },
+    {
+      title: 'Emergency banner',
+      detail: 'Fail-safe messaging placeholder mirrors the override palette for instant alerts.'
+    }
+  ];
 
   let speed = 1.2;
   let effect = 'ambient';
@@ -219,6 +271,14 @@
             <p class="signage-headline">{activeEffect.headline}</p>
             <p class="signage-sub">{activeEffect.sub}</p>
           </div>
+          <ul class="signage-assets" aria-label="Asset placeholders">
+            {#each signagePlaceholders as placeholder}
+              <li>
+                <span class="asset-label">{placeholder.title}</span>
+                <span class="asset-detail">{placeholder.detail}</span>
+              </li>
+            {/each}
+          </ul>
         </div>
       </div>
       <footer class="signage-footer">

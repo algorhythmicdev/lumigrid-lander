@@ -7,7 +7,8 @@
       actions: [
         'Power envelopes validated against firmware guard rails',
         'Mesh topology rehearsed with redundant masters',
-        'Effect palettes hydrated with venue-specific gradients'
+        'Effect palettes hydrated with venue-specific gradients',
+        'Signage placeholders templated with your asset kit'
       ]
     },
     {
@@ -17,7 +18,8 @@
       actions: [
         'Provision nodes with Wi-Fi + fallback AP scripts',
         'Run deterministic sync test suite with heartbeat scopes',
-        'Sign off LED + PWM load pairing in the DualOutput console'
+        'Sign off LED + PWM load pairing in the DualOutput console',
+        'Load signage loops into the preview frame for readability checks'
       ]
     },
     {
@@ -27,7 +29,8 @@
       actions: [
         'Ops dashboard mirrored to mobile + control booth',
         '24/7 Signal + email escalation into the engineering thread',
-        'Hot spare presets for blackout, warm-dim, and promo looks'
+        'Hot spare presets for blackout, warm-dim, and promo looks',
+        'Digital signage triggers mirrored to asset placeholders and CMS webhooks'
       ]
     }
   ];
@@ -50,7 +53,7 @@
     }
   ];
 
-  const channels = ['Signal + email bridge', 'Remote timeline rehearsal', 'On-site calibration partner'];
+  const channels = ['Signal + email bridge', 'Remote timeline rehearsal', 'On-site calibration partner', 'Signage asset ingest'];
 </script>
 
 <div class="launch-shell reveal">
@@ -58,9 +61,9 @@
     <p class="launch-eyebrow">Deployment launch pad</p>
     <h3 class="launch-title">Ready the mesh, then roll it live</h3>
     <p class="launch-lead">
-      Every LumiGrid install ships with the same glass control surface the demo runs on — tuned tokens, rounded halos, and
-      field-proven commissioning rituals. The launch pad stages rehearsals, validates sync, and guides the crew through opening
-      night.
+      Every LumiGrid install ships with the same glass control surface the demo runs on — tuned tokens, signage placeholders,
+      rounded halos, and field-proven commissioning rituals. The launch pad stages rehearsals, validates sync, ingests assets,
+      and guides the crew through opening night.
     </p>
     <div class="launch-channels" role="list">
       {#each channels as channel}
@@ -117,7 +120,7 @@
 <style>
   .launch-shell {
     display: grid;
-    gap: clamp(1.6rem, 4vw, 2.6rem);
+    gap: var(--stage-gap);
   }
 
   .launch-intro {
@@ -175,19 +178,19 @@
 
   .launch-grid {
     display: grid;
-    gap: clamp(1.6rem, 4vw, 2.4rem);
+    gap: var(--stage-gap);
   }
 
   .launch-checklist {
     display: grid;
-    gap: clamp(1.2rem, 3vw, 1.8rem);
+    gap: var(--card-gap-loose);
   }
 
   .phase-card {
-    padding: clamp(1.35rem, 3.2vw, 2rem);
+    padding: var(--card-pad);
     border-radius: var(--radius-card);
     display: grid;
-    gap: 0.85rem;
+    gap: var(--card-gap);
     position: relative;
   }
 
@@ -210,7 +213,7 @@
   .phase-header {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: var(--card-gap);
   }
 
   .phase-index {
@@ -242,7 +245,7 @@
     margin: 0;
     padding-left: 1.1rem;
     display: grid;
-    gap: 0.55rem;
+    gap: var(--card-gap-tight);
   }
 
   .phase-card li {
@@ -251,9 +254,9 @@
 
   .launch-telemetry {
     border-radius: var(--radius-panel);
-    padding: clamp(1.6rem, 3.4vw, 2.2rem);
+    padding: var(--panel-pad);
     display: grid;
-    gap: clamp(1.1rem, 3vw, 1.6rem);
+    gap: var(--panel-gap);
   }
 
   .telemetry-header {
@@ -281,17 +284,17 @@
 
   .telemetry-metrics {
     display: grid;
-    gap: 0.9rem;
+    gap: var(--card-gap);
   }
 
   .metric-card {
     display: grid;
-    gap: 0.25rem;
-    padding: clamp(1rem, 2.6vw, 1.4rem);
+    gap: var(--card-gap-tight);
+    padding: var(--card-pad-tight);
     border-radius: var(--radius-card-tight);
-    background: color-mix(in oklab, var(--surface-soft) 96%, transparent);
-    border: 1px solid color-mix(in oklab, var(--border-soft) 88%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--halo-primary) 12%, transparent);
+    background: var(--card-surface-soft);
+    border: 1px solid var(--card-border-soft);
+    box-shadow: inset 0 0 0 1px var(--card-outline-glow);
   }
 
   .metric-label {
@@ -313,11 +316,11 @@
   }
 
   .telemetry-footer {
-    padding: clamp(1rem, 2.6vw, 1.4rem);
+    padding: var(--card-pad-tight);
     border-radius: var(--radius-card-tight);
-    background: color-mix(in oklab, var(--surface-track) 94%, transparent);
-    border: 1px solid color-mix(in oklab, var(--border-track) 88%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--halo-glow) 18%, transparent);
+    background: var(--card-surface-track);
+    border: 1px solid var(--card-border-track);
+    box-shadow: inset 0 0 0 1px var(--card-outline-strong);
   }
 
   .telemetry-footer p {

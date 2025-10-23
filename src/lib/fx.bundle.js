@@ -362,32 +362,36 @@ export function backgroundFlares({ canvasId = 'lg-fx' } = {}) {
 
   const readPalette = () => {
     const styles = compute ? compute(root) : null;
-    const readColor = (prop, fallback) => {
-      const raw = styles?.getPropertyValue(prop)?.trim();
-      return parseColor(raw && raw.length ? raw : undefined, fallback);
+    const getProp = (prop) => styles?.getPropertyValue(prop)?.trim();
+    const prefer = (...props) => {
+      for (const prop of props) {
+        const value = getProp(prop);
+        if (value) return value;
+      }
+      return undefined;
     };
-    const basePrimary = styles?.getPropertyValue('--a')?.trim() || '#e73ba3';
-    const baseSecondary = styles?.getPropertyValue('--b')?.trim() || '#6c2bd9';
-    const baseTertiary = styles?.getPropertyValue('--c')?.trim() || '#1cc5dc';
-    const baseWarmth = styles?.getPropertyValue('--warm')?.trim() || '#ffd166';
-    const baseTwinkle = styles?.getPropertyValue('--ink')?.trim() || '#f8fbff';
-    const baseSurface = styles?.getPropertyValue('--bg-0')?.trim() || '#05060d';
-    const accentPrimary = styles?.getPropertyValue('--active-orbit-a')?.trim();
-    const accentSecondary = styles?.getPropertyValue('--active-orbit-b')?.trim();
-    const accentGlow = styles?.getPropertyValue('--active-orbit-glow')?.trim();
+    const basePrimary = prefer('--a', '--halo-primary', '--ink', '--muted');
+    const baseSecondary = prefer('--b', '--halo-secondary', '--a', '--ink', '--muted');
+    const baseTertiary = prefer('--c', '--halo-glow', '--b', '--halo-secondary', '--muted');
+    const baseWarmth = prefer('--warm', '--halo-primary', '--halo-glow', '--a');
+    const baseTwinkle = prefer('--ink', '--accent-text', '--bg-1', '--muted');
+    const baseSurface = prefer('--bg-0', '--bg-1', '--surface-soft');
+    const accentPrimary = prefer('--active-orbit-a', '--a', '--halo-primary');
+    const accentSecondary = prefer('--active-orbit-b', '--b', '--halo-secondary');
+    const accentGlow = prefer('--active-orbit-glow', '--halo-glow', '--c', '--b');
     const accentStrengthRaw = styles?.getPropertyValue('--active-orbit-strength');
     const accentStrengthParsed = Number.parseFloat(accentStrengthRaw ?? '');
     const accentStrength = Number.isNaN(accentStrengthParsed) ? 0.5 : accentStrengthParsed;
     return {
-      primary: readColor('--a', basePrimary),
-      secondary: readColor('--b', baseSecondary),
-      tertiary: readColor('--c', baseTertiary),
-      warmth: readColor('--warm', baseWarmth),
-      twinkle: readColor('--ink', baseTwinkle),
-      base: readColor('--bg-0', baseSurface),
-      accentPrimary: parseColor(accentPrimary, basePrimary),
-      accentSecondary: parseColor(accentSecondary, baseSecondary),
-      accentGlow: parseColor(accentGlow, baseTertiary),
+      primary: parseColor(basePrimary, baseTwinkle),
+      secondary: parseColor(baseSecondary, basePrimary ?? baseTwinkle),
+      tertiary: parseColor(baseTertiary, baseSecondary ?? basePrimary ?? baseTwinkle),
+      warmth: parseColor(baseWarmth, basePrimary ?? baseTwinkle),
+      twinkle: parseColor(baseTwinkle, basePrimary ?? baseSurface),
+      base: parseColor(baseSurface, baseTwinkle ?? basePrimary),
+      accentPrimary: parseColor(accentPrimary, basePrimary ?? baseTwinkle),
+      accentSecondary: parseColor(accentSecondary, baseSecondary ?? basePrimary ?? baseTwinkle),
+      accentGlow: parseColor(accentGlow, baseTertiary ?? baseSecondary ?? basePrimary ?? baseTwinkle),
       accentStrength
     };
   };

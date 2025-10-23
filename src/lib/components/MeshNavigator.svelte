@@ -256,7 +256,7 @@
     border-radius: var(--radius-ribbon);
     border: 1px solid var(--border-soft);
     background: color-mix(in oklab, var(--surface-soft) 92%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.14) 40%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--surface-outline-glow) 40%, transparent);
   }
 
   .toggle-group .btn {
@@ -302,7 +302,7 @@
     position: relative;
     width: min(100%, clamp(420px, 48vw, 580px));
     aspect-ratio: 4 / 3;
-    background: radial-gradient(circle at 50% 55%, color-mix(in oklab, var(--glow-secondary) 40%, transparent), color-mix(in oklab, rgba(7, 9, 18, 0.9) 88%, transparent));
+    background: radial-gradient(circle at 50% 55%, color-mix(in oklab, var(--glow-secondary) 40%, transparent), color-mix(in oklab, var(--surface-depth-void) 88%, transparent));
     border-radius: var(--radius-shell);
     border: 1px solid var(--glass-stroke);
     box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--border-track) 70%, transparent);
@@ -354,7 +354,7 @@
     background: color-mix(in oklab, var(--surface-glass) 95%, transparent);
     color: inherit;
     cursor: pointer;
-    box-shadow: 0 12px 36px color-mix(in oklab, rgba(8, 12, 26, 0.75) 45%, transparent);
+    box-shadow: 0 12px 36px color-mix(in oklab, var(--shadow-umbra) 45%, transparent);
     transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
   }
@@ -518,7 +518,7 @@
 
     .mesh-node {
       padding: 0.5rem 0.6rem;
-      box-shadow: 0 8px 24px rgba(8, 12, 26, 0.35);
+      box-shadow: 0 8px 24px var(--shadow-penumbra);
     }
 
     .mesh-node:hover,
