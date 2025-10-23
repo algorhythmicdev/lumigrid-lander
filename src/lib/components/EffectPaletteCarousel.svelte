@@ -45,10 +45,19 @@
         { id: 'warm-dim', label: 'Warm-Dim', description: 'Colour temperature shifts tied to dimmer curve.' }
       ],
       notes: 'Smooth analog dimming profiles'
+    },
+    {
+      name: 'Signage',
+      effects: [
+        { id: 'poster-fade', label: 'Poster Fade', description: 'Timed fades for brand stills and asset placeholders.' },
+        { id: 'ticker-glide', label: 'Ticker Glide', description: 'Horizontal motion tuned for accessible text lanes.' },
+        { id: 'relay-band', label: 'Relay Band', description: 'District signage baton with calm PWM counterbalance.' }
+      ],
+      notes: 'Asset-aware looks that keep signage readable'
     }
   ];
 
-  const previewOrder = ['rainbow', 'noise-flow', 'fire', 'warm-dim'];
+  const previewOrder = ['rainbow', 'poster-fade', 'relay-band', 'noise-flow', 'ticker-glide'];
   let activeId = previewOrder[0];
   let userInteracted = false;
   let cycle;
@@ -200,10 +209,14 @@
 
 <style>
   .effects-wrap {
+    --effects-gap: clamp(var(--card-gap-tight), 4cqw, var(--card-gap-loose));
     display: grid;
-    gap: clamp(1.4rem, 3vw, 2.4rem);
+    gap: var(--effects-gap);
     position: relative;
     isolation: isolate;
+    width: var(--card-shell-wide);
+    margin-inline: auto;
+    container-type: inline-size;
   }
 
   .table-wrap {
@@ -275,7 +288,7 @@
   .effect-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.45rem;
+    gap: var(--card-gap-tight);
   }
 
   .effect-btn {
@@ -284,24 +297,24 @@
     justify-content: center;
     padding: 0.4rem 0.85rem;
     border-radius: var(--r-pill);
-    border: 1px solid var(--border-soft);
-    background: color-mix(in oklab, var(--surface-soft) 88%, transparent);
+    border: 1px solid var(--card-border-soft);
+    background: var(--card-surface-soft);
     color: inherit;
     cursor: pointer;
     transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
-    box-shadow: 0 10px 26px color-mix(in oklab, rgba(8, 12, 26, 0.75) 35%, transparent);
+    box-shadow: var(--card-shadow);
   }
 
   .effect-btn:hover {
-    border-color: color-mix(in oklab, var(--b) 30%, var(--border-soft));
+    border-color: color-mix(in oklab, var(--b) 30%, var(--card-border-soft));
   }
 
   .effect-btn[aria-pressed='true'] {
-    background: linear-gradient(135deg, color-mix(in oklab, var(--a) 20%, var(--surface-soft)), color-mix(in oklab, var(--b) 38%, transparent));
-    border-color: color-mix(in oklab, var(--b) 55%, var(--border-soft));
+    background: linear-gradient(135deg, color-mix(in oklab, var(--a) 20%, var(--card-surface-soft)), color-mix(in oklab, var(--b) 38%, transparent));
+    border-color: color-mix(in oklab, var(--b) 55%, var(--card-border-soft));
     color: color-mix(in oklab, var(--ink) 85%, white 15%);
-    box-shadow: 0 16px 34px color-mix(in oklab, var(--glow-secondary) 42%, transparent);
+    box-shadow: var(--card-shadow-lift);
   }
 
   .effect-btn:focus-visible {
@@ -312,12 +325,12 @@
   .effect-preview {
     position: relative;
     display: grid;
-    gap: 1rem;
+    gap: var(--panel-gap);
     border-radius: var(--radius-card);
-    border: 1px solid var(--glass-stroke);
-    background: color-mix(in oklab, var(--surface-glass) 95%, transparent);
-    padding: clamp(1.2rem, 2.8vw, 1.9rem);
-    box-shadow: var(--shadow);
+    border: 1px solid var(--card-border);
+    background: var(--card-surface);
+    padding: var(--panel-pad);
+    box-shadow: var(--card-shadow);
     min-width: 0;
     overflow: hidden;
   }
@@ -338,9 +351,13 @@
     height: clamp(220px, 32vw, 260px);
     border-radius: var(--radius-media);
     overflow: hidden;
-    border: 1px solid var(--border-track);
-    background: linear-gradient(180deg, rgba(7, 10, 20, 0.85), rgba(5, 7, 16, 0.95));
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.12) 45%, transparent);
+    border: 1px solid var(--card-border-track);
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--bg-1) 85%, transparent),
+      color-mix(in oklab, var(--bg-0) 95%, transparent)
+    );
+    box-shadow: inset 0 0 0 1px var(--card-outline-soft);
   }
 
   .shader-layer {
@@ -352,45 +369,105 @@
   }
 
   .effect-canvas.is-rainbow .shader-layer:nth-child(1) {
-    background: linear-gradient(90deg, #ff5f9e, #facc15, #22d3ee, #a855f7);
+    background: linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--a) 90%, transparent),
+      color-mix(in oklab, var(--warm) 92%, transparent),
+      color-mix(in oklab, var(--c) 88%, transparent),
+      color-mix(in oklab, var(--b) 88%, transparent)
+    );
     animation-duration: 10s;
   }
 
   .effect-canvas.is-rainbow .shader-layer:nth-child(2) {
-    background: linear-gradient(45deg, rgba(255, 255, 255, 0.28), transparent 65%);
+    background: linear-gradient(45deg, color-mix(in oklab, var(--ink) 18%, transparent), transparent 65%);
     mix-blend-mode: overlay;
     animation-duration: 18s;
   }
 
   .effect-canvas.is-noise-flow .shader-layer:nth-child(1) {
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4"/></filter><rect width="120" height="120" filter="url(%23n)" opacity="0.7" fill="%230ff0fc"/></svg>');
+    background: linear-gradient(135deg, color-mix(in oklab, var(--c) 72%, transparent), color-mix(in oklab, var(--halo-secondary) 58%, transparent));
     background-size: 200% 200%;
     animation-duration: 18s;
   }
 
   .effect-canvas.is-noise-flow .shader-layer:nth-child(2) {
-    background: linear-gradient(135deg, rgba(108, 43, 217, 0.65), rgba(231, 59, 163, 0.4));
+    background: linear-gradient(135deg, color-mix(in oklab, var(--b) 68%, transparent), color-mix(in oklab, var(--a) 55%, transparent));
     animation-duration: 24s;
   }
 
   .effect-canvas.is-fire .shader-layer:nth-child(1) {
-    background: radial-gradient(circle at 50% 90%, rgba(249, 115, 22, 0.85), rgba(127, 29, 29, 0.25));
+    background: radial-gradient(
+      circle at 50% 90%,
+      color-mix(in oklab, var(--warm) 90%, transparent),
+      color-mix(in oklab, var(--a) 28%, var(--bg-0))
+    );
     animation-duration: 8s;
   }
 
   .effect-canvas.is-fire .shader-layer:nth-child(2) {
-    background: radial-gradient(circle at 50% 10%, rgba(255, 214, 94, 0.5), transparent 70%);
+    background: radial-gradient(circle at 50% 10%, color-mix(in oklab, var(--warm) 75%, transparent), transparent 70%);
     animation: fire-flicker 3s ease-in-out infinite;
   }
 
   .effect-canvas.is-warm-dim .shader-layer:nth-child(1) {
-    background: linear-gradient(90deg, rgba(255, 214, 165, 0.9), rgba(255, 125, 64, 0.7));
+    background: linear-gradient(90deg, color-mix(in oklab, var(--warm) 90%, transparent), color-mix(in oklab, var(--a) 65%, transparent));
     animation-duration: 12s;
   }
 
   .effect-canvas.is-warm-dim .shader-layer:nth-child(2) {
-    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.22), transparent 70%);
+    background: radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--ink) 15%, transparent), transparent 70%);
     animation: warm-dim 6s ease-in-out infinite;
+  }
+
+  .effect-canvas.is-poster-fade .shader-layer:nth-child(1) {
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--signage-secondary) 45%, transparent),
+      color-mix(in oklab, var(--signage-text) 22%, transparent)
+    );
+    animation-duration: 14s;
+  }
+
+  .effect-canvas.is-poster-fade .shader-layer:nth-child(2) {
+    background: radial-gradient(circle at 40% 40%, color-mix(in oklab, var(--signage-badge) 55%, transparent), transparent 72%);
+    animation: signage-fade 6s ease-in-out infinite;
+  }
+
+  .effect-canvas.is-relay-band .shader-layer:nth-child(1) {
+    background: linear-gradient(
+      120deg,
+      color-mix(in oklab, var(--halo-secondary) 55%, transparent),
+      color-mix(in oklab, var(--halo-primary) 52%, transparent),
+      color-mix(in oklab, var(--warm) 48%, transparent)
+    );
+    animation: relay-band 8s ease-in-out infinite;
+  }
+
+  .effect-canvas.is-relay-band .shader-layer:nth-child(2) {
+    background: repeating-linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--signage-text-strong) 24%, transparent) 0 12%,
+      transparent 12% 24%
+    );
+    animation: relay-sweep 5s linear infinite;
+    opacity: 0.45;
+  }
+
+  .effect-canvas.is-ticker-glide .shader-layer:nth-child(1) {
+    background: repeating-linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--signage-text) 16%, transparent) 0 12%,
+      transparent 12% 24%
+    );
+    background-size: 220% 100%;
+    animation: ticker-scroll 10s linear infinite;
+    opacity: 0.5;
+  }
+
+  .effect-canvas.is-ticker-glide .shader-layer:nth-child(2) {
+    background: linear-gradient(180deg, color-mix(in oklab, var(--signage-secondary) 28%, transparent), transparent 70%);
+    animation-duration: 18s;
   }
 
   .effect-caption h3 {
@@ -440,6 +517,46 @@
     }
   }
 
+  @keyframes signage-fade {
+    0%,
+    100% {
+      opacity: 0.45;
+      transform: scale(0.98);
+    }
+    50% {
+      opacity: 0.75;
+      transform: scale(1.02);
+    }
+  }
+
+  @keyframes relay-band {
+    0%,
+    100% {
+      transform: translate3d(-8%, 0, 0);
+    }
+    50% {
+      transform: translate3d(6%, 0, 0);
+    }
+  }
+
+  @keyframes relay-sweep {
+    0% {
+      transform: translate3d(-24%, 0, 0);
+    }
+    100% {
+      transform: translate3d(100%, 0, 0);
+    }
+  }
+
+  @keyframes ticker-scroll {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+
   @keyframes table-glow {
     0% {
       transform: translate3d(-6%, -6%, 0) rotate(0deg);
@@ -483,21 +600,21 @@
 
     tbody {
       display: grid;
-      gap: 1rem;
-      padding: clamp(1rem, 3vw, 1.3rem);
+      gap: var(--card-gap);
+      padding: clamp(var(--card-pad-tight), 4cqw, var(--card-pad));
     }
 
     tr {
-      padding: 1rem;
+      padding: clamp(var(--card-pad-tight), 4cqw, var(--card-pad));
       border-radius: var(--radius-card);
       border: 1px solid color-mix(in oklab, var(--border-soft) 70%, transparent);
       background: color-mix(in oklab, var(--surface-soft) 90%, transparent);
-      box-shadow: 0 16px 38px color-mix(in oklab, rgba(8, 12, 26, 0.75) 30%, transparent);
+      box-shadow: 0 16px 38px color-mix(in oklab, var(--shadow-umbra) 30%, transparent);
       min-width: 0;
     }
 
     td {
-      padding: 0.5rem 0;
+      padding: var(--card-gap-tight) 0;
       border: 0;
     }
 
@@ -515,17 +632,17 @@
       margin-top: 0.35rem;
       flex-direction: column;
       align-items: stretch;
-      gap: 0.4rem;
+      gap: var(--card-gap-tight);
     }
   }
 
   @media (max-width: 540px) {
     .effect-preview {
-      padding: 1rem;
+      padding: clamp(var(--card-pad-tight), 5cqw, var(--card-pad));
     }
 
     .effect-canvas {
-      height: 180px;
+      height: clamp(180px, 42cqw, 220px);
     }
 
     .effect-caption p {
@@ -552,14 +669,18 @@
     .table-wrap::before,
     .shader-layer,
     .effect-canvas.is-fire .shader-layer:nth-child(2),
-    .effect-canvas.is-warm-dim .shader-layer:nth-child(2) {
+    .effect-canvas.is-warm-dim .shader-layer:nth-child(2),
+    .effect-canvas.is-poster-fade .shader-layer:nth-child(2),
+    .effect-canvas.is-ticker-glide .shader-layer:nth-child(1) {
       animation: none;
     }
 
     .effect-canvas.is-rainbow .shader-layer,
     .effect-canvas.is-noise-flow .shader-layer,
     .effect-canvas.is-fire .shader-layer,
-    .effect-canvas.is-warm-dim .shader-layer {
+    .effect-canvas.is-warm-dim .shader-layer,
+    .effect-canvas.is-poster-fade .shader-layer,
+    .effect-canvas.is-ticker-glide .shader-layer {
       transform: none;
     }
   }

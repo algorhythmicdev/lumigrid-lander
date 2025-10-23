@@ -7,7 +7,12 @@
       label: 'Hybrid façade show',
       description: 'Blend pixel-led ribbons with PWM wall washers for immersive gradients.',
       pwm: [0.8, 0.4, 0.65, 0.3],
-      pixels: ['#1cc5dc', '#e73ba3', '#6c2bd9', '#ffd166'],
+      pixels: [
+        'color-mix(in oklab, var(--c) 92%, transparent)',
+        'color-mix(in oklab, var(--a) 92%, transparent)',
+        'color-mix(in oklab, var(--b) 88%, transparent)',
+        'color-mix(in oklab, var(--warm) 94%, transparent)'
+      ],
       blend: 0.6
     },
     {
@@ -15,16 +20,82 @@
       label: 'Power-conscious evening',
       description: 'Dial PWM output down while keeping sparkly highlights alive on addressable nodes.',
       pwm: [0.35, 0.2, 0.25, 0.15],
-      pixels: ['#0ff0fc', '#10b981', '#38bdf8', '#f97316'],
+      pixels: [
+        'color-mix(in oklab, var(--c) 88%, transparent)',
+        'color-mix(in oklab, var(--halo-secondary) 68%, var(--warm))',
+        'color-mix(in oklab, var(--halo-primary) 78%, transparent)',
+        'color-mix(in oklab, var(--warm) 82%, transparent)'
+      ],
       blend: 0.35
     },
     {
       id: 'event',
       label: 'Event takeover',
       description: 'Drive PWM props at full tilt and let pixel strips paint motion between beats.',
+      signage: 'Mythica Strand signage ticks follow the chase and flash badge overlays for the hero moment.',
+      assets: ['Promo badge placeholder locks to brand colours.', 'Call-to-action strip mirrors the LED Node asset kit.'],
       pwm: [0.95, 0.85, 0.7, 0.9],
-      pixels: ['#f97316', '#fb7185', '#fde047', '#a855f7'],
+      pixels: [
+        'color-mix(in oklab, var(--warm) 82%, transparent)',
+        'color-mix(in oklab, var(--a) 80%, transparent)',
+        'color-mix(in oklab, var(--warm) 96%, transparent)',
+        'color-mix(in oklab, var(--b) 80%, transparent)'
+      ],
       blend: 0.8
+    },
+    {
+      id: 'signage',
+      label: 'Signage takeover',
+      description: 'Lock the signage band on-brand while ambient PWM keeps the room comfortable.',
+      signage: 'The signage placeholder stays at 82% luminance with a soft pulse tied to the pixel lane.',
+      assets: [
+        'Campaign still placeholder scales for 16:9 and 9:16 without cropping.',
+        'Ticker text slot rehearses late-breaking promos pulled from CMS exports.'
+      ],
+      pwm: [0.6, 0.42, 0.5, 0.38],
+      pixels: [
+        'color-mix(in oklab, var(--halo-secondary) 86%, transparent)',
+        'color-mix(in oklab, var(--c) 88%, transparent)',
+        'color-mix(in oklab, var(--halo-primary) 84%, transparent)',
+        'color-mix(in oklab, var(--warm) 78%, transparent)'
+      ],
+      blend: 0.58
+    },
+    {
+      id: 'emergency',
+      label: 'Emergency signage override',
+      description: 'Dim ambient washes while the signage lane pushes the override script to every canvas.',
+      signage: 'Safety placeholder seizes the signage frame until acknowledgements land in the operations observatory.',
+      assets: [
+        'Override board logs acknowledgements and notifies the roster automatically.',
+        'Night calm preset rehearsed for post-incident return once approvals clear.'
+      ],
+      pwm: [0.28, 0.18, 0.24, 0.2],
+      pixels: [
+        'color-mix(in oklab, var(--state-error-strong) 82%, transparent)',
+        'color-mix(in oklab, var(--halo-secondary) 72%, transparent)',
+        'color-mix(in oklab, var(--state-success-strong) 70%, transparent)',
+        'color-mix(in oklab, var(--halo-primary) 68%, transparent)'
+      ],
+      blend: 0.46
+    },
+    {
+      id: 'district',
+      label: 'District signage relay',
+      description: 'Thread plaza PWM with marquee pixels for a city-scale story handoff.',
+      signage: 'Transit kiosks follow the playlist with bilingual loops verified against the placeholder kit.',
+      assets: [
+        'Transit kiosk placeholder rotates three languages with safe margin tokens.',
+        'Data ribbon binds occupancy feeds into a contrast-checked ticker lane.'
+      ],
+      pwm: [0.72, 0.5, 0.58, 0.62],
+      pixels: [
+        'color-mix(in oklab, var(--halo-primary) 88%, transparent)',
+        'color-mix(in oklab, var(--halo-secondary) 84%, transparent)',
+        'color-mix(in oklab, var(--warm) 82%, transparent)',
+        'color-mix(in oklab, var(--c) 86%, transparent)'
+      ],
+      blend: 0.68
     }
   ];
 
@@ -50,7 +121,7 @@
   function pixelTint(index) {
     const colour = active.pixels[index % active.pixels.length];
 
-    return `radial-gradient(circle at 50% 50%, ${colour} ${Math.max(35, blend * 80)}%, rgba(255,255,255,0.08) 100%)`;
+    return `radial-gradient(circle at 50% 50%, ${colour} ${Math.max(35, blend * 80)}%, color-mix(in oklab, var(--ink) 8%, transparent) 100%)`;
   }
 
   function computeColumns(width) {
@@ -89,7 +160,10 @@
 <div class="dual-config glass">
   <header>
     <h2>Dual-output navigator</h2>
-    <p>Preview how PWM and pixel outputs respond across real launch scenarios. Drag the blend to see LumiGrid balance both engines.</p>
+    <p>
+      Preview how PWM, pixel, and signage lanes respond across real launch scenarios. Drag the blend to see LumiGrid balance both
+      engines while the signage frame stays readable.
+    </p>
   </header>
 
   <div class="scenario-pills" role="group" aria-label="Dual-output scenarios">
@@ -151,18 +225,32 @@
 
   <footer>
     <p>{active.description}</p>
+    {#if active.signage}
+      <p class="scenario-signage">{active.signage}</p>
+    {/if}
+    {#if active.assets?.length}
+      <ul class="scenario-assets">
+        {#each active.assets as note}
+          <li>{note}</li>
+        {/each}
+      </ul>
+    {/if}
   </footer>
 </div>
 
 <style>
   .dual-config {
-    margin-top: clamp(1.8rem, 4vw, 2.8rem);
-    padding: clamp(1.5rem, 3.2vw, 2.3rem);
+    --dual-config-gap: clamp(var(--card-gap-tight), 4cqw, var(--panel-gap));
+    --dual-config-pad: clamp(var(--card-pad-tight), 6cqw, var(--panel-pad));
+    margin-top: var(--stage-gap);
+    padding: var(--dual-config-pad);
     display: grid;
-    gap: clamp(1.1rem, 2.4vw, 1.8rem);
-    max-width: 940px;
+    gap: var(--dual-config-gap);
+    width: var(--card-shell-wide);
     margin-inline: auto;
     z-index: 0;
+    min-width: 0;
+    container-type: inline-size;
   }
 
   .dual-config > * {
@@ -194,7 +282,7 @@
     border-radius: var(--radius-ribbon);
     border: 1px solid var(--border-soft);
     background: color-mix(in oklab, var(--surface-soft) 90%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.16) 40%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--surface-outline-strong) 40%, transparent);
     position: relative;
     isolation: isolate;
   }
@@ -223,7 +311,7 @@
     color: inherit;
     cursor: pointer;
     transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 8px 22px color-mix(in oklab, rgba(8, 12, 26, 0.75) 35%, transparent);
+    box-shadow: 0 8px 22px color-mix(in oklab, var(--shadow-umbra) 35%, transparent);
   }
 
   .scenario-pills .pill[aria-pressed='true'] {
@@ -275,7 +363,7 @@
     border-radius: var(--radius-panel);
     border: 1px solid var(--border-soft);
     background: color-mix(in oklab, var(--surface-soft) 92%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.12) 40%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--surface-outline-soft) 40%, transparent);
     overflow: hidden;
   }
 
@@ -336,7 +424,7 @@
     border-radius: var(--radius-panel);
     border: 1px solid var(--border-soft);
     background: color-mix(in oklab, var(--surface-glass-strong) 90%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.1) 38%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--surface-outline-faint) 38%, transparent);
     overflow: hidden;
   }
 
@@ -367,7 +455,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.35), transparent 68%);
+    background: radial-gradient(circle at 30% 30%, var(--surface-highlight-specular), transparent 68%);
     mix-blend-mode: screen;
     opacity: 0.75;
   }
@@ -408,9 +496,30 @@
     color: color-mix(in oklab, var(--ink) 75%, var(--muted) 25%);
   }
 
+  footer {
+    display: grid;
+    gap: clamp(0.55rem, 2vw, 0.9rem);
+  }
+
   footer p {
     margin: 0;
     color: color-mix(in oklab, var(--muted) 85%, var(--ink) 15%);
+  }
+
+  .scenario-signage {
+    color: color-mix(in oklab, var(--muted) 70%, var(--ink) 30%);
+  }
+
+  .scenario-assets {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.45rem;
+    color: color-mix(in oklab, var(--muted) 78%, var(--ink) 22%);
+  }
+
+  .scenario-assets li {
+    line-height: 1.5;
   }
 
   @keyframes pixel-spark {
@@ -478,7 +587,7 @@
     }
 
     .scenario-pills {
-      gap: 0.45rem;
+      gap: var(--card-gap-tight);
     }
 
     .pixel-strip {
@@ -495,10 +604,6 @@
   }
 
   @media (max-width: 560px) {
-    .dual-config {
-      padding: clamp(1.2rem, 4vw, 1.4rem);
-    }
-
     .scenario-pills {
       flex-direction: column;
       align-items: stretch;

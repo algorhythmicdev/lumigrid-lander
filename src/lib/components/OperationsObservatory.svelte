@@ -13,8 +13,8 @@
     <span class="ops-badge">Operations deck</span>
     <h3 id="operations-observatory-title">Operations observatory</h3>
     <p>
-      Keep the mesh breathing during live shows: monitor uptime, guide handovers, and trigger rounded playbooks from the same
-      glass console.
+      Keep the mesh breathing during live shows: monitor uptime, signage states, guide handovers, and trigger rounded
+      playbooks from the same glass console.
     </p>
   </header>
 
@@ -22,7 +22,7 @@
     <section class="ops-column ops-console" aria-labelledby="operations-console-title">
       <div class="column-head">
         <h4 id="operations-console-title">Live schedule</h4>
-        <p>Upcoming cues and timeline guardians mirrored from the deployment launch pad.</p>
+        <p>Upcoming cues, signage takeovers, and timeline guardians mirrored from the deployment launch pad.</p>
       </div>
       <ul class="ops-scenarios">
         {#each scenarios as scenario (scenario.title)}
@@ -48,7 +48,7 @@
     <section class="ops-column ops-health" aria-labelledby="operations-health-title">
       <div class="column-head">
         <h4 id="operations-health-title">Mesh health</h4>
-        <p>Halo telemetry from every node keeps uptime and leadership in view.</p>
+        <p>Halo telemetry from every node keeps uptime, signage placeholders, and leadership in view.</p>
       </div>
       <div class="ops-signal-grid" role="list">
         {#each signals as signal (signal.label)}
@@ -74,7 +74,7 @@
     <section class="ops-column ops-playbook" aria-labelledby="operations-playbook-title">
       <div class="column-head">
         <h4 id="operations-playbook-title">Rounded playbooks</h4>
-        <p>Token-driven checklists stage every response with the same halo sheen.</p>
+        <p>Token-driven checklists stage lighting, signage, and operator responses with the same halo sheen.</p>
       </div>
       <ol class="playbook-list">
         {#each playbooks as play (play.title)}
@@ -103,12 +103,17 @@
 
 <style>
   .ops-observatory {
+    --ops-gap: clamp(var(--card-gap), 5cqw, clamp(1.6rem, 3vw, 2.6rem));
+    --ops-pad: clamp(var(--card-pad), 6cqw, clamp(1.9rem, 3.6vw, 2.7rem));
     position: relative;
     display: grid;
-    gap: clamp(1.6rem, 3vw, 2.6rem);
-    padding: clamp(1.9rem, 3.6vw, 2.7rem);
+    gap: var(--ops-gap);
+    padding: var(--ops-pad);
     border-radius: var(--radius-stage);
     overflow: hidden;
+    width: var(--card-shell-wide);
+    margin-inline: auto;
+    container-type: inline-size;
   }
 
   .ops-halo {
@@ -170,14 +175,14 @@
   .ops-column {
     position: relative;
     display: grid;
-    gap: clamp(0.9rem, 2.4vw, 1.4rem);
-    padding: clamp(1.3rem, 3vw, 1.9rem);
+    gap: var(--panel-gap);
+    padding: var(--panel-pad);
     border-radius: var(--radius-panel);
-    background: color-mix(in oklab, var(--surface-glass-strong) 84%, transparent);
-    border: 1px solid color-mix(in oklab, var(--glass-strong-border) 84%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.12) 36%, transparent);
-    backdrop-filter: saturate(170%) blur(16px);
-    -webkit-backdrop-filter: saturate(170%) blur(16px);
+    background: var(--card-surface-strong);
+    border: 1px solid var(--card-border-strong);
+    box-shadow: inset 0 0 0 1px var(--card-outline-soft);
+    backdrop-filter: saturate(170%) blur(var(--panel-blur));
+    -webkit-backdrop-filter: saturate(170%) blur(var(--panel-blur));
     overflow: hidden;
   }
 
@@ -218,19 +223,19 @@
     padding: 0;
     list-style: none;
     display: grid;
-    gap: clamp(0.8rem, 2.2vw, 1.2rem);
+    gap: var(--card-gap);
   }
 
   .ops-scenarios li {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    gap: clamp(0.75rem, 2vw, 1rem);
+    gap: var(--card-gap);
     align-items: start;
-    padding: clamp(0.85rem, 2vw, 1.2rem) clamp(1rem, 2.4vw, 1.45rem);
+    padding: var(--card-pad-tight) clamp(1rem, 2.4vw, 1.45rem);
     border-radius: var(--radius-card-tight);
-    background: color-mix(in oklab, var(--glass) 88%, transparent);
-    border: 1px solid color-mix(in oklab, var(--glass-border) 88%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.12) 34%, transparent);
+    background: var(--card-surface);
+    border: 1px solid var(--card-border);
+    box-shadow: inset 0 0 0 1px var(--card-outline-soft);
   }
 
   .scenario-time {
@@ -242,8 +247,8 @@
     font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    background: color-mix(in oklab, var(--soft-bg) 92%, transparent);
-    border: 1px solid color-mix(in oklab, var(--soft-border) 84%, transparent);
+    background: var(--card-surface-soft);
+    border: 1px solid var(--card-border-soft);
     color: color-mix(in oklab, var(--muted) 64%, var(--ink) 36%);
   }
 
@@ -298,12 +303,12 @@
 
   .ops-signal {
     display: grid;
-    gap: 0.3rem;
-    padding: clamp(0.85rem, 2vw, 1.1rem) clamp(1rem, 2.4vw, 1.45rem);
+    gap: var(--card-gap-tight);
+    padding: var(--card-pad-tight) clamp(1rem, 2.4vw, 1.45rem);
     border-radius: var(--radius-card);
-    background: linear-gradient(135deg, color-mix(in oklab, var(--glass-strong) 86%, transparent), color-mix(in oklab, var(--glass) 72%, transparent));
-    border: 1px solid color-mix(in oklab, var(--glass-strong-border) 84%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.16) 34%, transparent), 0 24px 48px rgba(8, 12, 28, 0.28);
+    background: linear-gradient(135deg, color-mix(in oklab, var(--card-surface-strong) 100%, transparent), color-mix(in oklab, var(--card-surface) 80%, transparent));
+    border: 1px solid var(--card-border-strong);
+    box-shadow: inset 0 0 0 1px var(--card-outline-strong), 0 24px 48px var(--shadow-elevated);
   }
 
   .signal-label {
@@ -336,7 +341,7 @@
     border-radius: var(--radius-card-tight);
     background: color-mix(in oklab, var(--glass) 88%, transparent);
     border: 1px solid color-mix(in oklab, var(--glass-border) 88%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.12) 32%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--surface-outline-soft) 32%, transparent);
   }
 
   .roster-role {
@@ -365,7 +370,7 @@
     border-radius: var(--radius-card);
     background: color-mix(in oklab, var(--glass) 88%, transparent);
     border: 1px solid color-mix(in oklab, var(--glass-border) 88%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.12) 34%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--surface-outline-soft) 34%, transparent);
     padding: clamp(0.95rem, 2.4vw, 1.4rem) clamp(1.1rem, 2.8vw, 1.6rem);
     display: grid;
     gap: clamp(0.75rem, 2vw, 1.1rem);
@@ -427,7 +432,7 @@
     border-radius: var(--radius-card-tight);
     background: color-mix(in oklab, var(--surface-track) 88%, transparent);
     border: 1px solid color-mix(in oklab, var(--border-track) 86%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.08) 30%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--surface-outline-veil) 30%, transparent);
   }
 
   .step-index {
@@ -476,6 +481,11 @@
   }
 
   @media (max-width: 720px) {
+    .ops-observatory {
+      --ops-gap: clamp(var(--card-gap-tight), 5cqw, var(--card-gap));
+      --ops-pad: clamp(var(--card-pad-tight), 6cqw, var(--card-pad));
+    }
+
     .ops-scenarios li,
     .playbook-head,
     .playbook-steps li {

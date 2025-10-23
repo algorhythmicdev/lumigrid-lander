@@ -19,6 +19,12 @@
       title: 'City-scale timelines',
       detail: 'Cloud cues ripple through districts on one shared schedule.',
       hue: 312
+    },
+    {
+      id: 'signage',
+      title: 'Signage intelligence',
+      detail: 'CMS bridges, linting, and failover overlays keep messaging current.',
+      hue: 96
     }
   ];
 
@@ -91,10 +97,10 @@
 <style>
   .roadmap-card {
     margin-top: clamp(2rem, 5vw, 3.2rem);
-    padding: clamp(1.5rem, 3.2vw, 2.3rem);
+    padding: var(--panel-pad);
     display: grid;
-    gap: clamp(1.1rem, 2.6vw, 1.8rem);
-    max-width: 880px;
+    gap: var(--panel-gap);
+    width: var(--card-shell);
     margin-inline: auto;
     position: relative;
   }
@@ -133,23 +139,23 @@
 
   .focus-grid {
     display: grid;
-    gap: 0.85rem;
+    gap: var(--card-gap);
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 
   .focus-chip {
     display: grid;
-    gap: 0.3rem;
-    padding: clamp(0.85rem, 2.2vw, 1rem);
+    gap: var(--card-gap-tight);
+    padding: var(--card-pad-tight);
     border-radius: var(--radius-card);
-    border: 1px solid var(--glass-stroke);
-    background: color-mix(in oklab, var(--surface-glass) 94%, transparent);
+    border: 1px solid var(--card-border);
+    background: var(--card-surface);
     cursor: pointer;
     text-align: left;
     transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 12px 34px color-mix(in oklab, rgba(8, 12, 26, 0.75) 35%, transparent);
+    box-shadow: var(--card-shadow);
   }
 
   .focus-chip::before {
@@ -175,14 +181,14 @@
 
   .focus-chip:hover {
     border-color: color-mix(in oklab, hsla(var(--hue), 82%, 62%, 0.35) 55%, var(--glass-stroke));
-    box-shadow: 0 18px 42px color-mix(in oklab, hsla(var(--hue), 82%, 62%, 0.45) 45%, transparent);
+    box-shadow: var(--card-shadow-lift);
   }
 
   .focus-chip[aria-pressed='true'] {
     border-color: color-mix(in oklab, hsla(var(--hue), 82%, 62%, 0.65) 70%, var(--glass-stroke));
     background: color-mix(in oklab, hsla(var(--hue), 82%, 32%, 0.42) 45%, var(--surface-glass-strong));
     transform: translateY(-3px);
-    box-shadow: 0 22px 46px color-mix(in oklab, hsla(var(--hue), 82%, 62%, 0.55) 40%, transparent);
+    box-shadow: var(--card-shadow-lift);
   }
 
   .focus-chip:focus-visible {
@@ -216,7 +222,7 @@
     border-radius: var(--radius-panel);
     border: 1px solid var(--border-soft);
     background: color-mix(in oklab, var(--surface-soft) 92%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.14) 35%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--surface-outline-glow) 35%, transparent);
   }
 
   .micro-note {

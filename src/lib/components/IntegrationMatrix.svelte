@@ -7,22 +7,22 @@
     {
       step: '01',
       title: 'Discovery',
-      detail: 'Nodes announce over mDNS + MQTT so CMS or show controllers can map the mesh instantly.'
+      detail: 'Nodes announce over mDNS + MQTT so CMS, signage suites, or show controllers map the mesh instantly.'
     },
     {
       step: '02',
       title: 'Auth handshake',
-      detail: 'Signed tokens pair browsers + control rooms; REST keys rotate on the same cadence as firmware updates.'
+      detail: 'Signed tokens pair browsers, signage uploaders, and control rooms; REST keys rotate on the same cadence as firmware updates.'
     },
     {
       step: '03',
       title: 'Cue stream',
-      detail: 'Multicast tick + SSE playhead keep REST triggers, MQTT cues, and OSC pulses in phase.'
+      detail: 'Multicast tick + SSE playhead keep REST triggers, signage swaps, MQTT cues, and OSC pulses in phase.'
     },
     {
       step: '04',
       title: 'Feedback loop',
-      detail: 'Telemetry mirrors into dashboards, showing power headroom, task load, and leadership swaps in real time.'
+      detail: 'Telemetry mirrors into dashboards, showing power headroom, signage asset status, and leadership swaps in real time.'
     }
   ];
 
@@ -30,7 +30,9 @@
     'MQTT <-> REST bridge for signage CMS',
     'OSC clock for DAWs & show control',
     'Lighting consoles via Art-Net / sACN proxy',
-    'BMS hooks publishing to Modbus gateway'
+    'BMS hooks publishing to Modbus gateway',
+    'Asset ingest webhooks for poster + loop placeholders',
+    'Playlist + ticker sync via SSE feed'
   ];
 </script>
 
@@ -112,10 +114,15 @@
 
 <style>
   .integration-matrix {
+    --matrix-gap: clamp(var(--card-gap), 5cqw, var(--stage-gap));
+    --matrix-pad: clamp(var(--card-pad), 6cqw, clamp(1.8rem, 3.6vw, 2.6rem));
     display: grid;
-    gap: clamp(1.6rem, 3vw, 2.4rem);
-    padding: clamp(1.8rem, 3.6vw, 2.6rem);
+    gap: var(--matrix-gap);
+    padding: var(--matrix-pad);
     border-radius: var(--radius-stage);
+    width: var(--card-shell-wide);
+    margin-inline: auto;
+    container-type: inline-size;
   }
 
   .matrix-halo {
@@ -173,13 +180,15 @@
   }
 
   .matrix-column {
+    --matrix-column-gap: clamp(var(--card-gap-tight), 4cqw, var(--card-gap));
+    --matrix-column-pad: clamp(var(--card-pad-tight), 5cqw, var(--card-pad));
     display: grid;
-    gap: clamp(0.9rem, 2.4vw, 1.4rem);
-    padding: clamp(1.2rem, 2.8vw, 1.8rem);
+    gap: var(--matrix-column-gap);
+    padding: var(--matrix-column-pad);
     border-radius: var(--radius-panel);
     background: color-mix(in oklab, var(--surface-glass-strong) 82%, transparent);
     border: 1px solid color-mix(in oklab, var(--glass-strong-border) 82%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.12) 45%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--surface-outline-soft) 45%, transparent);
     backdrop-filter: saturate(160%) blur(14px);
     -webkit-backdrop-filter: saturate(160%) blur(14px);
     position: relative;
@@ -219,17 +228,17 @@
     padding: 0;
     list-style: none;
     display: grid;
-    gap: clamp(0.8rem, 2vw, 1.2rem);
+    gap: var(--card-gap);
   }
 
   .endpoint-list li {
     display: grid;
-    gap: 0.35rem;
-    padding: clamp(0.85rem, 2vw, 1.1rem) clamp(1rem, 2.4vw, 1.4rem);
+    gap: var(--card-gap-tight);
+    padding: var(--card-pad-tight) clamp(1rem, 2.4vw, 1.4rem);
     border-radius: var(--radius-card-tight);
-    background: color-mix(in oklab, var(--glass) 88%, transparent);
-    border: 1px solid color-mix(in oklab, var(--glass-border) 88%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.14) 40%, transparent);
+    background: var(--card-surface);
+    border: 1px solid var(--card-border);
+    box-shadow: inset 0 0 0 1px var(--card-outline-glow);
   }
 
   .endpoint-call {
@@ -251,19 +260,19 @@
     padding: 0;
     list-style: none;
     display: grid;
-    gap: clamp(0.75rem, 2vw, 1.1rem);
+    gap: var(--card-gap);
     counter-reset: handshake;
   }
 
   .handshake-track li {
     position: relative;
-    padding: clamp(0.85rem, 2vw, 1.1rem) clamp(1rem, 2.4vw, 1.4rem);
+    padding: var(--card-pad-tight) clamp(1rem, 2.4vw, 1.4rem);
     border-radius: var(--radius-card-tight);
-    background: color-mix(in oklab, var(--glass) 84%, transparent);
-    border: 1px solid color-mix(in oklab, var(--glass-border) 86%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.12) 35%, transparent);
+    background: var(--card-surface);
+    border: 1px solid var(--card-border);
+    box-shadow: inset 0 0 0 1px var(--card-outline-soft);
     display: grid;
-    gap: 0.35rem;
+    gap: var(--card-gap-tight);
   }
 
   .handshake-track li::before {
@@ -275,8 +284,8 @@
     font-size: 0.72rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    background: color-mix(in oklab, var(--glass) 82%, transparent);
-    border: 1px solid color-mix(in oklab, var(--glass-border) 88%, transparent);
+    background: var(--card-surface-soft);
+    border: 1px solid var(--card-border-soft);
     color: color-mix(in oklab, var(--muted) 68%, var(--ink) 32%);
   }
 
@@ -318,18 +327,18 @@
 
   .telemetry-stack {
     display: grid;
-    gap: clamp(0.75rem, 2vw, 1.1rem);
+    gap: var(--card-gap);
   }
 
   .telemetry-card {
     position: relative;
-    padding: clamp(0.85rem, 2vw, 1.1rem) clamp(1.1rem, 2.6vw, 1.45rem);
+    padding: var(--card-pad-tight) clamp(1.1rem, 2.6vw, 1.45rem);
     border-radius: var(--radius-card);
-    background: linear-gradient(135deg, color-mix(in oklab, var(--glass-strong) 88%, transparent), color-mix(in oklab, var(--glass) 72%, transparent));
-    border: 1px solid color-mix(in oklab, var(--glass-strong-border) 86%, transparent);
-    box-shadow: inset 0 0 0 1px color-mix(in oklab, rgba(255, 255, 255, 0.16) 36%, transparent), 0 24px 48px rgba(8, 12, 28, 0.32);
+    background: linear-gradient(135deg, color-mix(in oklab, var(--card-surface-strong) 100%, transparent), color-mix(in oklab, var(--card-surface) 80%, transparent));
+    border: 1px solid var(--card-border-strong);
+    box-shadow: inset 0 0 0 1px var(--card-outline-strong), 0 24px 48px var(--shadow-elevated-strong);
     display: grid;
-    gap: 0.3rem;
+    gap: var(--card-gap-tight);
   }
 
   .telemetry-card::after {
@@ -401,10 +410,13 @@
   @media (max-width: 960px) {
     .integration-matrix {
       border-radius: var(--radius-shell);
+      --matrix-gap: clamp(var(--card-gap-tight), 4cqw, var(--stage-gap));
+      --matrix-pad: clamp(var(--card-pad-tight), 5cqw, var(--card-pad));
     }
 
     .matrix-column {
-      padding: clamp(1rem, 3vw, 1.4rem);
+      --matrix-column-gap: clamp(var(--card-gap-tight), 4cqw, var(--card-gap));
+      --matrix-column-pad: clamp(var(--card-pad-tight), 5cqw, var(--card-pad));
     }
   }
 
