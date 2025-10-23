@@ -20,8 +20,10 @@
   let isCompact = false;
   let releaseScroll;
   let supportsTTS = false;
+  let revealTTS = false;
   let media;
   let releaseFonts;
+  let releasePointer;
 
   const toggleMenu = () => {
     menuOpen = !menuOpen;
@@ -101,10 +103,13 @@
     supportsTTS = hasTTS;
     await tick();
     if (hasTTS) {
-      releaseTTS = bindTTS(ttsBtn);
-    } else if (ttsBtn) {
-      ttsBtn.dataset.tts = 'unavailable';
-      ttsBtn.setAttribute('aria-pressed', 'false');
+      const pointerReveal = () => {
+        revealTTS = true;
+        releaseTTS?.();
+        releaseTTS = bindTTS(ttsBtn);
+      };
+      window.addEventListener('pointerdown', pointerReveal, { once: true });
+      releasePointer = () => window.removeEventListener('pointerdown', pointerReveal);
     }
     evaluateOverflowCompact();
     if (typeof ResizeObserver === 'function') {
@@ -167,6 +172,8 @@
     releaseResize?.();
     releaseResize = undefined;
     releaseTTS?.();
+    releasePointer?.();
+    releasePointer = undefined;
     releaseFonts?.();
     releaseFonts = undefined;
     if (typeof document !== 'undefined') {
@@ -176,7 +183,7 @@
     releaseScroll = undefined;
   });
 </script>
-<nav class="glass top-nav" data-open={menuOpen} data-compact={isCompact}>
+<nav class="glass top-nav header-utility" data-open={menuOpen} data-compact={isCompact}>
   <span class="nav-halo" aria-hidden="true"></span>
   <a href={`${base}/`} class="h2 text-gradient brand" on:click={closeMenu}>LumiGrid</a>
   <div
@@ -185,6 +192,7 @@
     bind:this={navControls}
     aria-hidden={isCompact && !menuOpen}
     inert={isCompact && !menuOpen}
+    hidden={isCompact && !menuOpen}
   >
     <div class="nav-tools" bind:this={navTools}>
       <label class="sr-only" for="brandTheme">Brand theme</label>
@@ -193,30 +201,25 @@
         <option value="contrast">High-Contrast Cyan</option>
         <option value="warm">Warm Magenta</option>
       </select>
-      <button
-        class="btn ghost tts-toggle"
-        type="button"
-        bind:this={ttsBtn}
-        aria-pressed="false"
-        aria-disabled={!supportsTTS}
-        data-tts={supportsTTS ? 'off' : 'unavailable'}
-        data-label-off="Read aloud"
-        data-label-on="Reading"
-        disabled={!supportsTTS}
-        title={
-          supportsTTS
-            ? 'Toggle read-aloud mode. When enabled, double-click text to hear it.'
-            : 'Read-aloud mode is unavailable in this browser.'
-        }
-      >
-        <span class="btn-icon" aria-hidden="true">🔊</span>
-        <span class="btn-label" data-tts-label>Read aloud</span>
-        <span class="btn-indicator" data-tts-indicator aria-hidden="true"></span>
-        {#if !supportsTTS}
-          <span class="btn-hint" aria-hidden="true">Unavailable</span>
-          <span class="sr-only">Speech synthesis is not supported in this browser.</span>
-        {/if}
-      </button>
+      {#if supportsTTS}
+        <button
+          class="btn ghost tts-toggle"
+          type="button"
+          bind:this={ttsBtn}
+          aria-pressed="false"
+          data-tts="off"
+          data-label-off="Read aloud"
+          data-label-on="Reading"
+          hidden={!revealTTS}
+          title="Toggle read-aloud mode. When enabled, double-click text to hear it."
+        >
+          <span class="btn-icon" aria-hidden="true">🔊</span>
+          <span class="btn-label" data-tts-label>Read aloud</span>
+          <span class="btn-indicator" data-tts-indicator aria-hidden="true"></span>
+        </button>
+      {:else}
+        <span class="sr-only" aria-live="polite">Read-aloud mode is unavailable in this browser.</span>
+      {/if}
       <button
         id="themeToggle"
         bind:this={themeBtn}
@@ -239,7 +242,7 @@
     aria-controls="header-menu"
     on:click={toggleMenu}
   >
-    <span class="sr-only">Toggle navigation</span>
+    <span class="menu-label">Menu</span>
     <span class="menu-icon" aria-hidden="true">
       <span></span>
       <span></span>

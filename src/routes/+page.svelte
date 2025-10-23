@@ -15,33 +15,50 @@
   import SignageCommandCenter from '$lib/components/SignageCommandCenter.svelte';
 
   const sections = [
-    { id: 'hero', label: 'Welcome', icon: 'sparkles' },
-    { id: 'platform', label: 'Platform', icon: 'globeAlt' },
-    { id: 'experience', label: 'Experience', icon: 'commandLine' },
-    { id: 'controller', label: 'Controller', icon: 'cpuChip' },
-    { id: 'led-node', label: 'LED Node', icon: 'sun' },
-    { id: 'launch', label: 'Launch', icon: 'rocketLaunch' },
+    { id: 'platform', label: 'What', icon: 'globeAlt' },
+    { id: 'experience', label: 'Experience', icon: 'users' },
+    { id: 'controller', label: 'Controller', icon: 'serverStack' },
+    { id: 'led-node', label: 'Runbook', icon: 'rectangleGroup' },
+    { id: 'launch', label: 'Launchpad', icon: 'rocketLaunch' },
     { id: 'contact', label: 'Connect', icon: 'envelope' }
   ];
 
   const heroHighlights = [
-    'Signage assets drop-in ready',
-    'Living lighting mesh',
-    'Operator-ready controls',
-    'LED Node pilot open',
-    'Daugavpils studio tours'
+    'Signage + light stay in phase',
+    'Placeholder assets validated',
+    'Browser rehearsals anywhere',
+    'Operations safeguards baked in'
   ];
 
   const heroIntro = [
-    'LumiGrid transforms architecture, signage, and stage light into one story-led controller.',
-    'Bring your campaign files—our Daugavpils crew loads every asset placeholder and rehearses timelines before they travel.',
-    'The first LED Node is almost here—reserve a pilot slot, walk the studio floor, and co-author the launch story together.'
+    {
+      lead: 'Synchronise signage and light from one console.',
+      detail: 'Lighting and signage crews rehearse together so every cue and caption lands together.'
+    },
+    {
+      lead: 'Prove every campaign frame before deployment.',
+      detail:
+        'Bring creative files — our Daugavpils team loads placeholders, checks contrast, and signs off the story before it travels.'
+    },
+    {
+      lead: 'Walk the launch runbook with the LED Node team.',
+      detail: 'Reserve a pilot slot to tour the studio floor and co-author the rollout narrative.'
+    }
   ];
 
   const platformStory = [
-    'LumiGrid keeps hospitality lobbies, skyline façades, street signage, and show cues in one rhythm.',
-    'One platform retires scattered controllers while every doorway, plaza, and promo moment stays aligned and brand-safe.',
-    'Reclame Fabriek in Daugavpils is our calibration lab where each choreography, asset placeholder, and signage frame is tuned before travel.'
+    {
+      lead: 'Keep signage, façades, and ambience on the same beat.',
+      detail: 'Signage playlists, façade pixels, and architectural looks share one tempo so venues stay coherent and legible.'
+    },
+    {
+      lead: 'Retire scattered controllers with one venue brain.',
+      detail: 'Every doorway, plaza, and promo moment stays aligned and brand-safe inside a single platform.'
+    },
+    {
+      lead: 'Stage the rollout at Reclame Fabriek first.',
+      detail: 'Our Daugavpils calibration lab tunes each choreography, asset placeholder, and signage frame before it travels.'
+    }
   ];
 
   const platformHighlights = [
@@ -293,9 +310,9 @@
       detail:
         'Hero signage rides alongside the marquee pixel wash with caption lint and localisation packs verified at Reclame Fabriek.',
       metrics: [
-        { label: 'Contrast', value: 'AA+ verified' },
-        { label: 'Sync drift', value: '0.5 ms' },
-        { label: 'Approvals', value: 'Campaign · Ops' }
+        { label: 'Contrast', value: 'AA+ verified (demo)' },
+        { label: 'Sync drift', value: '≈0.5 ms demo' },
+        { label: 'Approvals', value: 'Campaign · Ops (sample)' }
       ]
     },
     {
@@ -305,9 +322,9 @@
       detail:
         'Wayfinding signage mirrors the mesh beat with adaptive brightness tuned from the promenade sensor bridge.',
       metrics: [
-        { label: 'Ambient', value: '39% dimmed' },
-        { label: 'Heartbeat', value: '11s ago' },
-        { label: 'Fallback', value: 'Ready' }
+        { label: 'Ambient', value: '39% dimmed (demo sensor)' },
+        { label: 'Heartbeat', value: 'demo heartbeat' },
+        { label: 'Fallback', value: 'Ready (simulated)' }
       ]
     },
     {
@@ -316,9 +333,9 @@
       tone: 'alert',
       detail: 'Safety messaging inherits emergency palette tokens and pushes to every node during drills.',
       metrics: [
-        { label: 'Palette', value: 'Emergency token' },
-        { label: 'Drill', value: 'Cleared · 2h ago' },
-        { label: 'Acknowledged', value: 'Roster A' }
+        { label: 'Palette', value: 'Emergency token (sample)' },
+        { label: 'Drill', value: 'Drill cleared (demo)' },
+        { label: 'Acknowledged', value: 'Roster A (sample)' }
       ]
     }
   ];
@@ -329,21 +346,21 @@
       status: 'Stable',
       tone: 'good',
       detail: 'Signage SSE channel streaming placeholders for campaign, quiet-mode, and sponsor lanes.',
-      time: '12s ago'
+      time: 'Demo 12s ago'
     },
     {
       title: 'Sponsor takeover approval',
       status: 'Action needed',
       tone: 'alert',
       detail: 'Partner localisation pack pending compliance sign-off before the playlist unlocks.',
-      time: 'Awaiting review'
+      time: 'Awaiting review (demo)'
     },
     {
       title: 'Transit relay overlay',
       status: 'Monitoring',
       tone: 'info',
       detail: 'Metro feed mirrored into the data rail with adaptive typography tokens watching contrast.',
-      time: 'Live'
+      time: 'Live (demo)'
     }
   ];
 
@@ -480,11 +497,11 @@
   ];
 
   const opsSignals = [
-    { label: 'Mesh sync drift', value: '0.7 ms' },
-    { label: 'Signage ingest', value: 'All placeholders live' },
-    { label: 'CMS webhook', value: 'Healthy · 2 retries spared' },
-    { label: 'Fallback scene', value: 'Ready' },
-    { label: 'Asset QA board', value: 'Cleared · 18 placeholders' }
+    { label: 'Mesh sync drift', value: '≈0.7 ms demo' },
+    { label: 'Signage ingest', value: 'Sample placeholders live' },
+    { label: 'CMS webhook', value: 'Healthy · demo retries spared' },
+    { label: 'Fallback scene', value: 'Ready (simulated)' },
+    { label: 'Asset QA board', value: 'Cleared · 18 placeholders (demo)' }
   ];
 
   const opsPlaybooks = [
@@ -529,7 +546,7 @@
 
   const opsEscalations = [
     'Signage ingest failure → Notify content liaison and load fallback placeholders.',
-    'Sync drift > 1 ms → Page lighting lead and hold pixel bursts.',
+    'Sync drift > 1 ms (demo threshold) → Page lighting lead and hold pixel bursts.',
     'CMS webhook timeout → Reopen SSE bridge and alert integrator bridge.',
     'Asset QA regression → Freeze playlist publish until the signage board clears approvals.'
   ];
@@ -595,17 +612,20 @@
                 <span class="hero-marquee-word accent">LED NODE</span>
               </h1>
               {#each heroIntro as paragraph}
-                <p class="hero-intro">{paragraph}</p>
+                <p class="hero-intro">
+                  <span class="hero-intro-lead">{paragraph.lead}</span>
+                  {paragraph.detail}
+                </p>
               {/each}
               <div class="hero-actions">
-                <a class="btn primary" href="#led-node">Meet the LED Node</a>
+                <a class="btn primary" href="#led-node">Explore the runbook</a>
                 <a class="btn ghost" href="#launch">Join the launch wave</a>
               </div>
-              <div class="hero-highlights" aria-label="Promises">
+              <ul class="hero-highlights" aria-label="Benefits">
                 {#each heroHighlights as item}
-                  <span class="highlight-pill">{item}</span>
+                  <li><span class="highlight-pill">{item}</span></li>
                 {/each}
-              </div>
+              </ul>
             </div>
             <div class="hero-visual" aria-hidden="true">
               <div class="hero-visual-shell">
@@ -638,7 +658,10 @@
             <div class="journey-intro glass-panel">
               <p class="journey-eyebrow">How it feels</p>
               {#each platformStory as paragraph}
-                <p class="journey-summary">{paragraph}</p>
+                <p class="journey-summary">
+                  <span class="journey-summary-lead">{paragraph.lead}</span>
+                  {paragraph.detail}
+                </p>
               {/each}
             </div>
             <article class="glass-panel platform-highlights">
@@ -794,9 +817,9 @@
         <span class="section-orbit" aria-hidden="true"></span>
         <div class="container led">
           <div class="section-header">
-            <p class="eyebrow">Flagship hardware</p>
-            <h2 class="h2" data-parallax="0.12">Meet the LumiGrid LED Node</h2>
-            <p class="lead">Our first node is almost here, crafted to paint light, stay calm under pressure, and welcome every teammate.</p>
+            <p class="eyebrow">Pilot runbook</p>
+            <h2 class="h2" data-parallax="0.12">Runbook for the LumiGrid LED Node</h2>
+            <p class="lead">The first node ships with a rehearsed signage and lighting playbook, built to keep teams calm and the story legible.</p>
           </div>
           <div class="section-stage section-stage-grid stage-surface led-stage stage-wide reveal">
             <div class="led-diagram glass-panel">

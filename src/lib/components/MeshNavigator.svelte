@@ -1,5 +1,5 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, tick } from 'svelte';
 
   const nodes = [
     { id: 'alpha', label: 'Node A', role: 'Clock capable', x: 12, y: 18 },
@@ -46,6 +46,32 @@
       body: 'Multicast ticks keep PWM fades and pixel chases perfectly phase-aligned — the timeline pulses below show the shared beat.'
     }
   };
+
+  const tabOrder = ['mesh', 'tempo'];
+
+  const focusTab = async (id) => {
+    await tick();
+    if (typeof document !== 'undefined') {
+      document.getElementById(`${id}-tab`)?.focus();
+    }
+  };
+
+  async function handleTabKey(event, current) {
+    const index = tabOrder.indexOf(current);
+    if (index === -1) return;
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      event.preventDefault();
+      const next = tabOrder[(index + 1) % tabOrder.length];
+      mode = next;
+      await focusTab(next);
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const nextIndex = (index - 1 + tabOrder.length) % tabOrder.length;
+      const next = tabOrder[nextIndex];
+      mode = next;
+      await focusTab(next);
+    }
+  }
 
   function handleScroll() {
     if (reduceMotion) {
@@ -134,17 +160,25 @@
     <div class="toggle-group" role="tablist" aria-label="Mesh navigation modes">
       <button
         class="btn ghost"
+        id="mesh-tab"
         role="tab"
         aria-selected={mode === 'mesh'}
+        aria-controls="mesh-panel"
+        tabindex={mode === 'mesh' ? 0 : -1}
         on:click={() => (mode = 'mesh')}
+        on:keydown={(event) => handleTabKey(event, 'mesh')}
       >
         Mesh view
       </button>
       <button
         class="btn ghost"
+        id="tempo-tab"
         role="tab"
         aria-selected={mode === 'tempo'}
+        aria-controls="tempo-panel"
+        tabindex={mode === 'tempo' ? 0 : -1}
         on:click={() => (mode = 'tempo')}
+        on:keydown={(event) => handleTabKey(event, 'tempo')}
       >
         Timeline view
       </button>
@@ -156,31 +190,60 @@
   </div>
 
   <div class="mesh-stage" data-mode={mode}>
-    <div class="mesh-plane" style={`transform: rotateX(${18 + depth * 12}deg) rotateZ(-6deg);`}>
-      {#if mode === 'mesh'}
+    <div
+      id="mesh-panel"
+      class="mesh-pane"
+      role="tabpanel"
+      aria-labelledby="mesh-tab"
+      hidden={mode !== 'mesh'}
+    >
+      <div class="mesh-plane" style={`transform: rotateX(${18 + depth * 12}deg) rotateZ(-6deg);`}>
         {#each links as [from, to]}
           <span class="mesh-link" style={linkStyle(from, to)} aria-hidden="true"></span>
         {/each}
-      {/if}
 
-      {#each nodes as node}
-        <button
-          type="button"
-          class="mesh-node"
-          style={`--x:${node.x}%;--y:${node.y}%;`}
-          aria-pressed={hovered === node.id}
-          on:focus={() => (hovered = node.id)}
-          on:mouseenter={() => (hovered = node.id)}
-          on:mouseleave={() => (hovered = null)}
-          on:blur={() => (hovered = null)}
-        >
-          <span class="node-label">{node.label}</span>
-          <span class="node-role">{node.role}</span>
-        </button>
-      {/each}
+        {#each nodes as node}
+          <button
+            type="button"
+            class="mesh-node"
+            style={`--x:${node.x}%;--y:${node.y}%;`}
+            aria-pressed={hovered === node.id}
+            on:focus={() => (hovered = node.id)}
+            on:mouseenter={() => (hovered = node.id)}
+            on:mouseleave={() => (hovered = null)}
+            on:blur={() => (hovered = null)}
+          >
+            <span class="node-label">{node.label}</span>
+            <span class="node-role">{node.role}</span>
+          </button>
+        {/each}
+      </div>
     </div>
 
-    {#if mode === 'tempo'}
+    <div
+      id="tempo-panel"
+      class="mesh-pane"
+      role="tabpanel"
+      aria-labelledby="tempo-tab"
+      hidden={mode !== 'tempo'}
+    >
+      <div class="mesh-plane" style={`transform: rotateX(${18 + depth * 12}deg) rotateZ(-6deg);`}>
+        {#each nodes as node}
+          <button
+            type="button"
+            class="mesh-node"
+            style={`--x:${node.x}%;--y:${node.y}%;`}
+            aria-pressed={hovered === node.id}
+            on:focus={() => (hovered = node.id)}
+            on:mouseenter={() => (hovered = node.id)}
+            on:mouseleave={() => (hovered = null)}
+            on:blur={() => (hovered = null)}
+          >
+            <span class="node-label">{node.label}</span>
+            <span class="node-role">{node.role}</span>
+          </button>
+        {/each}
+      </div>
       <div class="mesh-tempo" aria-hidden="true">
         {#each tempos as tempo}
           <div class="tempo-row" style={`--offset:${tempo.offset};`}>
@@ -194,7 +257,7 @@
           </div>
         {/each}
       </div>
-    {/if}
+    </div>
   </div>
 
   <div class="mesh-footer" aria-live="polite">
@@ -286,6 +349,10 @@
     gap: 1.35rem;
     perspective: 900px;
     justify-items: center;
+  }
+
+  .mesh-pane[hidden] {
+    display: none;
   }
 
   .mesh-stage::before {

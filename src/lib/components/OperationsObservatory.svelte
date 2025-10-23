@@ -16,6 +16,7 @@
       Keep the mesh breathing during live shows: monitor uptime, signage states, guide handovers, and trigger rounded
       playbooks from the same glass console.
     </p>
+    <p class="ops-note">Example operations view—connect a live mesh to stream production data.</p>
   </header>
 
   <div class="ops-grid">
@@ -162,6 +163,14 @@
   .ops-head p {
     margin: 0;
     color: color-mix(in oklab, var(--muted) 70%, var(--ink) 30%);
+  }
+
+  .ops-note {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--muted) 65%, var(--ink) 35%);
+    opacity: 0.82;
   }
 
   .ops-grid {
