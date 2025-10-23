@@ -52,15 +52,16 @@
     {#each normalized as item}
       <li data-id={item.id}>
         <span class="tl-node-glow" aria-hidden="true"></span>
-        <a href={'#' + item.id} aria-label={item.label} title={item.label}>
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            {#each getIconPaths(item.icon) as d}
-              <path d={d} stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            {/each}
-          </svg>
-          <span class="sr-only">{item.label}</span>
+        <a href={'#' + item.id} data-label={item.label}>
+          <span class="tl-dot" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              {#each getIconPaths(item.icon) as d}
+                <path d={d} stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              {/each}
+            </svg>
+          </span>
+          <span class="tl-link-copy">{item.label}</span>
         </a>
-        <span class="tl-tooltip">{item.label}</span>
       </li>
     {/each}
   </ol>

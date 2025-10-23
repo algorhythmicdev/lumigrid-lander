@@ -7,9 +7,9 @@
       detail:
         'Lobby canvases mirror the welcome playlist with caption lint, luminance guards, and dual-output sync telemetry.',
       metrics: [
-        { label: 'Contrast', value: 'AA+ verified' },
-        { label: 'Sync drift', value: '0.6 ms' },
-        { label: 'Approvals', value: 'Campaign · Ops' }
+        { label: 'Contrast', value: 'AA+ verified (demo)' },
+        { label: 'Sync drift', value: '≈0.6 ms demo' },
+        { label: 'Approvals', value: 'Campaign · Ops (sample)' }
       ]
     },
     {
@@ -19,9 +19,9 @@
       detail:
         'Outdoor ribbon streams signage payloads alongside façade pixels with adaptive brightness tied to ambient sensors.',
       metrics: [
-        { label: 'Ambient', value: '42% dimmed' },
-        { label: 'Heartbeat', value: '12s ago' },
-        { label: 'Fallback', value: 'Ready' }
+        { label: 'Ambient', value: '42% dimmed (demo sensor)' },
+        { label: 'Heartbeat', value: 'demo heartbeat' },
+        { label: 'Fallback', value: 'Ready (simulated)' }
       ]
     },
     {
@@ -31,9 +31,9 @@
       detail:
         'Emergency slates inherit the emergency palette tokens and propagate rehearsed copy across every node.',
       metrics: [
-        { label: 'Palette', value: 'Emergency token' },
-        { label: 'Drill', value: 'Passed · 3h ago' },
-        { label: 'Acknowledged', value: 'Roster A' }
+        { label: 'Palette', value: 'Emergency token (sample)' },
+        { label: 'Drill', value: 'Drill passed (demo)' },
+        { label: 'Acknowledged', value: 'Roster A (sample)' }
       ]
     }
   ];
@@ -44,21 +44,21 @@
       status: 'Stable',
       tone: 'good',
       detail: 'SSE signage bridge delivering placeholder updates across campaign + safety lanes.',
-      time: '14s ago'
+      time: 'Demo 14s ago'
     },
     {
       title: 'Partner takeover staging',
       status: 'Action needed',
       tone: 'alert',
       detail: 'Sponsor playlist awaiting localisation approval before the takeover slot unlocks.',
-      time: 'Awaiting review'
+      time: 'Awaiting review (demo)'
     },
     {
       title: 'Transit relay overlay',
       status: 'Monitoring',
       tone: 'info',
       detail: 'Metro feed mirrored into the data rail with adaptive typography tokens watching contrast.',
-      time: 'Live'
+      time: 'Live (demo)'
     }
   ];
 
@@ -111,6 +111,7 @@
       Follow the real-time state of signage lanes, alerts, and rehearsed responses. Everything rides the same token system so
       lighting, signage, and safety stories stay in sync.
     </p>
+    <p class="center-note">Example telemetry for demonstration—values update when a live mesh connects.</p>
   </header>
 
   <div class="center-grid">
@@ -263,6 +264,14 @@
   .center-head p {
     margin: 0;
     color: color-mix(in oklab, var(--muted) 70%, var(--ink) 30%);
+  }
+
+  .center-note {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--muted) 65%, var(--ink) 35%);
+    opacity: 0.8;
   }
 
   .center-grid {

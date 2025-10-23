@@ -70,8 +70,8 @@
       mood: 'Calm tide',
       badge: 'FX · Drift',
       eyebrow: 'Ambient drift FX',
-      headline: 'Drifted halos ease the promenade.',
-      sub: 'Wide sweeps ripple through Mythica Strand while the signage frame holds a soft campaign glow.',
+      headline: 'Drift keeps promenade signage readable.',
+      sub: 'Wide sweeps ripple through Mythica Strand while the signage frame holds a calm campaign glow for guests.',
       stripSpeed: 'calc(var(--chase-speed, 2.6s) * 1.15)',
       stripDirection: 'normal',
       glowSpeed: 'calc(var(--chase-speed, 2.6s) * 1.3)',
@@ -99,8 +99,8 @@
       mood: 'Signage handoff',
       badge: 'FX · Relay',
       eyebrow: 'Signage relay FX',
-      headline: 'Campaign loops relay across the mesh.',
-      sub: 'Hero posters glide into the marquee while support tickers echo across the halo and PWM cools the room.',
+      headline: 'Relay passes campaign loops across the mesh.',
+      sub: 'Hero posters glide into the marquee while support tickers echo across the halo and PWM cools the room for arrivals.',
       stripSpeed: 'calc(var(--chase-speed, 2.6s) * 1.15)',
       stripDirection: 'alternate',
       glowSpeed: 'calc(var(--chase-speed, 2.6s) * 0.95)',
@@ -128,8 +128,8 @@
       mood: 'Arena burst',
       badge: 'FX · Surge',
       eyebrow: 'Arena burst FX',
-      headline: 'Surging chases ignite the skyline.',
-      sub: 'Tight bursts hammer the strip while the signage flashes promo beats and badge overlays for launches.',
+      headline: 'Surge fires skyline chases with promo signage.',
+      sub: 'Tight bursts hit the strip while the signage flashes promo beats and badge overlays for launches.',
       stripSpeed: 'calc(var(--chase-speed, 2.6s) * 0.75)',
       stripDirection: 'reverse',
       glowSpeed: 'calc(var(--chase-speed, 2.6s) * 0.9)',
@@ -157,8 +157,8 @@
       mood: 'Skyfall shimmer',
       badge: 'FX · Cascade',
       eyebrow: 'Skyfall cascade FX',
-      headline: 'Cascading beams pour over the plaza.',
-      sub: 'Staggered descents flow from the modules into the Strand billboard and asset kit in one sweep.',
+      headline: 'Cascade cools the plaza and signage rail together.',
+      sub: 'Staggered descents flow from the modules into the Strand billboard so signage stays calm in the same sweep.',
       stripSpeed: 'calc(var(--chase-speed, 2.6s) * 1.05)',
       stripDirection: 'alternate',
       glowSpeed: 'calc(var(--chase-speed, 2.6s) * 1.2)',
@@ -292,13 +292,15 @@
   <div class="led-demo__controls">
     <fieldset class="palette-group">
       <legend class="sr-only">Palette</legend>
-      <div class="palette-buttons">
+      <div class="palette-buttons" role="radiogroup" aria-label="Palette">
         {#each paletteKeys as key}
           <button
             type="button"
             class={`btn ghost ${palette === key ? 'is-active' : ''}`}
             on:click={() => setPalette(key)}
-            aria-pressed={palette === key}
+            role="radio"
+            aria-checked={palette === key}
+            data-value={palettes[key].label}
           >
             {palettes[key].label}
           </button>
@@ -308,13 +310,15 @@
 
     <fieldset class="effect-group">
       <legend class="sr-only">Effect</legend>
-      <div class="effect-buttons">
+      <div class="effect-buttons" role="radiogroup" aria-label="Effect">
         {#each effectKeys as key}
           <button
             type="button"
             class={`effect-btn ${effect === key ? 'is-active' : ''}`}
             on:click={() => setEffect(key)}
-            aria-pressed={effect === key}
+            role="radio"
+            aria-checked={effect === key}
+            data-effect={effects[key].label}
           >
             <span class="effect-label">{effects[key].label}</span>
             <span class="effect-mood">{effects[key].mood}</span>
