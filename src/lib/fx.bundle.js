@@ -151,11 +151,16 @@ export function timelineSpy({listSelector='#lg-tl', progressSelector='#lg-tl-pro
       }
     });
     if (bar) {
-      const docHeight = Math.max(1, doc.body.scrollHeight - win.innerHeight);
-      const p = Math.max(0, Math.min(1, win.scrollY / docHeight));
-      const size = `${(p * 100).toFixed(2)}% 100%, 100% 100%`;
-      bar.style.maskSize = size;
-      bar.style.webkitMaskSize = size;
+      const first = sections[0];
+      const last = sections[sections.length - 1];
+      const start = win.scrollY + first.getBoundingClientRect().top;
+      const end = win.scrollY + last.getBoundingClientRect().bottom;
+      const span = Math.max(1, end - start);
+      const midpoint = mid;
+      const clamped = Math.max(0, Math.min(1, (midpoint - start) / span));
+      const state = midpoint < start ? 'before' : midpoint > end ? 'after' : 'active';
+      bar.dataset.state = state;
+      bar.style.setProperty('--progress-width', `${(clamped * 100).toFixed(2)}%`);
     }
     if(active !== lastActive){
       lastActive = active;
