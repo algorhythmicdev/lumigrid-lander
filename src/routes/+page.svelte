@@ -967,7 +967,9 @@
       </section>
     </main>
   </div>
-  <SideTimeline items={sections} />
+  <div class="page-rail">
+    <SideTimeline items={sections} />
+  </div>
 </div>
 
 <footer class="section footer-shell">
