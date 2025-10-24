@@ -49,10 +49,10 @@
 
   const hasWrappedChildren = (node) => {
     if (!node) return false;
-    const children = Array.from(node.children);
+    const children = Array.from(node.children).filter((child) => child.offsetHeight > 1 && child.offsetWidth > 1);
     if (children.length < 2) return false;
     const firstTop = children[0]?.offsetTop ?? 0;
-    return children.some((child) => Math.abs(child.offsetTop - firstTop) > 1);
+    return children.some((child) => Math.abs(child.offsetTop - firstTop) > 4);
   };
 
   const evaluateOverflowCompact = () => {
@@ -66,9 +66,44 @@
       updateCompact(true);
       return;
     }
+    const nav = navControls.closest('.top-nav');
+    const previousCompact = nav?.dataset.compact;
+    const wasHidden = navControls.hasAttribute('hidden');
+    const previousAriaHidden = navControls.getAttribute('aria-hidden');
+    const hadInert = navControls.hasAttribute('inert');
+    if (nav) {
+      nav.dataset.compact = 'false';
+    }
+    navControls.hidden = false;
+    navControls.removeAttribute('hidden');
+    if (previousAriaHidden !== null) {
+      navControls.removeAttribute('aria-hidden');
+    }
+    if (hadInert) {
+      navControls.removeAttribute('inert');
+    }
     const { scrollWidth, clientWidth } = navControls;
     const wrappedControls = hasWrappedChildren(navControls);
     const wrappedTools = hasWrappedChildren(navTools);
+    if (hadInert) {
+      navControls.setAttribute('inert', '');
+    }
+    if (previousAriaHidden !== null) {
+      navControls.setAttribute('aria-hidden', previousAriaHidden);
+    } else {
+      navControls.removeAttribute('aria-hidden');
+    }
+    navControls.hidden = wasHidden;
+    if (!wasHidden) {
+      navControls.removeAttribute('hidden');
+    }
+    if (nav) {
+      if (previousCompact === undefined) {
+        delete nav.dataset.compact;
+      } else {
+        nav.dataset.compact = previousCompact;
+      }
+    }
     isOverflowCompact = scrollWidth - clientWidth > 1 || wrappedControls || wrappedTools;
     updateCompact(isViewportCompact || isOverflowCompact);
   };
