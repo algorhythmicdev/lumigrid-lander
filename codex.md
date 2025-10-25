@@ -15,7 +15,7 @@
 ## Frontend Components
 - **Header & theme controls**: `Header.svelte` wires brand palette selection, color-scheme toggling, speech synthesis controls, and responsive navigation with inert overlays and scroll locking.【F:src/lib/components/Header.svelte†L1-L220】
 - **Contact form UX**: Client-side validation enforces required fields and the 2000-character limit before launching the visitor’s email client, with accessible status messaging for success or correction prompts.【F:src/lib/components/ContactForm.svelte†L1-L120】
-- **Hero timeline**: `SideTimeline.svelte`, `MeshNavigator.svelte`, and other feature modules provide the scroll-driven storytelling showcased on the landing page.【F:src/lib/components/SideTimeline.svelte†L1-L80】【F:src/lib/components/MeshNavigator.svelte†L1-L120】
+- **Landing sections**: `Hero.svelte`, `LedDemo.svelte`, and `NodeViz.svelte` anchor the promise, LED preview, and mesh visualization experiences that structure the page.【F:src/lib/components/Hero.svelte†L1-L10】【F:src/lib/components/LedDemo.svelte†L1-L240】【F:src/lib/components/NodeViz.svelte†L1-L192】
 
 ## Styling & Visual Systems
 - **Global token sheet**: `src/lib/styles.css` defines theme tokens, responsive spacing, glassmorphism effects, and brand variants via `[data-theme]` attributes.【F:src/lib/styles.css†L1-L240】
