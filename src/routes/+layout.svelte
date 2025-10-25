@@ -1,40 +1,60 @@
 <script>
-  import '$lib/styles.css';
-  import { base } from '$app/paths';
-  import { onDestroy, onMount } from 'svelte';
-  import { backgroundFlares, bindRipple, reveals, parallax, sectionFlares } from '$lib/fx.js';
-  const themeBoot = `<script>(function(){try{const root=document.documentElement;const stored=localStorage.getItem('lg-color');const mq=window.matchMedia('(prefers-color-scheme: dark)');const mode=stored||(mq.matches?'dark':'light');root.dataset.color=mode;root.style.colorScheme=mode;}catch(e){}})();<\/script>`;
-  const brandBoot = `<script>(function(){try{const root=document.documentElement;const brand=localStorage.getItem('lg-brand');if(brand){root.setAttribute('data-theme',brand);}}catch(e){}})();<\/script>`;
-  let releaseSectionFlares;
-  let releaseBackground;
-  let releaseRipple;
-  let releaseReveal;
-  let releaseParallax;
-  onMount(()=>{
-    releaseBackground = backgroundFlares({ canvasId:'lg-fx' });
-    releaseRipple = bindRipple();
-    releaseReveal = reveals();
-    releaseParallax = parallax();
-    releaseSectionFlares = sectionFlares();
-  });
-  onDestroy(() => {
-    releaseBackground?.();
-    releaseRipple?.();
-    releaseReveal?.();
-    releaseParallax?.();
-    releaseSectionFlares?.();
-  });
+  import { onMount } from 'svelte';
+
+  function startFX() {
+    const cvs = document.getElementById('lg-fx');
+    if (!cvs) return;
+    const ctx = cvs.getContext('2d', { alpha: true });
+
+    const DPR = Math.max(1, devicePixelRatio || 1);
+    function resize() {
+      cvs.width = Math.floor(innerWidth * DPR);
+      cvs.height = Math.floor(innerHeight * DPR);
+      cvs.style.width = innerWidth + 'px';
+      cvs.style.height = innerHeight + 'px';
+    }
+    resize();
+    addEventListener('resize', resize, { passive: true });
+
+    let raf;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    function frame(time) {
+      ctx.clearRect(0, 0, cvs.width, cvs.height);
+      ctx.globalCompositeOperation = 'lighter';
+      const cx = cvs.width * 0.3;
+      const cy = cvs.height * 0.35;
+      const g = ctx.createRadialGradient(
+        cx,
+        cy,
+        0,
+        cx,
+        cy,
+        Math.max(cvs.width, cvs.height) * 0.6
+      );
+      g.addColorStop(0, 'rgba(231,59,163,0.16)');
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+      if (!reduce.matches) raf = requestAnimationFrame(frame);
+    }
+    raf = requestAnimationFrame(frame);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && raf) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      } else if (!document.hidden && !raf && !reduce.matches) {
+        raf = requestAnimationFrame(frame);
+      }
+    });
+  }
+
+  onMount(startFX);
 </script>
-<svelte:head>
-  {@html themeBoot}
-  {@html brandBoot}
-  <link rel="icon" href={`${base}/favicon.svg`} />
-</svelte:head>
+
 <canvas
   id="lg-fx"
   aria-hidden="true"
   style="position:fixed;inset:0;z-index:-1;pointer-events:none"
 ></canvas>
-<div class="main-root" style="position:relative;z-index:0">
-  <slot />
-</div>
+<slot />

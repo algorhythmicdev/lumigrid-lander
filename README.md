@@ -55,7 +55,7 @@ This project uses GitHub Actions to automatically run tests and build the applic
 - `src/routes/+page.svelte` — landing content
 - `src/lib/styles.css` — tokens, gradients, glass, grids, animations
 - `src/lib/fx.bundle.js` — 3D flares, reveals, parallax, ripple, theme, TTS
-- `src/lib/components/*` — Header, SideTimeline, Gallery, LEDDemo, ContactForm
+- `src/lib/components/*` — Header, SideTimeline, Gallery, LedDemo, ContactForm
 - `static/*` — favicon, robots, sitemap, placeholder images
 
 

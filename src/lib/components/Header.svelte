@@ -1,295 +1,155 @@
 <script>
-  import { bindBrandSelect, bindThemeToggle, bindTTS } from '$lib/fx.js';
   import { base } from '$app/paths';
-  import { onDestroy, onMount, tick } from 'svelte';
-  import { fade } from 'svelte/transition';
-  let brandSel;
-  let themeBtn;
-  let ttsBtn;
-  let navControls;
-  let navTools;
-  let themeMode = 'dark';
-  let cleanupTheme;
-  let mediaCleanup;
-  let resizeObservers = [];
-  let releaseResize;
-  let releaseTTS;
-  let menuOpen = false;
-  let isViewportCompact = false;
-  let isOverflowCompact = false;
-  let isCompact = false;
-  let releaseScroll;
-  let supportsTTS = false;
-  let revealTTS = false;
-  let media;
-  let releaseFonts;
-  let releasePointer;
+  import { onMount, tick } from 'svelte';
+  import { bindTTS, bindThemeToggle } from '$lib/fx.js';
 
-  const toggleMenu = () => {
-    menuOpen = !menuOpen;
-  };
+  let showNav = false;
+  let theme = 'dark';
+  let themeLabel = 'Use light theme';
+  let themeButton;
+  let readButton;
+  let menuButton;
+  let navEl;
+  let menuLabel = 'Open navigation menu';
+  let cleanupTheme = () => {};
+  let cleanupTTS = () => {};
+  let cleanupDocumentHandlers = () => {};
+  let ttsSupported = false;
 
-  const closeMenu = () => {
-    menuOpen = false;
-  };
+  onMount(() => {
+    if (themeButton) {
+      cleanupTheme = bindThemeToggle(themeButton, (value) => {
+        theme = value;
+      });
+    }
+    const supportsTTS =
+      typeof window !== 'undefined' &&
+      'speechSynthesis' in window &&
+      typeof window.SpeechSynthesisUtterance === 'function';
 
-  const handleKeydown = (event) => {
-    if (event.key === 'Escape') {
-      closeMenu();
+    if (supportsTTS) {
+      ttsSupported = true;
+      tick().then(() => {
+        if (readButton) {
+          cleanupTTS = bindTTS(readButton);
+        }
+      });
     }
-  };
+    const handleClick = (event) => {
+      if (!showNav) return;
+      const target = event.target;
+      const element = target instanceof Element ? target : target?.parentElement;
 
-  const updateCompact = (value) => {
-    if (isCompact === value) return;
-    isCompact = value;
-    if (!value) {
-      closeMenu();
-    }
-  };
-
-  const hasWrappedChildren = (node) => {
-    if (!node) return false;
-    const children = Array.from(node.children).filter((child) => child.offsetHeight > 1 && child.offsetWidth > 1);
-    if (children.length < 2) return false;
-    const firstTop = children[0]?.offsetTop ?? 0;
-    return children.some((child) => Math.abs(child.offsetTop - firstTop) > 4);
-  };
-
-  const evaluateOverflowCompact = () => {
-    if (!navControls || !media) {
-      isOverflowCompact = false;
-      updateCompact(isViewportCompact);
-      return;
-    }
-    if (!media.matches) {
-      isOverflowCompact = false;
-      updateCompact(true);
-      return;
-    }
-    const nav = navControls.closest('.top-nav');
-    const previousCompact = nav?.dataset.compact;
-    const wasHidden = navControls.hasAttribute('hidden');
-    const previousAriaHidden = navControls.getAttribute('aria-hidden');
-    const hadInert = navControls.hasAttribute('inert');
-    if (nav) {
-      nav.dataset.compact = 'false';
-    }
-    navControls.hidden = false;
-    navControls.removeAttribute('hidden');
-    if (previousAriaHidden !== null) {
-      navControls.removeAttribute('aria-hidden');
-    }
-    if (hadInert) {
-      navControls.removeAttribute('inert');
-    }
-    const { scrollWidth, clientWidth } = navControls;
-    const wrappedControls = hasWrappedChildren(navControls);
-    const wrappedTools = hasWrappedChildren(navTools);
-    if (hadInert) {
-      navControls.setAttribute('inert', '');
-    }
-    if (previousAriaHidden !== null) {
-      navControls.setAttribute('aria-hidden', previousAriaHidden);
-    } else {
-      navControls.removeAttribute('aria-hidden');
-    }
-    navControls.hidden = wasHidden;
-    if (!wasHidden) {
-      navControls.removeAttribute('hidden');
-    }
-    if (nav) {
-      if (previousCompact === undefined) {
-        delete nav.dataset.compact;
-      } else {
-        nav.dataset.compact = previousCompact;
+      if (element && navEl?.contains(element)) {
+        if (element.closest('a')) {
+          showNav = false;
+          tick().then(() => menuButton?.focus());
+        }
+        return;
       }
-    }
-    isOverflowCompact = scrollWidth - clientWidth > 1 || wrappedControls || wrappedTools;
-    updateCompact(isViewportCompact || isOverflowCompact);
-  };
-
-  const syncViewportCompact = () => {
-    isViewportCompact = !media?.matches;
-    updateCompact(isViewportCompact || isOverflowCompact);
-  };
-
-  const disconnectResizeObservers = () => {
-    resizeObservers.forEach((observer) => observer.disconnect());
-    resizeObservers = [];
-  };
-
-  const handleResize = () => evaluateOverflowCompact();
-
-  onMount(async () => {
-    bindBrandSelect(brandSel);
-    cleanupTheme = bindThemeToggle(themeBtn, (mode) => (themeMode = mode));
-    window.addEventListener('keydown', handleKeydown);
-    media = window.matchMedia('(min-width: 900px)');
-    syncViewportCompact();
-    const handleMediaChange = (event) => {
-      syncViewportCompact();
-      if (event.matches) {
-        evaluateOverflowCompact();
+      if (!menuButton?.contains(target instanceof Node ? target : null)) {
+        showNav = false;
       }
     };
-    media.addEventListener('change', handleMediaChange);
-    mediaCleanup = () => media.removeEventListener('change', handleMediaChange);
-    const hasTTS = 'speechSynthesis' in window && typeof window.SpeechSynthesisUtterance === 'function';
-    supportsTTS = hasTTS;
-    await tick();
-    if (hasTTS) {
-      const pointerReveal = () => {
-        revealTTS = true;
-        releaseTTS?.();
-        releaseTTS = bindTTS(ttsBtn);
-      };
-      window.addEventListener('pointerdown', pointerReveal, { once: true });
-      releasePointer = () => window.removeEventListener('pointerdown', pointerReveal);
-    }
-    evaluateOverflowCompact();
-    if (typeof ResizeObserver === 'function') {
-      disconnectResizeObservers();
-      const observe = (node) => {
-        if (!node) return;
-        const observer = new ResizeObserver(handleResize);
-        observer.observe(node);
-        resizeObservers.push(observer);
-      };
-      observe(navControls);
-      observe(navTools);
-    } else {
-      window.addEventListener('resize', handleResize);
-      releaseResize = () => window.removeEventListener('resize', handleResize);
-    }
-    const fonts = typeof document !== 'undefined' ? document.fonts : undefined;
-    if (fonts) {
-      const handleFontEvent = () => evaluateOverflowCompact();
-      const ready = fonts.ready;
-      if (ready && typeof ready.then === 'function') {
-        ready.then(handleFontEvent).catch(() => {});
+
+    const handleFocusIn = (event) => {
+      if (!showNav) return;
+      const target = event.target;
+      if (!navEl?.contains(target) && !menuButton?.contains(target)) {
+        showNav = false;
       }
-      if (typeof fonts.addEventListener === 'function') {
-        fonts.addEventListener('loadingdone', handleFontEvent);
-        fonts.addEventListener('loadingerror', handleFontEvent);
-        releaseFonts = () => {
-          fonts.removeEventListener('loadingdone', handleFontEvent);
-          fonts.removeEventListener('loadingerror', handleFontEvent);
-        };
+    };
+
+    const handleKeydown = (event) => {
+      if (event.key === 'Escape' && showNav) {
+        showNav = false;
+        tick().then(() => menuButton?.focus());
       }
-    }
+    };
+
+    document.addEventListener('click', handleClick, true);
+    document.addEventListener('focusin', handleFocusIn, true);
+    document.addEventListener('keydown', handleKeydown);
+    cleanupDocumentHandlers = () => {
+      document.removeEventListener('click', handleClick, true);
+      document.removeEventListener('focusin', handleFocusIn, true);
+      document.removeEventListener('keydown', handleKeydown);
+    };
+    return () => {
+      cleanupTheme?.();
+      cleanupTTS?.();
+      cleanupDocumentHandlers?.();
+    };
   });
-  $: {
-    if (typeof document !== 'undefined') {
-      if (menuOpen && isCompact) {
-        document.documentElement.dataset.navOpen = 'true';
-        if (!releaseScroll) {
-          const previousOverflow = document.body.style.overflow;
-          document.body.style.overflow = 'hidden';
-          releaseScroll = () => {
-            document.body.style.overflow = previousOverflow;
-          };
-        }
-      } else {
-        delete document.documentElement.dataset.navOpen;
-        releaseScroll?.();
-        releaseScroll = undefined;
-      }
-    }
+
+  $: if (themeButton) {
+    themeButton.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
   }
 
-  onDestroy(() => {
-    cleanupTheme?.();
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('keydown', handleKeydown);
-    }
-    mediaCleanup?.();
-    disconnectResizeObservers();
-    releaseResize?.();
-    releaseResize = undefined;
-    releaseTTS?.();
-    releasePointer?.();
-    releasePointer = undefined;
-    releaseFonts?.();
-    releaseFonts = undefined;
-    if (typeof document !== 'undefined') {
-      delete document.documentElement.dataset.navOpen;
-    }
-    releaseScroll?.();
-    releaseScroll = undefined;
-  });
+  $: themeLabel = theme === 'dark' ? 'Use light theme' : 'Use dark theme';
+  $: menuLabel = showNav ? 'Close navigation menu' : 'Open navigation menu';
 </script>
-<nav class="glass top-nav header-utility" data-open={menuOpen} data-compact={isCompact}>
-  <span class="nav-halo" aria-hidden="true"></span>
-  <a href={`${base}/`} class="h2 text-gradient brand" on:click={closeMenu}>LumiGrid</a>
-  <div
-    id="header-menu"
-    class="nav-controls"
-    bind:this={navControls}
-    aria-hidden={isCompact && !menuOpen}
-    inert={isCompact && !menuOpen}
-    hidden={isCompact && !menuOpen}
-  >
-    <div class="nav-tools" bind:this={navTools}>
-      <label class="sr-only" for="brandTheme">Brand theme</label>
-      <select id="brandTheme" bind:this={brandSel}>
-        <option value="rf">RF Default</option>
-        <option value="contrast">High-Contrast Cyan</option>
-        <option value="warm">Warm Magenta</option>
-      </select>
-      {#if supportsTTS}
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<div class="util">
+  <div class="util-inner container">
+    <a href={`${base}/`} class="btn" aria-label="Home">LumiGrid</a>
+    <div class="spacer"></div>
+    <button
+      class="btn"
+      type="button"
+      bind:this={themeButton}
+      data-theme={theme}
+      aria-pressed={theme === 'dark'}
+    >
+      <span class="dot" aria-hidden="true"></span>
+      <span class="btn-label">{themeLabel}</span>
+    </button>
+      {#if ttsSupported}
         <button
-          class="btn ghost tts-toggle"
+          class="btn"
           type="button"
-          bind:this={ttsBtn}
-          aria-pressed="false"
-          data-tts="off"
-          data-label-off="Read aloud"
+          bind:this={readButton}
           data-label-on="Reading"
-          hidden={!revealTTS}
-          title="Toggle read-aloud mode. When enabled, double-click text to hear it."
+          data-label-off="Read"
+          aria-pressed="false"
         >
-          <span class="btn-icon" aria-hidden="true">🔊</span>
-          <span class="btn-label" data-tts-label>Read aloud</span>
-          <span class="btn-indicator" data-tts-indicator aria-hidden="true"></span>
+          <span class="dot" data-tts-indicator aria-hidden="true" hidden></span>
+          <span class="btn-label" data-tts-label>Read</span>
         </button>
-      {:else}
-        <span class="sr-only" aria-live="polite">Read-aloud mode is unavailable in this browser.</span>
       {/if}
-      <button
-        id="themeToggle"
-        bind:this={themeBtn}
-        class="btn ghost theme-toggle"
-        type="button"
-        aria-pressed={themeMode === 'dark'}
-        aria-label="Toggle dark or light theme"
-        data-theme={themeMode}
-      >
-        <span class="btn-icon" aria-hidden="true">{themeMode === 'dark' ? '🌙' : '☀️'}</span>
-        <span class="btn-label">{themeMode === 'dark' ? 'Dark' : 'Light'}</span>
-      </button>
-    </div>
-    <a class="btn primary cta" href="#vision" on:click={closeMenu}>Vision</a>
+    <button
+      class="btn"
+      type="button"
+      bind:this={menuButton}
+      aria-label={menuLabel}
+      aria-haspopup="true"
+      aria-controls="site-nav"
+      aria-expanded={showNav}
+      on:click={() => (showNav = !showNav)}
+      on:keydown={(event) => {
+        if (event.key === 'Escape' && showNav) {
+          showNav = false;
+        }
+      }}
+    >
+      Menu
+    </button>
   </div>
-  <button
-    class="menu-toggle"
-    type="button"
-    aria-expanded={menuOpen}
-    aria-controls="header-menu"
-    on:click={toggleMenu}
+  <nav
+    id="site-nav"
+    hidden={!showNav}
+    class="container"
+    aria-label="Primary"
+    style="padding:.5rem .75rem;"
+    bind:this={navEl}
   >
-    <span class="menu-label">Menu</span>
-    <span class="menu-icon" aria-hidden="true">
-      <span></span>
-      <span></span>
-      <span></span>
-    </span>
-  </button>
-</nav>
-{#if isCompact && menuOpen}
-  <div
-    class="nav-overlay"
-    aria-hidden="true"
-    on:click={closeMenu}
-    transition:fade={{ duration: 200 }}
-  ></div>
-{/if}
+    <div class="chips" role="navigation" aria-label="Sections">
+      <a class="chip" href="#what">What</a>
+      <a class="chip" href="#demo">LED Demo</a>
+      <a class="chip" href="#nodes">Nodes</a>
+      <a class="chip" href="#contact">Contact</a>
+    </div>
+  </nav>
+</div>
