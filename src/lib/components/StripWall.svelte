@@ -1,22 +1,52 @@
 <script>
+  export let externalPalette = undefined;
+  export let externalSpeed = undefined;
+
   let palette = 'rf';
   let speed = 1;
 
   const pal = {
-    rf:
-      'repeating-linear-gradient(90deg, rgba(28,197,220,.95) 0 6px, rgba(231,59,163,.95) 6px 12px, rgba(108,43,217,.95) 12px 18px, rgba(255,209,102,.95) 18px 24px)',
-    neon:
-      'repeating-linear-gradient(90deg, rgba(0,229,255,.95) 0 6px, rgba(119,247,203,.95) 6px 12px, rgba(199,247,1,.95) 12px 18px, rgba(0,191,255,.95) 18px 24px)',
-    sunset:
-      'repeating-linear-gradient(90deg, rgba(255,123,123,.95) 0 6px, rgba(255,162,76,.95) 6px 12px, rgba(255,209,102,.95) 12px 18px, rgba(255,214,231,.95) 18px 24px)'
+    rf: 'repeating-linear-gradient(90deg, rgba(28,197,220,.95) 0 6px, rgba(231,59,163,.95) 6px 12px, rgba(108,43,217,.95) 12px 18px, rgba(255,209,102,.95) 18px 24px)',
+    neon: 'repeating-linear-gradient(90deg, rgba(0,229,255,.95) 0 6px, rgba(119,247,203,.95) 6px 12px, rgba(199,247,1,.95) 12px 18px, rgba(0,191,255,.95) 18px 24px)',
+    sunset: 'repeating-linear-gradient(90deg, rgba(255,123,123,.95) 0 6px, rgba(255,162,76,.95) 6px 12px, rgba(255,209,102,.95) 12px 18px, rgba(255,214,231,.95) 18px 24px)'
   };
 
   $: speedValue = Number(speed) || 1;
   $: dur = `${8 / Math.max(0.5, Math.min(3, speedValue))}s`;
+  $: summary = `${palette.toUpperCase()} palette • ${speedValue.toFixed(1)}× speed`;
+
+  $: if (externalPalette !== undefined && externalPalette !== palette) {
+    palette = externalPalette;
+  }
+
+  $: if (externalSpeed !== undefined && externalSpeed !== speed) {
+    speed = externalSpeed;
+  }
+
+  function setPalette(value) {
+    palette = value;
+    if (externalPalette !== undefined) {
+      externalPalette = value;
+    }
+  }
+
+  function setSpeed(value) {
+    const next = Number(value);
+    speed = Number.isNaN(next) ? speed : next;
+    if (externalSpeed !== undefined) {
+      externalSpeed = speed;
+    }
+  }
+
+  function preset(paletteValue, speedValue) {
+    setPalette(paletteValue);
+    setSpeed(speedValue);
+  }
 </script>
 
 <section class="section container card" aria-labelledby="wall-h">
   <h2 id="wall-h" style="font-size:var(--fs-h2);margin:0 0 .5rem">LED strip wall</h2>
+  <p class="wall-meta" aria-live="polite" role="status">{summary}</p>
   <div class="wall">
     {#each [0, 1, 2, 3, 4] as i}
       <div class="strip" style="--speed:{dur}; margin:{i ? '.6rem 0 0' : 0}">
@@ -32,7 +62,7 @@
         class="chip"
         role="radio"
         aria-checked={palette === k}
-        on:click={() => (palette = k)}
+        on:click={() => setPalette(k)}
       >
         {k}
       </button>
@@ -41,22 +71,20 @@
   <div style="margin-top:.75rem">
     <label>
       Speed
-      <input type="range" min="0.5" max="3" step="0.1" bind:value={speed} />
+      <input
+        type="range"
+        min="0.5"
+        max="3"
+        step="0.1"
+        value={speed}
+        on:input={(e) => setSpeed(e.currentTarget.value)}
+      />
     </label>
   </div>
   <div class="chips" aria-label="Presets" style="margin-top:.5rem">
-    <button type="button" class="chip" on:click={() => {
-      palette = 'rf';
-      speed = 0.8;
-    }}>Calm</button>
-    <button type="button" class="chip" on:click={() => {
-      palette = 'rf';
-      speed = 1;
-    }}>Clean</button>
-    <button type="button" class="chip" on:click={() => {
-      palette = 'sunset';
-      speed = 1.4;
-    }}>Halo</button>
+    <button type="button" class="chip" on:click={() => preset('rf', 0.8)}>Calm</button>
+    <button type="button" class="chip" on:click={() => preset('rf', 1)}>Clean</button>
+    <button type="button" class="chip" on:click={() => preset('sunset', 1.4)}>Halo</button>
   </div>
 </section>
 
@@ -66,6 +94,11 @@
     border-radius: 1rem;
     padding: 1rem;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+  .wall-meta {
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+    color: var(--muted);
   }
   input[type='range'] {
     accent-color: var(--warm);
