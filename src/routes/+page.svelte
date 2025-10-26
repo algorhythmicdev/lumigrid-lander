@@ -3,6 +3,7 @@
   import '$lib/styles.css';
   import Header from '$lib/components/Header.svelte';
   import Hero from '$lib/components/Hero.svelte';
+  import EffectEditor from '$lib/components/EffectEditor.svelte';
   import LedDemo from '$lib/components/LedDemo.svelte';
   import NodeViz from '$lib/components/NodeViz.svelte';
   import ContactForm from '$lib/components/ContactForm.svelte';
@@ -64,6 +65,7 @@
     </div>
   </section>
 
+  <EffectEditor />
   <LedDemo />
   <NodeViz />
 

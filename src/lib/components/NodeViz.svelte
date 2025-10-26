@@ -1,9 +1,19 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
+  import { pulseColor, state as effectState } from '$lib/stores/effects';
 
   const WIDTH = 340;
   const HEIGHT = 340;
   const tooltipId = 'node-tooltip';
+
+  let color = '#6c2bd9';
+  let speed = 1;
+  const unsubscribeColor = pulseColor.subscribe((value) => {
+    color = value;
+  });
+  const unsubscribeState = effectState.subscribe((value) => {
+    speed = value.speed;
+  });
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -11,7 +21,8 @@
     id: 'N' + (i + 1),
     x: i % 3,
     y: Math.floor(i / 3),
-    active: false
+    active: false,
+    role: ['Leader', 'Peer', 'Relay'][i % 3]
   }));
 
   let nodes = baseNodes;
@@ -88,7 +99,7 @@
       stopLoop();
       return;
     }
-    t = time * 0.002;
+    t = time * 0.002 * speed;
     raf = requestAnimationFrame(loop);
   };
 
@@ -131,15 +142,19 @@
       }
     };
   });
+
+  onDestroy(() => {
+    unsubscribeColor();
+    unsubscribeState();
+  });
 </script>
 
-<section class="section container card" id="nodes" aria-labelledby="mesh-h">
+<section class="section container card" id="mesh" aria-labelledby="mesh-h">
   <h2 id="mesh-h" style="font-size:var(--fs-h2);margin:0 0 .5rem">Node visualization</h2>
   <div class="node-area">
     <svg
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       width="100%"
-      height="auto"
       role="img"
       aria-label="Nine synchronized nodes in a grid"
     >
@@ -171,7 +186,7 @@
               cy={cy(n)}
               r={18 + 2 * Math.sin(t)}
               fill="none"
-              stroke="rgba(231,59,163,.45)"
+              stroke={n.active ? color : 'rgba(231,59,163,.45)'}
               stroke-width="2"
             />
             <circle cx={cx(n)} cy={cy(n)} r="12" fill={n.active ? 'url(#grad)' : 'rgba(255,255,255,.85)'} />

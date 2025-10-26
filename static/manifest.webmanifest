@@ -1,0 +1,11 @@
+{
+  "name": "LumiGrid Lander",
+  "short_name": "LumiGrid",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0b1120",
+  "theme_color": "#0b1120",
+  "icons": [
+    { "src": "/lumigrid-lander/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

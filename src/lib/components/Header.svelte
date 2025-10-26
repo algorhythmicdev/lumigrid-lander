@@ -1,22 +1,40 @@
 <script>
   import { base } from '$app/paths';
   import { onMount, tick } from 'svelte';
+  import { runtimeBase } from '$lib/utils/basepath';
   import { bindTTS, bindThemeToggle } from '$lib/fx.js';
 
   let showNav = false;
   let theme = 'dark';
   let themeLabel = 'Use light theme';
+  let resolvedBase = base;
   let themeButton;
   let readButton;
   let menuButton;
+  let transparencyButton;
   let navEl;
   let menuLabel = 'Open navigation menu';
   let cleanupTheme = () => {};
   let cleanupTTS = () => {};
   let cleanupDocumentHandlers = () => {};
+  let cleanupTransparencyPreference = () => {};
   let ttsSupported = false;
+  let lowTransparency = false;
+
+  const setLowTransparency = (value) => {
+    if (lowTransparency === value) return;
+    lowTransparency = value;
+    if (typeof document !== 'undefined') {
+      document.documentElement.toggleAttribute('data-lowtrans', value);
+    }
+  };
+
+  const toggleTransparency = () => {
+    setLowTransparency(!lowTransparency);
+  };
 
   onMount(() => {
+    resolvedBase = base || runtimeBase();
     if (themeButton) {
       cleanupTheme = bindThemeToggle(themeButton, (value) => {
         theme = value;
@@ -67,6 +85,22 @@
       }
     };
 
+    if (typeof matchMedia === 'function') {
+      const reduceTransparencyQuery = matchMedia('(prefers-reduced-transparency: reduce)');
+      setLowTransparency(
+        document.documentElement.hasAttribute('data-lowtrans') || reduceTransparencyQuery.matches
+      );
+      const handleTransparencyChange = (event) => {
+        setLowTransparency(event.matches);
+      };
+      reduceTransparencyQuery.addEventListener('change', handleTransparencyChange);
+      cleanupTransparencyPreference = () => {
+        reduceTransparencyQuery.removeEventListener('change', handleTransparencyChange);
+      };
+    } else if (typeof document !== 'undefined') {
+      setLowTransparency(document.documentElement.hasAttribute('data-lowtrans'));
+    }
+
     document.addEventListener('click', handleClick, true);
     document.addEventListener('focusin', handleFocusIn, true);
     document.addEventListener('keydown', handleKeydown);
@@ -79,6 +113,7 @@
       cleanupTheme?.();
       cleanupTTS?.();
       cleanupDocumentHandlers?.();
+      cleanupTransparencyPreference?.();
     };
   });
 
@@ -94,7 +129,7 @@
 
 <div class="util">
   <div class="util-inner container">
-    <a href={`${base}/`} class="btn" aria-label="Home">LumiGrid</a>
+    <a href={`${resolvedBase}/`} class="btn" aria-label="Home">LumiGrid</a>
     <div class="spacer"></div>
     <button
       class="btn"
@@ -106,19 +141,28 @@
       <span class="dot" aria-hidden="true"></span>
       <span class="btn-label">{themeLabel}</span>
     </button>
-      {#if ttsSupported}
-        <button
-          class="btn"
-          type="button"
-          bind:this={readButton}
-          data-label-on="Reading"
-          data-label-off="Read"
-          aria-pressed="false"
-        >
-          <span class="dot" data-tts-indicator aria-hidden="true" hidden></span>
-          <span class="btn-label" data-tts-label>Read</span>
-        </button>
-      {/if}
+    <button
+      class="btn"
+      type="button"
+      bind:this={transparencyButton}
+      aria-pressed={lowTransparency}
+      on:click={toggleTransparency}
+    >
+      <span class="btn-label">Transparency</span>
+    </button>
+    {#if ttsSupported}
+      <button
+        class="btn"
+        type="button"
+        bind:this={readButton}
+        data-label-on="Reading"
+        data-label-off="Read"
+        aria-pressed="false"
+      >
+        <span class="dot" data-tts-indicator aria-hidden="true" hidden></span>
+        <span class="btn-label" data-tts-label>Read</span>
+      </button>
+    {/if}
     <button
       class="btn"
       type="button"
@@ -147,8 +191,9 @@
   >
     <div class="chips" role="navigation" aria-label="Sections">
       <a class="chip" href="#what">What</a>
+      <a class="chip" href="#editor">Editor</a>
       <a class="chip" href="#demo">LED Demo</a>
-      <a class="chip" href="#nodes">Nodes</a>
+      <a class="chip" href="#mesh">Nodes</a>
       <a class="chip" href="#contact">Contact</a>
     </div>
   </nav>

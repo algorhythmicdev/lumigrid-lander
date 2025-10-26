@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title>LumiGrid Icon</title>
+  <desc>Stylized concentric rings over a dark gradient background</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c132f" />
+      <stop offset="100%" stop-color="#0b1120" />
+    </linearGradient>
+    <radialGradient id="pulse" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e73ba3" stop-opacity="0.85" />
+      <stop offset="40%" stop-color="#6c2bd9" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="transparent" />
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)" rx="64" ry="64" />
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="256" cy="256" r="160" stroke="#00e5ff" stroke-width="36" opacity="0.4" />
+    <circle cx="256" cy="256" r="112" stroke="#77f7cb" stroke-width="28" opacity="0.55" />
+    <circle cx="256" cy="256" r="64" stroke="#c7f701" stroke-width="20" opacity="0.7" />
+  </g>
+  <circle cx="256" cy="256" r="128" fill="url(#pulse)" />
+  <circle cx="256" cy="256" r="36" fill="#ffd166" />
+</svg>
