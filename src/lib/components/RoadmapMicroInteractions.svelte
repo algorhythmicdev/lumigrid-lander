@@ -4,32 +4,32 @@
   const focusAreas = [
     {
       id: 'calibration',
-      title: 'Adaptive colour calibration',
-      detail: 'Nodes sample each other and align hues across the mesh.',
+      title: 'Colour alignment',
+      detail: 'Nodes sample each other to keep colours matching across the mesh.',
       hue: 42
     },
     {
       id: 'audio',
-      title: 'Distributed audio analysis',
-      detail: 'Beat detection runs in parallel so the grid never loses tempo.',
+      title: 'Audio response',
+      detail: 'Distributed beat detection keeps lighting in time with audio.',
       hue: 180
     },
     {
       id: 'city',
-      title: 'City-scale timelines',
-      detail: 'Cloud cues ripple through districts on one shared schedule.',
+      title: 'Multi-site schedules',
+      detail: 'Shared timelines let districts trigger the same cue across sites.',
       hue: 312
     },
     {
       id: 'signage',
-      title: 'Signage intelligence',
-      detail: 'CMS bridges, linting, and failover overlays keep messaging current.',
+      title: 'Signage tooling',
+      detail: 'CMS bridges, checks, and failover overlays keep messaging current.',
       hue: 96
     }
   ];
 
   let selected = new Set(['calibration']);
-  let note = 'Tap what you care about and we’ll tailor roadmap updates.';
+  let note = 'Choose the roadmap areas you want to hear about.';
 
   function toggle(area) {
     if (selected.has(area.id)) {
@@ -49,12 +49,12 @@
       .map(id => focusAreas.find(area => area.id === id)?.title)
       .filter(Boolean);
     if (labels.length === 1) {
-      return `${labels[0]} alerts queued — we will share progress the moment it lands.`;
+      return `${labels[0]} updates queued—we will share progress as it lands.`;
     }
     if (labels.length === focusAreas.length) {
-      return 'Full-spectrum roadmap mode enabled. Expect deep dives across calibration, audio, and city sync.';
+      return 'You will receive updates on every roadmap focus area.';
     }
-    return `We’ll send highlights on ${labels.slice(0, -1).join(', ')} and ${labels.at(-1)}.`;
+    return `We will send highlights on ${labels.slice(0, -1).join(', ')} and ${labels.at(-1)}.`;
   }
 
   function goToForm() {
@@ -70,7 +70,7 @@
 <div class="roadmap-card glass">
   <header>
     <h3>Shape the roadmap</h3>
-    <p>Select the future-facing capabilities you want to pilot. We’ll tune sign-up emails to match.</p>
+    <p>Select the capabilities you want early access to and we will tailor updates accordingly.</p>
   </header>
 
   <div class="focus-grid">
@@ -89,7 +89,7 @@
   </div>
 
   <div class="cta-line">
-    <button class="btn primary" type="button" on:click={goToForm}>Sync me with the roadmap</button>
+    <button class="btn primary" type="button" on:click={goToForm}>Send me roadmap updates</button>
     <span class="micro-note" aria-live="polite">{note}</span>
   </div>
 </div>

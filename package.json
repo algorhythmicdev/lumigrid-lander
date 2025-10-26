@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "node build",
-    "check": "svelte-kit sync && svelte-check --fail-on-warnings",
+    "lint:copy": "node scripts/lint-copy.mjs",
+    "check": "svelte-kit sync && npm run lint:copy && svelte-check --fail-on-warnings",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:unit": "vitest run --passWithNoTests"

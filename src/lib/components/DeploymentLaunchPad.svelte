@@ -1,36 +1,36 @@
 <script>
   const phases = [
     {
-      title: 'Preflight modeling',
+      title: 'Design review',
       description:
-        'Simulate the install before metal work begins — every circuit, pixel map, and sync hop is rehearsed in the launch pad.',
+        'Plan wiring, power, and sync before hardware is ordered so the install matches what the firmware can drive.',
       actions: [
-        'Power envelopes validated against firmware guard rails',
-        'Mesh topology rehearsed with redundant masters',
-        'Effect palettes hydrated with venue-specific gradients',
-        'Signage placeholders templated with your asset kit'
+        'Check LED load and breaker limits against firmware guardrails.',
+        'Map node roles and confirm there is a spare leader.',
+        'Load example palettes that match the project palette.',
+        'Prepare signage placeholders with your actual assets.'
       ]
     },
     {
       title: 'Bench commissioning',
       description:
-        'Bundle a pocket of LumiGrid into a staging kit so technicians can plug, flash, and validate timelines on-site within minutes.',
+        'Stage a test rig so technicians can flash firmware, set Wi-Fi, and rehearse cues before arriving on-site.',
       actions: [
-        'Provision nodes with Wi-Fi + fallback AP scripts',
-        'Run deterministic sync test suite with heartbeat scopes',
-        'Sign off LED + PWM load pairing in the DualOutput console',
-        'Load signage loops into the preview frame for readability checks'
+        'Provision each node with Wi-Fi and an access point fallback.',
+        'Run the sync test to confirm drift stays within spec.',
+        'Pair LED loads to confirm current draw and dimming.',
+        'Review signage loops for readability on the target screens.'
       ]
     },
     {
-      title: 'Showtime escalation',
+      title: 'Go-live support',
       description:
-        'When the venue opens, the launch pad keeps telemetry, cue playback, and emergency overrides one tap away.',
+        'During opening, the same console tracks telemetry, timelines, and any emergency looks.',
       actions: [
-        'Ops dashboard mirrored to mobile + control booth',
-        '24/7 Signal + email escalation into the engineering thread',
-        'Hot spare presets for blackout, warm-dim, and promo looks',
-        'Digital signage triggers mirrored to asset placeholders and CMS webhooks'
+        'Mirror the dashboard to the control desk and mobile devices.',
+        'Keep contact routes to the engineering team open day and night.',
+        'Store backup looks for blackout, warm-dim, and promo scenes.',
+        'Confirm signage triggers line up with the CMS or playlist feeds.'
       ]
     }
   ];
@@ -39,31 +39,30 @@
     {
       label: 'Mesh sync drift',
       value: '< 0.8 ms',
-      note: 'Captured from the bench scope after a 20 minute thermal soak.'
+      note: 'Measured on the bench after a 20 minute warm-up.'
     },
     {
       label: 'Nodes online',
       value: '12 / 12',
-      note: 'All peers heartbeat + respond to REST and MQTT status pings.'
+      note: 'All peers respond to REST status checks.'
     },
     {
       label: 'Power headroom',
       value: '18%',
-      note: 'Live monitor keeps PWM ramps inside thermal and breaker margins.'
+      note: 'PWM ramps stay within the power budget.'
     }
   ];
 
-  const channels = ['Signal + email bridge', 'Remote timeline rehearsal', 'On-site calibration partner', 'Signage asset ingest'];
+  const channels = ['Email or phone support', 'Remote timeline rehearsal', 'On-site calibration partner', 'Signage asset ingest'];
 </script>
 
 <div class="launch-shell reveal">
   <div class="launch-intro glass-panel">
     <p class="launch-eyebrow">Deployment launch pad</p>
-    <h3 class="launch-title">Ready the mesh, then roll it live</h3>
+    <h3 class="launch-title">Prepare the install and opening night</h3>
     <p class="launch-lead">
-      Every LumiGrid install ships with the same glass control surface the demo runs on — tuned tokens, signage placeholders,
-      rounded halos, and field-proven commissioning rituals. The launch pad stages rehearsals, validates sync, ingests assets,
-      and guides the crew through opening night.
+      The launch pad is a checklist we use on every LED Node project. It keeps power checks, sync tests, and signage reviews in
+      one place so your crew can rehearse before guests arrive.
     </p>
     <div class="launch-channels" role="list">
       {#each channels as channel}
@@ -95,8 +94,8 @@
         <p class="telemetry-eyebrow">Readiness telemetry</p>
         <h4>Field confidence snapshot</h4>
         <p>
-          The live dashboard mirrors into the launch pad, surfacing drift, load headroom, and node count so crews can stage,
-          rehearse, and trigger cues with certainty.
+          These sample values show the kind of telemetry teams watch during commissioning: sync drift, live node count, and
+          power headroom.
         </p>
       </div>
       <div class="telemetry-metrics">
@@ -110,7 +109,7 @@
       </div>
       <footer class="telemetry-footer">
         <p>
-          Backups stay synced on a hot spare node — swap leadership in the Mesh Navigator and the launch pad updates instantly.
+          Keep a spare controller flashed and ready so you can swap leadership without losing the running scene.
         </p>
       </footer>
     </aside>

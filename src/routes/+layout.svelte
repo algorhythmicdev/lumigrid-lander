@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
+  import { loadCaps } from '$lib/stores/capabilities';
 
   function startFX() {
     const cvs = document.getElementById('lg-fx');
@@ -52,6 +53,7 @@
 
   onMount(() => {
     startFX();
+    loadCaps().catch(() => {});
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register(`${import.meta.env.BASE_URL || ''}service-worker.js`)

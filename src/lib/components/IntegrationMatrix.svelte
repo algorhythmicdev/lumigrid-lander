@@ -7,32 +7,32 @@
     {
       step: '01',
       title: 'Discovery',
-      detail: 'Nodes announce over mDNS + MQTT so CMS, signage suites, or show controllers map the mesh instantly.'
+      detail: 'Nodes announce over mDNS and MQTT so control software can find them.'
     },
     {
       step: '02',
       title: 'Auth handshake',
-      detail: 'Signed tokens pair browsers, signage uploaders, and control rooms; REST keys rotate on the same cadence as firmware updates.'
+      detail: 'Clients exchange signed tokens and REST keys rotate with firmware updates.'
     },
     {
       step: '03',
       title: 'Cue stream',
-      detail: 'Multicast tick + SSE playhead keep REST triggers, signage swaps, MQTT cues, and OSC pulses in phase.'
+      detail: 'Multicast timing keeps REST triggers, signage swaps, and MQTT cues aligned.'
     },
     {
       step: '04',
       title: 'Feedback loop',
-      detail: 'Telemetry mirrors into dashboards, showing power headroom, signage asset status, and leadership swaps in real time.'
+      detail: 'Telemetry feeds dashboards with power headroom, signage status, and node leadership.'
     }
   ];
 
   const bridgeModes = [
-    'MQTT <-> REST bridge for signage CMS',
-    'OSC clock for DAWs & show control',
-    'Lighting consoles via Art-Net / sACN proxy',
-    'BMS hooks publishing to Modbus gateway',
-    'Asset ingest webhooks for poster + loop placeholders',
-    'Playlist + ticker sync via SSE feed'
+    'MQTT to REST bridge for signage CMS updates',
+    'OSC clock feed for show control',
+    'Lighting console link via Art-Net or sACN proxy',
+    'Building management hook through Modbus gateway',
+    'Asset ingest webhooks for posters and loops',
+    'Playlist and ticker sync with SSE feed'
   ];
 </script>
 
@@ -43,8 +43,7 @@
     <span class="matrix-badge">API mesh</span>
     <h3 id="integration-matrix-title">Integration matrix</h3>
     <p>
-      Wire LumiGrid into creative tools, building control, or live show timelines while the glass console keeps
-      safeguards locked.
+      Connect LED Node to signage CMS tools, building control, or live show timelines while keeping access controlled.
     </p>
   </header>
 
@@ -52,7 +51,7 @@
     <section class="matrix-column api" aria-labelledby="integration-api-title">
       <div class="column-head">
         <h4 id="integration-api-title">Endpoint lattice</h4>
-        <p>Direct calls mirror the README so every install ships with the same contract.</p>
+        <p>Endpoints match the public API contract so installs stay consistent.</p>
       </div>
       <ul class="endpoint-list">
         {#each endpoints as endpoint (endpoint.endpoint)}
@@ -67,7 +66,7 @@
     <section class="matrix-column handshake" aria-labelledby="integration-handshake-title">
       <div class="column-head">
         <h4 id="integration-handshake-title">Handshake timeline</h4>
-        <p>Every halo beat shares the same rounded choreography—from discovery to telemetry.</p>
+        <p>Steps show how a controller and a client connect and stay in sync.</p>
       </div>
       <ol class="handshake-track">
         {#each handshakePhases as phase (phase.step)}
@@ -90,7 +89,7 @@
     <section class="matrix-column safeguards" aria-labelledby="integration-safeguards-title">
       <div class="column-head">
         <h4 id="integration-safeguards-title">Safeguards & signals</h4>
-        <p>Halo diagnostics surface instantly so operators see the mesh breathing.</p>
+        <p>Diagnostics surface so operators can spot issues quickly.</p>
       </div>
       <div class="telemetry-stack" role="list">
         {#each telemetry as item (item.label)}

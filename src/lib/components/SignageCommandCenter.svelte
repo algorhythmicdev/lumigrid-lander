@@ -4,36 +4,33 @@
       name: 'Lobby signage lane',
       status: 'Live',
       tone: 'good',
-      detail:
-        'Lobby canvases mirror the welcome playlist with caption lint, luminance guards, and dual-output sync telemetry.',
+      detail: 'Lobby screens follow the welcome playlist with captions checked for contrast.',
       metrics: [
-        { label: 'Contrast', value: 'AA+ verified (demo)' },
-        { label: 'Sync drift', value: '≈0.6 ms demo' },
-        { label: 'Approvals', value: 'Campaign · Ops (sample)' }
+        { label: 'Contrast', value: 'AA sample pass' },
+        { label: 'Sync drift', value: '≈0.6 ms sample' },
+        { label: 'Approvals', value: 'Campaign + Ops' }
       ]
     },
     {
       name: 'Promenade ribbon',
       status: 'Syncing',
       tone: 'info',
-      detail:
-        'Outdoor ribbon streams signage payloads alongside façade pixels with adaptive brightness tied to ambient sensors.',
+      detail: 'Outdoor ribbon pairs signage updates with façade lighting. Brightness follows the ambient sensor.',
       metrics: [
-        { label: 'Ambient', value: '42% dimmed (demo sensor)' },
-        { label: 'Heartbeat', value: 'demo heartbeat' },
-        { label: 'Fallback', value: 'Ready (simulated)' }
+        { label: 'Ambient', value: '42% dimmed sample' },
+        { label: 'Heartbeat', value: 'Last ping 12 s ago' },
+        { label: 'Fallback', value: 'Preset ready' }
       ]
     },
     {
       name: 'Emergency overrides',
       status: 'Armed',
       tone: 'alert',
-      detail:
-        'Emergency slates inherit the emergency palette tokens and propagate rehearsed copy across every node.',
+      detail: 'Safety scenes are loaded and will replace signage if an override is triggered.',
       metrics: [
-        { label: 'Palette', value: 'Emergency token (sample)' },
-        { label: 'Drill', value: 'Drill passed (demo)' },
-        { label: 'Acknowledged', value: 'Roster A (sample)' }
+        { label: 'Palette', value: 'Emergency colours' },
+        { label: 'Drill', value: 'Last test: pass' },
+        { label: 'Acknowledged', value: 'Roster group A' }
       ]
     }
   ];
@@ -43,51 +40,51 @@
       title: 'CMS webhook heartbeat',
       status: 'Stable',
       tone: 'good',
-      detail: 'SSE signage bridge delivering placeholder updates across campaign + safety lanes.',
-      time: 'Demo 14s ago'
+      detail: 'Latest signage payload received without error.',
+      time: '14 s sample'
     },
     {
       title: 'Partner takeover staging',
       status: 'Action needed',
       tone: 'alert',
-      detail: 'Sponsor playlist awaiting localisation approval before the takeover slot unlocks.',
-      time: 'Awaiting review (demo)'
+      detail: 'Sponsor playlist is waiting for localisation approval.',
+      time: 'Awaiting review'
     },
     {
       title: 'Transit relay overlay',
       status: 'Monitoring',
       tone: 'info',
-      detail: 'Metro feed mirrored into the data rail with adaptive typography tokens watching contrast.',
-      time: 'Live (demo)'
+      detail: 'Transit feed is live and publishing schedule updates.',
+      time: 'Live'
     }
   ];
 
   const defaultPlaybooks = [
     {
-      title: 'Morning signage warm-up',
-      summary: 'Validate daypart playlists before doors open so lobby, promenade, and partner lanes stay aligned.',
+      title: 'Morning signage check',
+      summary: 'Confirm day scenes before doors open.',
       steps: [
-        'Load fresh campaign placeholders into the signage asset board and verify approvals.',
-        'Trigger DualOutputConfigurator rehearsal to confirm signage and lighting cues stay in phase.',
-        'Confirm CMS bridges, SSE heartbeats, and fallback signage packs from the operations observatory.'
+        'Review the day playlist and confirm captions display correctly.',
+        'Run a short lighting rehearsal so blends match the signage looks.',
+        'Check CMS feeds or uploads for the next scheduled update.'
       ]
     },
     {
-      title: 'Partner takeover rehearsal',
-      summary: 'Give sponsor playlists a dedicated rehearsal window with localisation and compliance in view.',
+      title: 'Sponsor takeover prep',
+      summary: 'Verify partner content before a planned takeover.',
       steps: [
-        'Run localisation packs through the SignageAssetBoard to validate typography and contrast.',
-        'Route sponsor colours through the token mixer to maintain WCAG guardrails.',
-        'Capture approvals and acknowledgements so the takeover unlocks without escalations.'
+        'Preview the takeover assets on the LED Node signage board.',
+        'Confirm colours and brightness meet the brand agreement.',
+        'Log approvals so the takeover can start on time.'
       ]
     },
     {
-      title: 'Emergency override drill',
-      summary: 'Keep safety messaging rehearsed so roster handoffs can trigger overrides without hesitation.',
+      title: 'Emergency drill',
+      summary: 'Practice the safety override with the venue team.',
       steps: [
-        'Launch the emergency signage preset to ensure emergency palette tokens propagate mesh-wide.',
-        'Verify roster acknowledgements inside the operations observatory escalation thread.',
-        'Reset to the quiet-mode placeholder and confirm the signage audit trail logs the drill.'
+        'Trigger the safety scene and confirm each screen switches.',
+        'Record acknowledgements from the on-call roster.',
+        'Restore the normal scene and note the drill in the log.'
       ]
     }
   ];
@@ -106,12 +103,12 @@
 
   <header class="center-head">
     <span class="center-badge">Signage command center</span>
-    <h3 id="signage-center-title">Live signage oversight without leaving the controller</h3>
+    <h3 id="signage-center-title">Live signage overview</h3>
     <p>
-      Follow the real-time state of signage lanes, alerts, and rehearsed responses. Everything rides the same token system so
-      lighting, signage, and safety stories stay in sync.
+      See signage status, alerts, and ready-made responses in one place. This is the view Reclame Fabriek R&D uses during
+      installs and support calls.
     </p>
-    <p class="center-note">Example telemetry for demonstration—values update when a live mesh connects.</p>
+    <p class="center-note">Demo data shown here—connect to a live mesh to stream real values.</p>
   </header>
 
   <div class="center-grid">
@@ -119,6 +116,7 @@
       <div class="panel-head">
         <span class="panel-pill">Live lanes</span>
         <h4 id="signage-center-streams">Signage streams</h4>
+        <p>Tracks the main signage runs and their current state.</p>
       </div>
       <ul class="stream-list">
         {#each centerStreams as stream (stream.name)}
@@ -149,6 +147,7 @@
       <div class="panel-head">
         <span class="panel-pill">Escalations</span>
         <h4 id="signage-center-alerts">Alert queue</h4>
+        <p>Shows issues or approvals that need a response.</p>
       </div>
       <ul class="alert-list">
         {#each centerAlerts as alert (alert.title)}
@@ -170,6 +169,7 @@
       <div class="panel-head">
         <span class="panel-pill">Response patterns</span>
         <h4 id="signage-center-playbooks">Playbook snapshots</h4>
+        <p>Quick checklists for the on-call team.</p>
       </div>
       <ul class="playbook-list">
         {#each centerPlaybooks as book (book.title)}

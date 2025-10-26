@@ -1,6 +1,6 @@
 <script>
   const MESSAGE_LIMIT = 2000;
-  const CONTACT_EMAIL = 'hello@lumigrid.dev';
+  const CONTACT_EMAIL = 'team@reclamefabriek.dev';
 
   let name = '';
   let email = '';
@@ -58,8 +58,8 @@
     const trimmedEmail = email.trim();
     const trimmedMessage = message.trim();
 
-    const subjectName = trimmedName || 'LumiGrid friend';
-    const subject = encodeURIComponent(`LumiGrid inquiry from ${subjectName}`);
+    const subjectName = trimmedName || 'LED Node contact';
+    const subject = encodeURIComponent(`LED Node inquiry from ${subjectName}`);
     const bodyLines = [
       `Name: ${trimmedName || '—'}`,
       `Email: ${trimmedEmail || '—'}`,

@@ -3,85 +3,83 @@
     {
       pill: 'Campaign kit',
       title: 'Campaign rehearsal kit',
-      summary: 'Stage every promo look before guests arrive.',
+      summary: 'Stage campaign looks before the hardware ships.',
       items: [
         {
           label: 'Hero poster frame',
-          detail:
-            'Drop stills or motion in 16:9, 9:16, and 1:1 — safe areas auto-check contrast and crop drift.'
+          detail: 'Load stills or motion in the common ratios and confirm safe areas stay clear.'
         },
         {
           label: 'Loop + bumper lane',
-          detail: 'Pair 15s loops with intro/outro bumpers so lighting cues stay in sync with signage transitions.'
+          detail: 'Pair loops with short bumpers so lighting cues stay aligned with signage changes.'
         },
         {
           label: 'CTA ticker',
-          detail: 'Preview multilingual call-to-action copy with live width + timing lint in the signage band.'
+          detail: 'Preview multilingual call-to-action copy and check timing in the ticker band.'
         }
       ]
     },
     {
       pill: 'Operations pack',
       title: 'Operational safeguards',
-      summary: 'Keep safety messaging and night modes always rehearsed.',
+      summary: 'Keep safety messaging and quiet hours ready to trigger.',
       items: [
         {
           label: 'Emergency override',
-          detail: 'Fail-safe placeholder inherits the emergency palette tokens and pre-authorised timeline.'
+          detail: 'Store the safety scene that plays when the override is fired.'
         },
         {
           label: 'Quiet-hour slate',
-          detail: 'Night calm template dims to 60% luminance and swaps language sets automatically.'
+          detail: 'Prepare the low-brightness night template, including language changes if needed.'
         },
         {
           label: 'Escalation log',
-          detail: 'Signage swaps capture acknowledgements so operations can audit every intervention.'
+          detail: 'Keep notes on who armed or cleared each safety or maintenance message.'
         }
       ]
     },
     {
       pill: 'Data overlays',
       title: 'Live data overlays',
-      summary: 'Mirror real-time feeds without sacrificing readability.',
+      summary: 'Mirror live feeds without losing readability.',
       items: [
         {
           label: 'Occupancy pulse',
-          detail: 'Bind occupancy or ticketing feeds into a calibrated rail with adaptive contrast.'
+          detail: 'Check that occupancy or ticketing feeds remain readable in the data rail.'
         },
         {
           label: 'Transit relay',
-          detail: 'Route arrivals, departures, or shuttle ETAs through a placeholder with bilingual presets.'
+          detail: 'Load arrival or shuttle times and confirm bilingual text fits the space.'
         },
         {
           label: 'Sensor beacons',
-          detail: 'Reserve iconography and short alerts that inherit accessibility copy tokens.'
+          detail: 'Add space for sensor alerts or icons with short, clear wording.'
         }
       ]
     },
     {
       pill: 'Partner lane',
       title: 'Partner + sponsor lane',
-      summary: 'Co-create branded takeovers without risking compliance.',
+      summary: 'Prepare partner content with compliance in mind.',
       items: [
         {
           label: 'Brand palette snapshot',
-          detail: 'Token mixer keeps partner colours WCAG-checked before the playlist goes live.'
+          detail: 'List the colour values that stay within contrast guidelines.'
         },
         {
           label: 'Localization pack',
-          detail: 'Upload translations and legal copy into placeholders with per-language approvals.'
+          detail: 'Store translations and legal copy alongside the primary artwork.'
         },
         {
           label: 'Approval receipts',
-          detail: 'Every sign-off syncs back to CMS webhooks and the operations observatory timeline.'
+          detail: 'Record who approved the takeover and when it went live.'
         }
       ]
     }
   ];
 
   export let collections = defaultCollections;
-  export let note =
-    'Every asset placeholder inherits LumiGrid contrast tokens, safe areas, and timing metadata before deployment.';
+  export let note = 'Each placeholder carries contrast checks, safe areas, and timing notes before deployment.';
 
   $: board = collections?.length ? collections : defaultCollections;
 </script>
@@ -93,8 +91,8 @@
     <span class="board-badge">Signage asset board</span>
     <h3 id="signage-board-title">Placeholder coverage map</h3>
     <p>
-      Map out every placeholder the LED Node rehearses — from campaign visuals to emergency messaging and partner lanes
-      — before the playlist ever goes live.
+      Map the signage content we rehearse with LED Node—from campaign visuals to emergency messaging—before the playlist goes
+      live.
     </p>
   </header>
 
