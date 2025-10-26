@@ -1,59 +1,59 @@
 <script>
   const defaultPhases = [
     {
-      title: 'Asset intake',
-      summary: 'Collect campaign, operations, and partner files into the placeholder kit before travel.',
+      title: 'Collect assets',
+      summary: 'Gather artwork, copy, and schedules before the install team travels.',
       steps: [
-        'Ingest stills, loops, captions, and alt-text via the signage API or drag-and-drop bridge.',
-        'Contrast lint, safe-area framing, and timeline checks run automatically on upload.',
-        'Assign approvals so operations can track readiness alongside the lighting cues.'
+        'Upload stills, loops, and captions into the signage library.',
+        'Check contrast and safe areas so layouts stay readable on-site.',
+        'Confirm who signs off each asset set.'
       ]
     },
     {
-      title: 'Rehearsal at Reclame Fabriek',
-      summary: 'Load the placeholders into the Daugavpils studio and shape the story together.',
+      title: 'Bench rehearsal',
+      summary: 'Load the content onto a test rig and run through each scene with the lighting plan.',
       steps: [
-        'Dual-output rehearsals sync the signage lane with PWM washes and pixel ribbons.',
-        'Emergency and quiet-mode overrides inherit the emergency palette tokens and signage typography.',
-        'Partner and sponsor lanes get staged with localization packs before they leave the studio.'
+        'Play scenes while adjusting LED Node zones to confirm timing.',
+        'Test emergency and quiet-hour looks so everyone knows the result.',
+        'Review partner or sponsor assets with the actual hardware.'
       ]
     },
     {
-      title: 'Launch readiness',
-      summary: 'Bundle playlists, backups, and approvals before the hardware ships.',
+      title: 'Ship and verify',
+      summary: 'Prepare the final playlist and backups before the hardware ships.',
       steps: [
-        'Distribute fallback signage packs and confirm webhooks across CMS bridges.',
-        'Lock asset board approvals and surface them inside the operations observatory timeline.',
-        'Schedule escalations, roster coverage, and signage monitoring webhooks.'
+        'Package fallback signage and store it on each controller.',
+        'Verify any CMS or webhook integrations are responding.',
+        'Share the show plan with the on-site team and support contacts.'
       ]
     },
     {
       title: 'Live operations',
-      summary: 'Monitor, adjust, and protect the signage story without leaving the controller.',
+      summary: 'Monitor the running show and keep overrides ready.',
       steps: [
-        'Observatory dashboards surface ingest health, signage drift, and override readiness.',
-        'Dual-output presets allow gentle blend tweaks while signage stays WCAG compliant.',
-        'Escalations notify the roster whenever signage approvals lapse or CMS bridges lag.'
+        'Watch uptime, temperature, and sync status from the dashboard.',
+        'Adjust blends carefully so signage stays easy to read.',
+        'Log overrides or changes so the next shift knows what happened.'
       ]
     }
   ];
 
   const defaultChecklist = [
     {
-      label: 'Placeholder coverage',
-      detail: 'Each canvas has a campaign, operations, and data rail variant rehearsed and approved.'
+      label: 'Content coverage',
+      detail: 'Campaign, safety, and data screens each have an approved placeholder.'
     },
     {
-      label: 'Fallback scenes',
-      detail: 'Emergency overrides, quiet hours, and safety slates armed with the emergency palette tokens.'
+      label: 'Fallback looks',
+      detail: 'Emergency, quiet-hour, and maintenance scenes are rehearsed on real hardware.'
     },
     {
-      label: 'CMS bridges',
-      detail: 'Webhooks and SSE channels heartbeat every 15 seconds with tokenised signage payloads.'
+      label: 'System links',
+      detail: 'CMS bridges or data feeds have recent heartbeats and test payloads.'
     },
     {
-      label: 'Audit trail',
-      detail: 'Every signage publish logs acknowledgements to the operations observatory and partner receipts.'
+      label: 'Activity log',
+      detail: 'Every change is noted so teams know who adjusted what and when.'
     }
   ];
 
@@ -69,10 +69,10 @@
 
   <header class="guide-head">
     <span class="guide-badge">Signage runbook</span>
-    <h3 id="signage-guide-title">How the signage story ships</h3>
+    <h3 id="signage-guide-title">How the signage plan ships</h3>
     <p>
-      Follow the same runbook we use in Daugavpils — asset ingest, rehearsals, launch prep, and live operations — each step
-      riding the LumiGrid token system.
+      This is the process Reclame Fabriek R&D uses for LED Node signage projects: gather assets, rehearse, ship, and operate
+      with clear handovers.
     </p>
   </header>
 

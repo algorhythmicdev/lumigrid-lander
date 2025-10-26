@@ -129,7 +129,7 @@
 
 <div class="util">
   <div class="util-inner container">
-    <a href={`${resolvedBase}/`} class="btn" aria-label="Home">LumiGrid</a>
+    <a href={`${resolvedBase}/`} class="btn" aria-label="Home">LED Node</a>
     <div class="spacer"></div>
     <button
       class="btn"
@@ -191,7 +191,7 @@
   >
     <div class="chips" role="navigation" aria-label="Sections">
       <a class="chip" href="#what">What</a>
-      <a class="chip" href="#editor">Editor</a>
+      <a class="chip" href="#features">Features</a>
       <a class="chip" href="#demo">LED Demo</a>
       <a class="chip" href="#mesh">Nodes</a>
       <a class="chip" href="#contact">Contact</a>

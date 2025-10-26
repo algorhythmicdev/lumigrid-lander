@@ -1,5 +1,6 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
+  import { caps } from '../stores/capabilities';
   import { pulseColor, state as effectState } from '$lib/stores/effects';
 
   const WIDTH = 340;
@@ -113,6 +114,8 @@
     raf = requestAnimationFrame(loop);
   };
 
+  $: syncAvailable = $caps?.features.sync;
+
   $: linkedCount = nodes.reduce((count, node) => count + (node.active ? 1 : 0), 0);
   $: liveStatus = linkedCount === 0
     ? 'All nodes are idle.'
@@ -156,7 +159,7 @@
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       width="100%"
       role="img"
-      aria-label="Nine synchronized nodes in a grid"
+      aria-label={syncAvailable === false ? 'Nine nodes in a grid' : 'Nine synchronized nodes in a grid'}
     >
       {#each nodes as a}
         {#each nodes as b}
@@ -217,8 +220,13 @@
     {/if}
     <span class="sr-only" aria-live="polite" aria-atomic="true" role="status">{liveStatus}</span>
   </div>
-  <p class="lead" style="margin:.5rem 0 0">
-    Tap a node to link or unlink it. Hover or focus to see its status. All nodes share the same timing pulse, so effects stay in
-    step.
-  </p>
+  {#if syncAvailable === false}
+    <p class="lead" style="margin:.5rem 0 0; color:var(--muted)">
+      Tap a node to link or unlink it. Sync is off in this firmware build, so each node runs on its own clock.
+    </p>
+  {:else}
+    <p class="lead" style="margin:.5rem 0 0; color:var(--muted)">
+      Tap a node to link or unlink it. Hover or focus to see its status. All nodes share one timing pulse, so effects stay in step.
+    </p>
+  {/if}
 </section>

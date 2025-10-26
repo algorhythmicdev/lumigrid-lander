@@ -13,17 +13,17 @@
     <span class="ops-badge">Operations deck</span>
     <h3 id="operations-observatory-title">Operations observatory</h3>
     <p>
-      Keep the mesh breathing during live shows: monitor uptime, signage states, guide handovers, and trigger rounded
-      playbooks from the same glass console.
+      Monitor the controllers during live shows: check uptime, confirm signage status, hand over shifts, and trigger any
+      rehearsed responses from the same console.
     </p>
-    <p class="ops-note">Example operations view—connect a live mesh to stream production data.</p>
+    <p class="ops-note">Demo view shown here—connect to a live mesh to stream production data.</p>
   </header>
 
   <div class="ops-grid">
     <section class="ops-column ops-console" aria-labelledby="operations-console-title">
       <div class="column-head">
         <h4 id="operations-console-title">Live schedule</h4>
-        <p>Upcoming cues, signage takeovers, and timeline guardians mirrored from the deployment launch pad.</p>
+        <p>Upcoming cues and handover notes for the current run.</p>
       </div>
       <ul class="ops-scenarios">
         {#each scenarios as scenario (scenario.title)}
@@ -49,7 +49,7 @@
     <section class="ops-column ops-health" aria-labelledby="operations-health-title">
       <div class="column-head">
         <h4 id="operations-health-title">Mesh health</h4>
-        <p>Halo telemetry from every node keeps uptime, signage placeholders, and leadership in view.</p>
+        <p>Quick signals show node uptime, sync state, and signage health.</p>
       </div>
       <div class="ops-signal-grid" role="list">
         {#each signals as signal (signal.label)}
@@ -75,7 +75,7 @@
     <section class="ops-column ops-playbook" aria-labelledby="operations-playbook-title">
       <div class="column-head">
         <h4 id="operations-playbook-title">Rounded playbooks</h4>
-        <p>Token-driven checklists stage lighting, signage, and operator responses with the same halo sheen.</p>
+        <p>Short checklists help crews follow the same steps every time.</p>
       </div>
       <ol class="playbook-list">
         {#each playbooks as play (play.title)}
