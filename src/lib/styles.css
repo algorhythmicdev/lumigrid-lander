@@ -46,6 +46,7 @@ a{ color:inherit }
 .section{ padding: clamp(1.5rem, 5vw, 4rem) 0; }
 
 .hero{ display:grid; gap:1rem; padding-top: clamp(2rem, 10vh, 7rem); }
+.hero, #demo, #mesh, #editor{ will-change: transform; }
 .hero h1{ font-size:var(--fs-h1); line-height:1.1; margin:0; }
 .hero p.lead{ color:var(--muted); margin:.25rem 0 0; max-width:60ch; }
 
@@ -75,14 +76,19 @@ a{ color:inherit }
 @media (max-width: 900px){ .grid-2{ grid-template-columns: 1fr } }
 
 .card{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
-  backdrop-filter: blur(6px); border-radius: 1rem; padding: 1rem; }
+  backdrop-filter: blur(6px); border-radius: 1rem; padding: 1rem;
+  contain: content; content-visibility: auto; contain-intrinsic-size: 400px 300px;
+}
 
 .strip-stack{ display:grid; gap:.6rem; }
 .strip{ height:14px; border-radius:999px; overflow:hidden; background:#0f172a;
   position:relative; box-shadow: var(--glow, 0 0 0 rgba(0,0,0,0)); transition: box-shadow .35s ease;
 }
 .strip > i{ display:block; height:100%; transform:translateX(var(--start, -30%));
-  animation: flow var(--speed, 8s) linear infinite;
+  animation-name: flow;
+  animation-duration: var(--speed, 8s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
   animation-delay: var(--delay, 0s);
   filter: blur(.5px) saturate(var(--sat, 1));
   opacity: var(--alpha, 1);
@@ -140,6 +146,19 @@ a{ color:inherit }
   border-top:1px solid rgba(255,255,255,.18);
   transform:translate(-50%, 50%) rotate(45deg);
 }
+
+@media (prefers-contrast: more){
+  .card, .btn, .chip { background: #0b1224 !important; border-color: #ffffff !important; }
+  .lead, p { color: #f1f5f9 !important; }
+}
+
+@media (prefers-reduced-transparency: reduce){
+  .card, .btn, .chip { backdrop-filter: none !important; background: #0b1224 !important; border-color: #ffffff !important; }
+}
+
+:root[data-lowtrans] .card,
+:root[data-lowtrans] .btn,
+:root[data-lowtrans] .chip { backdrop-filter: none !important; background: #0b1224 !important; border-color: #ffffff !important; }
 
 @media (prefers-reduced-motion:reduce){
   *{ animation:none !important; transition:none !important }

@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { base } from '$app/paths';
 
   function startFX() {
     const cvs = document.getElementById('lg-fx');
@@ -49,8 +50,19 @@
     });
   }
 
-  onMount(startFX);
+  onMount(() => {
+    startFX();
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register(`${import.meta.env.BASE_URL || ''}service-worker.js`)
+        .catch(() => {});
+    }
+  });
 </script>
+
+<svelte:head>
+  <link rel="manifest" href={`${base}/manifest.webmanifest`} />
+</svelte:head>
 
 <canvas
   id="lg-fx"
