@@ -9,6 +9,7 @@
   import ProjectGallery from '$lib/components/ProjectGallery.svelte';
   import BeforeAfter from '$lib/components/BeforeAfter.svelte';
   import CaseStudy from '$lib/components/CaseStudy.svelte';
+  import FAQ from '$lib/components/FAQ.svelte';
   import NodeViz from '$lib/components/NodeViz.svelte';
   import BrandMarquee from '$lib/components/BrandMarquee.svelte';
   import Contact from '$lib/components/Contact.svelte';
@@ -38,6 +39,7 @@
 <ProjectGallery />
 <BeforeAfter />
 <CaseStudy />
+<FAQ />
 <NodeViz />
 <BrandMarquee />
 <Contact />
