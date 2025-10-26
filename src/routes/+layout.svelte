@@ -1,74 +1,40 @@
 <script>
   import { onMount } from 'svelte';
-  import { base } from '$app/paths';
-  import { loadCaps } from '$lib/stores/capabilities';
-
-  function startFX() {
-    const cvs = document.getElementById('lg-fx');
-    if (!cvs) return;
-    const ctx = cvs.getContext('2d', { alpha: true });
-
-    const DPR = Math.max(1, devicePixelRatio || 1);
-    function resize() {
-      cvs.width = Math.floor(innerWidth * DPR);
-      cvs.height = Math.floor(innerHeight * DPR);
-      cvs.style.width = innerWidth + 'px';
-      cvs.style.height = innerHeight + 'px';
-    }
-    resize();
-    addEventListener('resize', resize, { passive: true });
+  function startFX(){
+    const c = document.getElementById('lg-fx');
+    if(!c) return;
+    const ctx = c.getContext('2d', { alpha: true });
+    const DPR = Math.max(1, devicePixelRatio||1);
+    const resize = ()=>{ c.width=innerWidth*DPR; c.height=innerHeight*DPR; c.style.width=innerWidth+'px'; c.style.height=innerHeight+'px'; };
+    resize(); addEventListener('resize', resize, { passive:true });
 
     let raf;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-    function frame(time) {
-      ctx.clearRect(0, 0, cvs.width, cvs.height);
-      ctx.globalCompositeOperation = 'lighter';
-      const cx = cvs.width * 0.3;
-      const cy = cvs.height * 0.35;
-      const g = ctx.createRadialGradient(
-        cx,
-        cy,
-        0,
-        cx,
-        cy,
-        Math.max(cvs.width, cvs.height) * 0.6
-      );
-      g.addColorStop(0, 'rgba(231,59,163,0.16)');
-      g.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, cvs.width, cvs.height);
-
-      if (!reduce.matches) raf = requestAnimationFrame(frame);
+    const orbs = [
+      { r:.55, hue: 318 }, // magenta
+      { r:.65, hue: 260 }, // violet
+      { r:.85, hue: 200 }  // cyan
+    ];
+    function frame(t){
+      ctx.clearRect(0,0,c.width,c.height);
+      ctx.globalCompositeOperation='lighter';
+      orbs.forEach((o,i)=>{
+        const a = (t*0.0001 + i*1.3);
+        const cx = c.width*(0.5 + 0.25*Math.cos(a));
+        const cy = c.height*(0.45 + 0.3*Math.sin(a*0.9));
+        const R = Math.max(c.width,c.height)*o.r;
+        const g = ctx.createRadialGradient(cx,cy,0,cx,cy,R);
+        g.addColorStop(0, `oklch(70% .16 ${o.hue} / 0.16)`);
+        g.addColorStop(1, 'transparent');
+        ctx.fillStyle=g; ctx.fillRect(0,0,c.width,c.height);
+      });
+      if(!reduce.matches) raf=requestAnimationFrame(frame);
     }
-    raf = requestAnimationFrame(frame);
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden && raf) {
-        cancelAnimationFrame(raf);
-        raf = null;
-      } else if (!document.hidden && !raf && !reduce.matches) {
-        raf = requestAnimationFrame(frame);
-      }
-    });
+    raf=requestAnimationFrame(frame);
+    document.addEventListener('visibilitychange',()=>{ if(document.hidden&&raf){cancelAnimationFrame(raf); raf=null;} else if(!raf && !reduce.matches){ raf=requestAnimationFrame(frame);} });
   }
-
-  onMount(() => {
-    startFX();
-    loadCaps().catch(() => {});
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register(`${import.meta.env.BASE_URL || ''}service-worker.js`)
-        .catch(() => {});
-    }
-  });
+  onMount(startFX);
 </script>
 
-<svelte:head>
-  <link rel="manifest" href={`${base}/manifest.webmanifest`} />
-</svelte:head>
-
-<canvas
-  id="lg-fx"
-  aria-hidden="true"
-  style="position:fixed;inset:0;z-index:-1;pointer-events:none"
-></canvas>
+<canvas id="lg-fx" aria-hidden="true" style="position:fixed;inset:0;z-index:-1;pointer-events:none"></canvas>
 <slot />

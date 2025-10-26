@@ -1,232 +1,59 @@
 <script>
-  import { onMount, onDestroy } from 'svelte';
-  import { caps } from '../stores/capabilities';
-  import { pulseColor, state as effectState } from '$lib/stores/effects';
+  import { onMount } from 'svelte';
+  let nodes = Array.from({length:9}, (_,i)=>({id:'N'+(i+1), x:(i%3), y:Math.floor(i/3), active:false}));
+  let t=0, raf; let reduce={matches:false};
+  const cx = (n)=> 32 + n.x*110; const cy = (n)=> 32 + n.y*110;
+  let tip={show:false,x:0,y:0,text:''};
 
-  const WIDTH = 340;
-  const HEIGHT = 340;
-  const tooltipId = 'node-tooltip';
+  function toggle(n){ n.active=!n.active; }
+  function showTip(n, e){
+    const svg = e.currentTarget.ownerSVGElement; const s = svg.getBoundingClientRect();
+    const c = e.currentTarget.querySelector('circle').getBoundingClientRect();
+    tip={show:true,x:Math.max(8,Math.min(c.left-s.left-80, 340-160)), y:Math.max(8,Math.min(c.top-s.top+24, 300)), text:`${n.id} — ${n.active?'Linked':'Idle'}`};
+  }
 
-  let color = '#6c2bd9';
-  let speed = 1;
-  const unsubscribeColor = pulseColor.subscribe((value) => {
-    color = value;
-  });
-  const unsubscribeState = effectState.subscribe((value) => {
-    speed = value.speed;
-  });
-
-  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-
-  const baseNodes = Array.from({ length: 9 }, (_, i) => ({
-    id: 'N' + (i + 1),
-    x: i % 3,
-    y: Math.floor(i / 3),
-    active: false,
-    role: ['Leader', 'Peer', 'Relay'][i % 3]
-  }));
-
-  let nodes = baseNodes;
-  let t = 0;
-  let raf = 0;
-  let reduceQuery;
-  let tooltip;
-  let reduceHandler;
-  let linkedCount = 0;
-  let liveStatus = '';
-
-  const cx = (n) => 32 + n.x * 110;
-  const cy = (n) => 32 + n.y * 110;
-
-  const createTooltip = (node) => {
-    const left = clamp((cx(node) / WIDTH) * 100, 8, 92);
-    const baseTop = (cy(node) / HEIGHT) * 100;
-    const placement = baseTop < 24 ? 'below' : 'above';
-    const top = clamp(baseTop, 8, 92);
-
-    return {
-      id: node.id,
-      status: node.active ? 'Linked' : 'Idle',
-      left,
-      top,
-      placement
+  onMount(()=>{
+    reduce = typeof matchMedia==='function' ? matchMedia('(prefers-reduced-motion: reduce)') : { matches:false };
+    const loop=(tm)=>{
+      t = tm*0.002;
+      if(!reduce.matches) raf=requestAnimationFrame(loop);
     };
-  };
-
-  const findNode = (id) => nodes.find((node) => node.id === id);
-
-  const showTooltipById = (id) => {
-    const node = findNode(id);
-    tooltip = node ? createTooltip(node) : undefined;
-  };
-
-  const hideTooltip = (id) => {
-    if (!tooltip) return;
-    if (!id || tooltip.id === id) {
-      tooltip = undefined;
-    }
-  };
-
-  const toggle = (id) => {
-    nodes = nodes.map((node) =>
-      node.id === id ? { ...node, active: !node.active } : node
-    );
-    if (tooltip?.id === id) {
-      showTooltipById(id);
-    }
-  };
-
-  const handleKey = (event, id) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      toggle(id);
-    } else if (event.key === 'Escape') {
-      hideTooltip(id);
-    }
-  };
-
-  const shouldAnimate = () => !(reduceQuery?.matches);
-
-  const stopLoop = () => {
-    if (raf) {
-      cancelAnimationFrame(raf);
-      raf = 0;
-    }
-    t = 0;
-  };
-
-  const loop = (time) => {
-    if (!shouldAnimate()) {
-      stopLoop();
-      return;
-    }
-    t = time * 0.002 * speed;
-    raf = requestAnimationFrame(loop);
-  };
-
-  const startLoop = () => {
-    if (raf || !shouldAnimate()) {
-      if (!shouldAnimate()) {
-        t = 0;
-      }
-      return;
-    }
-    raf = requestAnimationFrame(loop);
-  };
-
-  $: syncAvailable = $caps?.features.sync;
-
-  $: linkedCount = nodes.reduce((count, node) => count + (node.active ? 1 : 0), 0);
-  $: liveStatus = linkedCount === 0
-    ? 'All nodes are idle.'
-    : linkedCount === nodes.length
-      ? 'All nodes are linked.'
-      : `${linkedCount} of ${nodes.length} nodes linked.`;
-
-  onMount(() => {
-    if (typeof matchMedia === 'function') {
-      reduceQuery = matchMedia('(prefers-reduced-motion: reduce)');
-      reduceHandler = (event) => {
-        if (event.matches) {
-          stopLoop();
-        } else {
-          startLoop();
-        }
-      };
-      reduceQuery.addEventListener('change', reduceHandler);
-    }
-
-    startLoop();
-
-    return () => {
-      stopLoop();
-      if (reduceHandler) {
-        reduceQuery?.removeEventListener('change', reduceHandler);
-      }
+    raf=requestAnimationFrame(loop);
+    const hide=()=>{ if(document.hidden&&raf){cancelAnimationFrame(raf); raf=null;} else if(!document.hidden && !raf && !reduce.matches){ raf=requestAnimationFrame(loop);} };
+    document.addEventListener('visibilitychange', hide);
+    return ()=>{
+      if(raf) cancelAnimationFrame(raf);
+      document.removeEventListener('visibilitychange', hide);
     };
-  });
-
-  onDestroy(() => {
-    unsubscribeColor();
-    unsubscribeState();
   });
 </script>
 
-<section class="section container card" id="mesh" aria-labelledby="mesh-h">
-  <h2 id="mesh-h" style="font-size:var(--fs-h2);margin:0 0 .5rem">Node visualization</h2>
-  <div class="node-area">
-    <svg
-      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-      width="100%"
-      role="img"
-      aria-label={syncAvailable === false ? 'Nine nodes in a grid' : 'Nine synchronized nodes in a grid'}
-    >
+<section class="section container card" id="nodes" aria-labelledby="nodes-h">
+  <h2 id="nodes-h" style="font-size:var(--fs-h2);margin:0 0 .5rem">Node visualization</h2>
+  <div class="node-card">
+    <svg viewBox="0 0 340 340" width="100%" height="auto" role="img" aria-label="Nine synchronized nodes in a grid" on:mouseleave={()=>tip.show=false}>
       {#each nodes as a}
         {#each nodes as b}
-          {#if Math.abs(a.x - b.x) + Math.abs(a.y - b.y) === 1}
-            <line x1={cx(a)} y1={cy(a)} x2={cx(b)} y2={cy(b)} stroke="rgba(255,255,255,.15)" stroke-width="2" />
+          {#if Math.abs(a.x-b.x)+Math.abs(a.y-b.y)===1}
+            <line x1={cx(a)} y1={cy(a)} x2={cx(b)} y2={cy(b)} stroke="rgba(255,255,255,.15)" stroke-width="2"/>
           {/if}
         {/each}
       {/each}
-
-      {#each nodes as n}
-        {#key n.id}
-          <g
-            role="switch"
-            aria-checked={n.active}
-            aria-label={`${n.id} ${n.active ? 'linked' : 'idle'}`}
-            aria-describedby={tooltip?.id === n.id ? tooltipId : undefined}
-            tabindex="0"
-            on:click={() => toggle(n.id)}
-            on:keydown={(event) => handleKey(event, n.id)}
-            on:focus={() => showTooltipById(n.id)}
-            on:blur={() => hideTooltip(n.id)}
-            on:pointerenter={() => showTooltipById(n.id)}
-            on:pointerleave={() => hideTooltip(n.id)}
-          >
-            <circle
-              cx={cx(n)}
-              cy={cy(n)}
-              r={18 + 2 * Math.sin(t)}
-              fill="none"
-              stroke={n.active ? color : 'rgba(231,59,163,.45)'}
-              stroke-width="2"
-            />
-            <circle cx={cx(n)} cy={cy(n)} r="12" fill={n.active ? 'url(#grad)' : 'rgba(255,255,255,.85)'} />
-            <title>{n.id} • {n.active ? 'Linked' : 'Idle'}</title>
-          </g>
-        {/key}
+      {#each nodes as n (n.id)}
+        <g role="switch" aria-checked={n.active} tabindex="0"
+           on:click={(e)=>{toggle(n);showTip(n,e)}}
+           on:keydown={(e)=> e.key==='Enter' && (toggle(n),showTip(n,e))}>
+          <circle cx={cx(n)} cy={cy(n)} r={18+2*Math.sin(t)} fill="none" stroke="rgba(28,197,220,.65)" stroke-width="2"/>
+          <circle cx={cx(n)} cy={cy(n)} r="11" fill={n.active?'url(#act)':'url(#idle)'} stroke="rgba(255,255,255,.55)" stroke-width="1"/>
+          <title>{n.id}</title>
+        </g>
       {/each}
-
       <defs>
-        <radialGradient id="grad" cx="50%" cy="50%" r="60%">
-          <stop offset="0%" stop-color="#fff" />
-          <stop offset="60%" stop-color="#e73ba3" />
-          <stop offset="100%" stop-color="#6c2bd9" />
-        </radialGradient>
+        <radialGradient id="idle"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#6c2bd9"/></radialGradient>
+        <radialGradient id="act"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#1cc5dc"/></radialGradient>
       </defs>
     </svg>
-    {#if tooltip}
-      <div
-        id={tooltipId}
-        class="node-tooltip"
-        class:below={tooltip.placement === 'below'}
-        role="tooltip"
-        style={`left:${tooltip.left}%;top:${tooltip.top}%`}
-      >
-        <span class="node-id">{tooltip.id}</span>
-        <span class="node-state">{tooltip.status}</span>
-      </div>
-    {/if}
-    <span class="sr-only" aria-live="polite" aria-atomic="true" role="status">{liveStatus}</span>
+    {#if tip.show}<div class="tip" style="left:{tip.x}px;top:{tip.y}px">{tip.text}</div>{/if}
   </div>
-  {#if syncAvailable === false}
-    <p class="lead" style="margin:.5rem 0 0; color:var(--muted)">
-      Tap a node to link or unlink it. Sync is off in this firmware build, so each node runs on its own clock.
-    </p>
-  {:else}
-    <p class="lead" style="margin:.5rem 0 0; color:var(--muted)">
-      Tap a node to link or unlink it. Hover or focus to see its status. All nodes share one timing pulse, so effects stay in step.
-    </p>
-  {/if}
+  <p class="lead" style="color:var(--muted);margin:.5rem 0 0">Tap a node to link or unlink. All nodes share the same timing pulse, so effects line up.</p>
 </section>
