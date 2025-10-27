@@ -44,8 +44,9 @@
   }
 </script>
 
-<section class="section container card" aria-labelledby="wall-h">
-  <h2 id="wall-h" style="font-size:var(--fs-h2);margin:0 0 .5rem">LED strip wall</h2>
+<section class="section container card" id="examples" aria-labelledby="wall-h">
+  <h2 id="wall-h" style="font-size:var(--fs-h2)">Strip wall</h2>
+  <p class="lead" style="margin:0 0 .75rem">Pick a palette and speed; the wall updates instantly.</p>
   <p class="wall-meta" aria-live="polite" role="status">{summary}</p>
   <div class="wall">
     {#each [0, 1, 2, 3, 4] as i}

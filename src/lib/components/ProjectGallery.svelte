@@ -43,12 +43,16 @@
         aria-label={`${it.title} (${it.tag})`}
         style="padding:0;overflow:hidden"
       >
-        <img
-          src={it.src}
-          alt=""
-          loading="lazy"
-          style="display:block;width:100%;height:220px;object-fit:cover;filter:contrast(1.06) saturate(1.05)"
-        />
+        <picture>
+          <source srcset={`${it.src}?auto=format&fit=crop&w=960&q=80`} type="image/jpeg" />
+          <img
+            src={`${it.src}?auto=format&fit=crop&w=960&q=70`}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            style="display:block;width:100%;height:220px;object-fit:cover;filter:contrast(1.06) saturate(1.05)"
+          />
+        </picture>
         <div class="cap">
           <strong>{it.title}</strong><span>{it.tag}</span>
         </div>
@@ -61,6 +65,9 @@
   .tile {
     position: relative;
     transform: translateZ(0);
+  }
+  .tile picture {
+    display: block;
   }
   .tile::after {
     content: '';

@@ -3,8 +3,9 @@
   export let mode = 'white'; // 'white' | 'neon' | 'blend'
 </script>
 
-<section class="section container card" id="examples" aria-labelledby="letters-h">
-  <h2 id="letters-h" style="font-size:var(--fs-h2);margin:0 0 .5rem">Channel letters</h2>
+<section class="section container card" id="letters" aria-labelledby="letters-h">
+  <h2 id="letters-h" style="font-size:var(--fs-h2)">Backlit letters</h2>
+  <p style="margin:0 0 .75rem;color:var(--muted)">See how clean white, neon colour, and a blended halo change the face.</p>
   <div class="letters-wrap" class:neon={mode === 'neon'} class:blend={mode === 'blend'}>
     <div class="letters-glow" aria-hidden="true"></div>
     <svg viewBox="0 0 1000 260" width="100%" height="auto" style="display:block">

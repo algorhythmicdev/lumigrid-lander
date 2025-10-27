@@ -15,6 +15,34 @@
     onChange(active);
   }
 
+  let sectionEl;
+
+  const applyAmbient = (preset) => {
+    if (typeof document === 'undefined' || typeof window === 'undefined' || !preset || !sectionEl) {
+      return;
+    }
+    const rect = sectionEl.getBoundingClientRect();
+    if (rect.bottom <= 0 || rect.top >= window.innerHeight) {
+      return;
+    }
+    const name = preset.name ?? '';
+    const hue = name.includes('Evening')
+      ? 200
+      : name.includes('Morning')
+        ? 320
+        : name.includes('Night')
+          ? 260
+          : 285;
+    const value = String(hue);
+    const root = document.documentElement;
+    root.style.setProperty('--ambient-hue', value);
+    root.style.setProperty('--glow-hue', value);
+  };
+
+  $: if (sectionEl) {
+    applyAmbient(active);
+  }
+
   const formatTime = (value) => {
     const hours = Math.floor(value);
     const minutes = Math.round((value - hours) * 60);
@@ -26,8 +54,8 @@
   $: activeLabel = `${active.name} • palette ${active.palette.toUpperCase()} • speed ${active.speed.toFixed(1)}×`;
 </script>
 
-<section class="section container card" aria-labelledby="tl-h">
-  <h2 id="tl-h" style="font-size:var(--fs-h2);margin:0 0 .5rem">Timeline</h2>
+<section class="section container card" aria-labelledby="tl-h" bind:this={sectionEl}>
+  <h2 id="tl-h" style="font-size:var(--fs-h2)">Scene timeline</h2>
   <div style="display:grid;gap:.5rem">
     <input
       type="range"

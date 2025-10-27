@@ -1,6 +1,8 @@
 <script>
-  import LedBackdrop from '$lib/components/LedBackdrop.svelte';
+  import LumenField from '$lib/components/LumenField.svelte';
+  import TopProgress from '$lib/components/TopProgress.svelte';
 </script>
 
-<LedBackdrop density={28} parallax={0.06} />
+<LumenField intensity={1.0} parallax={0.06} />
+<TopProgress />
 <slot />
