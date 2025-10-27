@@ -1,20 +1,18 @@
-@property --glow-hue {
-  syntax: '<number>';
-  inherits: true;
-  initial-value: 285;
+:root {
+  --ambient-hue: 285;
 }
 
 :root{
   --bg:#0b1120; --ink:#f8fafc; --muted:#cbd5e1;
   --a:#e73ba3; --b:#6c2bd9; --c:#1cc5dc; --warm:#ffd166;
   --glow-soft:.16; --glow-strong:.24; --halo:96px;
-  --glow-hue:285;
+  --ambient-hue:285;
   --ring: 3px solid var(--warm);
   --fs-h1: clamp(2rem, 5vw, 3.25rem);
   --fs-h2: clamp(1.4rem, 3.2vw, 2rem);
   --fs: clamp(1rem, 1.6vw, 1.1rem);
 }
-:root{transition:--glow-hue 1.6s ease;}
+:root{transition:--ambient-hue 1.6s ease;}
 *{box-sizing:border-box} html,body{height:100%}
 body{
   margin:0;
@@ -47,8 +45,8 @@ body{
   right:0;
   height:1px;
   background:linear-gradient(90deg,
-    color-mix(in oklab, oklch(75% .1 var(--glow-hue)) 85%, transparent),
-    color-mix(in oklab, oklch(70% .08 calc(var(--glow-hue) + 40)) 60%, transparent));
+    color-mix(in oklab, oklch(75% .1 var(--ambient-hue)) 85%, transparent),
+    color-mix(in oklab, oklch(70% .08 calc(var(--ambient-hue) + 40)) 60%, transparent));
   pointer-events:none;
   opacity:.7;
 }
@@ -86,7 +84,7 @@ body{
 
 .chips{display:flex;flex-wrap:wrap;gap:.5rem}
 .chip{padding:.45rem .75rem;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:rgba(11,17,32,.7);color:var(--ink);cursor:pointer;transition:background .3s ease, border-color .3s ease, box-shadow .3s ease}
-.chip[aria-checked="true"], .chips .chip:focus-visible{background:rgba(255,255,255,.18);border-color:color-mix(in oklab, oklch(70% .1 var(--glow-hue)) 65%, transparent);box-shadow:0 0 0 1px color-mix(in oklab, oklch(75% .1 var(--glow-hue)) 40%, transparent)}
+.chip[aria-checked="true"], .chips .chip:focus-visible{background:rgba(255,255,255,.18);border-color:color-mix(in oklab, oklch(70% .1 var(--ambient-hue)) 65%, transparent);box-shadow:0 0 0 1px color-mix(in oklab, oklch(75% .1 var(--ambient-hue)) 40%, transparent)}
 
 .strip{height:14px;border-radius:999px;overflow:hidden;background:rgba(6,11,22,.85);box-shadow:0 0 18px rgba(108,43,217,.35)}
 .strip>i{display:block;height:100%;transform:translateX(-30%);animation:flow var(--speed,8s) linear infinite;filter:blur(.5px) drop-shadow(0 0 8px rgba(255,255,255,.28))}
@@ -98,3 +96,6 @@ body{
 label{display:grid;gap:.35rem;font-weight:600}
 input,textarea{font:inherit;padding:.65rem .75rem;border-radius:.6rem;border:1px solid rgba(255,255,255,.2);background:rgba(8,16,26,.65);color:var(--ink)}
 textarea{min-height:120px;resize:vertical}
+h1,h2,h3{ text-wrap: balance }
+button,.chip,.btn,a.card{ min-height:44px }
+.card{ contain:content; content-visibility:auto; contain-intrinsic-size:400px 300px }

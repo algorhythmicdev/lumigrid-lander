@@ -7,11 +7,11 @@
   import StripWall from '$lib/components/StripWall.svelte';
   import SceneTimeline from '$lib/components/SceneTimeline.svelte';
   import ProjectGallery from '$lib/components/ProjectGallery.svelte';
-  import BeforeAfter from '$lib/components/BeforeAfter.svelte';
+  import BeforeAfterAuto from '$lib/components/BeforeAfterAuto.svelte';
   import CaseStudy from '$lib/components/CaseStudy.svelte';
   import FAQ from '$lib/components/FAQ.svelte';
   import NodeViz from '$lib/components/NodeViz.svelte';
-  import BrandMarquee from '$lib/components/BrandMarquee.svelte';
+  import BrandStripAuto from '$lib/components/BrandStripAuto.svelte';
   import Contact from '$lib/components/Contact.svelte';
   import FooterCTA from '$lib/components/FooterCTA.svelte';
 
@@ -37,10 +37,10 @@
 }} />
 <StripWall bind:externalPalette={timelinePalette} bind:externalSpeed={timelineSpeed} />
 <ProjectGallery />
-<BeforeAfter />
+<BeforeAfterAuto />
 <CaseStudy />
 <FAQ />
 <NodeViz />
-<BrandMarquee />
+<BrandStripAuto />
 <Contact />
 <FooterCTA />
