@@ -1,6 +1,8 @@
 <script>
-  import LedBackdrop from '$lib/components/LedBackdrop.svelte';
+  import LumenField from '$lib/components/LumenField.svelte';
+  import AmbientSync from '$lib/components/AmbientSync.svelte';
 </script>
 
-<LedBackdrop density={28} parallax={0.06} />
+<LumenField />
+<AmbientSync />
 <slot />
