@@ -7,7 +7,7 @@
   ];
 </script>
 
-<section class="section container" aria-labelledby="bm-h">
+<section class="section container" id="brands" aria-labelledby="bm-h">
   <h2 id="bm-h" style="font-size:var(--fs-h2);margin:0 0 .5rem">Trusted for signage</h2>
   <div class="card" style="overflow:hidden">
     <div class="rail">

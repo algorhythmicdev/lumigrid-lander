@@ -43,7 +43,7 @@
   $: pctLabel = `${pct}% of the after scene revealed`;
 </script>
 
-<section class="section container card" aria-labelledby="ba-h">
+<section class="section container card" id="beforeafter" aria-labelledby="ba-h">
   <h2 id="ba-h" style="font-size:var(--fs-h2);margin:0 0 .5rem">Before / After</h2>
   <div
     class="ba"

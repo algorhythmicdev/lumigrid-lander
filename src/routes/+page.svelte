@@ -1,5 +1,6 @@
 <script>
   import '$lib/styles.css';
+  import AmbientSync from '$lib/components/AmbientSync.svelte';
   import Header from '$lib/components/Header.svelte';
   import Hero from '$lib/components/Hero.svelte';
   import BacklitLetters from '$lib/components/BacklitLetters.svelte';
@@ -8,10 +9,8 @@
   import SceneTimeline from '$lib/components/SceneTimeline.svelte';
   import ProjectGallery from '$lib/components/ProjectGallery.svelte';
   import BeforeAfter from '$lib/components/BeforeAfter.svelte';
-  import CaseStudy from '$lib/components/CaseStudy.svelte';
-  import FAQ from '$lib/components/FAQ.svelte';
-  import NodeViz from '$lib/components/NodeViz.svelte';
   import BrandMarquee from '$lib/components/BrandMarquee.svelte';
+  import NodeViz from '$lib/components/NodeViz.svelte';
   import Contact from '$lib/components/Contact.svelte';
   import FooterCTA from '$lib/components/FooterCTA.svelte';
 
@@ -27,20 +26,21 @@
   />
 </svelte:head>
 
+<AmbientSync />
 <Header />
 <Hero />
 <BacklitLetters word="RF" />
 <InfoBlocks />
-<SceneTimeline onChange={(p) => {
-  timelinePalette = p.palette;
-  timelineSpeed = p.speed;
-}} />
 <StripWall bind:externalPalette={timelinePalette} bind:externalSpeed={timelineSpeed} />
+<SceneTimeline
+  onChange={(p) => {
+    timelinePalette = p.palette;
+    timelineSpeed = p.speed;
+  }}
+ />
 <ProjectGallery />
 <BeforeAfter />
-<CaseStudy />
-<FAQ />
-<NodeViz />
 <BrandMarquee />
+<NodeViz />
 <Contact />
 <FooterCTA />

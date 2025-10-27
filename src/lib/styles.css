@@ -1,3 +1,9 @@
+@property --ambient-hue {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 285;
+}
+
 @property --glow-hue {
   syntax: '<number>';
   inherits: true;
@@ -8,13 +14,14 @@
   --bg:#0b1120; --ink:#f8fafc; --muted:#cbd5e1;
   --a:#e73ba3; --b:#6c2bd9; --c:#1cc5dc; --warm:#ffd166;
   --glow-soft:.16; --glow-strong:.24; --halo:96px;
-  --glow-hue:285;
+  --ambient-hue:285;
+  --glow-hue:var(--ambient-hue);
   --ring: 3px solid var(--warm);
   --fs-h1: clamp(2rem, 5vw, 3.25rem);
   --fs-h2: clamp(1.4rem, 3.2vw, 2rem);
   --fs: clamp(1rem, 1.6vw, 1.1rem);
 }
-:root{transition:--glow-hue 1.6s ease;}
+:root{transition:--ambient-hue 1.6s ease, --glow-hue 1.6s ease;}
 *{box-sizing:border-box} html,body{height:100%}
 body{
   margin:0;
@@ -23,10 +30,13 @@ body{
   font:400 var(--fs)/1.6 system-ui,Inter,Segoe UI,Roboto,Arial;
   text-rendering:optimizeLegibility;
 }
+:where(h1,h2,h3){text-wrap:balance}
 :focus-visible{outline:var(--ring);outline-offset:2px}
 
 .container{width:min(1140px,92vw);margin-inline:auto}
 .section{padding:clamp(1.5rem,6vw,4rem) 0}
+.section > .container > h2{margin-bottom:.6rem}
+p.lead{max-width:64ch}
 .card{
   position:relative;
   background:rgba(15,23,42,.72);
@@ -76,6 +86,7 @@ body{
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem .9rem;border-radius:.9rem;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:var(--ink);text-decoration:none;cursor:pointer;transition:transform .3s ease,box-shadow .3s ease}
 .btn:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(8,17,35,.45)}
 .btn.primary{background:linear-gradient(135deg,var(--a),var(--b),var(--c));color:#071117;border:0}
+.btn,.chip,button,a.card{min-height:44px}
 .btn.brand{font-weight:600;letter-spacing:.02em;padding-inline:.75rem .95rem;background:rgba(255,255,255,.08);box-shadow:0 8px 32px rgba(9,14,30,.45)}
 .brand-mark{width:1.5rem;height:1.5rem;display:block;border-radius:.45rem;padding:.1rem;background:radial-gradient(120% 120% at 50% 40%,rgba(231,59,163,.9),rgba(108,43,217,.7) 58%, rgba(7,17,23,.4) 90%);box-shadow:0 0 24px rgba(231,59,163,.5),0 0 18px rgba(28,197,220,.4);filter:drop-shadow(0 0 8px rgba(28,197,220,.45));}
 .brand-label{white-space:nowrap}

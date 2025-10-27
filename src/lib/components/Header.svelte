@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { base } from '$app/paths';
 </script>
 
@@ -11,10 +11,10 @@
       <img src={`${base}/icons/icon.svg`} alt="" class="brand-mark" aria-hidden="true" />
       <span class="brand-label">Reclame Fabriek R&D</span>
     </a>
-    <div style="margin-left:auto;display:flex;gap:.5rem">
+    <div style="margin-left:auto;display:flex;gap:.5rem;flex-wrap:wrap">
       <a class="btn" href="#what">What it is</a>
       <a class="btn" href="#examples">Examples</a>
-      <a class="btn" href="#faq">FAQ</a>
+      <a class="btn" href="#gallery">Gallery</a>
       <a class="btn primary" href="#contact">Contact</a>
     </div>
   </div>
