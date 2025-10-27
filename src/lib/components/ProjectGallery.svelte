@@ -1,9 +1,10 @@
 <script>
+  import { base } from '$app/paths';
   // Auto-discover images from the gallery folder
   const modules = import.meta.glob('/static/assets/gallery/*');
   let items = [];
   for (const path in modules) {
-    const url = path.replace('/static', '');
+    const url = base + path.replace('/static', '');
     const title = url.split('/').pop().split('.').slice(0, -1).join('.').replace(/-/g, ' ');
     items.push({ url, title });
   }

@@ -1,10 +1,11 @@
 <script>
+  import { base } from '$app/paths';
   let pairs = [];
   const modules = import.meta.glob('/static/assets/before-after/*');
 
   const items = {};
   for (const path in modules) {
-    const url = path.replace('/static', '');
+    const url = base + path.replace('/static', '');
     const slug = url.split('/').pop().split('-')[0];
     if (!items[slug]) items[slug] = {};
     if (path.includes('-before.')) items[slug].before = url;

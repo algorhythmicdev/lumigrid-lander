@@ -167,7 +167,7 @@
   on:pointermove={handlePointerMove}
   on:pointerleave={handlePointerLeave}
   class="lumen-field"
-/>
+></canvas>
 
 <style>
   .lumen-field {

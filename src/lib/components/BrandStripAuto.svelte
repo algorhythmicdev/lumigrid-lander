@@ -1,8 +1,9 @@
 <script>
+  import { base } from '$app/paths';
   const modules = import.meta.glob('/static/assets/brands/*');
   let list = [];
   for (const path in modules) {
-    list.push(path.replace('/static', ''));
+    list.push(base + path.replace('/static', ''));
   }
 </script>
 
