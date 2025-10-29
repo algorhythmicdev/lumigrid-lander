@@ -2,34 +2,25 @@ import { test, expect } from '@playwright/test';
 
 test('hero renders and CTAs are visible', async ({ page }) => {
   await page.goto('/lumigrid-lander/');
-  await expect(page.getByRole('heading', { name: /led node by reclame fabriek r&d/i })).toBeVisible();
-  await expect(page.getByRole('link', { name: /see how it works/i })).toBeVisible();
-  await expect(page.getByRole('link', { name: /examples/i }).first()).toBeVisible();
+  await expect(page.getByRole('heading', { name: /led node/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /see examples/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /talk to us/i })).toBeVisible();
 });
 
-test('strip wall palette and speed controls update summary', async ({ page }) => {
+test('feature grid shows all sections', async ({ page }) => {
   await page.goto('/lumigrid-lander/');
-  const wallHeading = page.getByRole('heading', { name: 'LED strip wall' });
-  const wallSection = wallHeading.locator('xpath=..');
-  const status = wallSection.getByRole('status');
-  await expect(status).toHaveText(/sunset palette • 1.3× speed/i);
-
-  await wallSection.getByRole('button', { name: 'Calm' }).click();
-  await expect(status).toHaveText(/rf palette • 0.8× speed/i);
-
-  const speedSlider = wallSection.getByLabel('Speed');
-  await speedSlider.evaluate((slider: HTMLInputElement) => {
-    slider.value = '3';
-    slider.dispatchEvent(new Event('input', { bubbles: true }));
-  });
-  await expect(status).toHaveText(/3.0× speed/i);
+  await expect(page.getByRole('heading', { name: /what led node does/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /simple control/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /plan the day/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /runs together/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /works anywhere/i })).toBeVisible();
 });
 
-test('node toggles with keyboard', async ({ page }) => {
-  await page.goto('/lumigrid-lander/#mesh');
-  const node = page.locator('svg g').first();
-  await node.focus();
-  await page.keyboard.press('Enter');
-  const stroke = await page.locator('svg g circle').first().evaluate((element) => element.getAttribute('stroke') || '');
-  expect(stroke.length).toBeGreaterThan(0);
+test('process steps are numbered and visible', async ({ page }) => {
+  await page.goto('/lumigrid-lander/');
+  await expect(page.getByRole('heading', { name: /how it works/i })).toBeVisible();
+  await expect(page.getByText(/brief/i)).toBeVisible();
+  await expect(page.getByText(/plan/i)).toBeVisible();
+  await expect(page.getByText(/install/i)).toBeVisible();
+  await expect(page.getByText(/support/i)).toBeVisible();
 });

@@ -1,7 +1,3 @@
-<script>
-  let index = $state(0);
-</script>
-
 <section class="section container reveal">
   <h2 class="under" style="font-size:var(--fs-h2)">How it works</h2>
   <ol class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem; margin:.6rem 0 0; padding:0; list-style:none; counter-reset:step">
