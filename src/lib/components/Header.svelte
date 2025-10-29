@@ -1,21 +1,39 @@
 <script lang="ts">
   import { base } from '$app/paths';
+  import { onMount } from 'svelte';
+
+  onMount(() => {
+    // Button ripple position (for a bit of delight)
+    function handlePointerMove(e: PointerEvent) {
+      const t = (e.target as HTMLElement).closest('.btn');
+      if (!t) return;
+      const r = t.getBoundingClientRect();
+      (t as HTMLElement).style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      (t as HTMLElement).style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    }
+
+    document.addEventListener('pointermove', handlePointerMove);
+    return () => {
+      document.removeEventListener('pointermove', handlePointerMove);
+    };
+  });
 </script>
 
-<div
-  class="container"
+<nav
+  class="nav"
+  aria-label="Primary"
   style="position:sticky;top:0;z-index:10;padding:.6rem 0;backdrop-filter:blur(8px);background:rgba(5,8,15,.45);border-bottom:1px solid rgba(255,255,255,.08)"
 >
-  <div style="display:flex;align-items:center;gap:.75rem">
-    <a href="#hero" class="btn brand" aria-label="Reclame Fabriek R&D home">
+  <div class="container" style="display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:center;">
+    <a href="#hero" class="btn brand" aria-label="LumiGrid Home">
       <img src={`${base}/icons/icon.svg`} alt="" class="brand-mark" aria-hidden="true" />
-      <span class="brand-label">Reclame Fabriek R&D</span>
+      <span class="brand-label">LumiGrid</span>
     </a>
-    <div style="margin-left:auto;display:flex;gap:.5rem">
-      <a class="btn" href="#what">What it is</a>
-      <a class="btn" href="#examples">Examples</a>
-      <a class="btn" href="#faq">FAQ</a>
+    <div style="display:flex;gap:.5rem;align-items:center;">
+      <a class="btn ghost" href="#what">What it is</a>
+      <a class="btn ghost" href="#examples">LED control</a>
+      <a class="btn ghost" href="#faq">FAQ</a>
       <a class="btn primary" href="#contact">Contact</a>
     </div>
   </div>
-</div>
+</nav>
