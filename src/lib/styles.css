@@ -561,7 +561,7 @@ hr.rule::after{
   background: conic-gradient(from 0deg, var(--rf-magenta), var(--rf-violet), var(--rf-cyan), var(--rf-magenta));
   filter: blur(.6px); animation: sweep 8s linear infinite;
 }
-@keyframes sweep { to { transform: translateX(50%) rotate(1turn); } }
+@keyframes sweep { to { translate: 50% 0; rotate: 1turn; } }
 
 /* Reveal choreography */
 .reveal{ opacity:0; transform: translateY(16px) scale(.98); }

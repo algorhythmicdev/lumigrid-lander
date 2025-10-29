@@ -9,5 +9,6 @@
       });
     }, { rootMargin });
     document.querySelectorAll(selector).forEach(el => io.observe(el));
+    return ()=>{ io.disconnect(); };
   });
 </script>

@@ -22,10 +22,6 @@
 
   let timelinePalette = 'rf';
   let timelineSpeed = 1;
-  
-  $: if (typeof document !== 'undefined' && data?.theme?.hue) {
-    document.documentElement.style.setProperty('--ambient-hue', String(data.theme.hue));
-  }
 </script>
 
 <svelte:head>
