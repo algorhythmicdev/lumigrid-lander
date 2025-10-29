@@ -49,6 +49,9 @@
   --glass-1: rgba(255,255,255,.06);
   --glass-2: rgba(255,255,255,.10);
   
+  /* Gradient systems */
+  --grad-rf-alt: linear-gradient(135deg, var(--rf-cyan), var(--rf-violet), var(--rf-magenta));
+
   /* Motion tokens (respect reduced motion) */
   --ease-out: cubic-bezier(.2,.8,.2,1);
   --dur-fast: 180ms; 
@@ -594,3 +597,18 @@ h2.under::before{
   animation: underline 6s linear infinite;
 }
 @keyframes underline{ 50%{ left:60%; right:0 } }
+
+/* Gradient frame (animated border) - Apple-ish */
+.grad-frame{
+  position:relative; border-radius:1rem; background:var(--glass-1);
+  border:1px solid rgba(255,255,255,.14); overflow:hidden; isolation:isolate;
+}
+.grad-frame::before{
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background: conic-gradient(from 0deg, var(--rf-magenta), var(--rf-violet), var(--rf-cyan), var(--rf-magenta));
+  filter: blur(10px); opacity:.25; animation: spin 16s linear infinite;
+}
+.grad-frame::after{
+  content:""; position:absolute; inset:1px; border-radius:calc(1rem - 1px); background:var(--glass-1);
+}
+@keyframes spin{ to{ transform: rotate(1turn) } }

@@ -31,8 +31,8 @@
     </a>
     <div style="display:flex;gap:.5rem;align-items:center;">
       <a class="btn ghost" href="#what">What it is</a>
-      <a class="btn ghost" href="#examples">LED control</a>
-      <a class="btn ghost" href="#faq">FAQ</a>
+      <a class="btn ghost" href="#cases">Cases</a>
+      <a class="btn ghost" href="#press">Press</a>
       <a class="btn primary" href="#contact">Contact</a>
     </div>
   </div>

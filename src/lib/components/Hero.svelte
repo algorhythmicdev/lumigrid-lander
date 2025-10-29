@@ -11,7 +11,7 @@
     <p class="lead">Design signs that breathe, windows that glow, and façades that move together — all from a calm, simple app.</p>
     <div class="hero-cta" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: .75rem;">
       <a href="#what" class="btn primary">See how it works</a>
-      <a href="#examples" class="btn outline">Try LED control</a>
+      <a href="#cases" class="btn outline">See cases</a>
     </div>
     <p class="credit" style="color: var(--muted); margin-top: .5rem;">
       Developed by <a href="https://reclamefabriek.eu" target="_blank" rel="noopener" style="color: var(--cya);">Reclame Fabriek R&amp;D</a>
