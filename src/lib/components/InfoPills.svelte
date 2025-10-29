@@ -36,6 +36,7 @@
   {#each pills as pill}
     <button
       class="pill"
+      id={`tab-${pill.id}`}
       data-info={pill.id}
       role="tab"
       aria-selected={activePill === pill.id}

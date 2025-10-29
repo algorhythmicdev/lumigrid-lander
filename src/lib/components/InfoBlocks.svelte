@@ -8,7 +8,7 @@
   
   <InfoPills />
   
-  <div class="grid grid-2" style="margin-top:2rem;">
+  <div class="grid grid-2 info-details">
     <article class="card">
       <h3>What it is</h3>
       <p>LED Node is a compact controller you mount near your LEDs.</p>
@@ -40,3 +40,9 @@
     </article>
   </div>
 </section>
+
+<style>
+  .info-details {
+    margin-top: 2rem;
+  }
+</style>
