@@ -105,7 +105,12 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Brand gradient overlay behind LumenField (lower z than canvases) */
+/* Brand gradient overlay behind LumenField (lower z than canvases)
+ * Z-index layering system:
+ * -5: Brand gradient (this element, behind everything)
+ * -4 to -1: LumenField canvas layers (dot mesh, halos, filaments, cursor flare)
+ * 0+: Content (header, cards, text, etc.)
+ */
 body::before {
   content: "";
   position: fixed;
@@ -560,6 +565,7 @@ h1, h2, h3 { text-wrap: balance; }
 
 /* Make header glassless; only a hairline accent */
 .header {
+  position: relative;
   background: transparent !important;
   border: 0 !important;
   backdrop-filter: none !important;

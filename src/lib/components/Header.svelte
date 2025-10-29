@@ -22,7 +22,7 @@
 <nav
   class="header"
   aria-label="Primary"
-  style="position:sticky;top:0;z-index:10;padding:.6rem 0;position:relative"
+  style="position:sticky;top:0;z-index:10;padding:.6rem 0"
 >
   <div class="container" style="display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:center;">
     <a href="#hero" class="btn brand" aria-label="LumiGrid Home">
