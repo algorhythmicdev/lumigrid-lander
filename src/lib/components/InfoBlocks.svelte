@@ -3,19 +3,21 @@
 </script>
 
 <section id="what" class="section container">
-  <h2>What is LumiGrid?</h2>
-  <p class="big">It's a friendly way to choreograph light. Choose a mood, place it on a simple timeline, and watch every part of your sign move in harmony.</p>
+  <div class="reveal">
+    <h2>What it does</h2>
+    <p class="big">LED Node is a small controller for LED lighting. You choose colour, motion, and brightness in a simple web page. Save favourite looks as scenes. The lights can run on a plan, and several runs can move together.</p>
+  </div>
   
-  <InfoPills />
+  <div class="reveal">
+    <InfoPills />
+  </div>
   
   <div class="grid grid-2 info-details">
-    <article class="card">
+    <article class="card reveal" data-halo="2">
       <h3>What it is</h3>
-      <p>LED Node is a compact controller you mount near your LEDs.</p>
-      <p>You use a simple web page to choose colour, motion, and brightness.</p>
-      <p>Save your favourites as scenes and reuse them when needed.</p>
+      <p>LED Node is a small controller for LED lighting. You choose colour, motion, and brightness in a simple web page. Save favourite looks as scenes. The lights can run on a plan, and several runs can move together.</p>
     </article>
-    <article class="card">
+    <article class="card reveal" data-halo="2">
       <h3>What it can do</h3>
       <ul>
         <li><strong>Zones</strong> – control parts of a sign separately or together.</li>
@@ -26,17 +28,13 @@
         <li><strong>Keeps going</strong> – after power returns, the last scene resumes.</li>
       </ul>
     </article>
-    <article class="card">
+    <article class="card reveal" data-halo="2">
       <h3>Where it fits</h3>
-      <ul>
-        <li><strong>Shop windows</strong> – gentle colour with a clean white base.</li>
-        <li><strong>Logo letters</strong> – crisp white for brand; add a soft halo on weekends.</li>
-        <li><strong>Façades</strong> – multiple runs move together for simple cues.</li>
-      </ul>
+      <p>Shop windows, logo letters, façades and lightboxes. Clean white for everyday. Soft colour when you want attention.</p>
     </article>
-    <article class="card">
+    <article class="card reveal" data-halo="2">
       <h3>Who makes it</h3>
-      <p>Reclame Fabriek R&amp;D — we build, install, and support lighting for signage and visual communication.</p>
+      <p>Reclame Fabriek R&amp;D. We build, install and support signage lighting.</p>
     </article>
   </div>
 </section>
