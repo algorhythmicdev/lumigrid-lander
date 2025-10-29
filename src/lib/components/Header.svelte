@@ -20,9 +20,9 @@
 </script>
 
 <nav
-  class="nav"
+  class="header"
   aria-label="Primary"
-  style="position:sticky;top:0;z-index:10;padding:.6rem 0;backdrop-filter:blur(8px);background:rgba(5,8,15,.45);border-bottom:1px solid rgba(255,255,255,.08)"
+  style="position:sticky;top:0;z-index:10;padding:.6rem 0;position:relative"
 >
   <div class="container" style="display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:center;">
     <a href="#hero" class="btn brand" aria-label="LumiGrid Home">
