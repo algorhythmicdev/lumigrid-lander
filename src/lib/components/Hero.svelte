@@ -7,7 +7,7 @@
   <HaloCanvas />
   
   <div class="hero" style="position: relative; z-index: 1; max-width: 980px; text-align: center; padding: clamp(1rem, 3vw, 2rem);">
-    <h1>Light that tells your story.</h1>
+    <h1>Light that brings your brand to life.</h1>
     <p class="lead">Design signs that breathe, windows that glow, and façades that move together — all from a calm, simple app.</p>
     <div class="hero-cta" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: .75rem;">
       <a href="#what" class="btn primary">See how it works</a>

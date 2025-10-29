@@ -32,13 +32,14 @@
   }
 </script>
 
-<div class="pill-row" role="list">
+<div class="pill-row" role="tablist">
   {#each pills as pill}
     <button
       class="pill"
       data-info={pill.id}
-      role="listitem"
-      aria-pressed={activePill === pill.id}
+      role="tab"
+      aria-selected={activePill === pill.id}
+      aria-controls={`panel-${pill.id}`}
       on:click={() => selectPill(pill.id)}
     >
       {pill.label}
@@ -48,7 +49,14 @@
 
 <div class="info-cards" aria-live="polite">
   {#each Object.entries(cards) as [id, card]}
-    <article class="infocard" class:is-active={activePill === id} data-info={id}>
+    <article 
+      class="infocard" 
+      class:is-active={activePill === id} 
+      data-info={id}
+      role="tabpanel"
+      id={`panel-${id}`}
+      aria-labelledby={`tab-${id}`}
+    >
       <h3>{card.title}</h3>
       <p>{card.content}</p>
     </article>

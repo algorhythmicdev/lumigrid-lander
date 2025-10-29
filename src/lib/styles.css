@@ -271,8 +271,11 @@ body {
   padding: .5rem .9rem; 
   cursor: pointer;
   transition: background .3s ease, border-color .3s ease;
+  font-size: inherit;
+  font-family: inherit;
 }
 
+.pill[aria-selected="true"],
 .pill[aria-pressed="true"] { 
   background: #101733; 
   border-color: rgba(255,255,255,.3); 
