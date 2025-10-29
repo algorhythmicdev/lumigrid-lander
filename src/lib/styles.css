@@ -92,6 +92,9 @@
 html:focus-within { scroll-behavior: smooth; }
 html, body { height: 100%; }
 
+/* Single global background — no per-section fills */
+html, body { background: transparent; }
+
 body {
   margin: 0;
   min-height: 100dvh;
@@ -99,11 +102,26 @@ body {
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   font-size: var(--fs);
   line-height: 1.6;
-  background:
-    radial-gradient(1000px 500px at 10% -10%, #1f2546 0%, var(--bg-0) 45%),
-    radial-gradient(800px 400px at 90% 110%, #161a33 0%, transparent 60%),
-    var(--bg-0);
   text-rendering: optimizeLegibility;
+}
+
+/* Brand gradient overlay behind LumenField (lower z than canvases)
+ * Z-index layering system:
+ * -5: Brand gradient (this element, behind everything)
+ * -4 to -1: LumenField canvas layers (dot mesh, halos, filaments, cursor flare)
+ * 0+: Content (header, cards, text, etc.)
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -5;
+  /* Gentle brand gradient; adjust angles/stops as you like */
+  background:
+    radial-gradient(120% 120% at 20% 15%, color-mix(in oklab, #e73ba3 18%, transparent), transparent 60%),
+    radial-gradient(120% 120% at 80% 70%, color-mix(in oklab, #1cc5dc 16%, transparent), transparent 60%),
+    linear-gradient(180deg, #0b1120 0%, #0b1120 100%);
 }
 
 :focus-visible { 
@@ -127,25 +145,24 @@ body {
 /* Layout */
 .container { width: min(1200px, 92vw); margin: 0 auto; }
 .section { padding: clamp(2rem, 5vw, 4rem) 0; }
-.section.soft { 
-  background: linear-gradient(180deg, rgba(231,59,163,.07), rgba(28,197,220,.06)); 
-}
-.section.focus { 
-  background: linear-gradient(180deg, rgba(108,43,217,.10), rgba(28,197,220,.05)); 
-}
 .center { text-align: center; }
-/* Cards */
+
+/* Sections are transparent; only cards have surfaces */
+.section, .section .container {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+/* Cards = the only "surfaces" */
 .card {
   position: relative;
-  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
-  border: 1px solid rgba(255,255,255,.15);
-  backdrop-filter: blur(14px);
+  background: var(--glass-1);
+  border: 1px solid rgba(255,255,255,.14);
   border-radius: 1rem;
-  padding: 1.25rem;
+  padding: 1rem;
   contain: content;
   content-visibility: auto;
   contain-intrinsic-size: 400px 300px;
-  box-shadow: var(--shadow);
 }
 
 .card::before {
@@ -285,6 +302,24 @@ body {
   font-size: var(--fs-lead);
   color: var(--muted); 
   margin: .5rem 0 0; 
+}
+
+/* Optional: reduce long text glow over busy backgrounds */
+.readable {
+  text-shadow: 0 1px 1.5px rgba(0,0,0,.35);
+}
+
+/* Light vignette behind hero text only (inside hero card) */
+#hero .lead {
+  position: relative;
+}
+#hero .lead::before {
+  content: "";
+  position: absolute;
+  inset: -8% -10%;
+  z-index: -1;
+  background: radial-gradient(80% 70% at 30% 40%, rgba(0,0,0,.18), transparent 70%);
+  pointer-events: none;
 }
 
 .big {
@@ -525,9 +560,25 @@ button,.chip,.btn,a.card{ min-height:44px }
   }
 }
 
-/* CTA section */
-.section.cta { 
-  background: linear-gradient(180deg, rgba(231,59,163,.06), rgba(108,43,217,.06)); 
+/* Headings keep balance on phones */
+h1, h2, h3 { text-wrap: balance; }
+
+/* Make header glassless; only a hairline accent */
+.header {
+  position: relative;
+  background: transparent !important;
+  border: 0 !important;
+  backdrop-filter: none !important;
+}
+.header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,.18), rgba(255,255,255,.02), rgba(255,255,255,.18));
+  opacity: .5;
 }
 
 /* Reduced motion support */
