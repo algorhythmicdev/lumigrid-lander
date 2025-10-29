@@ -19,11 +19,16 @@
   import Contact from '$lib/components/Contact.svelte';
   import FooterCTA from '$lib/components/FooterCTA.svelte';
   import { t } from '$lib/i18n';
+  import { browser } from '$app/environment';
+  import { onMount } from 'svelte';
 
   export let data;
-  $: if (typeof document !== 'undefined' && data.theme?.hue) {
-    document.documentElement.style.setProperty('--ambient-hue', String(data.theme.hue));
-  }
+  
+  onMount(() => {
+    if (data.theme?.hue) {
+      document.documentElement.style.setProperty('--ambient-hue', String(data.theme.hue));
+    }
+  });
 </script>
 
 <svelte:head>
