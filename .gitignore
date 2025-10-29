@@ -29,3 +29,7 @@ build
 
 .svelte-kit
 .vercel
+
+# Test results
+test-results
+playwright-report
