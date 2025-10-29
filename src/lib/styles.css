@@ -19,8 +19,16 @@
   --c:#1cc5dc; 
   --warm:#ffd166;
   
+  /* Extended brand hues (Apple keynote vibes) */
+  --rf-magenta:#e73ba3; 
+  --rf-violet:#6c2bd9; 
+  --rf-cyan:#1cc5dc; 
+  --rf-amber:#ffd166;
+  
   /* Gradients */
   --primary-grad: linear-gradient(135deg, var(--mag), var(--vio), var(--cya));
+  --grad-rf: linear-gradient(135deg, var(--rf-magenta), var(--rf-violet), var(--rf-cyan));
+  --grad-warm: linear-gradient(135deg, var(--rf-amber), var(--rf-magenta));
   
   /* Effects */
   --glow-soft:.16; 
@@ -29,12 +37,38 @@
   --ring: var(--amb);
   --shadow: 0 10px 30px rgba(0,0,0,.35);
   
+  /* Halo "grades" for cards/components (tokenized) */
+  --halo-0: 0;          /* none */
+  --halo-1: .06;        /* subtle */
+  --halo-2: .10;        /* soft */
+  --halo-3: .16;        /* strong */
+  --halo-4: .22;        /* vivid */
+
+  /* Card depth tiers */
+  --glass-0: rgba(255,255,255,.03);
+  --glass-1: rgba(255,255,255,.06);
+  --glass-2: rgba(255,255,255,.10);
+  
+  /* Motion tokens (respect reduced motion) */
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+  --dur-fast: 180ms; 
+  --dur-med: 360ms; 
+  --dur-slow: 900ms;
+  
   /* Typography */
   --fs-h1: clamp(2.2rem, 6vw, 3.6rem);
   --fs-h2: clamp(1.4rem, 3.2vw, 2rem);
   --fs: clamp(1rem, 1.6vw, 1.1rem);
   --fs-lead: clamp(1.05rem, 2.2vw, 1.25rem);
   --fs-big: clamp(1.05rem, 2.1vw, 1.2rem);
+}
+
+@media (prefers-reduced-motion: reduce){
+  :root{ 
+    --dur-fast: 0ms; 
+    --dur-med: 0ms; 
+    --dur-slow: 0ms; 
+  }
 }
 
 /* Light mode support */
@@ -497,3 +531,66 @@ button,.chip,.btn,a.card{ min-height:44px }
 @media (prefers-reduced-motion: reduce){
   * { animation: none !important; transition: none !important; }
 }
+
+/* Tokenized halos for any container: data-halo="0..4" */
+[data-halo]{
+  position:relative; isolation:isolate;
+  background:var(--glass-1); border:1px solid rgba(255,255,255,.14); border-radius:1rem;
+}
+[data-halo]::before{
+  content:""; position:absolute; inset:-2px; border-radius:inherit; z-index:-1;
+  background:
+    radial-gradient(120% 160% at 20% 20%, color-mix(in oklab, var(--rf-magenta) 60%, transparent) 0 30%, transparent 60%),
+    radial-gradient(120% 160% at 80% 60%, color-mix(in oklab, var(--rf-cyan) 60%, transparent) 0 30%, transparent 60%);
+  opacity: var(--halo-amount, .10); filter: blur(24px);
+  transition: opacity var(--dur-med) var(--ease-out);
+}
+[data-halo="0"]{ --halo-amount: var(--halo-0) }
+[data-halo="1"]{ --halo-amount: var(--halo-1) }
+[data-halo="2"]{ --halo-amount: var(--halo-2) }
+[data-halo="3"]{ --halo-amount: var(--halo-3) }
+[data-halo="4"]{ --halo-amount: var(--halo-4) }
+
+/* Animated gradient separator */
+hr.rule{
+  height:2px; border:0; border-radius:999px; overflow:hidden; background:#0f172a;
+  position:relative; isolation:isolate;
+}
+hr.rule::after{
+  content:""; position:absolute; inset:0; translate:-50% 0; width:120%;
+  background: conic-gradient(from 0deg, var(--rf-magenta), var(--rf-violet), var(--rf-cyan), var(--rf-magenta));
+  filter: blur(.6px); animation: sweep 8s linear infinite;
+}
+@keyframes sweep { to { transform: translateX(50%) rotate(1turn); } }
+
+/* Reveal choreography */
+.reveal{ opacity:0; transform: translateY(16px) scale(.98); }
+.reveal.in{ opacity:1; transform: none; transition: transform var(--dur-med) var(--ease-out), opacity var(--dur-med) var(--ease-out); }
+
+/* Headings with kinetic gradient fill */
+.kg{
+  background: var(--grad-rf);
+  -webkit-background-clip:text; background-clip:text;
+  color: transparent;
+}
+
+/* AI + LED micro-interactions for cards */
+[data-halo].card{ transition: transform var(--dur-med) var(--ease-out), background var(--dur-med) var(--ease-out) }
+[data-halo].card:hover, [data-halo].card:focus-within{
+  transform: translateY(-2px);
+}
+[data-halo="1"].card:hover::before, [data-halo="1"].card:focus-within::before{ opacity: var(--halo-2) }
+[data-halo="2"].card:hover::before, [data-halo="2"].card:focus-within::before{ opacity: var(--halo-3) }
+[data-halo="3"].card:hover::before, [data-halo="3"].card:focus-within::before{ opacity: var(--halo-4) }
+
+/* Section heading underline */
+h2.under{ position:relative; padding-bottom:.4rem; }
+h2.under::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:2px; border-radius:999px; overflow:hidden; background:#0f172a;
+}
+h2.under::before{
+  content:""; position:absolute; left:0; right:40%; bottom:0; height:2px;
+  background: linear-gradient(90deg, var(--rf-magenta), var(--rf-cyan));
+  animation: underline 6s linear infinite;
+}
+@keyframes underline{ 50%{ left:60%; right:0 } }
