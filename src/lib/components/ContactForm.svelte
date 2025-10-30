@@ -15,6 +15,7 @@
   let messageRemaining = MESSAGE_LIMIT;
 
   $: noteTone = state === 'success' ? 'success' : state === 'error' ? 'error' : '';
+  $: noteClass = noteTone ? `contact-form__note contact-form__note--${noteTone}` : 'contact-form__note';
 
   const resetNote = () => {
     if (state !== 'success') {
@@ -107,14 +108,15 @@
     errMsg = '';
   };
 </script>
+
 <form
-  class="form glass reveal"
+  class="contact-form reveal"
   on:submit|preventDefault={submit}
   novalidate
   data-state={state}
   aria-busy={state === 'sending'}
 >
-  <div class="f-row">
+  <div class="contact-form__row">
     <label for="name">Name</label>
     <input
       id="name"
@@ -124,9 +126,9 @@
       aria-describedby="name-error"
       on:input={handleInput}
     />
-    <small id="name-error" class="error">{errName}</small>
+    <small id="name-error" class="contact-form__error">{errName}</small>
   </div>
-  <div class="f-row">
+  <div class="contact-form__row">
     <label for="email">Email</label>
     <input
       id="email"
@@ -137,9 +139,9 @@
       aria-describedby="email-error"
       on:input={handleInput}
     />
-    <small id="email-error" class="error">{errEmail}</small>
+    <small id="email-error" class="contact-form__error">{errEmail}</small>
   </div>
-  <div class="f-row">
+  <div class="contact-form__row">
     <label for="msg">Message</label>
     <textarea
       id="msg"
@@ -151,13 +153,95 @@
       maxlength={MESSAGE_LIMIT}
       on:input={handleInput}
     ></textarea>
-    <small id="msg-error" class="error">{errMsg}</small>
-    <small id="msg-limit" class="hint" aria-live="polite">{messageRemaining} characters remaining</small>
+    <small id="msg-error" class="contact-form__error">{errMsg}</small>
+    <small id="msg-limit" class="contact-form__hint" aria-live="polite">{messageRemaining} characters remaining</small>
   </div>
-  <div class="f-row inline">
+  <div class="contact-form__row contact-form__row--inline">
     <button class="btn primary big" disabled={state === 'sending'}>
       {state === 'sending' ? 'Opening…' : 'Send'}
     </button>
-    <span class={`form-note ${noteTone}`} aria-live="polite" role="status">{note}</span>
+    <span class={noteClass} aria-live="polite" role="status">{note}</span>
   </div>
 </form>
+
+<style>
+  .contact-form {
+    display: grid;
+    gap: clamp(0.75rem, 2vw, 1.1rem);
+  }
+
+  .contact-form__row {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .contact-form__row--inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(0.6rem, 2.5vw, 1rem);
+  }
+
+  label {
+    font-weight: 600;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+
+  textarea {
+    min-height: clamp(140px, 30vh, 220px);
+  }
+
+  input[aria-invalid="true"],
+  textarea[aria-invalid="true"] {
+    border-color: color-mix(in oklab, var(--rf-magenta) 70%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--rf-magenta) 55%, transparent);
+  }
+
+  .contact-form__error {
+    color: color-mix(in oklab, var(--rf-magenta) 75%, rgba(255, 255, 255, 0.85));
+    font-size: 0.85rem;
+    min-height: 1em;
+  }
+
+  .contact-form__error:empty {
+    display: none;
+  }
+
+  .contact-form__hint {
+    color: color-mix(in oklab, var(--muted) 88%, rgba(255, 255, 255, 0.7));
+    font-size: 0.82rem;
+  }
+
+  .contact-form__note {
+    min-height: 1.2em;
+    color: color-mix(in oklab, var(--muted) 92%, rgba(255, 255, 255, 0.8));
+    font-size: 0.9rem;
+  }
+
+  .contact-form__note--success {
+    color: color-mix(in oklab, var(--rf-amber) 70%, rgba(255, 255, 255, 0.9));
+  }
+
+  .contact-form__note--error {
+    color: color-mix(in oklab, var(--rf-magenta) 80%, rgba(255, 255, 255, 0.85));
+  }
+
+  [data-state='sending'] button {
+    cursor: progress;
+  }
+
+  button.btn.primary.big {
+    align-self: flex-start;
+  }
+
+  @media (max-width: 640px) {
+    .contact-form__row--inline {
+      align-items: flex-start;
+    }
+  }
+</style>

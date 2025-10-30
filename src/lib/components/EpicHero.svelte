@@ -1,4 +1,5 @@
 <script>
+  import { base } from '$app/paths';
   export let title = 'LED Node';
   export let kicker = 'Reclame Fabriek R&D';
   export let sub = 'A compact controller for LED signage. Pick a look, set a simple plan, lights stay in step.';
@@ -12,8 +13,8 @@
   <p class="lead" style="color:var(--muted); max-width:64ch; margin:.6rem 0 1rem">{sub}</p>
 
   <div class="glassbar">
-    <a href="#cases" class="btn primary">See examples</a>
-    <a href="#contact" class="btn">Talk to us</a>
+    <a href={`${base}/cases`} class="btn primary">See examples</a>
+    <a href={`${base}/contact#contact`} class="btn">Talk to us</a>
   </div>
 </div>
 

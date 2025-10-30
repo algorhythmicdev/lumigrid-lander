@@ -1,21 +1,25 @@
 <script>
-  import { base } from '$app/paths';
-  const modules = import.meta.glob('/static/assets/brands/*');
-  let list = [];
-  for (const path in modules) {
-    list.push(base + path.replace('/static', ''));
-  }
+  const brands = [
+    'Reclame Fabriek',
+    'LED Node Partners',
+    'City Light Lab',
+    'Retail Stories',
+    'Facade Studio',
+    'Night Shift Media'
+  ];
+  const list = [...brands, ...brands];
 </script>
 
 <section class="container section" data-hue="300">
   <h2 id="brands">Trusted for signage</h2>
-  <div class="scroller">
+  <div class="scroller" aria-hidden="true">
     <div class="scroller-inner">
-      {#each [...list, ...list] as url}
-        <img src={url} alt="" />
+      {#each list as name}
+        <span class="brand-chip">{name}</span>
       {/each}
     </div>
   </div>
+  <p class="sr">{brands.join(', ')}</p>
 </section>
 
 <style>
@@ -30,10 +34,30 @@
     width: max-content;
     animation: scroll 30s linear infinite;
   }
-  .scroller-inner img {
-    height: 48px;
-    filter: grayscale(1) brightness(1.5);
-    opacity: .8;
+  .brand-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .4rem .8rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.04);
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .sr {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
   }
   @keyframes scroll {
     to {

@@ -50,9 +50,9 @@
 
 <div class="info-cards" aria-live="polite">
   {#each Object.entries(cards) as [id, card]}
-    <article 
-      class="infocard" 
-      class:is-active={activePill === id} 
+    <div
+      class="infocard"
+      class:is-active={activePill === id}
       data-info={id}
       role="tabpanel"
       id={`panel-${id}`}
@@ -60,6 +60,6 @@
     >
       <h3>{card.title}</h3>
       <p>{card.content}</p>
-    </article>
+    </div>
   {/each}
 </div>

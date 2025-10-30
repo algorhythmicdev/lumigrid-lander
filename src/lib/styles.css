@@ -117,16 +117,17 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: -5;
-  /* Gentle brand gradient; adjust angles/stops as you like */
+  --h: var(--ambient-hue);
   background:
-    radial-gradient(120% 120% at 20% 15%, color-mix(in oklab, #e73ba3 18%, transparent), transparent 60%),
-    radial-gradient(120% 120% at 80% 70%, color-mix(in oklab, #1cc5dc 16%, transparent), transparent 60%),
+    radial-gradient(120% 120% at 20% 15%, oklch(60% .12 calc(var(--h) + 30)) 0%, transparent 55%),
+    radial-gradient(120% 120% at 80% 70%, oklch(58% .10 calc(var(--h) - 40)) 0%, transparent 55%),
     linear-gradient(180deg, #0b1120 0%, #0b1120 100%);
 }
 
-:focus-visible { 
-  outline: 3px solid var(--ring); 
-  outline-offset: 2px; 
+:where(button, a, [role="button"], input, select, textarea):focus-visible {
+  outline: 2px solid var(--rf-amber);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
 }
 
 /* Skip link for accessibility */
@@ -191,6 +192,8 @@ body::before {
 }
 
 .card > * { position: relative; z-index: 1; }
+.card, .grad-frame { color: var(--ink); }
+.card p, .card li, .card small { color: color-mix(in oklab, var(--ink) 88%, rgba(255,255,255,.8)); }
 .card ul { margin: .5rem 0 0; padding-left: 1.2rem; display: grid; gap: .35rem; }
 .card ul li { list-style: disc; color: var(--ink); }
 .card ul li strong { color: var(--warm); }
@@ -454,6 +457,23 @@ label{display:grid;gap:.35rem;font-weight:600}
 input,textarea{font:inherit;padding:.65rem .75rem;border-radius:.6rem;border:1px solid rgba(255,255,255,.2);background:rgba(8,16,26,.65);color:var(--ink)}
 textarea{min-height:120px;resize:vertical}
 
+.contact-card{
+  display:grid;
+  gap:clamp(1rem, 2.8vw, 1.6rem);
+  padding:clamp(1.1rem, 3vw, 1.85rem);
+}
+
+.contact-card h2{
+  margin:0;
+  font-size:var(--fs-h2);
+}
+
+.contact-card p{
+  margin:0;
+  color:color-mix(in oklab, var(--ink) 88%, rgba(255,255,255,.72));
+  max-width:60ch;
+}
+
 input[type="range"] { 
   width: 170px; 
   cursor: pointer;
@@ -655,11 +675,25 @@ h2.under::before{
   border:1px solid rgba(255,255,255,.14); overflow:hidden; isolation:isolate;
 }
 .grad-frame::before{
-  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  content:""; position:absolute; inset:0; z-index:-2; pointer-events:none;
   background: conic-gradient(from 0deg, var(--rf-magenta), var(--rf-violet), var(--rf-cyan), var(--rf-magenta));
   filter: blur(10px); opacity:.25; animation: spin 16s linear infinite;
 }
 .grad-frame::after{
   content:""; position:absolute; inset:1px; border-radius:calc(1rem - 1px); background:var(--glass-1);
+  pointer-events:none; z-index:-1;
 }
+.grad-frame > * { position: relative; z-index: 1; }
 @keyframes spin{ to{ transform: rotate(1turn) } }
+
+.readable { text-shadow: 0 1px 1.5px rgba(0,0,0,.35); }
+
+#hero .lead { position: relative; }
+#hero .lead::before {
+  content: "";
+  position: absolute;
+  inset: -8% -10%;
+  z-index: -1;
+  background: radial-gradient(80% 70% at 30% 40%, rgba(0,0,0,.18), transparent 70%);
+  pointer-events: none;
+}
