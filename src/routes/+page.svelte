@@ -1,5 +1,4 @@
 <script lang="ts">
-  import '$lib/styles.css';
   import AmbientSync from '$lib/components/AmbientSync.svelte';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import Header from '$lib/components/Header.svelte';
@@ -19,16 +18,9 @@
   import Contact from '$lib/components/Contact.svelte';
   import FooterCTA from '$lib/components/FooterCTA.svelte';
   import { t } from '$lib/i18n';
-  import { browser } from '$app/environment';
-  import { onMount } from 'svelte';
 
   export let data;
   
-  onMount(() => {
-    if (data.theme?.hue) {
-      document.documentElement.style.setProperty('--ambient-hue', String(data.theme.hue));
-    }
-  });
 </script>
 
 <svelte:head>
@@ -49,12 +41,17 @@
   </script>
 </svelte:head>
 
-<AmbientSync />
+<AmbientSync initialHue={data?.theme?.hue} />
 <RevealOnScroll />
 <Header />
 <div class="container" style="display:flex; justify-content:flex-end; margin-top:.6rem"><LangToggle/></div>
 
-<section class="section container grad-frame reveal" id="hero" style="padding:clamp(1rem,3vw,1.5rem); position:relative; margin-top:clamp(1rem,8vh,6rem)">
+<section
+  class="section container grad-frame reveal"
+  id="hero"
+  style="padding:clamp(1rem,3vw,1.5rem); position:relative; margin-top:clamp(1rem,8vh,6rem)"
+  data-hue={data?.theme?.hue}
+>
   <EpicHero kicker={$t('hero_kicker')} title={$t('hero_title')} sub={$t('hero_sub')} />
   <AIField count={56}/>
 </section>

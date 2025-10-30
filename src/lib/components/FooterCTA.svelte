@@ -1,3 +1,7 @@
+<script>
+  import { base } from '$app/paths';
+</script>
+
 <section class="section footer-cta">
   <div class="container footer-shell">
     <div class="light-rail-track" aria-hidden="true">
@@ -8,7 +12,7 @@
       <p class="lead">
         Tell us about your sign. We’ll suggest zones, looks, and a simple plan.
       </p>
-      <a class="btn primary" href="#contact">Contact Reclame Fabriek</a>
+      <a class="btn primary" href={`${base}/contact#contact`}>Contact Reclame Fabriek</a>
     </div>
   </div>
 </section>

@@ -1,4 +1,5 @@
 <script>
+  import { base } from '$app/paths';
   export let title = 'Window display upgrade';
   export let client = 'Local Boutique';
   export let outcome = [
@@ -28,7 +29,7 @@
           </li>
         {/each}
       </ul>
-      <a class="btn" href="#contact">Ask about this setup</a>
+      <a class="btn" href={`${base}/contact#contact`}>Ask about this setup</a>
     </div>
   </div>
 </section>

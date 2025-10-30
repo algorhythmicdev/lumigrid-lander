@@ -1,35 +1,41 @@
 <script>
-  // Pull assets from static/assets/gallery/*
-  const mods = import.meta.glob('/static/assets/gallery/*.{jpg,jpeg,png,webp,avif}', { eager:true, as:'url' });
-  const items = Object.entries(mods).map(([p,url])=>{
-    const file = (p.split('/').pop()||'').replace(/\.[^.]+$/,'');
-    // infer a tag from filename prefix: retail-, brand-, outdoor-
-    const tag = /^(retail|brand|outdoor)/i.test(file) ? file.split('-')[0] : 'default';
-    const title = file.replace(/[-_]/g,' ').replace(/\b\w/g,m=>m.toUpperCase());
-    return { url, tag, title };
-  });
+  const items = [
+    {
+      title: 'Retail window rhythm',
+      tag: 'retail',
+      background: 'radial-gradient(120% 120% at 20% 30%, rgba(118,133,255,0.32), transparent 65%), linear-gradient(200deg, rgba(8,12,24,0.92), rgba(16,24,52,0.88))'
+    },
+    {
+      title: 'Brand letter precision',
+      tag: 'brand',
+      background: 'radial-gradient(120% 120% at 70% 25%, rgba(255,140,190,0.4), transparent 60%), linear-gradient(210deg, rgba(15,18,36,0.92), rgba(28,36,66,0.9))'
+    },
+    {
+      title: 'Outdoor facade choreography',
+      tag: 'outdoor',
+      background: 'radial-gradient(120% 120% at 35% 75%, rgba(255,205,135,0.42), transparent 65%), linear-gradient(200deg, rgba(12,18,34,0.95), rgba(8,10,22,0.9))'
+    }
+  ];
 
-  // one-liners per tag (plain language)
   const tagLine = {
-    retail:  'Calm colour in the day; a gentle halo by evening.',
-    brand:   'Logo letters stay clean white; halo only when you want attention.',
+    retail: 'Calm colour in the day; a gentle halo by evening.',
+    brand: 'Logo letters stay clean white; halo only when you want attention.',
     outdoor: 'Façade runs line up so the whole wall moves as one.',
-    default:   'Lighting that serves the message, not noise.'
+    default: 'Lighting that serves the message, not noise.'
   };
 </script>
 
-<section class="section container reveal" id="cases">
+<section class="section container reveal" id="stories">
   <h2 class="under" style="font-size:var(--fs-h2)">Cases from installs</h2>
   <div class="slides">
     {#each items as it}
-      <figure class="slide grad-frame" tabindex="0" aria-label={it.title}>
-        <img src={it.url} alt="" loading="lazy" width="1600" height="1000"
-             style="display:block;width:100%;height:100%;object-fit:cover"/>
-        <figcaption class="cap">
+      <div class="slide grad-frame" role="group" aria-label={it.title} style={`--slide-bg:${it.background}`}>
+        <div class="canvas" aria-hidden="true"></div>
+        <div class="cap">
           <strong>{it.title}</strong>
           <span>{tagLine[it.tag] ?? tagLine.default}</span>
-        </figcaption>
-      </figure>
+        </div>
+      </div>
     {/each}
   </div>
 </section>
@@ -37,11 +43,13 @@
 <style>
   .slides{ display:flex; gap:1rem; overflow:auto; scroll-snap-type:x mandatory; padding:.5rem 0 }
   .slide{ scroll-snap-align:center; min-width:min(92vw,960px); height:min(60vh,520px); position:relative; }
+  .canvas{ position:absolute; inset:0; background:var(--slide-bg); border-radius:.8rem; box-shadow: inset 0 0 60px rgba(0,0,0,.35); }
   .slide .cap{
     position:absolute; left:0; right:0; bottom:0; padding:.8rem 1rem;
     display:flex; justify-content:space-between; gap:.6rem; flex-wrap:wrap;
     background:linear-gradient(180deg, transparent, rgba(0,0,0,.55));
     color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.4);
+    border-radius:0 0 .8rem .8rem;
   }
   .slide strong{ font-weight:700 }
   .slide span{ opacity:.9 }

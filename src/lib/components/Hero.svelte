@@ -1,8 +1,9 @@
 <script>
   import HaloCanvas from './HaloCanvas.svelte';
+  import { base } from '$app/paths';
 </script>
 
-<header id="hero" class="site-header" role="banner" aria-label="Header" style="position: relative; min-height: 76vh; display: grid; place-items: center; overflow: hidden;">
+<header id="hero" class="site-header" aria-label="Header" style="position: relative; min-height: 76vh; display: grid; place-items: center; overflow: hidden;">
   <!-- full-page halo with inertia -->
   <HaloCanvas />
   
@@ -11,7 +12,7 @@
     <p class="lead">Design signs that breathe, windows that glow, and façades that move together — all from a calm, simple app.</p>
     <div class="hero-cta" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: .75rem;">
       <a href="#what" class="btn primary">See how it works</a>
-      <a href="#cases" class="btn outline">See cases</a>
+      <a href={`${base}/cases`} class="btn outline">See cases</a>
     </div>
     <p class="credit" style="color: var(--muted); margin-top: .5rem;">
       Developed by <a href="https://reclamefabriek.eu" target="_blank" rel="noopener" style="color: var(--cya);">Reclame Fabriek R&amp;D</a>
