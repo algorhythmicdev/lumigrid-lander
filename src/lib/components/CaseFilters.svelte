@@ -5,7 +5,8 @@
   const set = (t)=> active = t;
 
   // announce to parent (ProjectGallery & UseCaseStory can listen)
-  let el; const send = () => el?.dispatchEvent(new CustomEvent('change', { detail:{ active }, bubbles:true }));
+  let el;
+  const send = () => el?.dispatchEvent(new CustomEvent('change', { detail:{ active }, bubbles:true }));
   $: if (el) send();
 </script>
 

@@ -1,6 +1,6 @@
 @media print {
-  @page{ size:A4; margin:14mm }
-  body{ background:#fff !important; }
+  @page { size: A4; margin: 14mm }
+  body { background: #fff !important; }
   /* hide pure ambience and nav */
   canvas, .header, .nav-btn, hr.rule, .LightSettings { display:none !important }
   /* cards become white with hairline */
