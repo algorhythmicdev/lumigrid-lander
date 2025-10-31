@@ -3,6 +3,8 @@
   import LumenField from '$lib/components/LumenField.svelte';
   import TopProgress from '$lib/components/TopProgress.svelte';
   import LightSettings from '$lib/components/LightSettings.svelte';
+  import SkipLink from '$lib/components/SkipLink.svelte';
+  import { base } from '$app/paths';
 </script>
 
 <svelte:head>
@@ -17,8 +19,10 @@
     name="twitter:image"
     content="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=1200&q=80"
   />
+  <link rel="stylesheet" href="{base}/print.css" media="print">
 </svelte:head>
 
+<SkipLink />
 <LumenField intensity={1.0} parallax={0.06}/>
 <TopProgress />
 <LightSettings />

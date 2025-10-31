@@ -1,4 +1,6 @@
 <script>
+  export let filter = 'all';
+  
   const items = [
     {
       title: 'Retail window rhythm',
@@ -23,12 +25,17 @@
     outdoor: 'Façade runs line up so the whole wall moves as one.',
     default: 'Lighting that serves the message, not noise.'
   };
+
+  // when receiving the event from CaseFilters:
+  const onFilter = (e)=> filter = e.detail.active;
+  
+  $: filtered = filter === 'all' ? items : items.filter(it => it.tag === filter);
 </script>
 
-<section class="section container reveal" id="stories">
+<section class="section container reveal" id="stories" on:change={onFilter}>
   <h2 class="under" style="font-size:var(--fs-h2)">Cases from installs</h2>
   <div class="slides">
-    {#each items as it}
+    {#each filtered as it}
       <div class="slide grad-frame" role="group" aria-label={it.title} style={`--slide-bg:${it.background}`}>
         <div class="canvas" aria-hidden="true"></div>
         <div class="cap">
