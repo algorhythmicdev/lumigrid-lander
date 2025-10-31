@@ -240,9 +240,16 @@ body::before {
 }
 
 .btn.primary { 
-  background: var(--primary-grad); 
-  color: #0a0e17; 
+  background: var(--grad-rf); 
+  color: #071117; 
+  border-radius: .7rem; 
+  padding: .55rem .9rem; 
+  font-weight: 600;
   border: 0;
+}
+
+.btn.primary:hover { 
+  filter: saturate(1.05) brightness(1.05);
 }
 
 .btn.big { 
@@ -378,13 +385,19 @@ body::before {
 }
 
 .chip { 
-  padding: .45rem .75rem; 
+  background: rgba(255,255,255,.06); 
+  border: 1px solid rgba(255,255,255,.14); 
   border-radius: 999px; 
-  border: 1px solid rgba(255,255,255,.22); 
-  background: rgba(11,17,32,.7); 
+  padding: .35rem .7rem;
   color: var(--ink); 
   cursor: pointer; 
   transition: background .3s ease, border-color .3s ease, box-shadow .3s ease;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.chip[aria-selected="true"] { 
+  background: rgba(255,255,255,.12);
 }
 
 .chip[aria-checked="true"], 
@@ -696,4 +709,11 @@ h2.under::before{
   z-index: -1;
   background: radial-gradient(80% 70% at 30% 40%, rgba(0,0,0,.18), transparent 70%);
   pointer-events: none;
+}
+
+/* Single-BG guardrails: only cards have surfaces */
+section, .section, .container, .rail, .stories{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
 }

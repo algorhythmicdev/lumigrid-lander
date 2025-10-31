@@ -1,7 +1,9 @@
 import { writable, derived } from 'svelte/store';
+import { save, load } from './prefs';
 
 type Lang = 'en'|'lv'|'ru';
-export const lang = writable<Lang>('en');
+export const lang = writable<Lang>(load<Lang>('lg-lang','en'));
+lang.subscribe(v => save('lg-lang', v));
 
 const dict: Record<Lang, Record<string,string>> = {
   en: {

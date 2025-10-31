@@ -4,6 +4,7 @@
   import Header from '$lib/components/Header.svelte';
   import EpicHero from '$lib/components/EpicHero.svelte';
   import AIField from '$lib/components/AIField.svelte';
+  import CaseFilters from '$lib/components/CaseFilters.svelte';
   import UseCaseStory from '$lib/components/UseCaseStory.svelte';
   import ProjectGallery from '$lib/components/ProjectGallery.svelte';
   import BeforeAfterAuto from '$lib/components/BeforeAfterAuto.svelte';
@@ -56,6 +57,10 @@
 </section>
 
 <hr class="rule" />
+
+<div class="container" style="margin-bottom: 1.5rem;">
+  <CaseFilters />
+</div>
 
 <UseCaseStory />
 <ProjectGallery />
