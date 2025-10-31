@@ -1,5 +1,7 @@
 <script>
-  const toAssetPath = (path) => `/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
+  import { base } from '$app/paths';
+  
+  const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
   const filenameFromPath = (path) => path.split('/').pop();
 
   const assetGroups = [
