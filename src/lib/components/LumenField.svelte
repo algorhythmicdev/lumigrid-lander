@@ -8,8 +8,8 @@
   let dots = [];
 
   const dotCount = 42;
-  const dotRadius = 1.4;
-  const bigDotRadius = 2.2;
+  const dotRadius = 2.8; // Scaled up by 200%
+  const bigDotRadius = 4.4; // Scaled up by 200%
   const bigDotChance = 0.3;
   const repelFactor = 0.00008;
   const G = 6.674e-11;

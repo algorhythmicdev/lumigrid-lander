@@ -8,6 +8,7 @@
   let menu;
   let currentLang = $lang;
   let currentTheme = 260; // default hue
+  let lightMode = false; // light/dark theme toggle
 
   $: lang.set(currentLang);
 
@@ -15,6 +16,25 @@
     if (typeof document !== 'undefined') {
       document.documentElement.style.setProperty('--ambient-hue', String(hue));
       currentTheme = hue;
+    }
+  };
+
+  const toggleLightMode = () => {
+    lightMode = !lightMode;
+    if (typeof document !== 'undefined') {
+      if (lightMode) {
+        document.documentElement.style.setProperty('--bg-0', '#f6f7fb');
+        document.documentElement.style.setProperty('--bg-1', '#ffffff');
+        document.documentElement.style.setProperty('--bg', '#f6f7fb');
+        document.documentElement.style.setProperty('--ink', '#0b1020');
+        document.documentElement.style.setProperty('--muted', '#475569');
+      } else {
+        document.documentElement.style.setProperty('--bg-0', '#0a0b12');
+        document.documentElement.style.setProperty('--bg-1', '#0e1220');
+        document.documentElement.style.setProperty('--bg', '#0b1120');
+        document.documentElement.style.setProperty('--ink', '#fafafa');
+        document.documentElement.style.setProperty('--muted', '#c7cfdd');
+      }
     }
   };
 
@@ -61,7 +81,7 @@
 
 <header class="header">
   <nav aria-label="Primary">
-    <a href={`${base}/`} class="brand" aria-label="Reclame Fabriek — LED Node">LED Node</a>
+    <a href={`${base}/`} class="brand" aria-label="Reclame Fabriek — LUMIGRID LED Node">LUMIGRID LED Node</a>
 
     <button
       class="nav-btn"
@@ -119,6 +139,15 @@
             style="--theme-color: hsl(340, 70%, 70%)"
           ></button>
         </div>
+        <button 
+          class="light-mode-btn" 
+          class:active={lightMode}
+          on:click={toggleLightMode}
+          aria-label={lightMode ? "Switch to dark mode" : "Switch to light mode"}
+          title={lightMode ? "Dark mode" : "Light mode"}
+        >
+          {#if lightMode}🌙{:else}☀️{/if}
+        </button>
       </li>
     </ul>
   </nav>
@@ -299,6 +328,30 @@
     color: white;
     font-size: 0.9rem;
     font-weight: bold;
+  }
+
+  .light-mode-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0.6rem;
+    padding: 0.35rem 0.75rem;
+    color: var(--ink);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .light-mode-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+  }
+
+  .light-mode-btn.active {
+    background: var(--grad-rf);
+    border-color: transparent;
   }
 
   @media (max-width: 720px) {

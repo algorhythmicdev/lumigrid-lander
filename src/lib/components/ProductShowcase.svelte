@@ -10,14 +10,14 @@
       <div class="image-container">
         <img 
           src={toAssetPath('20231220-1208-bilde3.png')} 
-          alt="LED Node unit close-up showing the compact controller hardware"
+          alt="Latgale Special Economic Zone - SEZ partner logo"
           class="showcase-image"
           loading="lazy"
         />
       </div>
       <div class="showcase-info">
-        <h3 class="showcase-title">LED Node Controller</h3>
-        <p class="showcase-description">Compact and powerful LED signage control unit designed for professional installations.</p>
+        <h3 class="showcase-title">Latgale SEZ Partner</h3>
+        <p class="showcase-description">Special Economic Zone partner - Supporting regional innovation and business development.</p>
       </div>
     </article>
     
@@ -25,14 +25,14 @@
       <div class="logo-container">
         <img 
           src={toAssetPath('LIAA_logo_ansamblis-1.png')} 
-          alt="LIAA - Special Economic Zone logo"
+          alt="LIAA - Investment and Development Agency of Latvia"
           class="partner-logo"
           loading="lazy"
         />
       </div>
       <div class="showcase-info">
         <h3 class="showcase-title">LIAA Partner</h3>
-        <p class="showcase-description">Special Economic Zone partner - Supporting innovation and technology development.</p>
+        <p class="showcase-description">Investment and Development Agency of Latvia - Supporting innovation and technology development.</p>
       </div>
     </article>
   </div>

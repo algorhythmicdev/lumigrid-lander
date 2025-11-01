@@ -9,7 +9,6 @@
   import UseCaseStory from '$lib/components/UseCaseStory.svelte';
   import ProjectGallery from '$lib/components/ProjectGallery.svelte';
   import MediaGallery from '$lib/components/MediaGallery.svelte';
-  import BeforeAfterAuto from '$lib/components/BeforeAfterAuto.svelte';
   import SpecHighlights from '$lib/components/SpecHighlights.svelte';
   import Testimonials from '$lib/components/Testimonials.svelte';
   import Partners from '$lib/components/Partners.svelte';
@@ -25,14 +24,14 @@
 </script>
 
 <svelte:head>
-  <title>LED Node — Signage Lighting Controller | Reclame Fabriek R&D</title>
-  <meta name="description" content="LED Node is a compact controller for LED signage. Choose colour, motion and brightness; save scenes; keep multiple runs in step." />
+  <title>LUMIGRID LED Node — Signage Lighting Controller | Reclame Fabriek R&D</title>
+  <meta name="description" content="LUMIGRID LED Node is a compact controller for LED signage. Choose colour, motion and brightness; save scenes; keep multiple runs in step." />
   <meta name="theme-color" content="#0b1120" />
   <script type="application/ld+json">
     {JSON.stringify({
       "@context":"https://schema.org",
       "@type":"Product",
-      "name":"LED Node",
+      "name":"LUMIGRID LED Node",
       "brand": {"@type":"Brand","name":"Reclame Fabriek"},
       "category":"LED lighting controller for signage",
       "description":"A compact controller for LED signage.",
@@ -65,7 +64,6 @@
 <UseCaseStory />
 <ProjectGallery />
 <MediaGallery title="Installation showcase" />
-<BeforeAfterAuto />
 
 <hr class="rule" />
 
