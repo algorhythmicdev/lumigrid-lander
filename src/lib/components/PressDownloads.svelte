@@ -4,67 +4,33 @@
   const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
   const filenameFromPath = (path) => path.split('/').pop();
 
-  const assetGroups = [
+  const downloadGroups = [
     {
-      title: 'Brand logos',
-      summary: 'Official LED Node marks prepared as scalable SVG artwork.',
+      title: 'Brand assets',
+      summary: 'Official LED Node logos and brand marks in scalable vector format.',
+      icon: '🎨',
       assets: [
         {
           label: 'Horizontal logo (SVG)',
           path: 'press/logo-horizontal.svg',
-          type: 'image',
-          alt: 'LED Node horizontal logo'
+          type: 'file',
+          size: 'Vector'
         },
         {
           label: 'Square logo (SVG)',
           path: 'press/logo-square.svg',
-          type: 'image',
-          alt: 'LED Node square logo'
+          type: 'file',
+          size: 'Vector'
         }
-      ]
-    },
-    {
-      title: 'Photography',
-      summary: 'Product imagery suitable for articles, decks and social posts.',
-      assets: [
-        {
-          label: 'LED Node close-up',
-          path: '20231220-1208-bilde3.png',
-          type: 'image',
-          alt: 'LED Node unit close-up'
-        },
-        {
-          label: 'Clients signage collage',
-          path: 'Clients-2.png',
-          type: 'image',
-          alt: 'Collage of client signage'
-        },
-        {
-          label: 'LIAA award photo',
-          path: 'LIAA_logo_ansamblis-1.png',
-          type: 'image',
-          alt: 'LIAA award recognition photo'
-        }
-      ]
-    },
-    {
-      title: 'Video loops',
-      summary: 'High-quality video loops showing LED Node animations in action.',
-      assets: [
-        { label: 'LED Node promo', path: 'led node promo.mp4', type: 'video' },
-        { label: 'Casino frontage', path: 'casino front.mp4', type: 'video' },
-        { label: 'Prop example – neon', path: 'prop example neon.mp4', type: 'video' },
-        { label: 'Neon LED FX', path: 'neon led fx.mp4', type: 'video' },
-        { label: 'Halo LED FX', path: 'halo led fx.mp4', type: 'video' },
-        { label: 'Star Wars sign', path: 'star wars sign.mp4', type: 'video' }
       ]
     },
     {
       title: 'Documentation',
-      summary: 'Download printable product sheets and technical specifications.',
+      summary: 'Comprehensive product sheets, technical specifications and installation guides.',
+      icon: '📄',
       assets: [
-        { label: 'Product sheet (PDF)', path: 'downloads/product-sheet.pdf', type: 'file' },
-        { label: 'Technical specs (PDF)', path: 'downloads/technical-specs.pdf', type: 'file' }
+        { label: 'Product sheet (PDF)', path: 'downloads/product-sheet.pdf', type: 'file', size: '2.4 MB' },
+        { label: 'Technical specs (PDF)', path: 'downloads/technical-specs.pdf', type: 'file', size: '1.8 MB' }
       ]
     }
   ];
@@ -90,132 +56,237 @@
 </script>
 
 <section class="section container reveal" id="press">
-  <h2 class="under" style="font-size:var(--fs-h2)">Press & downloads</h2>
-  <div class="group-grid">
-    {#each assetGroups as group}
-      <article class="card grad-frame">
-        <header class="group-header">
-          <div>
-            <h3>{group.title}</h3>
-            <p class="summary">{group.summary}</p>
+  <div class="header-wrapper">
+    <h2 class="section-title">Downloads & press kit</h2>
+    <p class="section-lead">Essential resources for media, partners, and technical teams.</p>
+  </div>
+  
+  <div class="downloads-grid">
+    {#each downloadGroups as group}
+      <article class="download-card grad-frame">
+        <div class="card-header">
+          <span class="card-icon" aria-hidden="true">{group.icon}</span>
+          <div class="header-text">
+            <h3 class="card-title">{group.title}</h3>
+            <p class="card-summary">{group.summary}</p>
           </div>
-        </header>
-        <div class="asset-grid">
+        </div>
+        <div class="asset-list">
           {#each group.assets as asset}
-            <div class="asset">
-              {#if asset.type === 'image'}
-                <a class="asset-preview" href={toAssetPath(asset.path)} download>
-                  <img src={toAssetPath(asset.path)} alt={asset.alt ?? asset.label} loading="lazy" />
-                </a>
-                <a class="asset-link" href={toAssetPath(asset.path)} download>{asset.label}</a>
-                <span class="filename">{filenameFromPath(asset.path)}</span>
-              {:else if asset.type === 'video'}
-                <div class="video-wrapper">
-                  <video
-                    src={toAssetPath(asset.path)}
-                    controls
-                    playsinline
-                    preload="metadata"
-                    muted
-                  ></video>
-                </div>
-                <a class="asset-link" href={toAssetPath(asset.path)} download>{asset.label}</a>
-                <span class="filename">{filenameFromPath(asset.path)}</span>
-              {:else}
-                <a class="asset-link btn" href={toAssetPath(asset.path)} download>{asset.label}</a>
-                <span class="filename">{filenameFromPath(asset.path)}</span>
-              {/if}
-            </div>
+            <a class="asset-item" href={toAssetPath(asset.path)} download>
+              <div class="asset-info">
+                <span class="asset-label">{asset.label}</span>
+                <span class="asset-meta">
+                  {filenameFromPath(asset.path)}
+                  {#if asset.size}
+                    <span class="separator">•</span>
+                    <span class="asset-size">{asset.size}</span>
+                  {/if}
+                </span>
+              </div>
+              <span class="download-icon" aria-label="Download">⬇</span>
+            </a>
           {/each}
         </div>
       </article>
     {/each}
   </div>
 
-  <div class="contact-grid">
-    {#each contactResources as block}
-      <article class="card grad-frame contact-card">
-        <h3>{block.title}</h3>
-        <p class="summary">{block.summary}</p>
-        <a class="btn" href={block.action.href}>{block.action.label}</a>
-      </article>
-    {/each}
+  <div class="contact-section">
+    <div class="contact-grid">
+      {#each contactResources as block}
+        <article class="contact-card grad-frame">
+          <h3 class="contact-title">{block.title}</h3>
+          <p class="contact-summary">{block.summary}</p>
+          <a class="btn btn-primary" href={block.action.href}>{block.action.label}</a>
+        </article>
+      {/each}
+    </div>
   </div>
 </section>
 
 <style>
-  .group-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-top: clamp(1.2rem, 4vw, 2rem);
+  .header-wrapper {
+    text-align: center;
+    margin-bottom: clamp(2rem, 6vw, 3.5rem);
   }
 
-  .card {
-    padding: clamp(1rem, 3vw, 1.5rem);
-    display: flex;
-    flex-direction: column;
-    gap: clamp(0.8rem, 2vw, 1.2rem);
+  .section-title {
+    font-size: var(--fs-h2);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: var(--primary-grad);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
-  .summary {
+  .section-lead {
+    font-size: var(--fs-lead);
     color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
   }
 
-  .asset-grid {
+  .downloads-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: clamp(0.75rem, 2vw, 1rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+    gap: clamp(1.5rem, 4vw, 2rem);
+    margin-bottom: clamp(3rem, 8vw, 5rem);
   }
 
-  .asset {
+  .download-card {
+    padding: clamp(1.5rem, 4vw, 2rem);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1.5rem;
+    transition: transform var(--dur-med) var(--ease-out);
   }
 
-  .asset-preview,
-  .video-wrapper {
-    position: relative;
-    border-radius: 0.75rem;
-    overflow: hidden;
+  .download-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .card-header {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .header-text {
+    flex: 1;
+  }
+
+  .card-title {
+    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: var(--ink);
+  }
+
+  .card-summary {
+    font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+    color: var(--muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .asset-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .asset-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(15, 23, 42, 0.4);
-    min-height: 120px;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    color: var(--ink);
+    transition: all var(--dur-fast) var(--ease-out);
   }
 
-  .asset-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  .asset-item:hover,
+  .asset-item:focus {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateX(4px);
   }
 
-  .video-wrapper video {
-    width: 100%;
-    display: block;
-    aspect-ratio: 16 / 9;
-    background: #000;
+  .asset-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
   }
 
-  .asset-link {
+  .asset-label {
+    font-weight: 600;
+    font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  }
+
+  .asset-meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .separator {
+    opacity: 0.5;
+  }
+
+  .asset-size {
     font-weight: 500;
   }
 
-  .filename {
-    font-size: 0.85rem;
-    color: var(--muted);
-    word-break: break-word;
+  .download-icon {
+    font-size: 1.25rem;
+    opacity: 0.7;
+    transition: opacity var(--dur-fast) var(--ease-out);
+    flex-shrink: 0;
+  }
+
+  .asset-item:hover .download-icon,
+  .asset-item:focus .download-icon {
+    opacity: 1;
+  }
+
+  .contact-section {
+    padding-top: clamp(2rem, 6vw, 3rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .contact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
-    margin-top: clamp(2rem, 6vw, 3rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(1rem, 3vw, 1.5rem);
   }
 
   .contact-card {
-    gap: 0.75rem;
+    padding: clamp(1.5rem, 4vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-title {
+    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+    font-weight: 700;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .contact-summary {
+    font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all var(--dur-fast) var(--ease-out);
+    align-self: flex-start;
   }
 </style>

@@ -9,11 +9,12 @@
   import FeatureGrid from '$lib/components/FeatureGrid.svelte';
   import UseCaseStory from '$lib/components/UseCaseStory.svelte';
   import ProjectGallery from '$lib/components/ProjectGallery.svelte';
+  import MediaGallery from '$lib/components/MediaGallery.svelte';
   import BeforeAfterAuto from '$lib/components/BeforeAfterAuto.svelte';
   import SpecHighlights from '$lib/components/SpecHighlights.svelte';
   import ProcessSteps from '$lib/components/ProcessSteps.svelte';
   import Testimonials from '$lib/components/Testimonials.svelte';
-  import BrandStripAuto from '$lib/components/BrandStripAuto.svelte';
+  import Partners from '$lib/components/Partners.svelte';
   import PressDownloads from '$lib/components/PressDownloads.svelte';
   import Contact from '$lib/components/Contact.svelte';
   import FooterCTA from '$lib/components/FooterCTA.svelte';
@@ -64,6 +65,7 @@
 
 <UseCaseStory />
 <ProjectGallery />
+<MediaGallery title="Installation showcase" />
 <BeforeAfterAuto />
 
 <hr class="rule" />
@@ -71,7 +73,7 @@
 <SpecHighlights />
 <ProcessSteps />
 <Testimonials />
-<BrandStripAuto />
+<Partners />
 <PressDownloads />
 
 <Contact />

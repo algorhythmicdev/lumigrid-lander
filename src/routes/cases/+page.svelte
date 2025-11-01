@@ -7,6 +7,7 @@
   import CaseFilters from '$lib/components/CaseFilters.svelte';
   import UseCaseStory from '$lib/components/UseCaseStory.svelte';
   import ProjectGallery from '$lib/components/ProjectGallery.svelte';
+  import MediaGallery from '$lib/components/MediaGallery.svelte';
   import BeforeAfterAuto from '$lib/components/BeforeAfterAuto.svelte';
   import { base } from '$app/paths';
 
@@ -64,4 +65,5 @@
 
 <UseCaseStory />
 <ProjectGallery />
+<MediaGallery title="Real installations & demonstrations" />
 <BeforeAfterAuto />
