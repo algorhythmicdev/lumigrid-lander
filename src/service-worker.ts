@@ -17,22 +17,34 @@ self.addEventListener('activate', (event: ExtendableEvent) => {
 });
 
 self.addEventListener('fetch', (event: FetchEvent) => {
-  const url = new URL(event.request.url);
-  if (event.request.method === 'GET' && url.origin === location.origin) {
+  const req = event.request;
+  const url = new URL(req.url);
+  
+  // Ignore range requests and cross-origin requests
+  if (req.headers.get('range') || url.origin !== location.origin) {
+    return;
+  }
+  
+  if (req.method === 'GET') {
     event.respondWith(
-      caches.match(event.request).then(
-        (response) =>
-          response ||
-          fetch(event.request)
-            .then((networkResponse) => {
-              const copy = networkResponse.clone();
-              caches.open(CACHE).then((cache) => cache.put(event.request, copy));
-              return networkResponse;
-            })
-            .catch(() =>
-              caches.match(`${location.origin}${(self as any).base || ''}/offline.html`)
-            )
-      )
+      (async () => {
+        try {
+          const res = await fetch(req);
+          // Only cache 200 OK responses (not 206 partial content)
+          if (res.status === 200) {
+            const cache = await caches.open(CACHE);
+            cache.put(req, res.clone());
+          }
+          return res;
+        } catch (e) {
+          const match = await caches.match(req);
+          if (match) return match;
+          // Fallback to offline page
+          const offline = await caches.match(`${location.origin}${(self as any).base || ''}/offline.html`);
+          if (offline) return offline;
+          throw e;
+        }
+      })()
     );
   }
 });

@@ -642,6 +642,9 @@ h1, h2, h3 { text-wrap: balance; }
 hr.rule{
   height:2px; border:0; border-radius:999px; overflow:hidden; background:#0f172a;
   position:relative; isolation:isolate;
+  margin: clamp(12px, 2vh, 24px) auto;
+  max-width: min(1080px, 92vw);
+  opacity: .85;
 }
 hr.rule::after{
   content:""; position:absolute; inset:0; translate:-50% 0; width:120%;
@@ -717,3 +720,12 @@ section, .section, .container, .rail, .stories{
   box-shadow: none !important;
   border: 0 !important;
 }
+
+/* Language toggle positioning */
+.lang-wrap{
+  position: fixed;
+  top: clamp(8px, 2vh, 16px);
+  right: clamp(8px, 2vw, 20px);
+  z-index: 25;
+}
+.lang-wrap .card{ padding: .3rem .4rem; }

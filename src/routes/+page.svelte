@@ -44,7 +44,7 @@
 <AmbientSync initialHue={data?.theme?.hue} />
 <RevealOnScroll />
 <Header />
-<div class="container" style="display:flex; justify-content:flex-end; margin-top:.6rem"><LangToggle/></div>
+<div class="lang-wrap"><LangToggle/></div>
 
 <section
   class="section container grad-frame reveal"
