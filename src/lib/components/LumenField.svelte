@@ -26,6 +26,9 @@
     canvas.height = height * devicePixelRatio;
     context.scale(devicePixelRatio, devicePixelRatio);
 
+    // Get computed CSS variable value (cached, doesn't change during animation)
+    const ambientHue = getComputedStyle(canvas).getPropertyValue('--ambient-hue').trim() || '260';
+
     // Initial dot placement
     for (let i = 0; i < dotCount; i++) {
       dots.push({
@@ -51,9 +54,6 @@
       // Gradient definitions
       const smoothX = $smoothPointerX;
       const smoothY = $smoothPointerY;
-      
-      // Get computed CSS variable value
-      const ambientHue = getComputedStyle(canvas).getPropertyValue('--ambient-hue').trim() || '260';
       
       const haloGradient = context.createRadialGradient(
         smoothX,
