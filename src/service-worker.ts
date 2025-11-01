@@ -30,8 +30,8 @@ self.addEventListener('fetch', (event: FetchEvent) => {
       (async () => {
         try {
           const res = await fetch(req);
-          // Only cache 200 OK responses (not 206 partial content)
-          if (res.status === 200) {
+          // Only cache complete responses (not 206 partial content)
+          if (res.status === 200 && !res.headers.get('content-range')) {
             const cache = await caches.open(CACHE);
             cache.put(req, res.clone());
           }
