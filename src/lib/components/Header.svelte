@@ -9,7 +9,7 @@
   let isMobile = false;
   let menu;
   let currentLang = $lang;
-  let currentTheme = 260; // default hue
+  let currentTheme = 355; // default hue (cherry red)
   let lightMode = false; // light/dark theme toggle
 
   $: lang.set(currentLang);
@@ -124,10 +124,10 @@
         <div class="theme-selector">
           <button 
             class="theme-btn" 
-            class:active={currentTheme===260} 
-            on:click={()=> applyTheme(260)}
-            aria-label="Purple theme"
-            style="--theme-color: hsl(260, 70%, 70%)"
+            class:active={currentTheme===355} 
+            on:click={()=> applyTheme(355)}
+            aria-label="Cherry red theme"
+            style="--theme-color: hsl(355, 70%, 55%)"
           ></button>
           <button 
             class="theme-btn" 
