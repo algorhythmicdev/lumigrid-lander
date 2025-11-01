@@ -77,9 +77,9 @@
 /* Light mode support */
 @media (prefers-color-scheme: light){
   :root{ 
-    --bg-0:#f6f7fb; 
+    --bg-0:#ffffff; 
     --bg-1:#ffffff; 
-    --bg:#f6f7fb;
+    --bg:#ffffff;
     --ink:#0b1020; 
     --muted:#475569; 
   }

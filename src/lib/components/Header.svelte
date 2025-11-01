@@ -3,6 +3,8 @@
   import { base } from '$app/paths';
   import { lang } from '$lib/i18n';
 
+  const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
+
   let open = false;
   let isMobile = false;
   let menu;
@@ -23,9 +25,9 @@
     lightMode = !lightMode;
     if (typeof document !== 'undefined') {
       if (lightMode) {
-        document.documentElement.style.setProperty('--bg-0', '#f6f7fb');
+        document.documentElement.style.setProperty('--bg-0', '#ffffff');
         document.documentElement.style.setProperty('--bg-1', '#ffffff');
-        document.documentElement.style.setProperty('--bg', '#f6f7fb');
+        document.documentElement.style.setProperty('--bg', '#ffffff');
         document.documentElement.style.setProperty('--ink', '#0b1020');
         document.documentElement.style.setProperty('--muted', '#475569');
       } else {
@@ -81,7 +83,10 @@
 
 <header class="header">
   <nav aria-label="Primary">
-    <a href={`${base}/`} class="brand" aria-label="Reclame Fabriek — LUMIGRID LED Node">LUMIGRID LED Node</a>
+    <a href={`${base}/`} class="brand" aria-label="Reclame Fabriek — LUMIGRID LED Node">
+      <img src={toAssetPath('Asset-2.png')} alt="Reclame Fabriek" class="brand-logo" />
+      LUMIGRID LED Node
+    </a>
 
     <button
       class="nav-btn"
@@ -193,10 +198,18 @@
     text-decoration: none;
     font-size: clamp(1rem, 2vw, 1.2rem);
     transition: opacity var(--dur-fast) var(--ease-out);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
   }
 
   .brand:hover {
     opacity: 0.84;
+  }
+
+  .brand-logo {
+    height: 2rem;
+    width: auto;
   }
 
   .nav-btn {

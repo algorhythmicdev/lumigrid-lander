@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   export let count = 48;
-  let canvas, raf; const pts=[];
+  let canvas, raf; const pts=[]; let time=0;
   onMount(()=>{
     const c=canvas, ctx=c.getContext('2d', {alpha:true});
     const DPR=Math.max(1,devicePixelRatio||1);
@@ -9,10 +9,19 @@
     resize(); addEventListener('resize',resize,{passive:true});
 
     for(let i=0;i<count;i++){
-      pts.push({ x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-.5)*.2*DPR, vy:(Math.random()-.5)*.2*DPR });
+      pts.push({ 
+        x:Math.random()*c.width, 
+        y:Math.random()*c.height, 
+        vx:(Math.random()-.5)*.2*DPR, 
+        vy:(Math.random()-.5)*.2*DPR,
+        radius: 8+Math.random()*16,
+        pulseOffset: Math.random()*Math.PI*2,
+        pulseSpeed: 0.5+Math.random()*0.5
+      });
     }
     const reduce=matchMedia('(prefers-reduced-motion: reduce)');
     const loop=()=>{
+      time+=0.016;
       ctx.clearRect(0,0,c.width,c.height);
       ctx.globalCompositeOperation='lighter';
       if(!reduce.matches){
@@ -35,8 +44,16 @@
         }
       }
       for(const p of pts){
-        ctx.fillStyle='rgba(255,255,255,.35)';
-        ctx.beginPath(); ctx.arc(p.x,p.y,1.2*DPR,0,Math.PI*2); ctx.fill();
+        const pulse = Math.sin(time*p.pulseSpeed+p.pulseOffset);
+        const intensity = 0.5+pulse*0.5;
+        const hue=getComputedStyle(document.documentElement).getPropertyValue('--ambient-hue')||'285';
+        const grad=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.radius*DPR);
+        grad.addColorStop(0,`oklch(90% .15 ${hue} / ${.35*intensity})`);
+        grad.addColorStop(0.4,`oklch(85% .12 ${hue} / ${.20*intensity})`);
+        grad.addColorStop(0.7,`oklch(80% .10 ${parseInt(hue)+30} / ${.12*intensity})`);
+        grad.addColorStop(1,`oklch(75% .08 ${parseInt(hue)-20} / 0)`);
+        ctx.fillStyle=grad;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.radius*DPR,0,Math.PI*2); ctx.fill();
       }
       raf=requestAnimationFrame(loop);
     };
