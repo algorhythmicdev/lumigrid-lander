@@ -11,9 +11,7 @@
 <section class="section container reveal" id={id} data-hue={hue}>
   <div class="grad-frame contact-card">
     <h2>{title || $t('contact_title')}</h2>
-    {#if intro || $t('contact_intro')}
-      <p class="readable">{intro || $t('contact_intro')}</p>
-    {/if}
+    <p class="readable">{intro || $t('contact_intro')}</p>
     <ContactForm />
   </div>
 </section>

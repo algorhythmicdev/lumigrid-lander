@@ -606,8 +606,15 @@ h1, h2, h3 {
   background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
+  -webkit-text-fill-color: transparent;
+  color: var(--ink); /* Fallback for browsers that don't support background-clip */
   animation: gradient-shift 8s ease infinite;
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  h1, h2, h3 {
+    color: transparent;
+  }
 }
 
 h1 { font-size: var(--fs-h1); }
