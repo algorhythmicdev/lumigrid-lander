@@ -47,37 +47,118 @@
 </script>
 
 <section class="container section" data-hue="260" on:change={onFilter}>
-  <h2 id="gallery">Project gallery</h2>
-  <div class="grid grid-3">
+  <div class="header-section">
+    <h2 class="section-title" id="gallery">Project gallery</h2>
+    <p class="section-lead">Explore our curated showcase of LED Node installations across different settings.</p>
+  </div>
+  <div class="projects-grid">
     {#each filtered as it}
-      <article class="card gallery-card" style={`--card-bg:${it.background}`}>
-        <div class="art" role="presentation"></div>
-        <p class="title">{it.title}</p>
-        <p class="summary">{it.summary}</p>
+      <article class="project-card grad-frame" style={`--card-bg:${it.background}`}>
+        <div class="art-preview" role="presentation"></div>
+        <div class="card-content">
+          <h3 class="project-title">{it.title}</h3>
+          <p class="project-summary">{it.summary}</p>
+        </div>
       </article>
     {/each}
   </div>
 </section>
 
 <style>
-  .gallery-card {
+  .header-section {
+    text-align: center;
+    margin-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  .section-title {
+    font-size: var(--fs-h2);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: var(--primary-grad);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .section-lead {
+    font-size: var(--fs-lead);
+    color: var(--muted);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(1.25rem, 3vw, 1.75rem);
+  }
+
+  .project-card {
     padding: 0;
     display: grid;
-    grid-template-rows: 180px auto auto;
-    gap: .6rem;
+    grid-template-rows: minmax(180px, 25vh) auto;
+    overflow: hidden;
+    transition: transform var(--dur-med) var(--ease-out);
   }
-  .art {
-    border-radius: .5rem .5rem 0 0;
+
+  .project-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .art-preview {
     background: var(--card-bg);
-    box-shadow: inset 0 0 45px rgba(0,0,0,0.25);
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.35);
+    position: relative;
   }
-  .title {
-    font-weight: 600;
+
+  .art-preview::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 50%,
+      rgba(11, 17, 32, 0.4) 100%
+    );
+  }
+
+  .card-content {
+    padding: clamp(1rem, 3vw, 1.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .project-title {
+    font-size: clamp(1.05rem, 2.1vw, 1.2rem);
+    font-weight: 700;
     text-transform: capitalize;
-    padding: 0 1rem;
+    margin: 0;
+    color: var(--ink);
   }
-  .summary {
-    padding: 0 1rem 1rem;
+
+  .project-summary {
+    font-size: clamp(0.9rem, 1.7vw, 1rem);
     color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .projects-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    }
+
+    .project-card {
+      grid-template-rows: minmax(200px, 28vh) auto;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .projects-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 </style>
