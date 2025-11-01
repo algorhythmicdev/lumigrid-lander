@@ -7,7 +7,7 @@
     <li class="highlight-card grad-frame" data-halo="2">
       <div class="card-icon" aria-hidden="true">💡</div>
       <h3 class="card-title">Clean dimming</h3>
-      <p class="card-text">Smooth, flicker-free white light from 100% down to whisper-quiet levels.</p>
+      <p class="card-text">Smooth, flicker-free white light from 100% down to ultra-low levels.</p>
     </li>
     <li class="highlight-card grad-frame" data-halo="2">
       <div class="card-icon" aria-hidden="true">🎨</div>
