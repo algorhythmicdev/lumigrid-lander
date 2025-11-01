@@ -15,10 +15,8 @@
   const G = 6.674e-11;
 
   // Smoothed pointer coordinates
-  const smoothPointer = {
-    x: spring(9999, { stiffness: 0.1, damping: 0.4 }),
-    y: spring(9999, { stiffness: 0.1, damping: 0.4 })
-  };
+  const smoothPointerX = spring(9999, { stiffness: 0.1, damping: 0.4 });
+  const smoothPointerY = spring(9999, { stiffness: 0.1, damping: 0.4 });
 
   onMount(() => {
     context = canvas.getContext('2d');
@@ -51,23 +49,26 @@
       context.clearRect(0, 0, width, height);
 
       // Gradient definitions
+      const smoothX = $smoothPointerX;
+      const smoothY = $smoothPointerY;
+      
       const haloGradient = context.createRadialGradient(
-        $smoothPointer.x,
-        $smoothPointer.y,
+        smoothX,
+        smoothY,
         0,
-        $smoothPointer.x,
-        $smoothPointer.y,
+        smoothX,
+        smoothY,
         280
       );
       haloGradient.addColorStop(0, `hsla(var(--ambient-hue), 70%, 75%, 0.1)`);
       haloGradient.addColorStop(1, `hsla(var(--ambient-hue), 70%, 75%, 0)`);
 
       const cursorGradient = context.createRadialGradient(
-        $smoothPointer.x,
-        $smoothPointer.y,
+        smoothX,
+        smoothY,
         0,
-        $smoothPointer.x,
-        $smoothPointer.y,
+        smoothX,
+        smoothY,
         60
       );
       cursorGradient.addColorStop(0, `hsla(var(--ambient-hue), 80%, 80%, 0.22)`);
@@ -105,8 +106,8 @@
         if (dot.y < 0 || dot.y > height) dot.vy *= -1;
 
         // Pointer interaction
-        const dx = dot.x - $smoothPointer.x;
-        const dy = dot.y - $smoothPointer.y;
+        const dx = dot.x - smoothX;
+        const dy = dot.y - smoothY;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < 200) {
@@ -152,13 +153,13 @@
     const rect = canvas.getBoundingClientRect();
     pointer.x = event.clientX - rect.left;
     pointer.y = event.clientY - rect.top;
-    smoothPointer.x.set(pointer.x);
-    smoothPointer.y.set(pointer.y);
+    smoothPointerX.set(pointer.x);
+    smoothPointerY.set(pointer.y);
   }
 
   function handlePointerLeave() {
-    smoothPointer.x.set(9999);
-    smoothPointer.y.set(9999);
+    smoothPointerX.set(9999);
+    smoothPointerY.set(9999);
   }
 </script>
 
