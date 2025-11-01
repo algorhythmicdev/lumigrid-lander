@@ -52,6 +52,9 @@
       const smoothX = $smoothPointerX;
       const smoothY = $smoothPointerY;
       
+      // Get computed CSS variable value
+      const ambientHue = getComputedStyle(canvas).getPropertyValue('--ambient-hue').trim() || '260';
+      
       const haloGradient = context.createRadialGradient(
         smoothX,
         smoothY,
@@ -60,8 +63,8 @@
         smoothY,
         280
       );
-      haloGradient.addColorStop(0, `hsla(var(--ambient-hue), 70%, 75%, 0.1)`);
-      haloGradient.addColorStop(1, `hsla(var(--ambient-hue), 70%, 75%, 0)`);
+      haloGradient.addColorStop(0, `hsla(${ambientHue}, 70%, 75%, 0.1)`);
+      haloGradient.addColorStop(1, `hsla(${ambientHue}, 70%, 75%, 0)`);
 
       const cursorGradient = context.createRadialGradient(
         smoothX,
@@ -71,9 +74,9 @@
         smoothY,
         60
       );
-      cursorGradient.addColorStop(0, `hsla(var(--ambient-hue), 80%, 80%, 0.22)`);
-      cursorGradient.addColorStop(0.5, `hsla(var(--ambient-hue), 80%, 80%, 0.05)`);
-      cursorGradient.addColorStop(1, `hsla(var(--ambient-hue), 80%, 80%, 0)`);
+      cursorGradient.addColorStop(0, `hsla(${ambientHue}, 80%, 80%, 0.22)`);
+      cursorGradient.addColorStop(0.5, `hsla(${ambientHue}, 80%, 80%, 0.05)`);
+      cursorGradient.addColorStop(1, `hsla(${ambientHue}, 80%, 80%, 0)`);
 
       const flareGradient = context.createRadialGradient(
         width / 2,
@@ -83,9 +86,9 @@
         height / 2,
         Math.max(width,height) / 1.5
       );
-      flareGradient.addColorStop(0, `hsla(calc(var(--ambient-hue) - 30), 80%, 70%, 0.18)`);
-      flareGradient.addColorStop(.5, `hsla(var(--ambient-hue), 80%, 70%, 0.05)`);
-      flareGradient.addColorStop(1, `hsla(calc(var(--ambient-hue) + 40), 80%, 70%, 0)`);
+      flareGradient.addColorStop(0, `hsla(${parseInt(ambientHue) - 30}, 80%, 70%, 0.18)`);
+      flareGradient.addColorStop(.5, `hsla(${ambientHue}, 80%, 70%, 0.05)`);
+      flareGradient.addColorStop(1, `hsla(${parseInt(ambientHue) + 40}, 80%, 70%, 0)`);
 
       // Draw gradients
       context.fillStyle = flareGradient;
@@ -127,7 +130,7 @@
             context.beginPath();
             context.moveTo(dot.x, dot.y);
             context.lineTo(other.x, other.y);
-            context.strokeStyle = `hsla(var(--ambient-hue), 50%, 80%, ${0.22 * (1 - dist2 / 120)})`;
+            context.strokeStyle = `hsla(${ambientHue}, 50%, 80%, ${0.22 * (1 - dist2 / 120)})`;
             context.stroke();
           }
         }
@@ -137,7 +140,7 @@
       dots.forEach(dot => {
         context.beginPath();
         context.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
-        context.fillStyle = `hsla(var(--ambient-hue), 70%, 90%, 0.8)`;
+        context.fillStyle = `hsla(${ambientHue}, 70%, 90%, 0.8)`;
         context.fill();
       });
 
