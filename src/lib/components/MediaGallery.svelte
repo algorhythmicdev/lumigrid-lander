@@ -92,9 +92,8 @@
                 preload="metadata"
                 muted
                 class="gallery-video"
-              >
-                <track kind="captions" />
-              </video>
+                aria-label={item.title}
+              ></video>
             </div>
           {/if}
         </div>

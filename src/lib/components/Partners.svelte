@@ -3,6 +3,14 @@
   
   const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
 
+  /**
+   * Partner object structure:
+   * @typedef {Object} Partner
+   * @property {string} name - Partner organization name
+   * @property {string} logo - Path to logo file in assets directory
+   * @property {string} category - Partner category (e.g., 'award', 'sponsor', 'technology')
+   * @property {string} description - Brief description of partnership or recognition
+   */
   const partners = [
     {
       name: 'LIAA',
@@ -10,7 +18,7 @@
       category: 'award',
       description: 'Investment and Development Agency of Latvia - Supporting Innovation'
     }
-    // Add more partners as they become available
+    // Future partners should follow the Partner typedef structure above
   ];
 
   const recognitions = [

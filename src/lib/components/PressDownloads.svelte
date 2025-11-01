@@ -79,7 +79,7 @@
                 <span class="asset-meta">
                   {filenameFromPath(asset.path)}
                   {#if asset.size}
-                    <span class="separator">•</span>
+                    <span class="separator" aria-hidden="true"></span>
                     <span class="asset-size">{asset.size}</span>
                   {/if}
                 </span>
@@ -227,6 +227,10 @@
 
   .separator {
     opacity: 0.5;
+  }
+
+  .separator::before {
+    content: '•';
   }
 
   .asset-size {

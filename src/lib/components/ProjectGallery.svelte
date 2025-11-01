@@ -97,7 +97,7 @@
   .project-card {
     padding: 0;
     display: grid;
-    grid-template-rows: 200px auto;
+    grid-template-rows: minmax(180px, 25vh) auto;
     overflow: hidden;
     transition: transform var(--dur-med) var(--ease-out);
   }
@@ -152,7 +152,7 @@
     }
 
     .project-card {
-      grid-template-rows: 220px auto;
+      grid-template-rows: minmax(200px, 28vh) auto;
     }
   }
 
