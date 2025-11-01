@@ -1,6 +1,6 @@
 <script>
   const MESSAGE_LIMIT = 2000;
-  const CONTACT_EMAIL = 'team@reclamefabriek.dev';
+  const CONTACT_EMAIL = 'rabox@inbox.lv';
 
   let name = '';
   let email = '';
@@ -59,8 +59,8 @@
     const trimmedEmail = email.trim();
     const trimmedMessage = message.trim();
 
-    const subjectName = trimmedName || 'LED Node contact';
-    const subject = encodeURIComponent(`LED Node inquiry from ${subjectName}`);
+    const subjectName = trimmedName || 'LUMIGRID LED Node contact';
+    const subject = encodeURIComponent(`LUMIGRID LED Node inquiry from ${subjectName}`);
     const bodyLines = [
       `Name: ${trimmedName || '—'}`,
       `Email: ${trimmedEmail || '—'}`,

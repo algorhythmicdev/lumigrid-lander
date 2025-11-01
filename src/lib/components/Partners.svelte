@@ -21,17 +21,12 @@
     // Future partners should follow the Partner typedef structure above
   ];
 
-  const recognitions = [
-    'Special Economic Zone Partner',
-    'Innovation Award Recipient',
-    'LED Technology Partner',
-    'Signage Industry Contributor'
-  ];
+
 </script>
 
 <section class="section container" id="partners">
   <div class="header-wrapper">
-    <h2 class="section-title">Partners & recognition</h2>
+    <h2 class="section-title">Partners</h2>
     <p class="section-lead">Proud to work with industry leaders and innovation supporters.</p>
   </div>
 
@@ -52,18 +47,6 @@
         </div>
       </article>
     {/each}
-  </div>
-
-  <div class="recognitions-section">
-    <h3 class="recognitions-title">Industry recognitions</h3>
-    <div class="recognitions-grid">
-      {#each recognitions as recognition}
-        <div class="recognition-badge">
-          <span class="badge-icon" aria-hidden="true">✓</span>
-          <span class="badge-text">{recognition}</span>
-        </div>
-      {/each}
-    </div>
   </div>
 </section>
 
@@ -149,57 +132,6 @@
     color: var(--muted);
     line-height: 1.6;
     margin: 0;
-  }
-
-  .recognitions-section {
-    padding-top: clamp(2rem, 6vw, 3rem);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .recognitions-title {
-    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: clamp(1.5rem, 4vw, 2rem);
-    color: var(--ink);
-  }
-
-  .recognitions-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-    gap: 1rem;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-
-  .recognition-badge {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 1.25rem;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.75rem;
-    transition: all var(--dur-fast) var(--ease-out);
-  }
-
-  .recognition-badge:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.15);
-    transform: translateX(4px);
-  }
-
-  .badge-icon {
-    font-size: 1.25rem;
-    flex-shrink: 0;
-    color: var(--cya);
-  }
-
-  .badge-text {
-    font-size: clamp(0.95rem, 1.8vw, 1.05rem);
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.4;
   }
 
   @media (min-width: 768px) {

@@ -8,11 +8,14 @@
   let dots = [];
 
   const dotCount = 42;
-  const dotRadius = 1.2;
-  const bigDotRadius = 1.6;
-  const bigDotChance = 0.2;
+  const dotRadius = 2.8; // Scaled up by 200%
+  const bigDotRadius = 4.4; // Scaled up by 200%
+  const bigDotChance = 0.3;
   const repelFactor = 0.00008;
   const G = 6.674e-11;
+  
+  // LED pulsing effect
+  let time = 0;
 
   // Smoothed pointer coordinates
   const smoothPointerX = spring(9999, { stiffness: 0.1, damping: 0.4 });
@@ -31,18 +34,24 @@
 
     // Initial dot placement
     for (let i = 0; i < dotCount; i++) {
+      const isBig = Math.random() < bigDotChance;
       dots.push({
         x: Math.random() * width,
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 0.2,
         vy: (Math.random() - 0.5) * 0.2,
-        radius: Math.random() < bigDotChance ? bigDotRadius : dotRadius,
-        mass: Math.random() < bigDotChance ? 1.5 : 1
+        radius: isBig ? bigDotRadius : dotRadius,
+        mass: isBig ? 1.5 : 1,
+        pulseOffset: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.8 + Math.random() * 0.6,
+        isBig: isBig
       });
     }
 
     let animationFrame;
     const render = () => {
+      time += 0.016; // Increment time for pulsing effect
+      
       width = canvas.offsetWidth;
       height = canvas.offsetHeight;
       canvas.width = width * devicePixelRatio;
@@ -127,20 +136,54 @@
           const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
 
           if (dist2 < 120) {
+            // Add pulsing to connection lines
+            const avgPulse = (Math.sin(time * dot.pulseSpeed + dot.pulseOffset) + 
+                             Math.sin(time * other.pulseSpeed + other.pulseOffset)) / 2;
+            const linePulse = 0.5 + avgPulse * 0.5;
+            
             context.beginPath();
             context.moveTo(dot.x, dot.y);
             context.lineTo(other.x, other.y);
-            context.strokeStyle = `hsla(${ambientHue}, 50%, 80%, ${0.22 * (1 - dist2 / 120)})`;
+            context.strokeStyle = `hsla(${ambientHue}, 55%, 82%, ${0.18 * (1 - dist2 / 120) * linePulse})`;
+            context.lineWidth = 1 + linePulse * 0.5;
             context.stroke();
+            context.lineWidth = 1;
           }
         }
       });
 
-      // Draw dots
+      // Draw dots with LED pulsing effect
       dots.forEach(dot => {
+        // Calculate pulse for this dot
+        const pulse = Math.sin(time * dot.pulseSpeed + dot.pulseOffset);
+        const pulseIntensity = 0.5 + pulse * 0.5; // 0.0 to 1.0
+        
+        // Draw outer glow for big LEDs
+        if (dot.isBig) {
+          const glowGradient = context.createRadialGradient(
+            dot.x, dot.y, 0,
+            dot.x, dot.y, dot.radius * 3
+          );
+          glowGradient.addColorStop(0, `hsla(${ambientHue}, 80%, 85%, ${0.3 * pulseIntensity})`);
+          glowGradient.addColorStop(0.5, `hsla(${ambientHue}, 80%, 85%, ${0.15 * pulseIntensity})`);
+          glowGradient.addColorStop(1, `hsla(${ambientHue}, 80%, 85%, 0)`);
+          context.fillStyle = glowGradient;
+          context.beginPath();
+          context.arc(dot.x, dot.y, dot.radius * 3, 0, Math.PI * 2);
+          context.fill();
+        }
+        
+        // Draw main LED dot
         context.beginPath();
         context.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
-        context.fillStyle = `hsla(${ambientHue}, 70%, 90%, 0.8)`;
+        const brightness = 85 + pulseIntensity * 10; // Vary brightness
+        context.fillStyle = `hsla(${ambientHue}, 75%, ${brightness}%, ${0.85 + pulseIntensity * 0.15})`;
+        context.fill();
+        
+        // Add bright center for LED effect
+        context.beginPath();
+        context.arc(dot.x, dot.y, dot.radius * 0.5, 0, Math.PI * 2);
+        context.fillStyle = `hsla(${ambientHue}, 80%, 98%, ${0.7 + pulseIntensity * 0.3})`;
         context.fill();
       });
 
