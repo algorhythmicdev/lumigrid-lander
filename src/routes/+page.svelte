@@ -16,7 +16,6 @@
   import Contact from '$lib/components/Contact.svelte';
   import FooterCTA from '$lib/components/FooterCTA.svelte';
   import TrustedBy from '$lib/components/TrustedBy.svelte';
-  import ProductShowcase from '$lib/components/ProductShowcase.svelte';
   import { t } from '$lib/i18n';
 
   export let data;
@@ -69,7 +68,6 @@
 
 <SpecHighlights />
 <TrustedBy />
-<ProductShowcase />
 <Testimonials />
 <Partners />
 <PressDownloads />
