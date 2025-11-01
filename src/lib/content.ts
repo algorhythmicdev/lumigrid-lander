@@ -1,3 +1,16 @@
+import { base } from '$app/paths';
+
+/**
+ * Load JSON content with base path support for GitHub Pages
+ */
+export async function loadJSON<T>(rel: string): Promise<T> {
+  // rel e.g. '/content/site.json'
+  const url = `${base}${rel}`;
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
+  return res.json() as Promise<T>;
+}
+
 export const about = {
   hero: {
     kicker: 'Reclame Fabriek R&D',

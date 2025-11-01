@@ -1,7 +1,7 @@
 <script>
   import { onDestroy } from 'svelte';
   
-  const mods = import.meta.glob('/static/assets/hero/*.{jpg,jpeg,png,webp,avif}', { eager: true, as: 'url' });
+  const mods = import.meta.glob('/assets/hero/*.{jpg,jpeg,png,webp,avif}', { eager: true, as: 'url' });
   const imgs = Object.values(mods);
   let idx = 0;
   let timer;
