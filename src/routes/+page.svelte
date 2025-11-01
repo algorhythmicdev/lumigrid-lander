@@ -2,7 +2,6 @@
   import AmbientSync from '$lib/components/AmbientSync.svelte';
   import RevealOnScroll from '$lib/components/RevealOnScroll.svelte';
   import Header from '$lib/components/Header.svelte';
-  import LangToggle from '$lib/components/LangToggle.svelte';
   import EpicHero from '$lib/components/EpicHero.svelte';
   import AIField from '$lib/components/AIField.svelte';
 
@@ -12,12 +11,13 @@
   import MediaGallery from '$lib/components/MediaGallery.svelte';
   import BeforeAfterAuto from '$lib/components/BeforeAfterAuto.svelte';
   import SpecHighlights from '$lib/components/SpecHighlights.svelte';
-  import ProcessSteps from '$lib/components/ProcessSteps.svelte';
   import Testimonials from '$lib/components/Testimonials.svelte';
   import Partners from '$lib/components/Partners.svelte';
   import PressDownloads from '$lib/components/PressDownloads.svelte';
   import Contact from '$lib/components/Contact.svelte';
   import FooterCTA from '$lib/components/FooterCTA.svelte';
+  import TrustedBy from '$lib/components/TrustedBy.svelte';
+  import ProductShowcase from '$lib/components/ProductShowcase.svelte';
   import { t } from '$lib/i18n';
 
   export let data;
@@ -45,7 +45,6 @@
 <AmbientSync initialHue={data?.theme?.hue} />
 <RevealOnScroll />
 <Header />
-<div class="lang-wrap"><LangToggle/></div>
 
 <section
   class="section container grad-frame reveal"
@@ -71,7 +70,8 @@
 <hr class="rule" />
 
 <SpecHighlights />
-<ProcessSteps />
+<TrustedBy />
+<ProductShowcase />
 <Testimonials />
 <Partners />
 <PressDownloads />

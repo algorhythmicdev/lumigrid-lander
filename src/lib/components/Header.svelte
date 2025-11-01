@@ -1,10 +1,22 @@
 <script>
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
+  import { lang } from '$lib/i18n';
 
   let open = false;
   let isMobile = false;
   let menu;
+  let currentLang = $lang;
+  let currentTheme = 260; // default hue
+
+  $: lang.set(currentLang);
+
+  const applyTheme = (hue) => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.style.setProperty('--ambient-hue', String(hue));
+      currentTheme = hue;
+    }
+  };
 
   const toggle = () => {
     open = !open;
@@ -71,6 +83,43 @@
       <li><a href={`${base}/cases`} on:click={handleLinkClick}>Cases</a></li>
       <li><a href={`${base}/#press`} on:click={handleLinkClick}>Press</a></li>
       <li><a href={`${base}/contact`} on:click={handleLinkClick}>Contact</a></li>
+      <li class="controls-group">
+        <div class="lang-selector">
+          {#each ['en','lv','ru'] as code}
+            <button 
+              class="lang-btn" 
+              class:active={currentLang===code} 
+              on:click={()=> currentLang = code}
+              aria-label="Switch to {code.toUpperCase()}"
+            >
+              {code.toUpperCase()}
+            </button>
+          {/each}
+        </div>
+        <div class="theme-selector">
+          <button 
+            class="theme-btn" 
+            class:active={currentTheme===260} 
+            on:click={()=> applyTheme(260)}
+            aria-label="Purple theme"
+            style="--theme-color: hsl(260, 70%, 70%)"
+          ></button>
+          <button 
+            class="theme-btn" 
+            class:active={currentTheme===200} 
+            on:click={()=> applyTheme(200)}
+            aria-label="Cyan theme"
+            style="--theme-color: hsl(200, 70%, 70%)"
+          ></button>
+          <button 
+            class="theme-btn" 
+            class:active={currentTheme===340} 
+            on:click={()=> applyTheme(340)}
+            aria-label="Magenta theme"
+            style="--theme-color: hsl(340, 70%, 70%)"
+          ></button>
+        </div>
+      </li>
     </ul>
   </nav>
 </header>
@@ -180,6 +229,78 @@
     display: none;
   }
 
+  .controls-group {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .lang-selector,
+  .theme-selector {
+    display: flex;
+    gap: 0.3rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 0.6rem;
+    padding: 0.3rem;
+  }
+
+  .lang-btn,
+  .theme-btn {
+    background: transparent;
+    border: none;
+    color: var(--ink);
+    padding: 0.35rem 0.6rem;
+    border-radius: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+  }
+
+  .lang-btn:hover,
+  .theme-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .lang-btn.active {
+    background: var(--grad-rf);
+    color: #071117;
+  }
+
+  .theme-btn {
+    width: 1.8rem;
+    height: 1.8rem;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .theme-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--theme-color);
+    opacity: 0.6;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .theme-btn.active::before {
+    opacity: 1;
+  }
+
+  .theme-btn.active::after {
+    content: "✓";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+
   @media (max-width: 720px) {
     .nav-btn {
       display: inline-flex;
@@ -206,6 +327,19 @@
 
     li a {
       justify-content: flex-start;
+    }
+
+    .controls-group {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.6rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .lang-selector,
+    .theme-selector {
+      justify-content: center;
     }
   }
 </style>

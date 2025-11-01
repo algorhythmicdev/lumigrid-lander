@@ -5,26 +5,6 @@
 
   export let items = [
     {
-      title: 'LED Node close-up',
-      type: 'image',
-      path: '20231220-1208-bilde3.png',
-      alt: 'LED Node unit close-up',
-      category: 'product'
-    },
-    {
-      title: 'Clients signage collage',
-      type: 'image',
-      path: 'Clients-2.png',
-      alt: 'Collage of client signage installations',
-      category: 'showcase'
-    },
-    {
-      title: 'LED Node promo',
-      type: 'video',
-      path: 'led node promo.mp4',
-      category: 'demo'
-    },
-    {
       title: 'Casino frontage',
       type: 'video',
       path: 'casino front.mp4',
