@@ -21,8 +21,8 @@
     }
     const reduce=matchMedia('(prefers-reduced-motion: reduce)');
     const hueValue=()=>{
-      const val=getComputedStyle(document.documentElement).getPropertyValue('--ambient-hue')||'285';
-      return parseFloat(val)||285;
+      const val=getComputedStyle(document.documentElement).getPropertyValue('--ambient-hue')||'355';
+      return parseFloat(val)||355;
     };
     const loop=()=>{
       time+=0.016;

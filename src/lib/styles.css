@@ -1,6 +1,6 @@
 /* CSS Variables and Design Tokens */
 :root {
-  --ambient-hue: 285;
+  --ambient-hue: 355;
   
   /* Reclame Fabriek palette */
   --bg-0:#0a0b12; 
@@ -11,23 +11,23 @@
   
   /* Brand colors */
   --mag:#e73ba3; 
-  --vio:#6c2bd9; 
+  --cherry:#dc143c; 
   --cya:#1cc5dc; 
   --amb:#ffd166;
   --a:#e73ba3; 
-  --b:#6c2bd9; 
+  --b:#dc143c; 
   --c:#1cc5dc; 
   --warm:#ffd166;
   
   /* Extended brand hues (Apple keynote vibes) */
   --rf-magenta:#e73ba3; 
-  --rf-violet:#6c2bd9; 
+  --rf-cherry:#dc143c; 
   --rf-cyan:#1cc5dc; 
   --rf-amber:#ffd166;
   
   /* Gradients */
-  --primary-grad: linear-gradient(135deg, var(--mag), var(--vio), var(--cya));
-  --grad-rf: linear-gradient(135deg, var(--rf-magenta), var(--rf-violet), var(--rf-cyan));
+  --primary-grad: linear-gradient(135deg, var(--mag), var(--cherry), var(--cya));
+  --grad-rf: linear-gradient(135deg, var(--rf-magenta), var(--rf-cherry), var(--rf-cyan));
   --grad-warm: linear-gradient(135deg, var(--rf-amber), var(--rf-magenta));
   
   /* Effects */
@@ -50,7 +50,7 @@
   --glass-2: rgba(255,255,255,.10);
   
   /* Gradient systems */
-  --grad-rf-alt: linear-gradient(135deg, var(--rf-cyan), var(--rf-violet), var(--rf-magenta));
+  --grad-rf-alt: linear-gradient(135deg, var(--rf-cyan), var(--rf-cherry), var(--rf-magenta));
 
   /* Motion tokens (respect reduced motion) */
   --ease-out: cubic-bezier(.2,.8,.2,1);
@@ -58,9 +58,10 @@
   --dur-med: 360ms; 
   --dur-slow: 900ms;
   
-  /* Typography */
-  --fs-h1: clamp(2.2rem, 6vw, 3.6rem);
-  --fs-h2: clamp(1.4rem, 3.2vw, 2rem);
+  /* Typography - Scaled up */
+  --fs-h1: clamp(3rem, 8vw, 5rem);
+  --fs-h2: clamp(2rem, 5vw, 3rem);
+  --fs-h3: clamp(1.5rem, 3.5vw, 2.2rem);
   --fs: clamp(1rem, 1.6vw, 1.1rem);
   --fs-lead: clamp(1.05rem, 2.2vw, 1.25rem);
   --fs-big: clamp(1.05rem, 2.1vw, 1.2rem);
@@ -81,7 +82,10 @@
     --bg-1:#ffffff; 
     --bg:#ffffff;
     --ink:#0b1020; 
-    --muted:#475569; 
+    --muted:#475569;
+    /* Keep red gradients vibrant in light mode */
+    --primary-grad: linear-gradient(135deg, var(--mag), var(--cherry), var(--cya));
+    --grad-rf: linear-gradient(135deg, var(--rf-magenta), var(--rf-cherry), var(--rf-cyan));
   }
 }
 
@@ -283,7 +287,7 @@ body::before {
   display: block; 
   border-radius: .45rem; 
   padding: .1rem; 
-  background: radial-gradient(120% 120% at 50% 40%, rgba(231,59,163,.9), rgba(108,43,217,.7) 58%, rgba(7,17,23,.4) 90%); 
+  background: radial-gradient(120% 120% at 50% 40%, rgba(231,59,163,.9), rgba(220,20,60,.7) 58%, rgba(7,17,23,.4) 90%); 
   box-shadow: 0 0 24px rgba(231,59,163,.5), 0 0 18px rgba(28,197,220,.4); 
   filter: drop-shadow(0 0 8px rgba(28,197,220,.45));
 }
@@ -426,7 +430,7 @@ body::before {
     repeating-linear-gradient(90deg,
       rgba(28,197,220,.95) 0 6px,
       rgba(231,59,163,.95) 6px 12px,
-      rgba(108,43,217,.95) 12px 18px,
+      rgba(220,20,60,.95) 12px 18px,
       rgba(255,209,102,.95) 18px 24px);
   filter: blur(.6px);
   transform: translateX(-30%);
@@ -596,6 +600,25 @@ button,.chip,.btn,a.card{ min-height:44px }
 /* Headings keep balance on phones */
 h1, h2, h3 { text-wrap: balance; }
 
+/* All headings use gradient with animation */
+h1, h2, h3 {
+  background: var(--grad-rf);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 8s ease infinite;
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 /* Make header glassless; only a hairline accent */
 .header {
   position: relative;
@@ -648,7 +671,7 @@ hr.rule{
 }
 hr.rule::after{
   content:""; position:absolute; inset:0; translate:-50% 0; width:120%;
-  background: conic-gradient(from 0deg, var(--rf-magenta), var(--rf-violet), var(--rf-cyan), var(--rf-magenta));
+  background: conic-gradient(from 0deg, var(--rf-magenta), var(--rf-cherry), var(--rf-cyan), var(--rf-magenta));
   filter: blur(.6px); animation: sweep 8s linear infinite;
 }
 @keyframes sweep { to { translate: 50% 0; rotate: 1turn; } }
@@ -692,7 +715,7 @@ h2.under::before{
 }
 .grad-frame::before{
   content:""; position:absolute; inset:0; z-index:-2; pointer-events:none;
-  background: conic-gradient(from 0deg, var(--rf-magenta), var(--rf-violet), var(--rf-cyan), var(--rf-magenta));
+  background: conic-gradient(from 0deg, var(--rf-magenta), var(--rf-cherry), var(--rf-cyan), var(--rf-magenta));
   filter: blur(10px); opacity:.25; animation: spin 16s linear infinite;
 }
 .grad-frame::after{
