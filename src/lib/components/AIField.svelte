@@ -20,8 +20,13 @@
       });
     }
     const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+    const hueValue=()=>{
+      const val=getComputedStyle(document.documentElement).getPropertyValue('--ambient-hue')||'285';
+      return parseFloat(val)||285;
+    };
     const loop=()=>{
       time+=0.016;
+      const hue=hueValue();
       ctx.clearRect(0,0,c.width,c.height);
       ctx.globalCompositeOperation='lighter';
       if(!reduce.matches){
@@ -37,7 +42,6 @@
           const dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
           if(d<180*DPR){
             const o=1-(d/(180*DPR));
-            const hue=getComputedStyle(document.documentElement).getPropertyValue('--ambient-hue')||'285';
             ctx.strokeStyle=`oklch(85% .12 ${hue} / ${.10*o})`;
             ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
           }
@@ -46,12 +50,11 @@
       for(const p of pts){
         const pulse = Math.sin(time*p.pulseSpeed+p.pulseOffset);
         const intensity = 0.5+pulse*0.5;
-        const hue=getComputedStyle(document.documentElement).getPropertyValue('--ambient-hue')||'285';
         const grad=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.radius*DPR);
         grad.addColorStop(0,`oklch(90% .15 ${hue} / ${.35*intensity})`);
         grad.addColorStop(0.4,`oklch(85% .12 ${hue} / ${.20*intensity})`);
-        grad.addColorStop(0.7,`oklch(80% .10 ${parseInt(hue)+30} / ${.12*intensity})`);
-        grad.addColorStop(1,`oklch(75% .08 ${parseInt(hue)-20} / 0)`);
+        grad.addColorStop(0.7,`oklch(80% .10 ${hue+30} / ${.12*intensity})`);
+        grad.addColorStop(1,`oklch(75% .08 ${hue-20} / 0)`);
         ctx.fillStyle=grad;
         ctx.beginPath(); ctx.arc(p.x,p.y,p.radius*DPR,0,Math.PI*2); ctx.fill();
       }
