@@ -121,7 +121,7 @@ body::before {
   background:
     radial-gradient(120% 120% at 20% 15%, oklch(60% .12 calc(var(--h) + 30)) 0%, transparent 55%),
     radial-gradient(120% 120% at 80% 70%, oklch(58% .10 calc(var(--h) - 40)) 0%, transparent 55%),
-    linear-gradient(180deg, #0b1120 0%, #0b1120 100%);
+    var(--bg);
 }
 
 :where(button, a, [role="button"], input, select, textarea):focus-visible {
