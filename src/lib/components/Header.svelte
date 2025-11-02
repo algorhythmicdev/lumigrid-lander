@@ -9,7 +9,7 @@
   let isMobile = false;
   let menu;
   let currentLang = $lang;
-  let currentTheme = 260; // default hue
+  let currentTheme = 355; // default hue (cherry red)
   let lightMode = false; // light/dark theme toggle
 
   $: lang.set(currentLang);
@@ -89,13 +89,17 @@
     </a>
 
     <button
-      class="nav-btn"
+      class="nav-btn hamburger"
+      class:open={open}
       aria-expanded={open}
       aria-controls="menu"
+      aria-label={open ? "Close menu" : "Open menu"}
       type="button"
       on:click={toggle}
     >
-      Menu
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
     </button>
 
     <ul
@@ -124,10 +128,10 @@
         <div class="theme-selector">
           <button 
             class="theme-btn" 
-            class:active={currentTheme===260} 
-            on:click={()=> applyTheme(260)}
-            aria-label="Purple theme"
-            style="--theme-color: hsl(260, 70%, 70%)"
+            class:active={currentTheme===355} 
+            on:click={()=> applyTheme(355)}
+            aria-label="Cherry red theme"
+            style="--theme-color: hsl(355, 70%, 55%)"
           ></button>
           <button 
             class="theme-btn" 
@@ -218,9 +222,44 @@
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 0.6rem;
-    padding: 0.35rem 0.75rem;
+    padding: 0.5rem;
     color: var(--ink);
-    font-size: 0.95rem;
+    cursor: pointer;
+    min-width: var(--touch-target-min, 44px);
+    min-height: var(--touch-target-min, 44px);
+    position: relative;
+    z-index: 50;
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.6rem 0.7rem;
+  }
+
+  .hamburger-line {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: all var(--dur-fast) var(--ease-out);
+  }
+
+  .hamburger.open .hamburger-line:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .hamburger.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .hamburger.open .hamburger-line:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
   }
 
   ul {
@@ -367,45 +406,103 @@
     border-color: transparent;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 768px) {
     .nav-btn {
-      display: inline-flex;
+      display: flex;
+    }
+
+    nav {
+      padding: var(--spacing-mobile-sm, 1rem) clamp(1rem, 4vw, 1.5rem);
+    }
+
+    .brand {
+      font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    }
+
+    .brand-logo {
+      height: 1.75rem;
     }
 
     ul {
       position: fixed;
-      inset: auto 0 0 0;
-      background: rgba(12, 18, 33, 0.72);
-      backdrop-filter: blur(10px);
-      transform: translateY(100%);
-      transition: transform 0.25s var(--ease-out);
+      inset: 0 0 0 0;
+      top: var(--nav-height-mobile, 64px);
+      background: rgba(12, 18, 33, 0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: transform var(--dur-med) var(--ease-out), opacity var(--dur-med) var(--ease-out);
       flex-direction: column;
-      padding: 1.25rem clamp(1rem, 6vw, 2rem) clamp(2.5rem, 10vh, 3.5rem);
+      padding: var(--spacing-mobile-lg, 2rem) clamp(1rem, 6vw, 2rem);
       align-items: stretch;
-      gap: 0.6rem;
+      gap: var(--spacing-mobile-xs, 0.5rem);
       pointer-events: none;
+      overflow-y: auto;
+      z-index: 40;
     }
 
     ul[data-open="true"] {
       transform: none;
+      opacity: 1;
       pointer-events: auto;
     }
 
     li a {
       justify-content: flex-start;
+      padding: var(--spacing-mobile-sm, 1rem);
+      font-size: 1.1rem;
+      min-height: var(--touch-target-min, 44px);
     }
 
     .controls-group {
       flex-direction: column;
       align-items: stretch;
-      gap: 0.6rem;
-      padding-top: 0.5rem;
+      gap: var(--spacing-mobile-sm, 1rem);
+      padding-top: var(--spacing-mobile-md, 1.5rem);
+      margin-top: var(--spacing-mobile-sm, 1rem);
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .lang-selector,
     .theme-selector {
       justify-content: center;
+      padding: var(--spacing-mobile-xs, 0.5rem);
+    }
+
+    .lang-btn,
+    .theme-btn,
+    .light-mode-btn {
+      min-height: var(--touch-target-min, 44px);
+      min-width: var(--touch-target-min, 44px);
+    }
+
+    .lang-btn {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+    }
+
+    .light-mode-btn {
+      padding: 0.75rem 1.25rem;
+      font-size: 1.4rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    nav {
+      padding: 0.75rem 1rem;
+    }
+
+    .brand {
+      font-size: 0.85rem;
+    }
+
+    .brand-logo {
+      height: 1.5rem;
+    }
+
+    ul {
+      padding: 1.5rem 1rem;
     }
   }
 </style>

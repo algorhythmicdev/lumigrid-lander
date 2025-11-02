@@ -2,10 +2,10 @@
   import { onMount } from 'svelte';
 
   export let sections = [
-    { id: 'hero', hue: 285 },
+    { id: 'hero', hue: 355 },
     { id: 'what', hue: 320 },
     { id: 'examples', hue: 200 },
-    { id: 'nodes', hue: 285 },
+    { id: 'nodes', hue: 355 },
     { id: 'faq', hue: 315 },
     { id: 'contact', hue: 60 }
   ];
