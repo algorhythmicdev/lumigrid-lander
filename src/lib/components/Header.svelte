@@ -26,16 +26,16 @@
     if (typeof document !== 'undefined') {
       if (lightMode) {
         document.documentElement.style.setProperty('--bg-0', '#ffffff');
-        document.documentElement.style.setProperty('--bg-1', '#ffffff');
-        document.documentElement.style.setProperty('--bg', '#ffffff');
-        document.documentElement.style.setProperty('--ink', '#0b1020');
-        document.documentElement.style.setProperty('--muted', '#475569');
+        document.documentElement.style.setProperty('--bg-1', '#f8f8f8');
+        document.documentElement.style.setProperty('--bg', '#fafafa');
+        document.documentElement.style.setProperty('--ink', '#000000');
+        document.documentElement.style.setProperty('--muted', '#505050');
       } else {
-        document.documentElement.style.setProperty('--bg-0', '#0a0b12');
-        document.documentElement.style.setProperty('--bg-1', '#0e1220');
-        document.documentElement.style.setProperty('--bg', '#0b1120');
-        document.documentElement.style.setProperty('--ink', '#fafafa');
-        document.documentElement.style.setProperty('--muted', '#c7cfdd');
+        document.documentElement.style.setProperty('--bg-0', '#000000');
+        document.documentElement.style.setProperty('--bg-1', '#0a0a0a');
+        document.documentElement.style.setProperty('--bg', '#050505');
+        document.documentElement.style.setProperty('--ink', '#ffffff');
+        document.documentElement.style.setProperty('--muted', '#b0b0b0');
       }
     }
   };
@@ -130,22 +130,22 @@
             class="theme-btn" 
             class:active={currentTheme===355} 
             on:click={()=> applyTheme(355)}
-            aria-label="Cherry red theme"
-            style="--theme-color: hsl(355, 70%, 55%)"
+            aria-label="Light gray theme"
+            style="--theme-color: hsl(0, 0%, 90%)"
           ></button>
           <button 
             class="theme-btn" 
             class:active={currentTheme===200} 
             on:click={()=> applyTheme(200)}
-            aria-label="Cyan theme"
-            style="--theme-color: hsl(200, 70%, 70%)"
+            aria-label="Medium gray theme"
+            style="--theme-color: hsl(0, 0%, 75%)"
           ></button>
           <button 
             class="theme-btn" 
             class:active={currentTheme===340} 
             on:click={()=> applyTheme(340)}
-            aria-label="Magenta theme"
-            style="--theme-color: hsl(340, 70%, 70%)"
+            aria-label="Dark gray theme"
+            style="--theme-color: hsl(0, 0%, 60%)"
           ></button>
         </div>
         <button 
@@ -295,7 +295,7 @@
     bottom: 0.3rem;
     height: 2px;
     border-radius: 999px;
-    background: linear-gradient(90deg, var(--rf-cyan), var(--rf-magenta));
+    background: linear-gradient(90deg, #ffffff, #d0d0d0);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform var(--dur-fast) var(--ease-out);
@@ -345,8 +345,8 @@
   }
 
   .lang-btn.active {
-    background: var(--grad-rf);
-    color: #071117;
+    background: linear-gradient(135deg, #ffffff, #e0e0e0);
+    color: #000000;
   }
 
   .theme-btn {
@@ -402,7 +402,7 @@
   }
 
   .light-mode-btn.active {
-    background: var(--grad-rf);
+    background: linear-gradient(135deg, #ffffff, #e0e0e0);
     border-color: transparent;
   }
 
@@ -427,7 +427,7 @@
       position: fixed;
       inset: 0 0 0 0;
       top: var(--nav-height-mobile, 64px);
-      background: rgba(12, 18, 33, 0.96);
+      background: rgba(0, 0, 0, 0.96);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       transform: translateY(-100%);
