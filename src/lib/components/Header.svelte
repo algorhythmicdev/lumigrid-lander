@@ -9,33 +9,32 @@
   let isMobile = false;
   let menu;
   let currentLang = $lang;
-  let currentTheme = 355; // default hue (cherry red)
-  let lightMode = false; // light/dark theme toggle
+  let currentTheme = 'dark'; // 'dark', 'light', or 'high-contrast'
 
   $: lang.set(currentLang);
 
-  const applyTheme = (hue) => {
+  const applyTheme = (theme) => {
     if (typeof document !== 'undefined') {
-      document.documentElement.style.setProperty('--ambient-hue', String(hue));
-      currentTheme = hue;
-    }
-  };
-
-  const toggleLightMode = () => {
-    lightMode = !lightMode;
-    if (typeof document !== 'undefined') {
-      if (lightMode) {
+      currentTheme = theme;
+      
+      if (theme === 'light') {
         document.documentElement.style.setProperty('--bg-0', '#ffffff');
         document.documentElement.style.setProperty('--bg-1', '#f8f8f8');
         document.documentElement.style.setProperty('--bg', '#fafafa');
         document.documentElement.style.setProperty('--ink', '#000000');
         document.documentElement.style.setProperty('--muted', '#505050');
-      } else {
+      } else if (theme === 'dark') {
         document.documentElement.style.setProperty('--bg-0', '#000000');
         document.documentElement.style.setProperty('--bg-1', '#0a0a0a');
         document.documentElement.style.setProperty('--bg', '#050505');
         document.documentElement.style.setProperty('--ink', '#ffffff');
         document.documentElement.style.setProperty('--muted', '#b0b0b0');
+      } else if (theme === 'high-contrast') {
+        document.documentElement.style.setProperty('--bg-0', '#000000');
+        document.documentElement.style.setProperty('--bg-1', '#000000');
+        document.documentElement.style.setProperty('--bg', '#000000');
+        document.documentElement.style.setProperty('--ink', '#ffffff');
+        document.documentElement.style.setProperty('--muted', '#ffffff');
       }
     }
   };
@@ -128,35 +127,32 @@
         <div class="theme-selector">
           <button 
             class="theme-btn" 
-            class:active={currentTheme===355} 
-            on:click={()=> applyTheme(355)}
-            aria-label="Light gray theme"
-            style="--theme-color: hsl(0, 0%, 90%)"
-          ></button>
+            class:active={currentTheme==='light'} 
+            on:click={()=> applyTheme('light')}
+            aria-label="Light theme"
+            title="Light theme"
+          >
+            ☀️
+          </button>
           <button 
             class="theme-btn" 
-            class:active={currentTheme===200} 
-            on:click={()=> applyTheme(200)}
-            aria-label="Medium gray theme"
-            style="--theme-color: hsl(0, 0%, 75%)"
-          ></button>
+            class:active={currentTheme==='dark'} 
+            on:click={()=> applyTheme('dark')}
+            aria-label="Dark theme"
+            title="Dark theme"
+          >
+            🌙
+          </button>
           <button 
             class="theme-btn" 
-            class:active={currentTheme===340} 
-            on:click={()=> applyTheme(340)}
-            aria-label="Dark gray theme"
-            style="--theme-color: hsl(0, 0%, 60%)"
-          ></button>
+            class:active={currentTheme==='high-contrast'} 
+            on:click={()=> applyTheme('high-contrast')}
+            aria-label="High contrast theme"
+            title="High contrast theme"
+          >
+            ⚡
+          </button>
         </div>
-        <button 
-          class="light-mode-btn" 
-          class:active={lightMode}
-          on:click={toggleLightMode}
-          aria-label={lightMode ? "Switch to dark mode" : "Switch to light mode"}
-          title={lightMode ? "Dark mode" : "Light mode"}
-        >
-          {#if lightMode}🌙{:else}☀️{/if}
-        </button>
       </li>
     </ul>
   </nav>
@@ -350,60 +346,19 @@
   }
 
   .theme-btn {
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 2.2rem;
+    height: 2.2rem;
     padding: 0;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .theme-btn::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--theme-color);
-    opacity: 0.6;
-    transition: opacity var(--dur-fast) var(--ease-out);
-  }
-
-  .theme-btn.active::before {
-    opacity: 1;
-  }
-
-  .theme-btn.active::after {
-    content: "✓";
-    position: absolute;
-    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 0.9rem;
-    font-weight: bold;
+    font-size: 1.1rem;
   }
 
-  .light-mode-btn {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 0.6rem;
-    padding: 0.35rem 0.75rem;
-    color: var(--ink);
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all var(--dur-fast) var(--ease-out);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .light-mode-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: scale(1.05);
-  }
-
-  .light-mode-btn.active {
+  .theme-btn.active {
     background: linear-gradient(135deg, #ffffff, #e0e0e0);
-    border-color: transparent;
+    color: #000000;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
   }
 
   @media (max-width: 768px) {
@@ -471,8 +426,7 @@
     }
 
     .lang-btn,
-    .theme-btn,
-    .light-mode-btn {
+    .theme-btn {
       min-height: var(--touch-target-min, 44px);
       min-width: var(--touch-target-min, 44px);
     }
@@ -482,9 +436,11 @@
       font-size: 1rem;
     }
 
-    .light-mode-btn {
-      padding: 0.75rem 1.25rem;
-      font-size: 1.4rem;
+    .theme-btn {
+      font-size: 1.3rem;
+      width: auto;
+      height: auto;
+      padding: 0.5rem 0.75rem;
     }
   }
 
