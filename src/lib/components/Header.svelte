@@ -130,21 +130,21 @@
             class="theme-btn" 
             class:active={currentTheme===355} 
             on:click={()=> applyTheme(355)}
-            aria-label="Theme 1"
+            aria-label="Light gray theme"
             style="--theme-color: hsl(0, 0%, 90%)"
           ></button>
           <button 
             class="theme-btn" 
             class:active={currentTheme===200} 
             on:click={()=> applyTheme(200)}
-            aria-label="Theme 2"
+            aria-label="Medium gray theme"
             style="--theme-color: hsl(0, 0%, 75%)"
           ></button>
           <button 
             class="theme-btn" 
             class:active={currentTheme===340} 
             on:click={()=> applyTheme(340)}
-            aria-label="Theme 3"
+            aria-label="Dark gray theme"
             style="--theme-color: hsl(0, 0%, 60%)"
           ></button>
         </div>
