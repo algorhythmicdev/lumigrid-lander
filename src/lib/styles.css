@@ -127,9 +127,9 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Convert all images and videos to grayscale for monochrome theme */
+/* Keep all images and videos in full color */
 img, video, canvas {
-  filter: grayscale(100%);
+  filter: none;
 }
 
 /* Brand gradient overlay behind LumenField (lower z than canvases)
