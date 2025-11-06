@@ -16,6 +16,8 @@
   import Contact from '$lib/components/Contact.svelte';
   import FooterCTA from '$lib/components/FooterCTA.svelte';
   import TrustedBy from '$lib/components/TrustedBy.svelte';
+  import CaseFilters from '$lib/components/CaseFilters.svelte';
+  import BeforeAfterAuto from '$lib/components/BeforeAfterAuto.svelte';
   import { t } from '$lib/i18n';
 
   export let data;
@@ -60,9 +62,19 @@
 
 <hr class="rule" />
 
-<UseCaseStory />
-<ProjectGallery />
-<MediaGallery title="Installation showcase" />
+<section id="stories">
+  <UseCaseStory />
+</section>
+
+<section id="cases">
+  <div class="container" style="margin-bottom: 1.5rem; margin-top: 3rem;">
+    <h2 style="text-align: center; margin-bottom: 2rem; font-size: var(--fs-h2);">Case Studies</h2>
+    <CaseFilters />
+  </div>
+  <ProjectGallery />
+  <MediaGallery title="Real installations & demonstrations" />
+  <BeforeAfterAuto />
+</section>
 
 <hr class="rule" />
 
@@ -70,7 +82,17 @@
 <TrustedBy />
 <Testimonials />
 <Partners />
-<PressDownloads />
 
-<Contact />
+<section id="press">
+  <PressDownloads />
+</section>
+
+<section id="contact">
+  <Contact 
+    title="Start the brief"
+    intro="Share where the LEDs go, how they behave in the day, and what you want to feel at night. We'll assemble a simple plan and reply within one business day."
+    hue={data?.theme?.hue}
+  />
+</section>
+
 <FooterCTA />

@@ -5,9 +5,6 @@
 
   const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
 
-  let open = false;
-  let isMobile = false;
-  let menu;
   let currentLang = $lang;
   let currentTheme = 'dark'; // 'dark', 'light', or 'high-contrast'
 
@@ -39,45 +36,7 @@
     }
   };
 
-  const toggle = () => {
-    open = !open;
-  };
 
-  const close = () => {
-    open = false;
-  };
-
-  const handleLinkClick = () => {
-    if (isMobile) {
-      close();
-    }
-  };
-
-  onMount(() => {
-    const mq = window.matchMedia('(max-width: 720px)');
-    const handleEscape = (event) => {
-      if (event.key === 'Escape') {
-        close();
-      }
-    };
-    const apply = (event) => {
-      isMobile = event.matches;
-      if (!isMobile) {
-        close();
-      }
-    };
-
-    apply(mq);
-    mq.addEventListener('change', apply);
-    window.addEventListener('keydown', handleEscape);
-
-    return () => {
-      mq.removeEventListener('change', apply);
-      window.removeEventListener('keydown', handleEscape);
-    };
-  });
-
-  $: menu?.toggleAttribute('inert', isMobile && !open);
 </script>
 
 <header class="header">
@@ -87,30 +46,11 @@
       LUMIGRID LED Node
     </a>
 
-    <button
-      class="nav-btn hamburger"
-      class:open={open}
-      aria-expanded={open}
-      aria-controls="menu"
-      aria-label={open ? "Close menu" : "Open menu"}
-      type="button"
-      on:click={toggle}
-    >
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-    </button>
-
-    <ul
-      id="menu"
-      class:open={open}
-      bind:this={menu}
-      data-open={open}
-    >
-      <li><a href={`${base}/#stories`} on:click={handleLinkClick}>Stories</a></li>
-      <li><a href={`${base}/cases`} on:click={handleLinkClick}>Cases</a></li>
-      <li><a href={`${base}/#press`} on:click={handleLinkClick}>Press</a></li>
-      <li><a href={`${base}/contact`} on:click={handleLinkClick}>Contact</a></li>
+    <ul id="menu">
+      <li><a href={`${base}/#stories`}>Stories</a></li>
+      <li><a href={`${base}/#cases`}>Cases</a></li>
+      <li><a href={`${base}/#press`}>Press</a></li>
+      <li><a href={`${base}/#contact`}>Contact</a></li>
       <li class="controls-group">
         <div class="lang-selector">
           {#each ['en','lv','ru'] as code}
@@ -210,52 +150,6 @@
   .brand-logo {
     height: 2rem;
     width: auto;
-  }
-
-  .nav-btn {
-    margin-left: auto;
-    display: none;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 0.6rem;
-    padding: 0.5rem;
-    color: var(--ink);
-    cursor: pointer;
-    min-width: var(--touch-target-min, 44px);
-    min-height: var(--touch-target-min, 44px);
-    position: relative;
-    z-index: 50;
-  }
-
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.6rem 0.7rem;
-  }
-
-  .hamburger-line {
-    display: block;
-    width: 20px;
-    height: 2px;
-    background: var(--ink);
-    border-radius: 2px;
-    transition: all var(--dur-fast) var(--ease-out);
-  }
-
-  .hamburger.open .hamburger-line:nth-child(1) {
-    transform: translateY(6px) rotate(45deg);
-  }
-
-  .hamburger.open .hamburger-line:nth-child(2) {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-
-  .hamburger.open .hamburger-line:nth-child(3) {
-    transform: translateY(-6px) rotate(-45deg);
   }
 
   ul {
@@ -362,12 +256,9 @@
   }
 
   @media (max-width: 768px) {
-    .nav-btn {
-      display: flex;
-    }
-
     nav {
       padding: var(--spacing-mobile-sm, 1rem) clamp(1rem, 4vw, 1.5rem);
+      flex-wrap: wrap;
     }
 
     .brand {
@@ -379,68 +270,34 @@
     }
 
     ul {
-      position: fixed;
-      inset: 0 0 0 0;
-      top: var(--nav-height-mobile, 64px);
-      background: rgba(0, 0, 0, 0.96);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      transform: translateY(-100%);
-      opacity: 0;
-      transition: transform var(--dur-med) var(--ease-out), opacity var(--dur-med) var(--ease-out);
-      flex-direction: column;
-      padding: var(--spacing-mobile-lg, 2rem) clamp(1rem, 6vw, 2rem);
-      align-items: stretch;
-      gap: var(--spacing-mobile-xs, 0.5rem);
-      pointer-events: none;
-      overflow-y: auto;
-      z-index: 40;
-    }
-
-    ul[data-open="true"] {
-      transform: none;
-      opacity: 1;
-      pointer-events: auto;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
     li a {
-      justify-content: flex-start;
-      padding: var(--spacing-mobile-sm, 1rem);
-      font-size: 1.1rem;
-      min-height: var(--touch-target-min, 44px);
+      padding: 0.35rem 0.6rem;
+      font-size: 0.9rem;
     }
 
     .controls-group {
-      flex-direction: column;
-      align-items: stretch;
-      gap: var(--spacing-mobile-sm, 1rem);
-      padding-top: var(--spacing-mobile-md, 1.5rem);
-      margin-top: var(--spacing-mobile-sm, 1rem);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
     .lang-selector,
     .theme-selector {
-      justify-content: center;
-      padding: var(--spacing-mobile-xs, 0.5rem);
-    }
-
-    .lang-btn,
-    .theme-btn {
-      min-height: var(--touch-target-min, 44px);
-      min-width: var(--touch-target-min, 44px);
+      padding: 0.25rem;
     }
 
     .lang-btn {
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
+      padding: 0.4rem 0.5rem;
+      font-size: 0.85rem;
     }
 
     .theme-btn {
-      font-size: 1.3rem;
-      width: auto;
-      height: auto;
-      padding: 0.5rem 0.75rem;
+      width: 2rem;
+      height: 2rem;
+      font-size: 1rem;
     }
   }
 
@@ -457,8 +314,9 @@
       height: 1.5rem;
     }
 
-    ul {
-      padding: 1.5rem 1rem;
+    li a {
+      font-size: 0.8rem;
+      padding: 0.3rem 0.5rem;
     }
   }
 </style>
