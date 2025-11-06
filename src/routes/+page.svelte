@@ -51,6 +51,7 @@
   data-hue={data?.theme?.hue}
 >
   <EpicHero kicker={$t('hero_kicker')} title={$t('hero_title')} sub={$t('hero_sub')} />
+  <!-- Increased particle count from 56 to 72 for more visual interest in hero section -->
   <AIField count={72}/>
 </section>
 
