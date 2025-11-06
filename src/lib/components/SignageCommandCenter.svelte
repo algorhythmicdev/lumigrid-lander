@@ -1,92 +1,93 @@
 <script>
   import { t } from '$lib/i18n';
 
-  const defaultStreams = [
+  // Generate default data reactively based on current language
+  $: defaultStreams = [
     {
-      name: 'Lobby signage lane',
-      status: 'Live',
+      name: $t('signage_stream_lobby_name'),
+      status: $t('signage_stream_lobby_status'),
       tone: 'good',
-      detail: 'Lobby screens follow the welcome playlist with captions checked for contrast.',
+      detail: $t('signage_stream_lobby_detail'),
       metrics: [
-        { label: 'Contrast', value: 'AA sample pass' },
-        { label: 'Sync drift', value: '≈0.6 ms sample' },
-        { label: 'Approvals', value: 'Campaign + Ops' }
+        { label: $t('signage_stream_lobby_contrast'), value: $t('signage_stream_lobby_contrast_value') },
+        { label: $t('signage_stream_lobby_sync'), value: $t('signage_stream_lobby_sync_value') },
+        { label: $t('signage_stream_lobby_approvals'), value: $t('signage_stream_lobby_approvals_value') }
       ]
     },
     {
-      name: 'Promenade ribbon',
-      status: 'Syncing',
+      name: $t('signage_stream_promenade_name'),
+      status: $t('signage_stream_promenade_status'),
       tone: 'info',
-      detail: 'Outdoor ribbon pairs signage updates with façade lighting. Brightness follows the ambient sensor.',
+      detail: $t('signage_stream_promenade_detail'),
       metrics: [
-        { label: 'Ambient', value: '42% dimmed sample' },
-        { label: 'Heartbeat', value: 'Last ping 12 s ago' },
-        { label: 'Fallback', value: 'Preset ready' }
+        { label: $t('signage_stream_promenade_ambient'), value: $t('signage_stream_promenade_ambient_value') },
+        { label: $t('signage_stream_promenade_heartbeat'), value: $t('signage_stream_promenade_heartbeat_value') },
+        { label: $t('signage_stream_promenade_fallback'), value: $t('signage_stream_promenade_fallback_value') }
       ]
     },
     {
-      name: 'Emergency overrides',
-      status: 'Armed',
+      name: $t('signage_stream_emergency_name'),
+      status: $t('signage_stream_emergency_status'),
       tone: 'alert',
-      detail: 'Safety scenes are loaded and will replace signage if an override is triggered.',
+      detail: $t('signage_stream_emergency_detail'),
       metrics: [
-        { label: 'Palette', value: 'Emergency colours' },
-        { label: 'Drill', value: 'Last test: pass' },
-        { label: 'Acknowledged', value: 'Roster group A' }
+        { label: $t('signage_stream_emergency_palette'), value: $t('signage_stream_emergency_palette_value') },
+        { label: $t('signage_stream_emergency_drill'), value: $t('signage_stream_emergency_drill_value') },
+        { label: $t('signage_stream_emergency_ack'), value: $t('signage_stream_emergency_ack_value') }
       ]
     }
   ];
 
-  const defaultAlerts = [
+  $: defaultAlerts = [
     {
-      title: 'CMS webhook heartbeat',
-      status: 'Stable',
+      title: $t('signage_alert_cms_title'),
+      status: $t('signage_alert_cms_status'),
       tone: 'good',
-      detail: 'Latest signage payload received without error.',
-      time: '14 s sample'
+      detail: $t('signage_alert_cms_detail'),
+      time: $t('signage_alert_cms_time')
     },
     {
-      title: 'Partner takeover staging',
-      status: 'Action needed',
+      title: $t('signage_alert_partner_title'),
+      status: $t('signage_alert_partner_status'),
       tone: 'alert',
-      detail: 'Sponsor playlist is waiting for localisation approval.',
-      time: 'Awaiting review'
+      detail: $t('signage_alert_partner_detail'),
+      time: $t('signage_alert_partner_time')
     },
     {
-      title: 'Transit relay overlay',
-      status: 'Monitoring',
+      title: $t('signage_alert_transit_title'),
+      status: $t('signage_alert_transit_status'),
       tone: 'info',
-      detail: 'Transit feed is live and publishing schedule updates.',
-      time: 'Live'
+      detail: $t('signage_alert_transit_detail'),
+      time: $t('signage_alert_transit_time')
     }
   ];
 
-  const defaultPlaybooks = [
+  $: defaultPlaybooks = [
     {
-      title: 'Morning signage check',
-      summary: 'Confirm day scenes before doors open.',
+      title: $t('signage_playbook_morning_title'),
+      summary: $t('signage_playbook_morning_summary'),
       steps: [
-        'Review the day playlist and confirm captions display correctly.',
-        'Run a short lighting rehearsal so blends match the signage looks.',
-        'Check CMS feeds or uploads for the next scheduled update.'
+        $t('signage_playbook_morning_step1'),
+        $t('signage_playbook_morning_step2'),
+        $t('signage_playbook_morning_step3')
       ]
     },
     {
-      title: 'Sponsor takeover prep',
-      summary: 'Verify partner content before a planned takeover.',
+      title: $t('signage_playbook_sponsor_title'),
+      summary: $t('signage_playbook_sponsor_summary'),
       steps: [
-        'Preview the takeover assets on the LED Node signage board.',
-        'Confirm colours and brightness meet the brand agreement.',
-        'Log approvals so the takeover can start on time.'
+        $t('signage_playbook_sponsor_step1'),
+        $t('signage_playbook_sponsor_step2'),
+        $t('signage_playbook_sponsor_step3')
       ]
     },
     {
-      title: 'Emergency drill',
-      summary: 'Practice the safety override with the venue team.',
+      title: $t('signage_playbook_emergency_title'),
+      summary: $t('signage_playbook_emergency_summary'),
       steps: [
-        'Trigger the safety scene and confirm each screen switches.',
-        'Record acknowledgements from the on-call roster.',
-        'Restore the normal scene and note the drill in the log.'
+        $t('signage_playbook_emergency_step1'),
+        $t('signage_playbook_emergency_step2'),
+        $t('signage_playbook_emergency_step3')
       ]
     }
   ];
@@ -115,9 +116,9 @@
   <div class="center-grid">
     <section class="center-panel streams glass-panel" aria-labelledby="signage-center-streams">
       <div class="panel-head">
-        <span class="panel-pill">Live lanes</span>
-        <h4 id="signage-center-streams">Signage streams</h4>
-        <p>Tracks the main signage runs and their current state.</p>
+        <span class="panel-pill">{$t('signage_panel_live')}</span>
+        <h4 id="signage-center-streams">{$t('signage_panel_streams_title')}</h4>
+        <p>{$t('signage_panel_streams_desc')}</p>
       </div>
       <ul class="stream-list">
         {#each centerStreams as stream (stream.name)}
@@ -146,9 +147,9 @@
 
     <aside class="center-panel alerts glass-panel" aria-labelledby="signage-center-alerts">
       <div class="panel-head">
-        <span class="panel-pill">Escalations</span>
-        <h4 id="signage-center-alerts">Alert queue</h4>
-        <p>Shows issues or approvals that need a response.</p>
+        <span class="panel-pill">{$t('signage_panel_escalations')}</span>
+        <h4 id="signage-center-alerts">{$t('signage_panel_alerts_title')}</h4>
+        <p>{$t('signage_panel_alerts_desc')}</p>
       </div>
       <ul class="alert-list">
         {#each centerAlerts as alert (alert.title)}
@@ -168,9 +169,9 @@
 
     <section class="center-panel playbooks glass-panel" aria-labelledby="signage-center-playbooks">
       <div class="panel-head">
-        <span class="panel-pill">Response patterns</span>
-        <h4 id="signage-center-playbooks">Playbook snapshots</h4>
-        <p>Quick checklists for the on-call team.</p>
+        <span class="panel-pill">{$t('signage_panel_response')}</span>
+        <h4 id="signage-center-playbooks">{$t('signage_panel_playbooks_title')}</h4>
+        <p>{$t('signage_panel_playbooks_desc')}</p>
       </div>
       <ul class="playbook-list">
         {#each centerPlaybooks as book (book.title)}

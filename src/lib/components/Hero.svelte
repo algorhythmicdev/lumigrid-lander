@@ -1,6 +1,7 @@
 <script>
   import HaloCanvas from './HaloCanvas.svelte';
   import { base } from '$app/paths';
+  import { t } from '$lib/i18n';
 </script>
 
 <header id="hero" class="site-header" aria-label="Header" style="position: relative; min-height: 76vh; display: grid; place-items: center; overflow: hidden;">
@@ -8,14 +9,14 @@
   <HaloCanvas />
   
   <div class="hero" style="position: relative; z-index: 1; max-width: 980px; text-align: center; padding: clamp(1rem, 3vw, 2rem);">
-    <h1>Light that brings your brand to life.</h1>
-    <p class="lead">Design signs that breathe, windows that glow, and façades that move together — all from a calm, simple app.</p>
+    <h1>{$t('hero_alt_title')}</h1>
+    <p class="lead">{$t('hero_alt_lead')}</p>
     <div class="hero-cta" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: .75rem;">
-      <a href="#what" class="btn primary">See how it works</a>
-      <a href={`${base}/cases`} class="btn outline">See cases</a>
+      <a href="#what" class="btn primary">{$t('hero_alt_cta_primary')}</a>
+      <a href={`${base}/cases`} class="btn outline">{$t('hero_alt_cta_secondary')}</a>
     </div>
     <p class="credit" style="color: var(--muted); margin-top: .5rem;">
-      Developed by <a href="https://reclamefabriek.eu" target="_blank" rel="noopener" style="color: var(--cya);">Reclame Fabriek R&amp;D</a>
+      {$t('hero_alt_credit')} <a href="https://reclamefabriek.eu" target="_blank" rel="noopener" style="color: var(--cya);">Reclame Fabriek R&amp;D</a>
     </p>
   </div>
 </header>

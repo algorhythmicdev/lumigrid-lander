@@ -1,35 +1,36 @@
 <script>
   import { onMount } from 'svelte';
+  import { t } from '$lib/i18n';
 
   const focusAreas = [
     {
       id: 'calibration',
-      title: 'Colour alignment',
-      detail: 'Nodes sample each other to keep colours matching across the mesh.',
+      titleKey: 'roadmap_focus_calibration_title',
+      detailKey: 'roadmap_focus_calibration_detail',
       hue: 42
     },
     {
       id: 'audio',
-      title: 'Audio response',
-      detail: 'Distributed beat detection keeps lighting in time with audio.',
+      titleKey: 'roadmap_focus_audio_title',
+      detailKey: 'roadmap_focus_audio_detail',
       hue: 180
     },
     {
       id: 'city',
-      title: 'Multi-site schedules',
-      detail: 'Shared timelines let districts trigger the same cue across sites.',
+      titleKey: 'roadmap_focus_city_title',
+      detailKey: 'roadmap_focus_city_detail',
       hue: 312
     },
     {
       id: 'signage',
-      title: 'Signage tooling',
-      detail: 'CMS bridges, checks, and failover overlays keep messaging current.',
+      titleKey: 'roadmap_focus_signage_title',
+      detailKey: 'roadmap_focus_signage_detail',
       hue: 96
     }
   ];
 
   let selected = new Set(['calibration']);
-  let note = 'Choose the roadmap areas you want to hear about.';
+  let note = '';
 
   function toggle(area) {
     if (selected.has(area.id)) {
@@ -43,18 +44,20 @@
 
   function buildNote() {
     if (!selected.size) {
-      return 'Pick at least one focus to tune the updates we send.';
+      return $t('roadmap_note_empty');
     }
     const labels = Array.from(selected)
-      .map(id => focusAreas.find(area => area.id === id)?.title)
-      .filter(Boolean);
+      .map(id => focusAreas.find(area => area.id === id)?.titleKey)
+      .filter(Boolean)
+      .map(key => $t(key));
     if (labels.length === 1) {
-      return `${labels[0]} updates queued—we will share progress as it lands.`;
+      return $t('roadmap_note_single').replace('{label}', labels[0]);
     }
     if (labels.length === focusAreas.length) {
-      return 'You will receive updates on every roadmap focus area.';
+      return $t('roadmap_note_all');
     }
-    return `We will send highlights on ${labels.slice(0, -1).join(', ')} and ${labels.at(-1)}.`;
+    const labelsList = labels.slice(0, -1).join($t('roadmap_note_separator')) + $t('roadmap_note_conjunction') + labels.at(-1);
+    return $t('roadmap_note_multiple').replace('{labels}', labelsList);
   }
 
   function goToForm() {
@@ -69,8 +72,8 @@
 
 <div class="roadmap-card glass">
   <header>
-    <h3>Shape the roadmap</h3>
-    <p>Select the capabilities you want early access to and we will tailor updates accordingly.</p>
+    <h3>{$t('roadmap_title')}</h3>
+    <p>{$t('roadmap_intro')}</p>
   </header>
 
   <div class="focus-grid">
@@ -82,14 +85,14 @@
         style={`--hue:${area.hue}deg;`}
         on:click={() => toggle(area)}
       >
-        <span class="focus-title">{area.title}</span>
-        <span class="focus-detail">{area.detail}</span>
+        <span class="focus-title">{$t(area.titleKey)}</span>
+        <span class="focus-detail">{$t(area.detailKey)}</span>
       </button>
     {/each}
   </div>
 
   <div class="cta-line">
-    <button class="btn primary" type="button" on:click={goToForm}>Send me roadmap updates</button>
+    <button class="btn primary" type="button" on:click={goToForm}>{$t('roadmap_cta')}</button>
     <span class="micro-note" aria-live="polite">{note}</span>
   </div>
 </div>
