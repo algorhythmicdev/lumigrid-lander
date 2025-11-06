@@ -92,9 +92,9 @@
     }
   ];
 
-  export let streams = undefined;
-  export let alerts = undefined;
-  export let playbooks = undefined;
+  export let streams = defaultStreams;
+  export let alerts = defaultAlerts;
+  export let playbooks = defaultPlaybooks;
 
   $: centerStreams = streams?.length ? streams : defaultStreams;
   $: centerAlerts = alerts?.length ? alerts : defaultAlerts;

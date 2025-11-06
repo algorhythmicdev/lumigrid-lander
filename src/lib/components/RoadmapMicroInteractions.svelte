@@ -56,7 +56,7 @@
     if (labels.length === focusAreas.length) {
       return $t('roadmap_note_all');
     }
-    const labelsList = labels.slice(0, -1).join(', ') + $t('roadmap_note_conjunction') + labels.at(-1);
+    const labelsList = labels.slice(0, -1).join($t('roadmap_note_separator')) + $t('roadmap_note_conjunction') + labels.at(-1);
     return $t('roadmap_note_multiple').replace('{labels}', labelsList);
   }
 
