@@ -1,6 +1,6 @@
 <section class="section container reveal" id="highlights">
   <div class="header-section">
-    <h2 class="section-title">Key highlights</h2>
+    <h2 class="section-title">Key <span class="accent">highlights</span></h2>
     <p class="section-lead">What makes LED Node the right choice for your signage lighting.</p>
   </div>
   <ul class="highlights-grid">
@@ -37,10 +37,7 @@
     font-size: var(--fs-h2);
     font-weight: 700;
     margin-bottom: 1rem;
-    background: var(--primary-grad);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--ink);
   }
 
   .section-lead {

@@ -19,6 +19,9 @@
   --c:#c0c0c0; 
   --warm:#f5f5f5;
   
+  /* Cherry red accent for important words */
+  --accent-cherry: #dc2626;
+  
   /* Extended brand hues - Grayscale */
   --rf-magenta:#e0e0e0; 
   --rf-cherry:#d0d0d0; 
@@ -1014,4 +1017,42 @@ section, .section, .container, .rail, .stories{
   [style*="backdrop-filter"] {
     backdrop-filter: blur(8px) !important;
   }
+}
+
+/* Accent text styles for important words in headers */
+.accent {
+  color: var(--accent-cherry);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    text-shadow: 0 0 4px rgba(220, 38, 38, 0.3),
+                 0 0 8px rgba(220, 38, 38, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 8px rgba(220, 38, 38, 0.5),
+                 0 0 16px rgba(220, 38, 38, 0.3),
+                 0 0 24px rgba(220, 38, 38, 0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accent {
+    animation: none;
+  }
+}
+
+/* Header solid color styles (no gradients) */
+h1, h2, h3, h4, h5, h6,
+.section-title,
+.hero h1,
+.feature-title,
+.card-title,
+.contact-title {
+  color: var(--ink) !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
 }

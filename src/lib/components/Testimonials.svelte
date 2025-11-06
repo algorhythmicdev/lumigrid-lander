@@ -23,7 +23,7 @@
 
 <section class="section container reveal" id="testimonials">
   <div class="header-section">
-    <h2 class="section-title">What clients say</h2>
+    <h2 class="section-title">What <span class="accent">clients</span> say</h2>
     <p class="section-lead">Real feedback from businesses using LED Node for their signage.</p>
   </div>
   <div class="testimonials-grid">
@@ -57,10 +57,7 @@
     font-size: var(--fs-h2);
     font-weight: 700;
     margin-bottom: 1rem;
-    background: var(--primary-grad);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--ink);
   }
 
   .section-lead {

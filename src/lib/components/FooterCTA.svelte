@@ -8,7 +8,7 @@
       <i class="light-rail"></i>
     </div>
     <div class="container footer-copy">
-      <h2>Ready to light your brand?</h2>
+      <h2>Ready to light your <span class="accent">brand</span>?</h2>
       <p class="lead">
         Tell us about your sign. We’ll suggest zones, looks, and a simple plan.
       </p>
