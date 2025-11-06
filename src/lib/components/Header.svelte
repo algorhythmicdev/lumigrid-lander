@@ -20,18 +20,13 @@
         document.documentElement.style.setProperty('--bg', '#fafafa');
         document.documentElement.style.setProperty('--ink', '#000000');
         document.documentElement.style.setProperty('--muted', '#505050');
-      } else if (theme === 'dark') {
+      } else if (theme === 'dark' || theme === 'high-contrast') {
+        // High contrast theme uses same settings as dark theme
         document.documentElement.style.setProperty('--bg-0', '#000000');
         document.documentElement.style.setProperty('--bg-1', '#0a0a0a');
         document.documentElement.style.setProperty('--bg', '#050505');
         document.documentElement.style.setProperty('--ink', '#ffffff');
         document.documentElement.style.setProperty('--muted', '#b0b0b0');
-      } else if (theme === 'high-contrast') {
-        document.documentElement.style.setProperty('--bg-0', '#000000');
-        document.documentElement.style.setProperty('--bg-1', '#000000');
-        document.documentElement.style.setProperty('--bg', '#000000');
-        document.documentElement.style.setProperty('--ink', '#ffffff');
-        document.documentElement.style.setProperty('--muted', '#ffffff');
       }
     }
   };
@@ -52,7 +47,7 @@
       <li><a href={`${base}/#contact`}>{$t('nav_contact')}</a></li>
       <li class="controls-group">
         <div class="lang-selector">
-          {#each ['en','lv','ru'] as code}
+          {#each ['en','lv','ru','nl','de'] as code}
             <button 
               class="lang-btn" 
               class:active={currentLang===code} 
