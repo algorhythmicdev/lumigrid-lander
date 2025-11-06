@@ -1,11 +1,12 @@
 <script>
   import { t } from '$lib/i18n';
+  import { getIconPaths } from '$lib/icons';
 
   const features = [
-    { icon: '🎨', halo: '3', key: '1' },
-    { icon: '⚙️', halo: '2', key: '2' },
-    { icon: '📱', halo: '2', key: '3' },
-    { icon: '🌟', halo: '1', key: '4' }
+    { icon: 'swatch', halo: '3', key: '1' },
+    { icon: 'cog6Tooth', halo: '2', key: '2' },
+    { icon: 'commandLine', halo: '2', key: '3' },
+    { icon: 'sparkles', halo: '1', key: '4' }
   ];
 </script>
 
@@ -16,7 +17,13 @@
   <div class="features-grid">
     {#each features as feature}
       <article class="feature-card grad-frame" data-halo={feature.halo}>
-        <div class="feature-icon" aria-hidden="true">{feature.icon}</div>
+        <div class="feature-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            {#each getIconPaths(feature.icon) as path}
+              <path stroke-linecap="round" stroke-linejoin="round" d={path} />
+            {/each}
+          </svg>
+        </div>
         <h3 class="feature-title">{@html $t(`what_${feature.key}_t`)}</h3>
         <p class="feature-description">{$t(`what_${feature.key}_d`)}</p>
       </article>
@@ -62,9 +69,16 @@
   }
 
   .feature-icon {
-    font-size: 3rem;
-    line-height: 1;
+    width: 3rem;
+    height: 3rem;
     margin-bottom: 0.25rem;
+    color: var(--ink);
+    opacity: 0.9;
+  }
+
+  .feature-icon svg {
+    width: 100%;
+    height: 100%;
   }
 
   .feature-title {

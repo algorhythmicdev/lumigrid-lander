@@ -98,7 +98,7 @@
 </section>
 
 <ProjectGallery />
-<MediaGallery title="Real installations & demonstrations" />
+<MediaGallery />
 
 <hr class="rule" />
 

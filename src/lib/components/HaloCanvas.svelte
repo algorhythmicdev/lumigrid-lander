@@ -55,34 +55,47 @@
           x: w * hx + 24 * Math.sin(t * 0.6),
           y: h * hy + 18 * Math.cos(t * 0.5),
           r: Math.min(w, h) * 0.85,
-          c1: 'rgba(231,59,163,0.30)',
-          c2: 'rgba(108,43,217,0.24)',
-          c3: 'rgba(28,197,220,0.18)'
+          gradient: [
+            { stop: 0, color: 'rgba(231,59,163,0.45)' },
+            { stop: 0.25, color: 'rgba(231,59,163,0.35)' },
+            { stop: 0.5, color: 'rgba(108,43,217,0.25)' },
+            { stop: 0.75, color: 'rgba(28,197,220,0.15)' },
+            { stop: 0.9, color: 'rgba(28,197,220,0.05)' },
+            { stop: 1, color: 'rgba(0,0,0,0)' }
+          ]
         },
         {
           x: w * (0.15 + 0.7 * hx),
           y: h * (0.2 + 0.5 * hy),
           r: Math.min(w, h) * 0.65,
-          c1: 'rgba(28,197,220,0.20)',
-          c2: 'rgba(231,59,163,0.18)',
-          c3: 'rgba(0,0,0,0)'
+          gradient: [
+            { stop: 0, color: 'rgba(28,197,220,0.35)' },
+            { stop: 0.3, color: 'rgba(28,197,220,0.25)' },
+            { stop: 0.6, color: 'rgba(231,59,163,0.15)' },
+            { stop: 0.85, color: 'rgba(108,43,217,0.05)' },
+            { stop: 1, color: 'rgba(0,0,0,0)' }
+          ]
         },
         {
           x: w * (0.85 - 0.6 * hx),
           y: h * (0.9 - 0.5 * hy),
           r: Math.min(w, h) * 0.75,
-          c1: 'rgba(108,43,217,0.16)',
-          c2: 'rgba(255,209,102,0.14)',
-          c3: 'rgba(0,0,0,0)'
+          gradient: [
+            { stop: 0, color: 'rgba(108,43,217,0.28)' },
+            { stop: 0.35, color: 'rgba(108,43,217,0.20)' },
+            { stop: 0.65, color: 'rgba(255,209,102,0.12)' },
+            { stop: 0.88, color: 'rgba(255,209,102,0.04)' },
+            { stop: 1, color: 'rgba(0,0,0,0)' }
+          ]
         }
       ];
 
       ctx.globalCompositeOperation = 'lighter';
       for (const p of auras) {
-        const g = ctx.createRadialGradient(p.x, p.y, p.r * 0.05, p.x, p.y, p.r);
-        g.addColorStop(0, p.c1);
-        g.addColorStop(0.55, p.c2);
-        g.addColorStop(1, p.c3);
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+        for (const { stop, color } of p.gradient) {
+          g.addColorStop(stop, color);
+        }
         ctx.fillStyle = g;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);

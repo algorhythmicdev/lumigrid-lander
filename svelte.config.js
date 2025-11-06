@@ -10,7 +10,16 @@ const config = {
   kit: {
     adapter: adapter({ pages: 'build', assets: 'build' }),
     paths: { base: dev ? '' : repo, relative: true },
-    prerender: { entries: ['*'] },
+    prerender: { 
+      entries: ['/'],
+      handleHttpError: ({ path, referrer, message }) => {
+        // Ignore 404 errors for removed routes
+        if (path.endsWith('/cases') || path.endsWith('/contact')) {
+          return;
+        }
+        throw new Error(message);
+      }
+    },
     alias: { $lib: 'src/lib' }
   }
 };

@@ -1,29 +1,34 @@
+<script>
+  import { getIconPaths } from '$lib/icons';
+  import { t } from '$lib/i18n';
+
+  const highlights = [
+    { icon: 'lightBulb', halo: '2', titleKey: 'highlights_dimming', textKey: 'highlights_dimming_desc' },
+    { icon: 'swatch', halo: '2', titleKey: 'highlights_colour', textKey: 'highlights_colour_desc' },
+    { icon: 'bolt', halo: '1', titleKey: 'highlights_setup', textKey: 'highlights_setup_desc' },
+    { icon: 'shieldCheck', halo: '1', titleKey: 'highlights_reliable', textKey: 'highlights_reliable_desc' }
+  ];
+</script>
+
 <section class="section container reveal" id="highlights">
   <div class="header-section">
-    <h2 class="section-title">Key <span class="accent">highlights</span></h2>
-    <p class="section-lead">What makes LED Node the right choice for your signage lighting.</p>
+    <h2 class="section-title">{@html $t('highlights_title')}</h2>
+    <p class="section-lead">{$t('highlights_lead')}</p>
   </div>
   <ul class="highlights-grid">
-    <li class="highlight-card grad-frame" data-halo="2">
-      <div class="card-icon" aria-hidden="true">💡</div>
-      <h3 class="card-title">Clean dimming</h3>
-      <p class="card-text">Smooth, flicker-free white light from 100% down to ultra-low levels.</p>
-    </li>
-    <li class="highlight-card grad-frame" data-halo="2">
-      <div class="card-icon" aria-hidden="true">🎨</div>
-      <h3 class="card-title">Colour motion</h3>
-      <p class="card-text">Attention-getting effects and dynamic color transitions when you need them.</p>
-    </li>
-    <li class="highlight-card grad-frame" data-halo="1">
-      <div class="card-icon" aria-hidden="true">⚡</div>
-      <h3 class="card-title">Simple setup</h3>
-      <p class="card-text">Professional installation and ongoing support included with every deployment.</p>
-    </li>
-    <li class="highlight-card grad-frame" data-halo="1">
-      <div class="card-icon" aria-hidden="true">🛡️</div>
-      <h3 class="card-title">Reliable</h3>
-      <p class="card-text">Automatically resumes your last scene after power returns. Built to last.</p>
-    </li>
+    {#each highlights as highlight}
+      <li class="highlight-card grad-frame" data-halo={highlight.halo}>
+        <div class="card-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            {#each getIconPaths(highlight.icon) as path}
+              <path stroke-linecap="round" stroke-linejoin="round" d={path} />
+            {/each}
+          </svg>
+        </div>
+        <h3 class="card-title">{$t(highlight.titleKey)}</h3>
+        <p class="card-text">{$t(highlight.textKey)}</p>
+      </li>
+    {/each}
   </ul>
 </section>
 
@@ -76,9 +81,16 @@
   }
 
   .card-icon {
-    font-size: 3rem;
-    line-height: 1;
+    width: 3rem;
+    height: 3rem;
     margin-bottom: 0.25rem;
+    color: var(--ink);
+    opacity: 0.9;
+  }
+
+  .card-icon svg {
+    width: 100%;
+    height: 100%;
   }
 
   .card-title {

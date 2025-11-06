@@ -1,41 +1,43 @@
 <script>
+  import { t } from '$lib/i18n';
+
   export let filter = 'all';
   
   const items = [
     {
-      title: 'Retail window halo',
+      titleKey: 'gallery_retail_window',
+      descKey: 'gallery_retail_window_desc',
       tag: 'retail',
-      summary: 'Layered gradients keep merchandise legible without glare.',
       background: 'radial-gradient(120% 120% at 20% 20%, rgba(118,133,255,0.35), transparent), radial-gradient(120% 120% at 80% 70%, rgba(20,36,96,0.55), rgba(11,17,32,0.9))'
     },
     {
-      title: 'Outdoor facade sync',
+      titleKey: 'gallery_outdoor_facade',
+      descKey: 'gallery_outdoor_facade_desc',
       tag: 'outdoor',
-      summary: 'Long runs stay in step with a single controller.',
       background: 'radial-gradient(140% 140% at 15% 30%, rgba(255,189,122,0.45), transparent 60%), linear-gradient(160deg, rgba(13,22,44,0.95), rgba(8,12,24,0.9))'
     },
     {
-      title: 'Logo letter glow',
+      titleKey: 'gallery_logo_letter',
+      descKey: 'gallery_logo_letter_desc',
       tag: 'brand',
-      summary: 'Frosted acrylic keeps the face clean and halo subtle.',
       background: 'radial-gradient(120% 120% at 70% 30%, rgba(255,105,180,0.4), transparent 55%), linear-gradient(200deg, rgba(18,28,58,0.95), rgba(9,14,28,0.92))'
     },
     {
-      title: 'Hospitality welcome wall',
+      titleKey: 'gallery_hospitality',
+      descKey: 'gallery_hospitality_desc',
       tag: 'retail',
-      summary: 'Soft amber tone mapped to traffic peaks.',
       background: 'radial-gradient(120% 120% at 20% 70%, rgba(255,214,137,0.42), transparent 55%), linear-gradient(200deg, rgba(19,24,46,0.94), rgba(8,10,24,0.92))'
     },
     {
-      title: 'Interactive product shelf',
+      titleKey: 'gallery_product_shelf',
+      descKey: 'gallery_product_shelf_desc',
       tag: 'retail',
-      summary: 'A muted base with reactive pulses for launch weeks.',
       background: 'radial-gradient(150% 150% at 80% 20%, rgba(130,233,255,0.35), transparent 60%), linear-gradient(210deg, rgba(13,22,44,0.96), rgba(11,17,32,0.9))'
     },
     {
-      title: 'Transit hub ticker',
+      titleKey: 'gallery_transit_hub',
+      descKey: 'gallery_transit_hub_desc',
       tag: 'outdoor',
-      summary: 'High-contrast strips for wayfinding without flicker.',
       background: 'repeating-linear-gradient(120deg, rgba(41,216,255,0.2) 0 14px, rgba(41,216,255,0) 14px 28px), linear-gradient(200deg, rgba(8,16,34,0.95), rgba(5,10,24,0.92))'
     }
   ];
@@ -58,8 +60,8 @@
 
 <section class="container section" data-hue="260">
   <div class="header-section">
-    <h2 class="section-title" id="gallery">Project <span class="accent">gallery</span></h2>
-    <p class="section-lead">Explore our curated showcase of LED Node installations across different settings.</p>
+    <h2 class="section-title" id="gallery">{@html $t('gallery_title')}</h2>
+    <p class="section-lead">{$t('gallery_lead')}</p>
   </div>
   <div class="projects-carousel">
     {#each filtered as it, index}
@@ -72,14 +74,14 @@
         tabindex="0"
         role="button"
         aria-pressed={selectedIndex === index}
-        aria-label={it.title}
+        aria-label={$t(it.titleKey)}
       >
         <div class="art-preview" role="presentation">
           <div class="glow-effect"></div>
         </div>
         <div class="card-content">
-          <h3 class="project-title">{it.title}</h3>
-          <p class="project-summary">{it.summary}</p>
+          <h3 class="project-title">{$t(it.titleKey)}</h3>
+          <p class="project-summary">{$t(it.descKey)}</p>
           {#if selectedIndex === index}
             <div class="expanded-info">
               <p class="category-badge">{it.tag}</p>

@@ -1,30 +1,28 @@
 <script>
+  import { t } from '$lib/i18n';
+
   export let filter = 'all';
   
   const items = [
     {
-      title: 'Retail window rhythm',
+      titleKey: 'usecase_retail',
+      descKey: 'usecase_retail_desc',
       tag: 'retail',
       background: 'radial-gradient(120% 120% at 20% 30%, rgba(118,133,255,0.32), transparent 65%), linear-gradient(200deg, rgba(8,12,24,0.92), rgba(16,24,52,0.88))'
     },
     {
-      title: 'Brand letter precision',
+      titleKey: 'usecase_brand',
+      descKey: 'usecase_brand_desc',
       tag: 'brand',
       background: 'radial-gradient(120% 120% at 70% 25%, rgba(255,140,190,0.4), transparent 60%), linear-gradient(210deg, rgba(15,18,36,0.92), rgba(28,36,66,0.9))'
     },
     {
-      title: 'Outdoor facade choreography',
+      titleKey: 'usecase_outdoor',
+      descKey: 'usecase_outdoor_desc',
       tag: 'outdoor',
       background: 'radial-gradient(120% 120% at 35% 75%, rgba(255,205,135,0.42), transparent 65%), linear-gradient(200deg, rgba(12,18,34,0.95), rgba(8,10,22,0.9))'
     }
   ];
-
-  const tagLine = {
-    retail: 'Calm colour in the day; a gentle halo by evening.',
-    brand: 'Logo letters stay clean white; halo only when you want attention.',
-    outdoor: 'Façade runs line up so the whole wall moves as one.',
-    default: 'Lighting that serves the message, not noise.'
-  };
 
   // when receiving the event from CaseFilters:
   const onFilter = (e)=> filter = e.detail.active;
@@ -33,14 +31,13 @@
 </script>
 
 <section class="section container reveal" id="stories" on:change={onFilter}>
-  <h2 class="under" style="font-size:var(--fs-h2)">Cases from installs</h2>
   <div class="slides">
     {#each filtered as it}
-      <div class="slide grad-frame" role="group" aria-label={it.title} style={`--slide-bg:${it.background}`}>
+      <div class="slide grad-frame" role="group" aria-label={$t(it.titleKey)} style={`--slide-bg:${it.background}`}>
         <div class="canvas" aria-hidden="true"></div>
         <div class="cap">
-          <strong>{it.title}</strong>
-          <span>{tagLine[it.tag] ?? tagLine.default}</span>
+          <strong>{$t(it.titleKey)}</strong>
+          <span>{$t(it.descKey)}</span>
         </div>
       </div>
     {/each}
