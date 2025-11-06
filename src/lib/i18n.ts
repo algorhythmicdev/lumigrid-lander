@@ -201,7 +201,11 @@ const dict: Record<Lang, Record<string,string>> = {
     offline_title: "You're offline",
     offline_message: "The page you wanted isn't cached yet. Try again once you're online.",
     offline_back: 'Back to home',
-    aria_switch_language: 'Switch to {lang}'
+    aria_switch_language: 'Switch to {lang}',
+    seo_title: 'LUMIGRID LED Node — Signage Lighting Controller | Reclame Fabriek R&D',
+    seo_description: 'LUMIGRID LED Node is a compact controller for LED signage. Choose colour, motion and brightness; save scenes; keep multiple runs in step.',
+    seo_product_category: 'LED lighting controller for signage',
+    seo_product_description: 'A compact controller for LED signage.'
   },
   lv: {
     hero_kicker:'Reclame Fabriek R&D',
@@ -398,7 +402,11 @@ const dict: Record<Lang, Record<string,string>> = {
     offline_title: 'Jūs esat bezsaistē',
     offline_message: 'Lapa, ko vēlējāties, vēl nav kešatmiņā. Mēģiniet vēlreiz, kad būsiet tiešsaistē.',
     offline_back: 'Atpakaļ uz sākumlapu',
-    aria_switch_language: 'Pārslēgties uz {lang}'
+    aria_switch_language: 'Pārslēgties uz {lang}',
+    seo_title: 'LUMIGRID LED mezgls — Izkārtņu apgaismojuma kontrolieris | Reclame Fabriek R&D',
+    seo_description: 'LUMIGRID LED mezgls ir kompakts kontrolieris LED izkārtnēm. Izvēlieties krāsu, kustību un spilgtumu; saglabājiet ainas; uzturiet vairākas līnijas saskaņotas.',
+    seo_product_category: 'LED apgaismojuma kontrolieris izkārtnēm',
+    seo_product_description: 'Kompakts kontrolieris LED izkārtnēm.'
   },
   ru: {
     hero_kicker:'Reclame Fabriek R&D',
@@ -595,7 +603,11 @@ const dict: Record<Lang, Record<string,string>> = {
     offline_title: 'Вы не в сети',
     offline_message: 'Запрошенная страница ещё не кеширована. Попробуйте снова, когда будете онлайн.',
     offline_back: 'Вернуться на главную',
-    aria_switch_language: 'Переключить на {lang}'
+    aria_switch_language: 'Переключить на {lang}',
+    seo_title: 'LUMIGRID LED Node — Контроллер освещения вывесок | Reclame Fabriek R&D',
+    seo_description: 'LUMIGRID LED Node — компактный контроллер для LED вывесок. Выбирайте цвет, движение и яркость; сохраняйте сцены; синхронизируйте несколько линий.',
+    seo_product_category: 'LED контроллер освещения для вывесок',
+    seo_product_description: 'Компактный контроллер для LED вывесок.'
   },
   nl: {
     hero_kicker: 'Reclame Fabriek R&D',
@@ -792,7 +804,11 @@ const dict: Record<Lang, Record<string,string>> = {
     offline_title: 'U bent offline',
     offline_message: 'De pagina die u wilde is nog niet gecached. Probeer het opnieuw zodra u online bent.',
     offline_back: 'Terug naar home',
-    aria_switch_language: 'Schakel over naar {lang}'
+    aria_switch_language: 'Schakel over naar {lang}',
+    seo_title: 'LUMIGRID LED Node — Reclame Verlichting Controller | Reclame Fabriek R&D',
+    seo_description: 'LUMIGRID LED Node is een compacte controller voor LED-reclame. Kies kleur, beweging en helderheid; sla scènes op; houd meerdere runs synchroon.',
+    seo_product_category: 'LED verlichting controller voor reclame',
+    seo_product_description: 'Een compacte controller voor LED-reclame.'
   },
   de: {
     hero_kicker: 'Reclame Fabriek R&D',
@@ -989,7 +1005,11 @@ const dict: Record<Lang, Record<string,string>> = {
     offline_title: 'Sie sind offline',
     offline_message: 'Die gewünschte Seite ist noch nicht zwischengespeichert. Versuchen Sie es erneut, sobald Sie online sind.',
     offline_back: 'Zurück zur Startseite',
-    aria_switch_language: 'Wechseln zu {lang}'
+    aria_switch_language: 'Wechseln zu {lang}',
+    seo_title: 'LUMIGRID LED Node — Werbe-Beleuchtungs-Controller | Reclame Fabriek R&D',
+    seo_description: 'LUMIGRID LED Node ist ein kompakter Controller für LED-Werbung. Wählen Sie Farbe, Bewegung und Helligkeit; speichern Sie Szenen; halten Sie mehrere Läufe synchron.',
+    seo_product_category: 'LED-Beleuchtungs-Controller für Werbung',
+    seo_product_description: 'Ein kompakter Controller für LED-Werbung.'
   }
 };
 

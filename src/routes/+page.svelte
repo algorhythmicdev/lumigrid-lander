@@ -22,8 +22,8 @@
 </script>
 
 <svelte:head>
-  <title>LUMIGRID LED Node — Signage Lighting Controller | Reclame Fabriek R&D</title>
-  <meta name="description" content="LUMIGRID LED Node is a compact controller for LED signage. Choose colour, motion and brightness; save scenes; keep multiple runs in step." />
+  <title>{$t('seo_title')}</title>
+  <meta name="description" content={$t('seo_description')} />
   <meta name="theme-color" content="#0b1120" />
   <script type="application/ld+json">
     {JSON.stringify({
@@ -31,8 +31,8 @@
       "@type":"Product",
       "name":"LUMIGRID LED Node",
       "brand": {"@type":"Brand","name":"Reclame Fabriek"},
-      "category":"LED lighting controller for signage",
-      "description":"A compact controller for LED signage.",
+      "category":$t('seo_product_category'),
+      "description":$t('seo_product_description'),
       "manufacturer": {"@type":"Organization","name":"Reclame Fabriek"},
       "offers": {"@type":"Offer","availability":"https://schema.org/PreOrder"}
     })}
