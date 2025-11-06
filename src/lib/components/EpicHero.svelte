@@ -91,6 +91,7 @@
     line-height: 1.08;
     margin: 0.2rem 0 1rem;
     font-weight: 800;
+    color: #ffffff;
     background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 50%, #ffffff 100%);
     -webkit-background-clip: text;
     background-clip: text;
