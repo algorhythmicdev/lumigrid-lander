@@ -47,6 +47,22 @@
   --halo-3: .16;        /* strong */
   --halo-4: .22;        /* vivid */
 
+  /* Halo gradient colors with red hues for visibility */
+  --halo-primary: #ff6b6b;      /* soft red-pink for primary halo */
+  --halo-secondary: #ee5a6f;    /* deeper red for secondary halo */
+  --halo-glow: #ff8787;         /* lighter red-orange for glow effect */
+  
+  /* Halo animation speeds */
+  --halo-speed: 18s;
+  --halo-speed-alt: 22s;
+  --halo-sheen-speed: 14s;
+  --halo-sheen-blur: 80px;
+  --halo-sheen-gradient: linear-gradient(110deg, 
+    transparent 0%, 
+    color-mix(in oklab, var(--halo-primary) 18%, transparent) 45%, 
+    color-mix(in oklab, var(--halo-glow) 22%, transparent) 55%, 
+    transparent 100%);
+
   /* Card depth tiers */
   --glass-0: rgba(255,255,255,.03);
   --glass-1: rgba(255,255,255,.06);
@@ -107,6 +123,11 @@
     /* Grayscale gradients in light mode */
     --primary-grad: linear-gradient(135deg, #e0e0e0, #d0d0d0, #c0c0c0);
     --grad-rf: linear-gradient(135deg, #e0e0e0, #d0d0d0, #c0c0c0);
+    
+    /* Halo colors adjusted for light mode - more vibrant for visibility */
+    --halo-primary: #ff5252;
+    --halo-secondary: #f44336;
+    --halo-glow: #ff8a80;
   }
 }
 
@@ -682,8 +703,9 @@ h3 { font-size: var(--fs-h3); }
 [data-halo]::before{
   content:""; position:absolute; inset:-2px; border-radius:inherit; z-index:-1;
   background:
-    radial-gradient(120% 160% at 20% 20%, rgba(255,255,255,.15) 0 30%, transparent 60%),
-    radial-gradient(120% 160% at 80% 60%, rgba(200,200,200,.15) 0 30%, transparent 60%);
+    radial-gradient(120% 160% at 20% 20%, color-mix(in oklab, var(--halo-primary) 35%, rgba(255,255,255,.15)) 0 30%, transparent 60%),
+    radial-gradient(120% 160% at 80% 60%, color-mix(in oklab, var(--halo-secondary) 30%, rgba(200,200,200,.15)) 0 30%, transparent 60%),
+    radial-gradient(140% 180% at 50% 50%, color-mix(in oklab, var(--halo-glow) 20%, transparent) 0 40%, transparent 70%);
   opacity: var(--halo-amount, .10); filter: blur(24px);
   transition: opacity var(--dur-med) var(--ease-out);
 }

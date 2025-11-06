@@ -50,30 +50,30 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      // Brand hue auras that follow pointer with slight drift
+      // Brand hue auras with enhanced red tones for better visibility
       const auras = [
         {
           x: w * hx + 24 * Math.sin(t * 0.6),
           y: h * hy + 18 * Math.cos(t * 0.5),
           r: Math.min(w, h) * 0.85,
-          c1: 'rgba(231,59,163,0.30)',
-          c2: 'rgba(108,43,217,0.24)',
-          c3: 'rgba(28,197,220,0.18)'
+          c1: 'rgba(255,107,107,0.32)',
+          c2: 'rgba(238,90,111,0.26)',
+          c3: 'rgba(255,135,135,0.20)'
         },
         {
           x: w * (0.15 + 0.7 * hx),
           y: h * (0.2 + 0.5 * hy),
           r: Math.min(w, h) * 0.65,
-          c1: 'rgba(28,197,220,0.20)',
-          c2: 'rgba(231,59,163,0.18)',
+          c1: 'rgba(238,90,111,0.24)',
+          c2: 'rgba(255,107,107,0.20)',
           c3: 'rgba(0,0,0,0)'
         },
         {
           x: w * (0.85 - 0.6 * hx),
           y: h * (0.9 - 0.5 * hy),
           r: Math.min(w, h) * 0.75,
-          c1: 'rgba(108,43,217,0.16)',
-          c2: 'rgba(255,209,102,0.14)',
+          c1: 'rgba(255,135,135,0.18)',
+          c2: 'rgba(255,107,107,0.16)',
           c3: 'rgba(0,0,0,0)'
         }
       ];
