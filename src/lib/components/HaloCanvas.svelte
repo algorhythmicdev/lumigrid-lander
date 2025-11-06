@@ -12,7 +12,7 @@
 
     function size() {
       w = c.width = window.innerWidth;
-      h = c.height = Math.max(window.innerHeight * 0.76, 460);
+      h = c.height = window.innerHeight;
     }
     size();
     window.addEventListener('resize', size);
@@ -117,5 +117,5 @@
   bind:this={canvas}
   id="halo"
   aria-hidden="true"
-  style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; z-index: 0;"
+  style="position: fixed; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; z-index: 0;"
 ></canvas>
