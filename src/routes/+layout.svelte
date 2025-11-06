@@ -5,6 +5,7 @@
   import TopProgress from '$lib/components/TopProgress.svelte';
   import LightSettings from '$lib/components/LightSettings.svelte';
   import SkipLink from '$lib/components/SkipLink.svelte';
+  import HaloCanvas from '$lib/components/HaloCanvas.svelte';
   import { base } from '$app/paths';
 </script>
 
@@ -25,6 +26,7 @@
 
 <SkipLink />
 <BackgroundFlare />
+<HaloCanvas />
 <LumenField intensity={1.0} parallax={0.06}/>
 <TopProgress />
 <LightSettings />

@@ -1,4 +1,6 @@
 <script>
+  import { onMount } from 'svelte';
+  
   export let filter = 'all';
   
   const items = [
@@ -44,6 +46,19 @@
   const onFilter = (e)=> filter = e.detail.active;
   
   $: filtered = filter === 'all' ? items : items.filter(it => it.tag === filter);
+  
+  let selectedIndex = null;
+  
+  function selectCard(index) {
+    selectedIndex = selectedIndex === index ? null : index;
+  }
+  
+  function handleKeyDown(event, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      selectCard(index);
+    }
+  }
 </script>
 
 <section class="container section" data-hue="260" on:change={onFilter}>
@@ -51,15 +66,32 @@
     <h2 class="section-title" id="gallery">Project <span class="accent">gallery</span></h2>
     <p class="section-lead">Explore our curated showcase of LED Node installations across different settings.</p>
   </div>
-  <div class="projects-grid">
-    {#each filtered as it}
-      <article class="project-card grad-frame" style={`--card-bg:${it.background}`}>
-        <div class="art-preview" role="presentation"></div>
+  <div class="projects-carousel">
+    {#each filtered as it, index}
+      <div 
+        class="project-card grad-frame" 
+        class:selected={selectedIndex === index}
+        style={`--card-bg:${it.background}`}
+        on:click={() => selectCard(index)}
+        on:keydown={(e) => handleKeyDown(e, index)}
+        tabindex="0"
+        role="button"
+        aria-pressed={selectedIndex === index}
+        aria-label={it.title}
+      >
+        <div class="art-preview" role="presentation">
+          <div class="glow-effect"></div>
+        </div>
         <div class="card-content">
           <h3 class="project-title">{it.title}</h3>
           <p class="project-summary">{it.summary}</p>
+          {#if selectedIndex === index}
+            <div class="expanded-info">
+              <p class="category-badge">{it.tag}</p>
+            </div>
+          {/if}
         </div>
-      </article>
+      </div>
     {/each}
   </div>
 </section>
@@ -85,28 +117,67 @@
     line-height: 1.6;
   }
 
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  .projects-carousel {
+    display: flex;
     gap: clamp(1.25rem, 3vw, 1.75rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 1rem 0 2rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+  
+  .projects-carousel::-webkit-scrollbar {
+    height: 10px;
+  }
+  
+  .projects-carousel::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+  }
+  
+  .projects-carousel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+  }
+  
+  .projects-carousel::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
   }
 
   .project-card {
     padding: 0;
     display: grid;
-    grid-template-rows: minmax(180px, 25vh) auto;
+    grid-template-rows: minmax(200px, 28vh) auto;
     overflow: hidden;
-    transition: transform var(--dur-med) var(--ease-out);
+    min-width: min(85vw, 380px);
+    scroll-snap-align: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
   }
 
   .project-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+  
+  .project-card.selected {
+    transform: scale(1.05);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+  }
+  
+  .project-card:focus {
+    outline: 2px solid rgba(118, 133, 255, 0.6);
+    outline-offset: 4px;
   }
 
   .art-preview {
     background: var(--card-bg);
     box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.35);
     position: relative;
+    overflow: hidden;
   }
 
   .art-preview::after {
@@ -119,6 +190,46 @@
       transparent 50%,
       rgba(11, 17, 32, 0.4) 100%
     );
+    transition: opacity 0.3s ease;
+  }
+  
+  .project-card:hover .art-preview::after {
+    opacity: 0.7;
+  }
+  
+  .glow-effect {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .project-card:hover .glow-effect {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  
+  .project-card.selected .glow-effect {
+    opacity: 1;
+    transform: scale(1.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.4);
+      opacity: 1;
+    }
   }
 
   .card-content {
@@ -141,21 +252,67 @@
     color: var(--muted);
     line-height: 1.6;
     margin: 0;
+    transition: color 0.3s ease;
+  }
+  
+  .project-card:hover .project-summary {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .expanded-info {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeIn 0.3s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .category-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(118, 133, 255, 0.2);
+    border: 1px solid rgba(118, 133, 255, 0.4);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.9);
   }
 
   @media (min-width: 640px) {
-    .projects-grid {
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-    }
-
     .project-card {
-      grid-template-rows: minmax(200px, 28vh) auto;
+      min-width: min(75vw, 420px);
     }
   }
 
   @media (min-width: 1024px) {
-    .projects-grid {
-      grid-template-columns: repeat(3, 1fr);
+    .project-card {
+      min-width: min(45vw, 480px);
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .project-card,
+    .glow-effect,
+    .art-preview::after,
+    .project-summary,
+    .expanded-info {
+      transition: none;
+      animation: none;
+    }
+    
+    .project-card:hover {
+      transform: none;
     }
   }
 </style>

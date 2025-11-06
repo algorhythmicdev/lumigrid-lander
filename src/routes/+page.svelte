@@ -4,7 +4,6 @@
   import Header from '$lib/components/Header.svelte';
   import EpicHero from '$lib/components/EpicHero.svelte';
   import AIField from '$lib/components/AIField.svelte';
-  import HaloCanvas from '$lib/components/HaloCanvas.svelte';
 
   import FeatureGrid from '$lib/components/FeatureGrid.svelte';
   import UseCaseStory from '$lib/components/UseCaseStory.svelte';
@@ -17,7 +16,6 @@
   import Contact from '$lib/components/Contact.svelte';
   import FooterCTA from '$lib/components/FooterCTA.svelte';
   import TrustedBy from '$lib/components/TrustedBy.svelte';
-  import CaseFilters from '$lib/components/CaseFilters.svelte';
   import { t } from '$lib/i18n';
 
   export let data;
@@ -51,8 +49,6 @@
   id="hero"
   data-hue={data?.theme?.hue}
 >
-  <!-- Cursor-following halo animation -->
-  <HaloCanvas />
   <EpicHero kicker={$t('hero_kicker')} title={$t('hero_title')} sub={$t('hero_sub')} />
   <!-- Increased particle count from 56 to 72 for more visual interest in hero section -->
   <AIField count={72}/>
@@ -101,14 +97,8 @@
   <UseCaseStory />
 </section>
 
-<section id="cases">
-  <div class="container" style="margin-bottom: 1.5rem; margin-top: 3rem;">
-    <h2 style="text-align: center; margin-bottom: 2rem; font-size: var(--fs-h2);">Case Studies</h2>
-    <CaseFilters />
-  </div>
-  <ProjectGallery />
-  <MediaGallery title="Real installations & demonstrations" />
-</section>
+<ProjectGallery />
+<MediaGallery title="Real installations & demonstrations" />
 
 <hr class="rule" />
 
