@@ -7,6 +7,7 @@
 
   let currentLang = $lang;
   let currentTheme = 'dark'; // 'dark', 'light', or 'high-contrast'
+  let mobileMenuOpen = false;
 
   $: lang.set(currentLang);
 
@@ -31,6 +32,9 @@
     }
   };
 
+  const toggleMobileMenu = () => {
+    mobileMenuOpen = !mobileMenuOpen;
+  };
 
 </script>
 
@@ -41,10 +45,22 @@
       LUMIGRID LED Node
     </a>
 
-    <ul id="menu">
-      <li><a href={`${base}/#stories`}>{$t('nav_stories')}</a></li>
-      <li><a href={`${base}/#gallery`}>{$t('nav_cases')}</a></li>
-      <li><a href={`${base}/#contact`}>{$t('nav_contact')}</a></li>
+    <button 
+      class="hamburger" 
+      class:active={mobileMenuOpen}
+      on:click={toggleMobileMenu}
+      aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+      aria-expanded={mobileMenuOpen}
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul id="menu" class:open={mobileMenuOpen}>
+      <li><a href={`${base}/#stories`} on:click={() => mobileMenuOpen = false}>{$t('nav_stories')}</a></li>
+      <li><a href={`${base}/#gallery`} on:click={() => mobileMenuOpen = false}>{$t('nav_cases')}</a></li>
+      <li><a href={`${base}/#contact`} on:click={() => mobileMenuOpen = false}>{$t('nav_contact')}</a></li>
       <li class="controls-group">
         <div class="lang-selector">
           {#each ['en','lv','ru','nl','de'] as code}
@@ -97,8 +113,9 @@
     position: sticky;
     top: 0;
     z-index: 40;
-    background: transparent;
-    backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .header::after {
@@ -144,6 +161,41 @@
   .brand-logo {
     height: 2rem;
     width: auto;
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: auto;
+    z-index: 50;
+  }
+
+  .hamburger span {
+    width: 2rem;
+    height: 0.2rem;
+    background: var(--ink);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: translateY(0.6rem) rotate(45deg);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: translateY(-0.6rem) rotate(-45deg);
   }
 
   ul {
@@ -250,9 +302,14 @@
   }
 
   @media (max-width: 768px) {
+    .hamburger {
+      display: flex;
+    }
+
     nav {
       padding: var(--spacing-mobile-sm, 1rem) clamp(1rem, 4vw, 1.5rem);
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      position: relative;
     }
 
     .brand {
@@ -264,34 +321,63 @@
     }
 
     ul {
-      flex-wrap: wrap;
-      gap: 0.5rem;
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: 70%;
+      max-width: 300px;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 5rem 2rem 2rem;
+      margin: 0;
+      gap: 1.5rem;
+      align-items: flex-start;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      box-shadow: -2px 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    ul.open {
+      transform: translateX(0);
+    }
+
+    li {
+      width: 100%;
     }
 
     li a {
-      padding: 0.35rem 0.6rem;
-      font-size: 0.9rem;
+      padding: 0.6rem 0.8rem;
+      font-size: 1rem;
+      width: 100%;
+      justify-content: flex-start;
     }
 
     .controls-group {
-      flex-wrap: wrap;
-      gap: 0.5rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      width: 100%;
     }
 
     .lang-selector,
     .theme-selector {
-      padding: 0.25rem;
+      padding: 0.4rem;
+      width: 100%;
+      justify-content: center;
     }
 
     .lang-btn {
-      padding: 0.4rem 0.5rem;
-      font-size: 0.85rem;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.9rem;
     }
 
     .theme-btn {
-      width: 2rem;
-      height: 2rem;
-      font-size: 1rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      font-size: 1.2rem;
     }
   }
 
@@ -308,9 +394,8 @@
       height: 1.5rem;
     }
 
-    li a {
-      font-size: 0.8rem;
-      padding: 0.3rem 0.5rem;
+    ul {
+      width: 80%;
     }
   }
 </style>
