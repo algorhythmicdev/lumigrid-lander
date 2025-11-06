@@ -17,7 +17,6 @@
   import FooterCTA from '$lib/components/FooterCTA.svelte';
   import TrustedBy from '$lib/components/TrustedBy.svelte';
   import CaseFilters from '$lib/components/CaseFilters.svelte';
-  import BeforeAfterAuto from '$lib/components/BeforeAfterAuto.svelte';
   import { t } from '$lib/i18n';
 
   export let data;
@@ -47,14 +46,46 @@
 <Header />
 
 <section
-  class="section container grad-frame reveal"
+  class="hero-section container grad-frame reveal"
   id="hero"
-  style="padding:clamp(1rem,3vw,1.5rem); position:relative; margin-top:clamp(1rem,8vh,6rem)"
   data-hue={data?.theme?.hue}
 >
   <EpicHero kicker={$t('hero_kicker')} title={$t('hero_title')} sub={$t('hero_sub')} />
-  <AIField count={56}/>
+  <AIField count={72}/>
 </section>
+
+<style>
+  .hero-section {
+    padding: clamp(2rem, 5vw, 3rem);
+    position: relative;
+    margin-top: clamp(2rem, 10vh, 8rem);
+    margin-bottom: clamp(3rem, 8vh, 6rem);
+    min-height: min(85vh, 700px);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .hero-section::before {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(
+      circle at 30% 40%,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 50%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .hero-section {
+      min-height: auto;
+      margin-top: clamp(1rem, 6vh, 4rem);
+    }
+  }
+</style>
 
 <hr class="rule" />
 
@@ -73,7 +104,6 @@
   </div>
   <ProjectGallery />
   <MediaGallery title="Real installations & demonstrations" />
-  <BeforeAfterAuto />
 </section>
 
 <hr class="rule" />
