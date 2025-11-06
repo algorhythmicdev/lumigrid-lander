@@ -19,6 +19,16 @@
 
   export let data;
   
+  $: structuredData = JSON.stringify({
+    "@context":"https://schema.org",
+    "@type":"Product",
+    "name":"LUMIGRID LED Node",
+    "brand": {"@type":"Brand","name":"Reclame Fabriek"},
+    "category":$t('seo_product_category'),
+    "description":$t('seo_product_description'),
+    "manufacturer": {"@type":"Organization","name":"Reclame Fabriek"},
+    "offers": {"@type":"Offer","availability":"https://schema.org/PreOrder"}
+  });
 </script>
 
 <svelte:head>
@@ -26,16 +36,7 @@
   <meta name="description" content={$t('seo_description')} />
   <meta name="theme-color" content="#0b1120" />
   <script type="application/ld+json">
-    {JSON.stringify({
-      "@context":"https://schema.org",
-      "@type":"Product",
-      "name":"LUMIGRID LED Node",
-      "brand": {"@type":"Brand","name":"Reclame Fabriek"},
-      "category":$t('seo_product_category'),
-      "description":$t('seo_product_description'),
-      "manufacturer": {"@type":"Organization","name":"Reclame Fabriek"},
-      "offers": {"@type":"Offer","availability":"https://schema.org/PreOrder"}
-    })}
+    {structuredData}
   </script>
 </svelte:head>
 
