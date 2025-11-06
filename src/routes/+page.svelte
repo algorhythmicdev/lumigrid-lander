@@ -12,7 +12,7 @@
   import SpecHighlights from '$lib/components/SpecHighlights.svelte';
   import Testimonials from '$lib/components/Testimonials.svelte';
   import Partners from '$lib/components/Partners.svelte';
-  import PressDownloads from '$lib/components/PressDownloads.svelte';
+
   import Contact from '$lib/components/Contact.svelte';
   import FooterCTA from '$lib/components/FooterCTA.svelte';
   import TrustedBy from '$lib/components/TrustedBy.svelte';
@@ -82,10 +82,6 @@
 <TrustedBy />
 <Testimonials />
 <Partners />
-
-<section id="press">
-  <PressDownloads />
-</section>
 
 <section id="contact">
   <Contact 

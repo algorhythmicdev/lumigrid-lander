@@ -89,10 +89,7 @@
   .section-title {
     font-size: var(--fs-h2);
     margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
-    background: var(--primary-grad);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--ink);
     font-weight: 700;
   }
 

@@ -1,6 +1,7 @@
 <script>
   import '$lib/styles.css';
   import LumenField from '$lib/components/LumenField.svelte';
+  import BackgroundFlare from '$lib/components/BackgroundFlare.svelte';
   import TopProgress from '$lib/components/TopProgress.svelte';
   import LightSettings from '$lib/components/LightSettings.svelte';
   import SkipLink from '$lib/components/SkipLink.svelte';
@@ -23,6 +24,7 @@
 </svelte:head>
 
 <SkipLink />
+<BackgroundFlare />
 <LumenField intensity={1.0} parallax={0.06}/>
 <TopProgress />
 <LightSettings />

@@ -48,7 +48,7 @@
 
 <section class="container section" data-hue="260" on:change={onFilter}>
   <div class="header-section">
-    <h2 class="section-title" id="gallery">Project gallery</h2>
+    <h2 class="section-title" id="gallery">Project <span class="accent">gallery</span></h2>
     <p class="section-lead">Explore our curated showcase of LED Node installations across different settings.</p>
   </div>
   <div class="projects-grid">
@@ -74,10 +74,7 @@
     font-size: var(--fs-h2);
     font-weight: 700;
     margin-bottom: 1rem;
-    background: var(--primary-grad);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--ink);
   }
 
   .section-lead {

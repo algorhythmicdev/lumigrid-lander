@@ -25,7 +25,7 @@
 
 <section class="section container" id="partners">
   <div class="header-wrapper">
-    <h2 class="section-title">Partners</h2>
+    <h2 class="section-title"><span class="accent">Partners</span></h2>
     <p class="section-lead">Proud to work with industry leaders and innovation supporters.</p>
   </div>
 
@@ -55,10 +55,7 @@
     font-size: var(--fs-h2);
     font-weight: 700;
     margin-bottom: 1rem;
-    background: var(--primary-grad);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--ink);
   }
 
   .section-lead {

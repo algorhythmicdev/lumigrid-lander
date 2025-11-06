@@ -11,13 +11,13 @@
 
 <section class="section container reveal" id="what">
   <div class="header-section">
-    <h2 class="section-title">{$t('what_title')}</h2>
+    <h2 class="section-title">{@html $t('what_title')}</h2>
   </div>
   <div class="features-grid">
     {#each features as feature}
       <article class="feature-card grad-frame" data-halo={feature.halo}>
         <div class="feature-icon" aria-hidden="true">{feature.icon}</div>
-        <h3 class="feature-title">{$t(`what_${feature.key}_t`)}</h3>
+        <h3 class="feature-title">{@html $t(`what_${feature.key}_t`)}</h3>
         <p class="feature-description">{$t(`what_${feature.key}_d`)}</p>
       </article>
     {/each}
@@ -33,10 +33,7 @@
   .section-title {
     font-size: var(--fs-h2);
     font-weight: 700;
-    background: var(--primary-grad);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--ink);
   }
 
   .features-grid {

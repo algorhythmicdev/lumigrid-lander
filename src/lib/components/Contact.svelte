@@ -10,7 +10,7 @@
 
 <section class="section container reveal" id={id} data-hue={hue}>
   <div class="grad-frame contact-card">
-    <h2>{title || $t('contact_title')}</h2>
+    <h2>{@html title || $t('contact_title')}</h2>
     <p class="readable">{intro || $t('contact_intro')}</p>
     <ContactForm />
   </div>

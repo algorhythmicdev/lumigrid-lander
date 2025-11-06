@@ -49,7 +49,6 @@
     <ul id="menu">
       <li><a href={`${base}/#stories`}>Stories</a></li>
       <li><a href={`${base}/#cases`}>Cases</a></li>
-      <li><a href={`${base}/#press`}>Press</a></li>
       <li><a href={`${base}/#contact`}>Contact</a></li>
       <li class="controls-group">
         <div class="lang-selector">

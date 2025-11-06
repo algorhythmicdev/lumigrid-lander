@@ -25,7 +25,7 @@
 
 <section class="section container reveal" id="process">
   <div class="header-section">
-    <h2 class="section-title">How it works</h2>
+    <h2 class="section-title">How it <span class="accent">works</span></h2>
     <p class="section-lead">From initial consultation to ongoing support—our streamlined process.</p>
   </div>
   <ol class="process-grid">
@@ -52,10 +52,7 @@
     font-size: var(--fs-h2);
     font-weight: 700;
     margin-bottom: 1rem;
-    background: var(--primary-grad);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--ink);
   }
 
   .section-lead {

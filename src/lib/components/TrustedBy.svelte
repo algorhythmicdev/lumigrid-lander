@@ -6,7 +6,7 @@
 
 <section class="section container reveal" id="trusted-by">
   <div class="header-wrapper">
-    <h2 class="section-title">Trusted by leading brands</h2>
+    <h2 class="section-title">Trusted by <span class="accent">leading</span> brands</h2>
     <p class="section-lead">Our LED Node solutions power signage for businesses worldwide.</p>
   </div>
   
@@ -32,10 +32,7 @@
     font-size: var(--fs-h2);
     font-weight: 700;
     margin-bottom: 1rem;
-    background: var(--primary-grad);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--ink);
   }
 
   .section-lead {
