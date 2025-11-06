@@ -56,11 +56,11 @@
           y: h * hy + 18 * Math.cos(t * 0.5),
           r: Math.min(w, h) * 0.85,
           gradient: [
-            { stop: 0, color: 'rgba(255,245,245,0.18)' },
-            { stop: 0.25, color: 'rgba(245,240,240,0.14)' },
-            { stop: 0.5, color: 'rgba(225,220,220,0.10)' },
-            { stop: 0.75, color: 'rgba(205,200,200,0.06)' },
-            { stop: 0.9, color: 'rgba(185,180,180,0.03)' },
+            { stop: 0, color: 'rgba(255,107,107,0.20)' },
+            { stop: 0.25, color: 'rgba(255,135,135,0.16)' },
+            { stop: 0.5, color: 'rgba(245,220,220,0.12)' },
+            { stop: 0.75, color: 'rgba(225,200,200,0.07)' },
+            { stop: 0.9, color: 'rgba(205,190,190,0.04)' },
             { stop: 1, color: 'rgba(0,0,0,0)' }
           ]
         },
@@ -69,10 +69,10 @@
           y: h * (0.2 + 0.5 * hy),
           r: Math.min(w, h) * 0.65,
           gradient: [
-            { stop: 0, color: 'rgba(255,240,240,0.15)' },
-            { stop: 0.3, color: 'rgba(240,235,235,0.12)' },
-            { stop: 0.6, color: 'rgba(215,210,210,0.08)' },
-            { stop: 0.85, color: 'rgba(195,190,190,0.04)' },
+            { stop: 0, color: 'rgba(238,90,111,0.18)' },
+            { stop: 0.3, color: 'rgba(255,135,135,0.14)' },
+            { stop: 0.6, color: 'rgba(235,210,210,0.10)' },
+            { stop: 0.85, color: 'rgba(215,200,200,0.05)' },
             { stop: 1, color: 'rgba(0,0,0,0)' }
           ]
         },
@@ -81,10 +81,10 @@
           y: h * (0.9 - 0.5 * hy),
           r: Math.min(w, h) * 0.75,
           gradient: [
-            { stop: 0, color: 'rgba(250,240,240,0.12)' },
-            { stop: 0.35, color: 'rgba(235,230,230,0.10)' },
-            { stop: 0.65, color: 'rgba(220,215,215,0.07)' },
-            { stop: 0.88, color: 'rgba(200,195,195,0.03)' },
+            { stop: 0, color: 'rgba(255,135,135,0.16)' },
+            { stop: 0.35, color: 'rgba(255,107,107,0.12)' },
+            { stop: 0.65, color: 'rgba(240,215,215,0.08)' },
+            { stop: 0.88, color: 'rgba(220,200,200,0.04)' },
             { stop: 1, color: 'rgba(0,0,0,0)' }
           ]
         }

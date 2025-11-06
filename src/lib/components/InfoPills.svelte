@@ -1,30 +1,20 @@
 <script>
+  import { t } from '$lib/i18n';
+
   let activePill = 'sync';
 
-  const pills = [
-    { id: 'sync', label: 'Sync' },
-    { id: 'presets', label: 'Presets' },
-    { id: 'schedule', label: 'Schedule' },
-    { id: 'override', label: 'Quick Override' }
+  const pillIds = [
+    { id: 'sync', labelKey: 'pill_sync' },
+    { id: 'presets', labelKey: 'pill_presets' },
+    { id: 'schedule', labelKey: 'pill_schedule' },
+    { id: 'override', labelKey: 'pill_override' }
   ];
 
-  const cards = {
-    sync: {
-      title: 'Everything moves together',
-      content: 'Front letters, window strips, logo halo — when you press play, they stay in step. No more "almost together."'
-    },
-    presets: {
-      title: 'Looks you can save',
-      content: '"Calm Evening," "Bright Day," "Promo Sparkle." Save once, reuse forever. Swap with a tap.'
-    },
-    schedule: {
-      title: 'Set and forget',
-      content: 'Morning to evening, weekday to holiday — your sign follows the plan. You enjoy the compliments.'
-    },
-    override: {
-      title: 'One-tap spotlight',
-      content: 'Need attention now? Tap Quick Override for a 30-second show. It fades back on its own.'
-    }
+  const cardKeys = {
+    sync: { titleKey: 'pill_sync_title', contentKey: 'pill_sync_content' },
+    presets: { titleKey: 'pill_presets_title', contentKey: 'pill_presets_content' },
+    schedule: { titleKey: 'pill_schedule_title', contentKey: 'pill_schedule_content' },
+    override: { titleKey: 'pill_override_title', contentKey: 'pill_override_content' }
   };
 
   function selectPill(id) {
@@ -33,7 +23,7 @@
 </script>
 
 <div class="pill-row" role="tablist">
-  {#each pills as pill}
+  {#each pillIds as pill}
     <button
       class="pill"
       id={`tab-${pill.id}`}
@@ -43,13 +33,13 @@
       aria-controls={`panel-${pill.id}`}
       on:click={() => selectPill(pill.id)}
     >
-      {pill.label}
+      {$t(pill.labelKey)}
     </button>
   {/each}
 </div>
 
 <div class="info-cards" aria-live="polite">
-  {#each Object.entries(cards) as [id, card]}
+  {#each Object.entries(cardKeys) as [id, keys]}
     <div
       class="infocard"
       class:is-active={activePill === id}
@@ -58,8 +48,8 @@
       id={`panel-${id}`}
       aria-labelledby={`tab-${id}`}
     >
-      <h3>{card.title}</h3>
-      <p>{card.content}</p>
+      <h3>{$t(keys.titleKey)}</h3>
+      <p>{$t(keys.contentKey)}</p>
     </div>
   {/each}
 </div>
