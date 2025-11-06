@@ -1,6 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
-  
   export let filter = 'all';
   
   const items = [
@@ -41,9 +39,6 @@
       background: 'repeating-linear-gradient(120deg, rgba(41,216,255,0.2) 0 14px, rgba(41,216,255,0) 14px 28px), linear-gradient(200deg, rgba(8,16,34,0.95), rgba(5,10,24,0.92))'
     }
   ];
-
-  // when receiving the event from CaseFilters:
-  const onFilter = (e)=> filter = e.detail.active;
   
   $: filtered = filter === 'all' ? items : items.filter(it => it.tag === filter);
   
@@ -61,7 +56,7 @@
   }
 </script>
 
-<section class="container section" data-hue="260" on:change={onFilter}>
+<section class="container section" data-hue="260">
   <div class="header-section">
     <h2 class="section-title" id="gallery">Project <span class="accent">gallery</span></h2>
     <p class="section-lead">Explore our curated showcase of LED Node installations across different settings.</p>
