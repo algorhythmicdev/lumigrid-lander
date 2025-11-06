@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
-  import { lang } from '$lib/i18n';
+  import { lang, t } from '$lib/i18n';
 
   const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
 
@@ -47,9 +47,9 @@
     </a>
 
     <ul id="menu">
-      <li><a href={`${base}/#stories`}>Stories</a></li>
-      <li><a href={`${base}/cases`}>Cases</a></li>
-      <li><a href={`${base}/#contact`}>Contact</a></li>
+      <li><a href={`${base}/#stories`}>{$t('nav_stories')}</a></li>
+      <li><a href={`${base}/#gallery`}>{$t('nav_cases')}</a></li>
+      <li><a href={`${base}/#contact`}>{$t('nav_contact')}</a></li>
       <li class="controls-group">
         <div class="lang-selector">
           {#each ['en','lv','ru'] as code}
@@ -68,8 +68,8 @@
             class="theme-btn" 
             class:active={currentTheme==='light'} 
             on:click={()=> applyTheme('light')}
-            aria-label="Light theme"
-            title="Light theme"
+            aria-label={$t('theme_light')}
+            title={$t('theme_light')}
           >
             ☀️
           </button>
@@ -77,8 +77,8 @@
             class="theme-btn" 
             class:active={currentTheme==='dark'} 
             on:click={()=> applyTheme('dark')}
-            aria-label="Dark theme"
-            title="Dark theme"
+            aria-label={$t('theme_dark')}
+            title={$t('theme_dark')}
           >
             🌙
           </button>
@@ -86,8 +86,8 @@
             class="theme-btn" 
             class:active={currentTheme==='high-contrast'} 
             on:click={()=> applyTheme('high-contrast')}
-            aria-label="High contrast theme"
-            title="High contrast theme"
+            aria-label={$t('theme_high_contrast')}
+            title={$t('theme_high_contrast')}
           >
             ⚡
           </button>

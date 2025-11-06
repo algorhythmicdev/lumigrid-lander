@@ -1,5 +1,6 @@
 <script>
   import { base } from '$app/paths';
+  import { t } from '$lib/i18n';
   
   const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
 
@@ -36,7 +37,7 @@
     }
   ];
 
-  export let title = 'Project media';
+  export let title = null;
   export let showAll = true;
   export let filterCategory = null;
 
@@ -46,7 +47,7 @@
 </script>
 
 <section class="section container" id="media-gallery">
-  <h2 class="section-title">{title}</h2>
+  <h2 class="section-title">{title || $t('media_title')}</h2>
   <div class="gallery-grid">
     {#each filteredItems as item}
       <article class="gallery-item reveal">
