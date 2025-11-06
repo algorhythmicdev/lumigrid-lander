@@ -89,7 +89,7 @@ const dict: Record<Lang, Record<string,string>> = {
     theme_high_contrast: 'Augsta kontrasta tēma',
     gallery_title: 'Projektu <span class="accent">galerija</span>',
     gallery_lead: 'Izpētiet mūsu atlasīto LED Node instalāciju izstādi dažādās vidēs.',
-    gallery_retail_window: 'Veikala vitrīnasореols',
+    gallery_retail_window: 'Veikala vitrīnas halo',
     gallery_retail_window_desc: 'Slāņoti gradienti saglabā preces salasāmas bez atspīdumiem.',
     gallery_outdoor_facade: 'Ārējās fasādes sinhronizācija',
     gallery_outdoor_facade_desc: 'Garas līnijas paliek saskaņotas ar vienu kontrolieri.',
