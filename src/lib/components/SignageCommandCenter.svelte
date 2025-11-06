@@ -1,4 +1,6 @@
 <script>
+  import { t } from '$lib/i18n';
+
   const defaultStreams = [
     {
       name: 'Lobby signage lane',
@@ -102,13 +104,12 @@
   <span class="center-halo" aria-hidden="true"></span>
 
   <header class="center-head">
-    <span class="center-badge">Signage command center</span>
-    <h3 id="signage-center-title">Live signage overview</h3>
+    <span class="center-badge">{$t('signage_center_badge')}</span>
+    <h3 id="signage-center-title">{$t('signage_center_title')}</h3>
     <p>
-      See signage status, alerts, and ready-made responses in one place. This is the view Reclame Fabriek R&D uses during
-      installs and support calls.
+      {$t('signage_center_desc')}
     </p>
-    <p class="center-note">Demo data shown here—connect to a live mesh to stream real values.</p>
+    <p class="center-note">{$t('signage_center_note')}</p>
   </header>
 
   <div class="center-grid">

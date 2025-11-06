@@ -1,29 +1,31 @@
 <script>
+  import { t } from '$lib/i18n';
+
   let activePill = 'sync';
 
-  const pills = [
-    { id: 'sync', label: 'Sync' },
-    { id: 'presets', label: 'Presets' },
-    { id: 'schedule', label: 'Schedule' },
-    { id: 'override', label: 'Quick Override' }
+  $: pills = [
+    { id: 'sync', label: $t('pill_sync') },
+    { id: 'presets', label: $t('pill_presets') },
+    { id: 'schedule', label: $t('pill_schedule') },
+    { id: 'override', label: $t('pill_override') }
   ];
 
-  const cards = {
+  $: cards = {
     sync: {
-      title: 'Everything moves together',
-      content: 'Front letters, window strips, logo halo — when you press play, they stay in step. No more "almost together."'
+      title: $t('pill_sync_title'),
+      content: $t('pill_sync_content')
     },
     presets: {
-      title: 'Looks you can save',
-      content: '"Calm Evening," "Bright Day," "Promo Sparkle." Save once, reuse forever. Swap with a tap.'
+      title: $t('pill_presets_title'),
+      content: $t('pill_presets_content')
     },
     schedule: {
-      title: 'Set and forget',
-      content: 'Morning to evening, weekday to holiday — your sign follows the plan. You enjoy the compliments.'
+      title: $t('pill_schedule_title'),
+      content: $t('pill_schedule_content')
     },
     override: {
-      title: 'One-tap spotlight',
-      content: 'Need attention now? Tap Quick Override for a 30-second show. It fades back on its own.'
+      title: $t('pill_override_title'),
+      content: $t('pill_override_content')
     }
   };
 

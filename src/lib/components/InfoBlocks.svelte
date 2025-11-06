@@ -1,11 +1,12 @@
 <script>
   import InfoPills from './InfoPills.svelte';
+  import { t } from '$lib/i18n';
 </script>
 
 <section id="what" class="section container">
   <div class="reveal">
-    <h2>What it does</h2>
-    <p class="big">LED Node is a small controller for LED lighting. You choose colour, motion, and brightness in a simple web page. Save favourite looks as scenes. The lights can run on a plan, and several runs can move together.</p>
+    <h2>{$t('info_what_title')}</h2>
+    <p class="big">{$t('info_what_desc')}</p>
   </div>
   
   <div class="reveal">
@@ -14,27 +15,27 @@
   
   <div class="grid grid-2 info-details">
     <article class="card reveal" data-halo="2">
-      <h3>What it is</h3>
-      <p>LED Node is a small controller for LED lighting. You choose colour, motion, and brightness in a simple web page. Save favourite looks as scenes. The lights can run on a plan, and several runs can move together.</p>
+      <h3>{$t('info_what_it_is')}</h3>
+      <p>{$t('info_what_it_is_desc')}</p>
     </article>
     <article class="card reveal" data-halo="2">
-      <h3>What it can do</h3>
+      <h3>{$t('info_what_can_do')}</h3>
       <ul>
-        <li><strong>Zones</strong> – control parts of a sign separately or together.</li>
-        <li><strong>Scenes</strong> – save looks you like.</li>
-        <li><strong>Timeline</strong> – set calm mornings, clean daytime, warm evenings.</li>
-        <li><strong>Sync</strong> – chases and fades line up end-to-end.</li>
-        <li><strong>Simple control</strong> – open in a browser; nothing to install.</li>
-        <li><strong>Keeps going</strong> – after power returns, the last scene resumes.</li>
+        <li><strong>{$t('info_zones')}</strong> – {$t('info_zones_desc')}</li>
+        <li><strong>{$t('info_scenes')}</strong> – {$t('info_scenes_desc')}</li>
+        <li><strong>{$t('info_timeline')}</strong> – {$t('info_timeline_desc')}</li>
+        <li><strong>{$t('info_sync')}</strong> – {$t('info_sync_desc')}</li>
+        <li><strong>{$t('info_simple_control')}</strong> – {$t('info_simple_control_desc')}</li>
+        <li><strong>{$t('info_keeps_going')}</strong> – {$t('info_keeps_going_desc')}</li>
       </ul>
     </article>
     <article class="card reveal" data-halo="2">
-      <h3>Where it fits</h3>
-      <p>Shop windows, logo letters, façades and lightboxes. Clean white for everyday. Soft colour when you want attention.</p>
+      <h3>{$t('info_where_fits')}</h3>
+      <p>{$t('info_where_fits_desc')}</p>
     </article>
     <article class="card reveal" data-halo="2">
-      <h3>Who makes it</h3>
-      <p>Reclame Fabriek R&amp;D. We build, install and support signage lighting.</p>
+      <h3>{$t('info_who_makes')}</h3>
+      <p>{$t('info_who_makes_desc')}</p>
     </article>
   </div>
 </section>
