@@ -48,16 +48,93 @@
 </section>
 
 <style>
-  .slides{ display:flex; gap:1rem; overflow:auto; scroll-snap-type:x mandatory; padding:.5rem 0 }
-  .slide{ scroll-snap-align:center; min-width:min(92vw,960px); height:min(60vh,520px); position:relative; }
-  .canvas{ position:absolute; inset:0; background:var(--slide-bg); border-radius:.8rem; box-shadow: inset 0 0 60px rgba(0,0,0,.35); }
-  .slide .cap{
-    position:absolute; left:0; right:0; bottom:0; padding:.8rem 1rem;
-    display:flex; justify-content:space-between; gap:.6rem; flex-wrap:wrap;
-    background:linear-gradient(180deg, transparent, rgba(0,0,0,.55));
-    color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.4);
-    border-radius:0 0 .8rem .8rem;
+  .slides { 
+    display: flex; 
+    gap: 1.5rem; 
+    overflow-x: auto; 
+    scroll-snap-type: x mandatory; 
+    padding: 1rem 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
   }
-  .slide strong{ font-weight:700 }
-  .slide span{ opacity:.9 }
+  
+  .slides::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .slides::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+  }
+  
+  .slides::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
+  
+  .slides::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+  
+  .slide { 
+    scroll-snap-align: center; 
+    min-width: min(92vw, 960px); 
+    height: min(65vh, 560px); 
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+  
+  .slide:hover {
+    transform: scale(1.02);
+  }
+  
+  .canvas { 
+    position: absolute; 
+    inset: 0; 
+    background: var(--slide-bg); 
+    border-radius: 1rem; 
+    box-shadow: 
+      inset 0 0 80px rgba(0, 0, 0, 0.4),
+      0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  
+  .slide .cap {
+    position: absolute; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    padding: 1.5rem;
+    display: flex; 
+    flex-direction: column;
+    gap: 0.75rem;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.75) 40%);
+    color: #fff; 
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 0 0 1rem 1rem;
+  }
+  
+  .slide strong { 
+    font-weight: 700;
+    font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+    line-height: 1.3;
+  }
+  
+  .slide span { 
+    opacity: 0.95;
+    font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+    line-height: 1.6;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .slide:hover {
+      transform: none;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .slide .cap {
+      padding: 1rem;
+    }
+  }
 </style>
