@@ -3,30 +3,18 @@
 
   let activePill = 'sync';
 
-  $: pills = [
-    { id: 'sync', label: $t('pill_sync') },
-    { id: 'presets', label: $t('pill_presets') },
-    { id: 'schedule', label: $t('pill_schedule') },
-    { id: 'override', label: $t('pill_override') }
+  const pillIds = [
+    { id: 'sync', labelKey: 'pill_sync' },
+    { id: 'presets', labelKey: 'pill_presets' },
+    { id: 'schedule', labelKey: 'pill_schedule' },
+    { id: 'override', labelKey: 'pill_override' }
   ];
 
-  $: cards = {
-    sync: {
-      title: $t('pill_sync_title'),
-      content: $t('pill_sync_content')
-    },
-    presets: {
-      title: $t('pill_presets_title'),
-      content: $t('pill_presets_content')
-    },
-    schedule: {
-      title: $t('pill_schedule_title'),
-      content: $t('pill_schedule_content')
-    },
-    override: {
-      title: $t('pill_override_title'),
-      content: $t('pill_override_content')
-    }
+  const cardKeys = {
+    sync: { titleKey: 'pill_sync_title', contentKey: 'pill_sync_content' },
+    presets: { titleKey: 'pill_presets_title', contentKey: 'pill_presets_content' },
+    schedule: { titleKey: 'pill_schedule_title', contentKey: 'pill_schedule_content' },
+    override: { titleKey: 'pill_override_title', contentKey: 'pill_override_content' }
   };
 
   function selectPill(id) {
@@ -35,7 +23,7 @@
 </script>
 
 <div class="pill-row" role="tablist">
-  {#each pills as pill}
+  {#each pillIds as pill}
     <button
       class="pill"
       id={`tab-${pill.id}`}
@@ -45,13 +33,13 @@
       aria-controls={`panel-${pill.id}`}
       on:click={() => selectPill(pill.id)}
     >
-      {pill.label}
+      {$t(pill.labelKey)}
     </button>
   {/each}
 </div>
 
 <div class="info-cards" aria-live="polite">
-  {#each Object.entries(cards) as [id, card]}
+  {#each Object.entries(cardKeys) as [id, keys]}
     <div
       class="infocard"
       class:is-active={activePill === id}
@@ -60,8 +48,8 @@
       id={`panel-${id}`}
       aria-labelledby={`tab-${id}`}
     >
-      <h3>{card.title}</h3>
-      <p>{card.content}</p>
+      <h3>{$t(keys.titleKey)}</h3>
+      <p>{$t(keys.contentKey)}</p>
     </div>
   {/each}
 </div>

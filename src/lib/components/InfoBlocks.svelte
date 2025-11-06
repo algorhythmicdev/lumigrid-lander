@@ -16,7 +16,7 @@
   <div class="grid grid-2 info-details">
     <article class="card reveal" data-halo="2">
       <h3>{$t('info_what_it_is')}</h3>
-      <p>{$t('info_what_it_is_desc')}</p>
+      <p>{$t('info_what_desc')}</p>
     </article>
     <article class="card reveal" data-halo="2">
       <h3>{$t('info_what_can_do')}</h3>
