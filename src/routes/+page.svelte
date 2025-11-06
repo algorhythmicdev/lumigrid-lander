@@ -4,6 +4,7 @@
   import Header from '$lib/components/Header.svelte';
   import EpicHero from '$lib/components/EpicHero.svelte';
   import AIField from '$lib/components/AIField.svelte';
+  import HaloCanvas from '$lib/components/HaloCanvas.svelte';
 
   import FeatureGrid from '$lib/components/FeatureGrid.svelte';
   import UseCaseStory from '$lib/components/UseCaseStory.svelte';
@@ -50,6 +51,8 @@
   id="hero"
   data-hue={data?.theme?.hue}
 >
+  <!-- Cursor-following halo animation -->
+  <HaloCanvas />
   <EpicHero kicker={$t('hero_kicker')} title={$t('hero_title')} sub={$t('hero_sub')} />
   <!-- Increased particle count from 56 to 72 for more visual interest in hero section -->
   <AIField count={72}/>
