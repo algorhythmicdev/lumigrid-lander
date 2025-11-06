@@ -52,7 +52,7 @@
               class="lang-btn" 
               class:active={currentLang===code} 
               on:click={()=> currentLang = code}
-              aria-label="Switch to {code.toUpperCase()}"
+              aria-label={$t('aria_switch_language').replace('{lang}', code.toUpperCase())}
             >
               {code.toUpperCase()}
             </button>

@@ -106,8 +106,8 @@
 
 <section id="contact">
   <Contact 
-    title="Start the brief"
-    intro="Share where the LEDs go, how they behave in the day, and what you want to feel at night. We'll assemble a simple plan and reply within one business day."
+    title={$t('contact_title_alt')}
+    intro={$t('contact_intro_alt')}
     hue={data?.theme?.hue}
   />
 </section>

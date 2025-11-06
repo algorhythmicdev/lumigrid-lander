@@ -1,4 +1,6 @@
 <script>
+  import { t } from '$lib/i18n';
+
   const MESSAGE_LIMIT = 2000;
   const CONTACT_EMAIL = 'rabox@inbox.lv';
 
@@ -34,14 +36,14 @@
     const trimmedEmail = email.trim();
     const currentTrimmedLength = message.trim().length;
 
-    errName = trimmedName ? '' : 'Please enter your name.';
-    errEmail = emailPattern.test(trimmedEmail) ? '' : 'Please enter a valid email.';
+    errName = trimmedName ? '' : $t('form_error_name');
+    errEmail = emailPattern.test(trimmedEmail) ? '' : $t('form_error_email');
 
     if (!currentTrimmedLength) {
-      errMsg = 'Tell us a little about your project.';
+      errMsg = $t('form_error_message_empty');
     } else if (currentTrimmedLength > MESSAGE_LIMIT) {
       const overBy = currentTrimmedLength - MESSAGE_LIMIT;
-      errMsg = `Please keep your message under ${MESSAGE_LIMIT} characters (${overBy} over).`;
+      errMsg = $t('form_error_message_long').replace('{limit}', MESSAGE_LIMIT).replace('{over}', overBy);
     } else {
       errMsg = '';
     }
@@ -85,21 +87,21 @@
 
   const submit = () => {
     if (!validate()) {
-      note = errMsg || errName || errEmail || 'Please fix the highlighted fields.';
+      note = errMsg || errName || errEmail || $t('form_error_fix');
       state = 'error';
       return;
     }
 
     state = 'sending';
-    note = 'Opening your email app…';
+    note = $t('form_note_opening');
 
     const mailtoHref = buildMailtoHref();
     const opened = openMailApp(mailtoHref);
 
     state = 'success';
     note = opened
-      ? `If nothing opens automatically, email ${CONTACT_EMAIL}.`
-      : `Please email ${CONTACT_EMAIL} and paste your message manually.`;
+      ? $t('form_note_success_opened').replace('{email}', CONTACT_EMAIL)
+      : $t('form_note_success_manual').replace('{email}', CONTACT_EMAIL);
     name = '';
     email = '';
     message = '';
@@ -117,7 +119,7 @@
   aria-busy={state === 'sending'}
 >
   <div class="contact-form__row">
-    <label for="name">Name</label>
+    <label for="name">{$t('form_label_name')}</label>
     <input
       id="name"
       bind:value={name}
@@ -129,7 +131,7 @@
     <small id="name-error" class="contact-form__error">{errName}</small>
   </div>
   <div class="contact-form__row">
-    <label for="email">Email</label>
+    <label for="email">{$t('form_label_email')}</label>
     <input
       id="email"
       type="email"
@@ -142,7 +144,7 @@
     <small id="email-error" class="contact-form__error">{errEmail}</small>
   </div>
   <div class="contact-form__row">
-    <label for="msg">Message</label>
+    <label for="msg">{$t('form_label_message')}</label>
     <textarea
       id="msg"
       rows="4"
@@ -154,11 +156,11 @@
       on:input={handleInput}
     ></textarea>
     <small id="msg-error" class="contact-form__error">{errMsg}</small>
-    <small id="msg-limit" class="contact-form__hint" aria-live="polite">{messageRemaining} characters remaining</small>
+    <small id="msg-limit" class="contact-form__hint" aria-live="polite">{$t('form_hint_remaining').replace('{remaining}', messageRemaining)}</small>
   </div>
   <div class="contact-form__row contact-form__row--inline">
     <button class="btn primary big" disabled={state === 'sending'}>
-      {state === 'sending' ? 'Opening…' : 'Send'}
+      {state === 'sending' ? $t('form_button_sending') : $t('form_button_send')}
     </button>
     <span class={noteClass} aria-live="polite" role="status">{note}</span>
   </div>
