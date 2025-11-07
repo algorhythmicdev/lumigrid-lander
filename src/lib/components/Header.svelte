@@ -113,7 +113,7 @@
     position: sticky;
     top: 0;
     z-index: 40;
-    background: rgba(0, 0, 0, 0.85);
+    background: var(--bg-0);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
@@ -328,7 +328,7 @@
       width: 70%;
       max-width: 300px;
       flex-direction: column;
-      background: rgba(0, 0, 0, 0.95);
+      background: var(--bg-0);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       padding: 5rem 2rem 2rem;

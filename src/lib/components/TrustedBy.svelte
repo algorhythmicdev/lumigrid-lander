@@ -1,13 +1,14 @@
 <script>
   import { base } from '$app/paths';
+  import { t } from '$lib/i18n';
   
   const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
 </script>
 
 <section class="section container reveal" id="trusted-by">
   <div class="header-wrapper">
-    <h2 class="section-title">Trusted by <span class="accent">leading</span> brands</h2>
-    <p class="section-lead">Our LED Node solutions power signage for businesses worldwide.</p>
+    <h2 class="section-title">{@html $t('trustedby_title')}</h2>
+    <p class="section-lead">{$t('trustedby_lead')}</p>
   </div>
   
   <div class="clients-showcase">

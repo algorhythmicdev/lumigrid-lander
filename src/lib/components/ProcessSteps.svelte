@@ -1,23 +1,25 @@
 <script>
-  const steps = [
+  import { t } from '$lib/i18n';
+
+  $: steps = [
     {
-      title: 'Brief',
-      description: 'Tell us about your sign, space, and lighting goals. We listen and learn.',
+      title: $t('process_step1_title'),
+      description: $t('process_step1_desc'),
       icon: '📋'
     },
     {
-      title: 'Plan',
-      description: 'We suggest optimal zones, curated looks, and a smart day-to-night lighting schedule.',
+      title: $t('process_step2_title'),
+      description: $t('process_step2_desc'),
       icon: '🎯'
     },
     {
-      title: 'Install',
-      description: 'Professional hardware installation, scene configuration, and thorough testing.',
+      title: $t('process_step3_title'),
+      description: $t('process_step3_desc'),
       icon: '🔧'
     },
     {
-      title: 'Support',
-      description: 'Ongoing monitoring, maintenance, and assistance with updating your lighting effects.',
+      title: $t('process_step4_title'),
+      description: $t('process_step4_desc'),
       icon: '💬'
     }
   ];
@@ -25,8 +27,8 @@
 
 <section class="section container reveal" id="process">
   <div class="header-section">
-    <h2 class="section-title">How it <span class="accent">works</span></h2>
-    <p class="section-lead">From initial consultation to ongoing support—our streamlined process.</p>
+    <h2 class="section-title">{@html $t('process_title')}</h2>
+    <p class="section-lead">{$t('process_lead')}</p>
   </div>
   <ol class="process-grid">
     {#each steps as step, i}

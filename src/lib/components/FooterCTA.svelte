@@ -1,5 +1,6 @@
 <script>
   import { base } from '$app/paths';
+  import { t } from '$lib/i18n';
 </script>
 
 <section class="section footer-cta">
@@ -8,11 +9,11 @@
       <i class="light-rail"></i>
     </div>
     <div class="container footer-copy">
-      <h2>Ready to light your <span class="accent">brand</span>?</h2>
+      <h2>{@html $t('footer_cta_title')}</h2>
       <p class="lead">
-        Tell us about your sign. We’ll suggest zones, looks, and a simple plan.
+        {$t('footer_cta_lead')}
       </p>
-      <a class="btn primary" href={`${base}/contact#contact`}>Contact Reclame Fabriek</a>
+      <a class="btn primary" href={`${base}/contact#contact`}>{$t('footer_cta_button')}</a>
     </div>
   </div>
 </section>

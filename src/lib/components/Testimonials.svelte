@@ -1,4 +1,6 @@
 <script>
+  import { t } from '$lib/i18n';
+
   const testimonials = [
     {
       quote: "The window finally looks alive, not noisy. We switch to 'evening halo' and sales go up.",
@@ -23,8 +25,8 @@
 
 <section class="section container reveal" id="testimonials">
   <div class="header-section">
-    <h2 class="section-title">What <span class="accent">clients</span> say</h2>
-    <p class="section-lead">Real feedback from businesses using LED Node for their signage.</p>
+    <h2 class="section-title">{@html $t('testimonials_title')}</h2>
+    <p class="section-lead">{$t('testimonials_lead')}</p>
   </div>
   <div class="testimonials-grid">
     {#each testimonials as testimonial}
