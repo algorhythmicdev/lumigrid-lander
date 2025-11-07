@@ -1,6 +1,7 @@
 <script>
   import { base } from '$app/paths';
   import { t } from '$lib/i18n';
+  import { onMount } from 'svelte';
   
   const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
 
@@ -44,11 +45,39 @@
   $: filteredItems = filterCategory && !showAll 
     ? items.filter(item => item.category === filterCategory)
     : items;
+
+  onMount(() => {
+    // Set up intersection observer for autoplay on scroll
+    const videos = document.querySelectorAll('.gallery-video');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          video.play().catch(() => {
+            // Autoplay was prevented, likely due to browser policy
+          });
+        } else {
+          video.pause();
+        }
+      });
+    }, {
+      threshold: 0.5 // Play when at least 50% visible
+    });
+
+    videos.forEach(video => {
+      observer.observe(video);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  });
 </script>
 
 <section class="section container" id="media-gallery">
   <h2 class="section-title">{title || $t('media_title')}</h2>
-  <div class="gallery-grid">
+  <div class="gallery-scroll">
     {#each filteredItems as item}
       <article class="gallery-item reveal">
         <div class="media-container">
@@ -68,10 +97,10 @@
             <div class="video-wrapper">
               <video
                 src={toAssetPath(item.path)}
-                controls
                 playsinline
                 preload="metadata"
                 muted
+                loop
                 class="gallery-video"
                 aria-label={item.title}
               ></video>
@@ -94,18 +123,44 @@
     font-weight: 700;
   }
 
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  .gallery-scroll {
+    display: flex;
     gap: clamp(1.5rem, 4vw, 2.5rem);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding-bottom: 1rem;
     margin-top: clamp(1.5rem, 4vw, 2rem);
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .gallery-scroll::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .gallery-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+  }
+
+  .gallery-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+
+  .gallery-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
   }
 
   .gallery-item {
+    flex: 0 0 auto;
+    width: min(85vw, 420px);
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    position: relative;
+    scroll-snap-align: start;
   }
 
   .media-container {
@@ -178,6 +233,7 @@
     aspect-ratio: 16 / 9;
     background: #000;
     border-radius: inherit;
+    object-fit: cover;
   }
 
   .item-caption {
@@ -193,14 +249,14 @@
   }
 
   @media (min-width: 768px) {
-    .gallery-grid {
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+    .gallery-item {
+      width: min(45vw, 480px);
     }
   }
 
   @media (min-width: 1024px) {
-    .gallery-grid {
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+    .gallery-item {
+      width: min(35vw, 520px);
     }
   }
 </style>

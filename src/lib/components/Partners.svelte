@@ -1,5 +1,6 @@
 <script>
   import { base } from '$app/paths';
+  import { t } from '$lib/i18n';
   
   const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
 
@@ -25,8 +26,8 @@
 
 <section class="section container" id="partners">
   <div class="header-wrapper">
-    <h2 class="section-title"><span class="accent">Partners</span></h2>
-    <p class="section-lead">Proud to work with industry leaders and innovation supporters.</p>
+    <h2 class="section-title">{@html $t('partners_title')}</h2>
+    <p class="section-lead">{$t('partners_lead')}</p>
   </div>
 
   <div class="partners-grid">
