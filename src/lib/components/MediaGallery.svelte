@@ -46,16 +46,21 @@
     ? items.filter(item => item.category === filterCategory)
     : items;
 
+  let galleryContainer;
+
   onMount(() => {
     // Set up intersection observer for autoplay on scroll
-    const videos = document.querySelectorAll('.gallery-video');
+    if (!galleryContainer) return;
+    
+    const videos = galleryContainer.querySelectorAll('.gallery-video');
     
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const video = entry.target;
         if (entry.isIntersecting) {
-          video.play().catch(() => {
+          video.play().catch((error) => {
             // Autoplay was prevented, likely due to browser policy
+            console.debug('Video autoplay blocked:', error.message);
           });
         } else {
           video.pause();
@@ -77,7 +82,7 @@
 
 <section class="section container" id="media-gallery">
   <h2 class="section-title">{title || $t('media_title')}</h2>
-  <div class="gallery-scroll">
+  <div class="gallery-scroll" bind:this={galleryContainer}>
     {#each filteredItems as item}
       <article class="gallery-item reveal">
         <div class="media-container">
@@ -132,7 +137,7 @@
     scroll-behavior: smooth;
     padding-bottom: 1rem;
     margin-top: clamp(1.5rem, 4vw, 2rem);
-    /* Hide scrollbar for Chrome, Safari and Opera */
+    /* Enable momentum scrolling on iOS */
     -webkit-overflow-scrolling: touch;
   }
 
