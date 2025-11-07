@@ -114,8 +114,6 @@
     top: 0;
     z-index: 40;
     background: var(--bg-0);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
   }
 
   .header::after {
