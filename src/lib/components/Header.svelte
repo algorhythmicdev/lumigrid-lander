@@ -113,7 +113,8 @@
     position: sticky;
     top: 0;
     z-index: 40;
-    background: var(--bg-0);
+    background: var(--bg-0) !important;
+    background-color: var(--bg-0) !important;
   }
 
   .header::after {
