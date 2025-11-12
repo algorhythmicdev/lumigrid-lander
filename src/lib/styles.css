@@ -243,10 +243,14 @@ body::before {
 /* Cards = the only "surfaces" */
 .card {
   position: relative;
-  background: var(--glass-1);
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 1rem;
-  padding: 1rem;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s var(--ease-default), box-shadow 0.3s var(--ease-default);
   contain: content;
   content-visibility: auto;
   contain-intrinsic-size: 400px 300px;
@@ -779,9 +783,18 @@ hr.rule::after{
 }
 
 /* AI + LED micro-interactions for cards */
-[data-halo].card{ transition: transform var(--dur-med) var(--ease-out), background var(--dur-med) var(--ease-out) }
+[data-halo].card{ 
+  transition: transform var(--dur-med) var(--ease-default), 
+              background var(--dur-med) var(--ease-default),
+              box-shadow var(--dur-med) var(--ease-default);
+}
 [data-halo].card:hover, [data-halo].card:focus-within{
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 12px 32px rgba(0, 0, 0, 0.2);
+  will-change: transform, box-shadow;
+}
+[data-halo].card:not(:hover):not(:focus-within) {
+  will-change: auto;
 }
 [data-halo="1"].card:hover::before, [data-halo="1"].card:focus-within::before{ opacity: var(--halo-2) }
 [data-halo="2"].card:hover::before, [data-halo="2"].card:focus-within::before{ opacity: var(--halo-3) }
@@ -981,6 +994,11 @@ section, .section, .container, .rail, .stories{
 
   /* Simplify animations on mobile for performance */
   @media (hover: none) {
+    /* Reduce animation durations on touch devices */
+    * {
+      animation-duration: 0.3s !important;
+    }
+    
     [data-halo].card:hover,
     [data-halo].card:focus-within {
       transform: none;
