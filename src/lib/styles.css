@@ -2,42 +2,43 @@
 :root {
   --ambient-hue: 0;
   
-  /* Reclame Fabriek palette - Monochrome */
+  /* Apple-inspired neutral base */
   --bg-0:#000000; 
-  --bg-1:#0a0a0a; 
+  --bg-1:#1d1d1f; 
   --bg:#050505; 
-  --ink:#ffffff; 
-  --muted:#b0b0b0;
+  --ink:#f5f5f7; 
+  --muted:#a1a1a6;
   
-  /* Brand colors - Grayscale */
-  --mag:#e0e0e0; 
-  --cherry:#d0d0d0; 
-  --cya:#c0c0c0; 
-  --amb:#f5f5f5;
-  --a:#e0e0e0; 
-  --b:#d0d0d0; 
-  --c:#c0c0c0; 
-  --warm:#f5f5f5;
+  /* LED brand colors - vibrant but refined */
+  --mag:#ff2d55; 
+  --cherry:#ff3b30; 
+  --cya:#00d4ff; 
+  --amb:#ff9500;
+  --a:#ff2d55; 
+  --b:#ff3b30; 
+  --c:#00d4ff; 
+  --warm:#ff9500;
   
-  /* Cherry red accent for important words */
-  --accent-cherry: #dc2626;
+  /* Apple blue accent */
+  --accent-primary: #0071e3;
+  --accent-cherry: #ff3b30;
   
-  /* Extended brand hues - Grayscale */
-  --rf-magenta:#e0e0e0; 
-  --rf-cherry:#d0d0d0; 
-  --rf-cyan:#c0c0c0; 
-  --rf-amber:#f5f5f5;
+  /* Extended brand hues - vibrant LED colors */
+  --rf-magenta:#ff2d55; 
+  --rf-cherry:#ff3b30; 
+  --rf-cyan:#00d4ff; 
+  --rf-amber:#ff9500;
   
-  /* Gradients - Grayscale */
-  --primary-grad: linear-gradient(135deg, #e0e0e0, #d0d0d0, #c0c0c0);
-  --grad-rf: linear-gradient(135deg, #e0e0e0, #d0d0d0, #c0c0c0);
-  --grad-warm: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+  /* Gradients - vibrant LED colors */
+  --primary-grad: linear-gradient(135deg, #ff2d55, #ff3b30, #00d4ff);
+  --grad-rf: linear-gradient(135deg, #ff2d55, #ff3b30, #00d4ff);
+  --grad-warm: linear-gradient(135deg, #ff3b30, #ff9500);
   
   /* Effects */
   --glow-soft:.16; 
   --glow-strong:.24; 
   --halo:96px;
-  --ring: #f5f5f5;
+  --ring: var(--accent-primary);
   --shadow: 0 10px 30px rgba(0,0,0,.35);
   
   /* Halo "grades" for cards/components (tokenized) */
@@ -47,10 +48,10 @@
   --halo-3: .16;        /* strong */
   --halo-4: .22;        /* vivid */
 
-  /* Halo gradient colors with red hues for visibility */
-  --halo-primary: #ff6b6b;      /* soft red-pink for primary halo */
-  --halo-secondary: #ee5a6f;    /* deeper red for secondary halo */
-  --halo-glow: #ff8787;         /* lighter red-orange for glow effect */
+  /* Halo gradient colors - vibrant LED colors */
+  --halo-primary: #00d4ff;      /* LED cyan for primary halo */
+  --halo-secondary: #ff2d55;    /* LED magenta for secondary halo */
+  --halo-glow: #ff9500;         /* LED amber for glow effect */
   
   /* Halo animation speeds */
   --halo-speed: 18s;
@@ -63,27 +64,50 @@
     color-mix(in oklab, var(--halo-glow) 22%, transparent) 55%, 
     transparent 100%);
 
-  /* Card depth tiers */
-  --glass-0: rgba(255,255,255,.03);
-  --glass-1: rgba(255,255,255,.06);
-  --glass-2: rgba(255,255,255,.10);
+  /* Card depth tiers - glassmorphism */
+  --glass-0: rgba(29,29,31,.65);
+  --glass-1: rgba(29,29,31,.72);
+  --glass-2: rgba(29,29,31,.80);
+  --glass-bg: rgba(29,29,31,.72);
+  --glass-border: rgba(255,255,255,.1);
+  --glass-blur: blur(20px);
   
   /* Gradient systems */
   --grad-rf-alt: linear-gradient(135deg, var(--rf-cherry), var(--rf-cyan), var(--rf-magenta));
 
   /* Motion tokens (respect reduced motion) */
   --ease-out: cubic-bezier(.2,.8,.2,1);
-  --dur-fast: 180ms; 
-  --dur-med: 360ms; 
-  --dur-slow: 900ms;
+  --ease-default: cubic-bezier(.4,0,.2,1);
+  --ease-in: cubic-bezier(.4,0,1,1);
+  --dur-fast: 150ms; 
+  --dur-med: 300ms; 
+  --dur-slow: 500ms;
   
-  /* Typography - Scaled up with better mobile support */
-  --fs-h1: clamp(2.5rem, 8vw, 5rem);
-  --fs-h2: clamp(1.75rem, 5vw, 3rem);
-  --fs-h3: clamp(1.35rem, 3.5vw, 2.2rem);
-  --fs: clamp(1rem, 1.6vw, 1.1rem);
-  --fs-lead: clamp(1.05rem, 2.2vw, 1.25rem);
-  --fs-big: clamp(1.05rem, 2.1vw, 1.2rem);
+  /* Apple SF Pro-inspired typography scale */
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif;
+  
+  --fs-display-xl: clamp(3rem, 8vw, 6rem);
+  --fs-display-lg: clamp(2rem, 5vw, 3.5rem);
+  --fs-title-1: clamp(1.75rem, 4vw, 2.5rem);
+  --fs-title-2: clamp(1.5rem, 3vw, 2rem);
+  --fs-body-lg: clamp(1.0625rem, 2vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-caption: 0.875rem;
+  
+  /* Legacy font size variables (mapped to new system) */
+  --fs-h1: var(--fs-display-xl);
+  --fs-h2: var(--fs-display-lg);
+  --fs-h3: var(--fs-title-1);
+  --fs: var(--fs-body);
+  --fs-lead: var(--fs-body-lg);
+  --fs-big: var(--fs-body-lg);
+  
+  /* Font weights */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
   
   /* Mobile breakpoints */
   --mobile-sm: 480px;
@@ -118,16 +142,22 @@
     --bg-0:#ffffff; 
     --bg-1:#f8f8f8; 
     --bg:#fafafa;
-    --ink:#000000; 
-    --muted:#505050;
-    /* Grayscale gradients in light mode */
-    --primary-grad: linear-gradient(135deg, #e0e0e0, #d0d0d0, #c0c0c0);
-    --grad-rf: linear-gradient(135deg, #e0e0e0, #d0d0d0, #c0c0c0);
+    --ink:#1d1d1f; 
+    --muted:#6e6e73;
+    /* Vibrant gradients in light mode */
+    --primary-grad: linear-gradient(135deg, #ff2d55, #ff3b30, #00d4ff);
+    --grad-rf: linear-gradient(135deg, #ff2d55, #ff3b30, #00d4ff);
     
-    /* Halo colors adjusted for light mode - more vibrant for visibility */
-    --halo-primary: #ff5252;
-    --halo-secondary: #f44336;
-    --halo-glow: #ff8a80;
+    /* Halo colors adjusted for light mode */
+    --halo-primary: #00d4ff;
+    --halo-secondary: #ff2d55;
+    --halo-glow: #ff9500;
+    
+    /* Glass adjustments for light mode */
+    --glass-0: rgba(248,248,248,.65);
+    --glass-1: rgba(248,248,248,.72);
+    --glass-2: rgba(248,248,248,.80);
+    --glass-bg: rgba(248,248,248,.72);
   }
 }
 
@@ -145,7 +175,7 @@ body {
   margin: 0;
   min-height: 100dvh;
   color: var(--ink);
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: var(--font-body);
   font-size: var(--fs);
   line-height: 1.6;
   text-rendering: optimizeLegibility;
@@ -174,10 +204,16 @@ body::before {
     var(--bg);
 }
 
+/* Enhanced focus states for accessibility */
 :where(button, a, [role="button"], input, select, textarea):focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-  border-radius: 0.5rem;
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Remove default outline for non-keyboard focus */
+:where(button, a, [role="button"], input, select, textarea):focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* Skip link for accessibility */
@@ -290,8 +326,8 @@ body::before {
 }
 
 .btn.primary { 
-  background: linear-gradient(135deg, #ffffff, #e0e0e0); 
-  color: #000000; 
+  background: var(--accent-primary); 
+  color: #ffffff; 
   border-radius: .7rem; 
   padding: .55rem .9rem; 
   font-weight: 600;
@@ -299,7 +335,8 @@ body::before {
 }
 
 .btn.primary:hover { 
-  filter: saturate(1.05) brightness(1.05);
+  background: #0077ed;
+  filter: saturate(1.1) brightness(1.05);
 }
 
 .btn.big { 
@@ -308,8 +345,8 @@ body::before {
 }
 
 .btn.outline { 
-  border-color: #c0c0c0; 
-  color: var(--ink); 
+  border-color: var(--accent-primary); 
+  color: var(--accent-primary); 
   background: transparent; 
 }
 

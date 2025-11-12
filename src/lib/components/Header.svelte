@@ -39,6 +39,14 @@
 </script>
 
 <header class="header">
+  <!-- Mobile backdrop -->
+  <div 
+    class="mobile-backdrop" 
+    class:visible={mobileMenuOpen} 
+    on:click={toggleMobileMenu}
+    aria-hidden="true"
+  ></div>
+
   <nav aria-label="Primary">
     <a href={`${base}/`} class="brand" aria-label="Reclame Fabriek — LUMIGRID LED Node">
       <img src={toAssetPath('Asset-2.png')} alt="Reclame Fabriek" class="brand-logo" />
@@ -162,6 +170,24 @@
     width: auto;
   }
 
+  /* Mobile backdrop */
+  .mobile-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 39;
+  }
+  
+  .mobile-backdrop.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .hamburger {
     display: none;
     flex-direction: column;
@@ -230,7 +256,7 @@
     bottom: 0.3rem;
     height: 2px;
     border-radius: 999px;
-    background: linear-gradient(90deg, #ffffff, #d0d0d0);
+    background: var(--accent-primary);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform var(--dur-fast) var(--ease-out);
@@ -280,8 +306,8 @@
   }
 
   .lang-btn.active {
-    background: linear-gradient(135deg, #ffffff, #e0e0e0);
-    color: #000000;
+    background: var(--accent-primary);
+    color: #ffffff;
   }
 
   .theme-btn {
@@ -295,9 +321,9 @@
   }
 
   .theme-btn.active {
-    background: linear-gradient(135deg, #ffffff, #e0e0e0);
-    color: #000000;
-    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+    background: var(--accent-primary);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
   }
 
   @media (max-width: 768px) {
@@ -327,16 +353,18 @@
       width: 70%;
       max-width: 300px;
       flex-direction: column;
-      background: var(--bg-0);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-left: 1px solid var(--glass-border);
       padding: 5rem 2rem 2rem;
       margin: 0;
       gap: 1.5rem;
       align-items: flex-start;
       transform: translateX(100%);
-      transition: transform 0.3s ease;
+      transition: transform 0.4s var(--ease-default);
       box-shadow: -2px 0 20px rgba(0, 0, 0, 0.5);
+      z-index: 40;
     }
 
     ul.open {
