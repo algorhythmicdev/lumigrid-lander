@@ -19,15 +19,19 @@ paragraph, list item, or caption to hear it read through the browser's voice eng
 
 ## Deployment
 
-The site now ships as a fully static export via `@sveltejs/adapter-static` and is ready for GitHub Pages.
+The site ships as a fully static export via `@sveltejs/adapter-static` and is ready for deployment to various static hosting platforms.
 
-### GitHub Pages
+### Vercel (Recommended)
 
-1. Update `.github/workflows/pages.yml` if your repository name differs from `/lumigrid-lander`, or set `BASE_PATH: ''` when deploying to a `username.github.io` root site.
-2. Push to `main` or trigger the **Deploy (GitHub Pages)** workflow manually.
-3. In **Settings → Pages**, set the source to “GitHub Actions”.
+1. Push your code to a Git repository (GitHub, GitLab, or Bitbucket)
+2. Import your project in [Vercel](https://vercel.com/new)
+3. Vercel will automatically detect the SvelteKit framework and use the settings from `vercel.json`
+4. Click "Deploy" and your site will be live in minutes
 
-Assets and links automatically respect the repository subpath thanks to `paths.base`/`paths.relative` in `svelte.config.js`.
+The `vercel.json` file is already configured with the optimal build settings. Vercel will automatically:
+- Install dependencies with `npm install`
+- Build the project with `npm run build`
+- Deploy the `build` directory as static files
 
 ### Alibaba Cloud
 
@@ -43,11 +47,7 @@ The Dockerfile produces a Node 20 image that runs `node build`. If you prefer a 
 
 ### Hosting requirements
 
-The contact form now opens the visitor’s email client with a pre-filled message to `hello@lumigrid.dev`. No server runtime is required for production hosting, so any static file host (including GitHub Pages) will work out of the box.
-
-## CI/CD
-
-This project uses GitHub Actions to automatically run tests and build the application on every push and pull request to the `main` branch. The workflow is defined in the `.github/workflows/ci.yml` file.
+The contact form now opens the visitor's email client with a pre-filled message to `hello@lumigrid.dev`. No server runtime is required for production hosting, so any static file host (Vercel, Netlify, Cloudflare Pages, etc.) will work out of the box.
 
 ## Structure
 
