@@ -1,7 +1,7 @@
 <script>
   import { base } from '$app/paths';
   import { t } from '$lib/i18n';
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   
   const toAssetPath = (path) => `${base}/assets/${path.split('/').map(encodeURIComponent).join('/')}`;
 
@@ -48,6 +48,8 @@
 
   let currentIndex = 0;
   let videoElement;
+  let sectionElement;
+  let intersectionObserver;
 
   $: currentItem = filteredItems[currentIndex];
 
@@ -67,23 +69,46 @@
     }
   };
 
-  onMount(() => {
-    // Autoplay the current video when it changes
-    if (videoElement) {
+  // Autoplay video when index changes
+  $: if (videoElement && currentItem && currentItem.type === 'video') {
+    // Small delay to ensure video is loaded
+    setTimeout(() => {
+      videoElement.load();
       videoElement.play().catch((error) => {
         console.debug('Video autoplay blocked:', error.message);
       });
+    }, 100);
+  }
+
+  // Setup intersection observer for autoplay on scroll
+  onMount(() => {
+    if (typeof IntersectionObserver !== 'undefined' && sectionElement) {
+      intersectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && videoElement && currentItem?.type === 'video') {
+              videoElement.play().catch((error) => {
+                console.debug('Video autoplay blocked:', error.message);
+              });
+            } else if (!entry.isIntersecting && videoElement) {
+              videoElement.pause();
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
+      intersectionObserver.observe(sectionElement);
     }
   });
 
-  $: if (videoElement && currentItem) {
-    videoElement.play().catch((error) => {
-      console.debug('Video autoplay blocked:', error.message);
-    });
-  }
+  onDestroy(() => {
+    if (intersectionObserver && sectionElement) {
+      intersectionObserver.unobserve(sectionElement);
+    }
+  });
 </script>
 
-<section class="section container" id="media-gallery">
+<section bind:this={sectionElement} class="section container" id="media-gallery">
   <h2 class="section-title">{title || $t('media_title')}</h2>
   <div class="gallery-carousel">
     {#if currentItem}
@@ -116,6 +141,7 @@
               <video
                 bind:this={videoElement}
                 src={toAssetPath(currentItem.path)}
+                autoplay
                 playsinline
                 preload="metadata"
                 muted
@@ -178,25 +204,35 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     color: var(--ink);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all var(--dur-fast) var(--ease-out);
+    transition: all var(--dur-med) var(--ease-out);
     z-index: 2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
 
   .nav-button:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.16);
     border-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   }
 
   .nav-button:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
+    transition-duration: var(--dur-fast);
+  }
+
+  .nav-button:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
   }
 
   .gallery-item {
@@ -209,19 +245,23 @@
 
   .media-container {
     position: relative;
-    border-radius: 1rem;
+    border-radius: 1.25rem;
     overflow: hidden;
-    background: rgba(15, 23, 42, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    background: rgba(15, 23, 42, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25),
+                0 2px 8px rgba(0, 0, 0, 0.15);
     transition: transform var(--dur-med) var(--ease-out),
-                box-shadow var(--dur-med) var(--ease-out);
+                box-shadow var(--dur-med) var(--ease-out),
+                border-color var(--dur-med) var(--ease-out);
   }
 
   .media-container:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4),
-                0 0 0 1px rgba(255, 255, 255, 0.12);
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 16px 56px rgba(0, 0, 0, 0.35),
+                0 4px 16px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.15);
   }
 
   .media-link {
@@ -301,27 +341,37 @@
     display: flex;
     gap: 0.5rem;
     padding: 1rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
   }
 
   .indicator {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.4);
     border: none;
     cursor: pointer;
-    transition: all var(--dur-fast) var(--ease-out);
+    transition: all var(--dur-med) var(--ease-out);
     padding: 0;
   }
 
   .indicator.active {
-    background: rgba(255, 255, 255, 0.9);
-    width: 24px;
-    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.95);
+    width: 28px;
+    border-radius: 4px;
   }
 
-  .indicator:hover {
-    background: rgba(255, 255, 255, 0.6);
+  .indicator:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.65);
+    transform: scale(1.2);
+  }
+
+  .indicator:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
   }
 
   @media (max-width: 768px) {
