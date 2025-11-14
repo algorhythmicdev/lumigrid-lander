@@ -151,22 +151,26 @@
     min-width: min(85vw, 380px);
     scroll-snap-align: center;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform var(--dur-med) var(--ease-out),
+                box-shadow var(--dur-med) var(--ease-out),
+                border-color var(--dur-med) var(--ease-out);
     position: relative;
   }
 
   .project-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transform: translateY(-10px) scale(1.01);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35),
+                0 8px 16px rgba(0, 0, 0, 0.2);
   }
   
   .project-card.selected {
-    transform: scale(1.05);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+    transform: scale(1.03);
+    box-shadow: 0 28px 56px rgba(0, 0, 0, 0.4),
+                0 10px 20px rgba(0, 0, 0, 0.25);
   }
   
-  .project-card:focus {
-    outline: 2px solid rgba(118, 133, 255, 0.6);
+  .project-card:focus-visible {
+    outline: 2px solid var(--accent-primary);
     outline-offset: 4px;
   }
 
@@ -199,23 +203,24 @@
     inset: 0;
     background: radial-gradient(
       circle at center,
-      rgba(255, 255, 255, 0.15) 0%,
-      transparent 70%
+      rgba(255, 255, 255, 0.18) 0%,
+      transparent 65%
     );
     opacity: 0;
-    transform: scale(0.8);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(0.85);
+    transition: opacity var(--dur-slow) var(--ease-out),
+                transform var(--dur-slow) var(--ease-out);
   }
   
   .project-card:hover .glow-effect {
     opacity: 1;
-    transform: scale(1.2);
+    transform: scale(1.15);
   }
   
   .project-card.selected .glow-effect {
     opacity: 1;
-    transform: scale(1.3);
-    animation: pulse 2s ease-in-out infinite;
+    transform: scale(1.25);
+    animation: pulse 2.5s ease-in-out infinite;
   }
   
   @keyframes pulse {

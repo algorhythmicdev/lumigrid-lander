@@ -121,8 +121,9 @@
     position: sticky;
     top: 0;
     z-index: 40;
-    background: var(--bg-0) !important;
-    background-color: var(--bg-0) !important;
+    background: rgba(0, 0, 0, 0.72) !important;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
   }
 
   .header::after {
