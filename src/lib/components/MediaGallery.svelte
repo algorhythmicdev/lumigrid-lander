@@ -50,6 +50,8 @@
   let videoElement;
   let sectionElement;
   let intersectionObserver;
+  let touchStartX = 0;
+  let touchEndX = 0;
 
   $: currentItem = filteredItems[currentIndex];
 
@@ -69,6 +71,38 @@
     }
   };
 
+  // Keyboard navigation handler
+  const handleKeydown = (event) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      goToPrevious();
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      goToNext();
+    }
+  };
+
+  // Touch/swipe handlers for mobile
+  const handleTouchStart = (event) => {
+    touchStartX = event.changedTouches[0].screenX;
+  };
+
+  const handleTouchEnd = (event) => {
+    touchEndX = event.changedTouches[0].screenX;
+    handleSwipeGesture();
+  };
+
+  const handleSwipeGesture = () => {
+    const swipeThreshold = 50; // minimum distance for swipe
+    if (touchEndX < touchStartX - swipeThreshold) {
+      // Swipe left - go to next
+      goToNext();
+    } else if (touchEndX > touchStartX + swipeThreshold) {
+      // Swipe right - go to previous
+      goToPrevious();
+    }
+  };
+
   // Autoplay video when index changes
   $: if (videoElement && currentItem && currentItem.type === 'video') {
     // Small delay to ensure video is loaded
@@ -80,7 +114,7 @@
     }, 100);
   }
 
-  // Setup intersection observer for autoplay on scroll
+  // Setup intersection observer for autoplay on scroll and keyboard navigation
   onMount(() => {
     if (typeof IntersectionObserver !== 'undefined' && sectionElement) {
       intersectionObserver = new IntersectionObserver(
@@ -99,16 +133,31 @@
       );
       intersectionObserver.observe(sectionElement);
     }
+
+    // Add keyboard event listener (browser only)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('keydown', handleKeydown);
+    }
   });
 
   onDestroy(() => {
     if (intersectionObserver && sectionElement) {
       intersectionObserver.unobserve(sectionElement);
     }
+    // Remove keyboard event listener (browser only)
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('keydown', handleKeydown);
+    }
   });
 </script>
 
-<section bind:this={sectionElement} class="section container" id="media-gallery">
+<section 
+  bind:this={sectionElement} 
+  class="section container" 
+  id="media-gallery"
+  on:touchstart={handleTouchStart}
+  on:touchend={handleTouchEnd}
+>
   <h2 class="section-title">{title || $t('media_title')}</h2>
   <div class="gallery-carousel">
     {#if currentItem}
